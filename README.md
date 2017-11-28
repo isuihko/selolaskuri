@@ -1,11 +1,12 @@
 # selolaskuri
 Shakin vahvuusluvun laskenta
 
-Visual Studio Community 2015, C# ja .NET.
+Visual Studio Community 2015, C# ja .NET, Windows.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
+
 SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
-PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia.
+ja PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia.
 
 Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä tai parilla (tarkistan vielä kaavat).
 
@@ -30,7 +31,7 @@ Laskentaa suoritetaan, kun
 - liikutaan yhtä ottelua syötettäessä tuloksen valintapainikkeissa
 - painetaan Enter vastustajien vahvuuslukujen syöttökentässä
 
-Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea.
+Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ottelun tulosta varten varattuja valintapainikkeita ei kuitenkaan käytetä silloin kun, syötetään useamman matsin tulos kerralla.
 
 Virhetarkastukset:
 - SELO-lukujen oltava välillä kokonaisluku 1000-2999
@@ -50,3 +51,7 @@ Tulostiedot:
 - piste-ero, kun laskettu yhden ottelun tuloksella (a)
 - odotustulos, kun laskettu yhden ottelun tulos (a) tai odotustuloksien summa (b ja c) paitsi jos laskettiin uuden pelaajan vahvuuslukua, jolloin summaa ei näytetä
 - kerroin, jota käytetään normaalissa laskennassa (eli ei uusi pelaaja) ja selvitään pelaajan omasta alkuperäisestä selosta
+
+Ohjelman asennus:
+Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Frameworkin 4.5.2.
+Tai lataa koko Visual Studio -projekti ja käännä.

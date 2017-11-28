@@ -1,7 +1,7 @@
 ﻿//
-// SELO-laskuri   https://github.com/isuihko/selolaskuri
+// Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 28.11.2017 Ismo Suihko 1.0.0.7
+// 28.11.2017 Ismo Suihko 1.0.0.9
 //
 // C#/.NET, Visual Studio Community 2015, Windows 7.
 //
@@ -15,7 +15,7 @@
 // KOODIA JÄRJESTELLÄÄN JA OPTIMOIDAAN VIELÄ, MUTTA TÄMÄN PITÄISI NYT TOIMIA AIKA HYVIN.
 // Teen ohjelmasta vielä vastaavan version Javalla.
 //
-// Kuva version 1.0.0.8 näytöstä on linkissä
+// Kuva version 1.0.0.9 näytöstä on linkissä
 //   https://goo.gl/pSVZcU ( https://drive.google.com/open?id=1e4z34Rh2YOz5xC8G2fDOK4x9__r-qB5n )
 //
 //
@@ -129,16 +129,20 @@
 //            Hm... laskenta ilmeisesti toimii! Ehkä jotain pyöristysongelmaa vielä. Ja alle 15 min puuttuu.
 //  Publish --> Versio 1.0.0.6
 //
-// 28.11.2017 Lisätty pikashakin vahvuusluvun laskenta (PELO) ja pidennetty ottelujen syöttökenttää
-//            sillä pikashakissa pelataan useita otteluita, joskus parikymmentäkin.
-//            Kun valitaan miettimisajaksi alle 15 min, niin tekstit vaihdetaan SELO->PELO.
-//            Kun miettimisaika >= 15 minuuttia, niin palautetaan SELO-tekstit.
-//            Tekstien ja ulkoasun muokkaamista.
+// 28.11.2017 -Lisätty pikashakin vahvuusluvun laskenta (PELO) ja pidennetty ottelujen syöttökenttää
+//             sillä pikashakissa pelataan useita otteluita, joskus parikymmentäkin.
+//            .Kun valitaan miettimisajaksi alle 15 min, niin tekstit vaihdetaan SELO->PELO.
+//            -Kun miettimisaika >= 15 minuuttia, niin palautetaan SELO-tekstit.
+//            -Tekstien ja ulkoasun muokkaamista.
 //  Publish --> Versio 1.0.0.7
-//            Vaihdettu ohjelman nimi ikkunasta "SELO-laskuri" -> "Selolaskuri".
-//            Myös namespace SELO_laskuri -> Selolaskuri, tiedostot: Form1.cs ja Program.cs
-//            Nyt käännetty ohjelma tulee nimelle "Selolaskuri.exe".
-//  Publish --> Versio 1.0.0.8 -> github/isuihko/selolaskuri
+//            -Vaihdettu ohjelman nimi ikkunasta "SELO-laskuri" -> "Selolaskuri".
+//            -Myös namespace SELO_laskuri -> Selolaskuri, tiedostot: Form1.cs ja Program.cs
+//            -Nyt käännetty ohjelma tulee nimelle "Selolaskuri.exe".
+//  Publish --> Versio 1.0.0.8 -> github/isuihko/selolaskuri (ensimmäinen versio siellä)
+//            -Pyöristyksiä: get_turnauksen_keskivahvuus() jakolaskuun +0.5F ennen kokonaisluvuksi muuttamista.
+//            -Shakki.net:n selolaskentasivujen tuloksiin vertaamalla huomattu, että pikashakin laskentakaavaan 
+//             tarvittiin korjauksia. Nyt laskee oikein!
+//  Publish --> Versio 1.0.0.9, myös github
 //
 
 using System;
@@ -997,7 +1001,7 @@ namespace Selolaskuri
 
         public int get_turnauksen_keskivahvuus()
         {
-            return turnauksen_vastustajien_selosumma / turnauksen_vastustajien_lkm;
+            return (int)((float)turnauksen_vastustajien_selosumma / turnauksen_vastustajien_lkm + 0.5F);
         }
 
         public int get_turnauksen_tulos()
@@ -1098,6 +1102,9 @@ namespace Selolaskuri
                     pelimaara++;
             }
 
+
+            // Pikashakin laskentakaavaan mennään täällä eli sitä käytetään vain
+            // jos ottelun pisteet on annettu ensimmäisenä
             if (syotetty_turnauksen_tulos >= 0)   
             {
                 // DEBUG         MessageBox.Show("laske turnauksen tulos: " + syotetty_turnauksen_tulos + "selo/alkup " + selo + "/" + selo_alkuperainen);
@@ -1113,27 +1120,28 @@ namespace Selolaskuri
                     // pikashakilla on oma laskentakaavansa
                     //
                     // http://skore.users.paivola.fi/selo.html kertoo:
-                    // Pikashakin laskennassa odotustulos lasketaan samoin, mutta ilman 0,85 - sääntöä.Itse laskentakaava onkin sitten hieman vaikeampi:
-                    // pelo = vanha pelo + 200 - 200 * e(odotustulos - tulos) / 10 , kun saavutettu tulos on odotustulosta suurempi tai
+                    // Pikashakin laskennassa odotustulos lasketaan samoin, mutta ilman 0,85 - sääntöä.
+                    // Itse laskentakaava onkin sitten hieman vaikeampi:
+                    // pelo = vanha pelo + 200 - 200 * e(odotustulos - tulos) / 10 , kun saavutettu tulos on odotustulosta suurempi
                     // pelo = vanha pelo - 200 + 200 * e(tulos - odotustulos) / 10 , kun saavutettu tulos on odotustulosta pienempi
-
+                    //            Loppuosan pitää olla e((tulos - odotustulos) / 10)  eli sulut lisää, jakolasku ensin.
                     // turnauksen tulos on kokonaisulukuna, pitää jakaa 2:lla
                     // odotustuloksien_summa on kokonaislukuja ja pitää jakaa 100:lla
                     if ((syotetty_turnauksen_tulos / 2F) > (odotustuloksien_summa / 100F))
                     {
                         uusi_selo =
-                            (int)(selo + 200 - 200 * Math.Pow(Math.E, (odotustuloksien_summa / 100F - syotetty_turnauksen_tulos / 2F))); 
+                            (int)(selo + 200 - 200 * Math.Pow(Math.E, (odotustuloksien_summa / 100F - syotetty_turnauksen_tulos / 2F) / 10F)); 
                     }
                     else
                     {
                         uusi_selo =
-                            (int)(selo - 200 + 200 * Math.Pow(Math.E, (odotustuloksien_summa / 100F - syotetty_turnauksen_tulos / 2F)));
+                            (int)(selo - 200 + 200 * Math.Pow(Math.E, (syotetty_turnauksen_tulos / 2F - odotustuloksien_summa / 100F) / 10F));
                     }
                 }
                 else
                 {
                     //
-                    // pidemmään miettimisajan pelit eli >= 15 min
+                    // pidemmän miettimisajan pelit eli >= 15 min
                     //
                     float lisakerroin = maarita_lisakerroin();
                     // myös 0.5F pyöristystä varten
@@ -1154,7 +1162,7 @@ namespace Selolaskuri
         //    > 50, jos voitto odotetumpi, esim. 51 jos 4-10 pistettä parempi
         //    < 50, jos tappio odotetumpi, esim. 49, jos 4-10 pistettä alempi
         //
-        // Odotustulos voi kuitenkin olla enintään 92.
+        // Odotustulos voi olla enintään 92. Paitsi pikashakissa voi olla jopa 100.
         // ks. ohje http://skore.users.paivola.fi/selo.html
         private int maarita_odotustulos(int vastustajan_selo)
         {

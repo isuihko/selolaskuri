@@ -479,7 +479,7 @@
             this.MaximumSize = new System.Drawing.Size(420, 540);
             this.MinimumSize = new System.Drawing.Size(420, 540);
             this.Name = "Form1";
-            this.Text = "Selolaskuri v. 1.0.0.8";
+            this.Text = "Selolaskuri v. 1.0.0.9";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

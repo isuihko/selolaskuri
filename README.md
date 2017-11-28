@@ -6,9 +6,15 @@ Visual Studio Community 2015, C# ja .NET, Windows.
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 
 SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
-ja PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia.
+ja PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia. Eri miettimisajoille on omat kaavansa.
 
 Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä tai parilla (tarkistan vielä kaavat).
+Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
+
+Selolaskentaa netissä: 
+http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html  SalSK - selolaskentaohjelma
+http://shakki.kivij.info/performance_calculator.shtml  Selo- ja suorituslukulaskuri, myös uuden pelaajan laskenta
+
 
 Syötekenttiä:
 * miettimisaika: vähintään 90 min, 60-89 minuuttia, 15-59 minuuttia tai alle 15 minuuttia

@@ -23,8 +23,7 @@ Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pel
 
 Painonapit:
 * "Laske uusi SELO" tai "Laske uusi PELO" eli vahvuusluvun laskenta
-* "Käytä uutta SELOa jatkolaskennassa" tai "Käytä uutta PELOa jatkolaskennassa"
-- kopioi lasketun vahvuusluvun ja pelimäärän syötekenttiin uutta laskentaa varten tai jos vielä ei ollut laskettu, niin kopioi uuden pelaajan tiedot laskentaa varten: vahvuusluku 1525 ja pelimäärä 0.
+* "Käytä uutta SELOa jatkolaskennassa" tai "Käytä uutta PELOa jatkolaskennassa", joka kopioi lasketun vahvuusluvun ja pelimäärän syötekenttiin uutta laskentaa varten tai jos vielä ei ollut laskettu, niin kopioi uuden pelaajan tiedot laskentaa varten: vahvuusluku 1525 ja pelimäärä 0.
  
 Laskentaa suoritetaan, kun
 - valitaan painike "Laske uusi SELO" tai pikashakin miettimisajalla "Laske uusi PELO"

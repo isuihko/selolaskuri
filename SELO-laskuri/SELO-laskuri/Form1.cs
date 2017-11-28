@@ -15,7 +15,7 @@
 // KOODIA JÄRJESTELLÄÄN JA OPTIMOIDAAN VIELÄ, MUTTA TÄMÄN PITÄISI NYT TOIMIA AIKA HYVIN.
 // Teen ohjelmasta vielä vastaavan version Javalla.
 //
-// Kuva version 1.0.0.7 näytöstä on linkissä
+// Kuva version 1.0.0.8 näytöstä on linkissä
 //   https://goo.gl/pSVZcU ( https://drive.google.com/open?id=1e4z34Rh2YOz5xC8G2fDOK4x9__r-qB5n )
 //
 //

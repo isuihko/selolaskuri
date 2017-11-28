@@ -1,5 +1,5 @@
 # selolaskuri
-Shakin vahvuusluvun laskenta
+Shakin vahvuusluvun laskenta, nykyinen versio v1.0.0.9
 
 Visual Studio Community 2015, C# ja .NET, Windows.
 

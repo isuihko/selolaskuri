@@ -12,8 +12,8 @@ Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä
 Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
 
 Selolaskentaa netissä: 
-http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html  SalSK - selolaskentaohjelma
-http://shakki.kivij.info/performance_calculator.shtml  Selo- ja suorituslukulaskuri, myös uuden pelaajan laskenta
+- http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html  SalSK - selolaskentaohjelma
+- http://shakki.kivij.info/performance_calculator.shtml  Selo- ja suorituslukulaskuri, myös uuden pelaajan laskenta
 
 
 Syötekenttiä:

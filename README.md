@@ -1,12 +1,11 @@
 # selolaskuri
-Shakin vahvuusluvun laskenta, nykyinen versio v1.0.0.9
+Shakin vahvuusluvun laskenta, versio v1.0.0.9 28.11.2017
 
-Visual Studio Community 2015, C# ja .NET, Windows.
+Visual Studio Community 2015, C# ja .NET, Windows 7/10.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
-
-SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
-ja PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia. Eri miettimisajoille on omat kaavansa.
+-SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
+-PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia. Eri miettimisajoille on omat kaavansa.
 
 Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä tai parilla (tarkistan vielä kaavat).
 Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
@@ -24,7 +23,7 @@ Syötekenttiä:
  a) yhden vastustajan vahvuusluku, esim. 1720
  b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
  c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
-* yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto.
+* yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa.
 
 Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
 
@@ -57,6 +56,15 @@ Tulostiedot:
 - piste-ero, kun laskettu yhden ottelun tuloksella (a)
 - odotustulos, kun laskettu yhden ottelun tulos (a) tai odotustuloksien summa (b ja c) paitsi jos laskettiin uuden pelaajan vahvuuslukua, jolloin summaa ei näytetä
 - kerroin, jota käytetään normaalissa laskennassa (eli ei uusi pelaaja) ja selvitään pelaajan omasta alkuperäisestä selosta
+
+Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä kolmella tavalla:
+- a) annetaan vahvuusluku numerona, esim. 1720 ja valitaan tulos valintapainikkeista 0, 1/2 ja 1.
+- b) Annetaan tulos vahvuusluvun kanssa, esim. +1720, =1720 tai -1720, eikä tuloksen valintapainikkeita käytetä.
+- c) Annetaan tulos numerona ennen vahvuuslukua, esim. 1 1720, 0.5 1720 tai 0 1720, eikä valintapainikkeita käytetä.
+
+Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
+- b) Tulokset vahvuuslukujen yhteydessä, esim. +1622 -1880 =1633 +1717
+- c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
 Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Frameworkin 4.5.2.

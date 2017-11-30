@@ -13,11 +13,19 @@ import javax.swing.JOptionPane;
                         JOptionPane.WARNING_MESSAGE);
 */
 import java.awt.Color; // Käytössä: setForeground(Color.RED) or (Color.BLACK)
-import java.awt.event.KeyEvent;  // KeyEvent.VK_UP   .VK_DOWN
+/* font = font.deriveFont(
+                Collections.singletonMap(
+                    TextAttribute.WEIGHT, TextAttribute.WEIGHT_REGULAR));
+*/
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.Collections;
 
+import java.awt.event.KeyEvent;  // KeyEvent.VK_UP   .VK_DOWN
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;  // Arrays.asList
+
 
 /**
  *
@@ -49,6 +57,16 @@ import java.util.Arrays;  // Arrays.asList
  * tuloksien näyttäminen.
  * 
  * Toimii!
+ * 
+ * 
+ *  30.11.2017    Pikashakin laskennan ajaksi vaihda tekstit SELO -> PELO
+ *                Myös korostetaan pikashakin tulosten syöttöohjetta
+ *                  -> TextAttribute.WEIGHT_BOLD
+ *                Täydennetty virheilmoituksiin puuttuneita rajoja, esim. MIN_SELO - MAX_SELO.
+ *                Laskenta Enter-napilla, kun ollaan vastustajan SELO-kentässä.
+ * 
+ * 
+ * 
  * 
  * TODO:  koodi ei ole Java-koodaustyylin mukaista kaikin puolin.
  *        Aliohjelmiakin pitäisi jakaa pienempiin osiin.
@@ -106,20 +124,20 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        OmaVahvuusluku_teksti = new javax.swing.JLabel();
         nykyinenSelo_input = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         pelimaara_input = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        VastustajanVahvuusluku_teksti = new javax.swing.JLabel();
         vastustajanSelo_input = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        TuloksetPistemaaranKanssa_teksti = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         laskeUusiSelo_button = new javax.swing.JButton();
         kaytaUutta_button = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        UusiSELO_teksti = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         uusiSelo_output = new javax.swing.JTextField();
         uusi_pelimaara_output = new javax.swing.JTextField();
@@ -149,15 +167,21 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setText("Nykyinen SELO (1000-2999)");
+        OmaVahvuusluku_teksti.setText("Nykyinen SELO (1000-2999)");
 
         jLabel3.setText("Pelimäärä (numero tai tyhjä, 0-10, jos uusi pelaaja)");
 
-        jLabel5.setText("Vastustajan SELO. Tai monta tuloksineen: +1725 -1810 =1612 (tai 1612)");
+        VastustajanVahvuusluku_teksti.setText("Vastustajan SELO. Tai monta tuloksineen: +1725 -1810 =1612 (tai 1612)");
+
+        vastustajanSelo_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                vastustajanSelo_inputKeyPressed(evt);
+            }
+        });
 
         jLabel13.setText("Montaa vahvuuslukua syötettäessä voitto +  tasapeli = tai tyhjä  ja tappio -");
 
-        jLabel14.setText("Tai pistemäärä ja vastustajien SELOt: 1.5 1725 1810 1612");
+        TuloksetPistemaaranKanssa_teksti.setText("Tai pistemäärä ja vastustajien SELOt: 1.5 1725 1810 1612");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -168,7 +192,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
+                            .addComponent(OmaVahvuusluku_teksti)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(nykyinenSelo_input, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -178,12 +202,12 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
                                 .addGap(10, 10, 10)
                                 .addComponent(pelimaara_input, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3)))
-                    .addComponent(jLabel5)
+                    .addComponent(VastustajanVahvuusluku_teksti)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
-                            .addComponent(jLabel14)))
+                            .addComponent(TuloksetPistemaaranKanssa_teksti)))
                     .addComponent(vastustajanSelo_input, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -191,20 +215,20 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(OmaVahvuusluku_teksti)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nykyinenSelo_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pelimaara_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(VastustajanVahvuusluku_teksti, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(vastustajanSelo_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel14)
+                .addComponent(TuloksetPistemaaranKanssa_teksti)
                 .addContainerGap())
         );
 
@@ -229,8 +253,8 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
 
         jLabel12.setText("Java 29.11.2017 Ismo Suihko github/isuihko");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("Uusi SELO");
+        UusiSELO_teksti.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        UusiSELO_teksti.setText("Uusi SELO");
 
         jLabel8.setText("Uusi pelimäärä");
 
@@ -279,7 +303,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
+                    .addComponent(UusiSELO_teksti)
                     .addComponent(jLabel15)
                     .addComponent(jLabel16)
                     .addComponent(jLabel8))
@@ -319,7 +343,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
+                    .addComponent(UusiSELO_teksti)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(vaihteluvali_output, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(uusiSelo_diff_output, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -613,7 +637,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         if (pelimaara < MIN_PELIMAARA || pelimaara > MAX_PELIMAARA) {
             pelimaara_input.setForeground(Color.RED);
             JOptionPane.showMessageDialog(null,
-                    "pelimäärän oltava numero >= 0 tai tyhjä",
+                    "pelimäärän oltava numero " + MIN_PELIMAARA + " - " + MAX_PELIMAARA + " tai tyhjä",
                     "VIRHE",
                     JOptionPane.WARNING_MESSAGE);
             pelimaara_input.setForeground(Color.BLACK);
@@ -786,30 +810,19 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         // VIRHEILMOITUKSET
         if (vastustajanSelo < MIN_SELO || vastustajanSelo > MAX_SELO)
         {
-
-//            String message;
-            
-            // XXX: fiksaa tätä
-
+          
             vastustajanSelo_input.setForeground(Color.RED);
 
             if (vastustajanSelo == MIN_SELO - 2) {
                 JOptionPane.showMessageDialog(null,
-                    "Turnauksen pistemäärä ({0}) voi olla enintään sama kuin vastustajien lukumäärä ({1}).",
+                    "Turnauksen pistemäärä (" + syotetty_tulos + ") voi olla enintään sama kuin vastustajien lukumäärä (" + shakinpelaaja.get_vastustajien_lkm_listassa() + ").",
                     "VIRHE",
-                    JOptionPane.WARNING_MESSAGE);
-           
-//                 message =
-//                    String.Format("VIRHE: Turnauksen pistemäärä ({0}) voi olla enintään sama kuin vastustajien lukumäärä ({1}).",
-//                    syotetty_tulos, shakinpelaaja.get_vastustajien_lkm_listassa());
+                    JOptionPane.WARNING_MESSAGE);           
             } else {
                 JOptionPane.showMessageDialog(null,
-                    "Vastustajan SELOn oltava numero {0}-{1}.",
+                    "Vastustajan SELOn oltava numero " + MIN_SELO + " - " + MAX_SELO,
                     "VIRHE",
-                    JOptionPane.WARNING_MESSAGE);
-            
-//                message =
-//                    String.Format("VIRHE: Vastustajan SELOn oltava numero {0}-{1}.", MIN_SELO, MAX_SELO);
+                    JOptionPane.WARNING_MESSAGE);            
             }
             vastustajanSelo_input.setForeground(Color.BLACK);            
 
@@ -922,11 +935,66 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         vastustajanSelo_input.requestFocus();
     }//GEN-LAST:event_kaytaUutta_buttonActionPerformed
 
+    
+    private enum vaihda_miettimisaika_enum {VAIHDA_SELOKSI, VAIHDA_PELOKSI };
+
+    private void miettimisaika_vaihda_tekstit(vaihda_miettimisaika_enum suunta)
+    {
+        String tmpstr;
+        String alkup, uusi;
+
+        Font font = TuloksetPistemaaranKanssa_teksti.getFont();
+        
+        if (suunta == vaihda_miettimisaika_enum.VAIHDA_SELOKSI)
+        {
+            alkup = "PELO";
+            uusi = "SELO";
+            
+            font = font.deriveFont(
+                Collections.singletonMap(
+                    TextAttribute.WEIGHT, TextAttribute.WEIGHT_REGULAR));
+
+            TuloksetPistemaaranKanssa_teksti.setFont(font);                        
+        }
+        else
+        {
+            alkup = "SELO";
+            uusi = "PELO";
+            // korosta PELO-ohje
+
+
+            font = font.deriveFont(
+                Collections.singletonMap(
+                    TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD));
+
+            TuloksetPistemaaranKanssa_teksti.setFont(font);
+        }
+
+        tmpstr = OmaVahvuusluku_teksti.getText().replaceAll(alkup, uusi);
+        OmaVahvuusluku_teksti.setText(tmpstr);
+
+        tmpstr = VastustajanVahvuusluku_teksti.getText().replaceAll(alkup, uusi);
+        VastustajanVahvuusluku_teksti.setText(tmpstr);
+
+        tmpstr = TuloksetPistemaaranKanssa_teksti.getText().replaceAll(alkup, uusi);
+        TuloksetPistemaaranKanssa_teksti.setText(tmpstr);
+
+        tmpstr = UusiSELO_teksti.getText().replaceAll(alkup, uusi);
+        UusiSELO_teksti.setText(tmpstr);
+
+        tmpstr = laskeUusiSelo_button.getText().replaceAll(alkup, uusi);
+        laskeUusiSelo_button.setText(tmpstr);
+
+        tmpstr = kaytaUutta_button.getText().replaceAll(alkup, uusi);
+        kaytaUutta_button.setText(tmpstr);   
+    }
+    
     private void miettimisaika_vah90_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miettimisaika_vah90_ButtonActionPerformed
         miettimisaika_vah90_Button.setSelected(true);
         miettimisaika_60_89_Button.setSelected(false);
         miettimisaika_15_59_Button.setSelected(false);
         miettimisaika_alle15_Button.setSelected(false);
+        miettimisaika_vaihda_tekstit(vaihda_miettimisaika_enum.VAIHDA_SELOKSI);
     }//GEN-LAST:event_miettimisaika_vah90_ButtonActionPerformed
 
     private void miettimisaika_60_89_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miettimisaika_60_89_ButtonActionPerformed
@@ -934,6 +1002,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         miettimisaika_60_89_Button.setSelected(true);
         miettimisaika_15_59_Button.setSelected(false);
         miettimisaika_alle15_Button.setSelected(false);
+        miettimisaika_vaihda_tekstit(vaihda_miettimisaika_enum.VAIHDA_SELOKSI);
     }//GEN-LAST:event_miettimisaika_60_89_ButtonActionPerformed
 
     private void miettimisaika_15_59_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miettimisaika_15_59_ButtonActionPerformed
@@ -941,6 +1010,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         miettimisaika_60_89_Button.setSelected(false);
         miettimisaika_15_59_Button.setSelected(true);
         miettimisaika_alle15_Button.setSelected(false);
+        miettimisaika_vaihda_tekstit(vaihda_miettimisaika_enum.VAIHDA_SELOKSI);
     }//GEN-LAST:event_miettimisaika_15_59_ButtonActionPerformed
 
     private void miettimisaika_alle15_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miettimisaika_alle15_ButtonActionPerformed
@@ -948,6 +1018,7 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         miettimisaika_60_89_Button.setSelected(false);
         miettimisaika_15_59_Button.setSelected(false);
         miettimisaika_alle15_Button.setSelected(true);
+        miettimisaika_vaihda_tekstit(vaihda_miettimisaika_enum.VAIHDA_PELOKSI);
     }//GEN-LAST:event_miettimisaika_alle15_ButtonActionPerformed
 
     // FUNKTIO: suorita_laskenta()
@@ -1122,6 +1193,14 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
             nayta_tulokset();
     }//GEN-LAST:event_tasapeliRadioButton_inputKeyPressed
 
+    // Suorita laskenta Enter-napilla, kun ollaan vastustajanSelo_input-kentässä
+    private void vastustajanSelo_inputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_vastustajanSelo_inputKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (suorita_laskenta())
+                nayta_tulokset();
+        }
+    }//GEN-LAST:event_vastustajanSelo_inputKeyPressed
+
 
     private void odotustulos_outputActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
@@ -1135,6 +1214,50 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }                                                  
+    
+    
+    /*
+        private void miettimisaika_vaihda_tekstit(vaihda_miettimisaika_enum suunta)
+        {
+            string tmpstr;
+            string alkup, uusi;
+
+            if (suunta == vaihda_miettimisaika_enum.VAIHDA_SELOKSI)
+            {
+                alkup = "PELO";
+                uusi = "SELO";
+                TuloksetPistemaaranKanssa_teksti.Font = new Font(TuloksetPistemaaranKanssa_teksti.Font, FontStyle.Regular);
+            }
+            else
+            {
+                alkup = "SELO";
+                uusi = "PELO";
+                // korosta PELO-ohje
+                TuloksetPistemaaranKanssa_teksti.Font = new Font(TuloksetPistemaaranKanssa_teksti.Font, FontStyle.Bold);
+            }
+
+            tmpstr = OmaVahvuusluku_teksti.Text.Replace(alkup, uusi);
+            OmaVahvuusluku_teksti.Text = tmpstr;
+
+            tmpstr = VastustajanVahvuusluku_teksti.Text.Replace(alkup, uusi);
+            VastustajanVahvuusluku_teksti.Text = tmpstr;
+
+            tmpstr = TuloksetPistemaaranKanssa_teksti.Text.Replace(alkup, uusi);
+            TuloksetPistemaaranKanssa_teksti.Text = tmpstr;
+
+            tmpstr = UusiSELO_teksti.Text.Replace(alkup, uusi);
+            UusiSELO_teksti.Text = tmpstr;
+
+            tmpstr = Laske_button.Text.Replace(alkup, uusi);
+            Laske_button.Text = tmpstr;
+
+            tmpstr = Kayta_uutta_button.Text.Replace(alkup, uusi);
+            Kayta_uutta_button.Text = tmpstr;
+        }
+        
+    }
+
+    */
     
     /**
      * @param args the command line arguments
@@ -1173,20 +1296,20 @@ public class JavaSelolaskuri extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel OmaVahvuusluku_teksti;
+    private javax.swing.JLabel TuloksetPistemaaranKanssa_teksti;
+    private javax.swing.JLabel UusiSELO_teksti;
+    private javax.swing.JLabel VastustajanVahvuusluku_teksti;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;

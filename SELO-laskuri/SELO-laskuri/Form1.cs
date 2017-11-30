@@ -143,6 +143,8 @@
 //            -Shakki.net:n selolaskentasivujen tuloksiin vertaamalla huomattu, että pikashakin laskentakaavaan 
 //             tarvittiin korjauksia. Nyt laskee oikein!
 //  Publish --> Versio 1.0.0.9, myös github
+// 30.11.2017 -Oma luokka vakioille, jotta niitä ei tarvitse määritellä kaikissa luokissa.
+//             Kaikki vakiot nyt ovat luokassa constants.
 //
 
 using System;
@@ -163,17 +165,8 @@ namespace Selolaskuri
 
     public partial class Form1 : Form
     {
-        // YLEISET VAKIOT, joilla määrätään syötteen rajat
-        // Käytetään pääasiassa tarkista_input() -rutiinissa
-        const int MIN_SELO = 1000;
-        const int MAX_SELO = 2999;
-        const int MIN_PELIMAARA = 0;
-        const int MAX_PELIMAARA = 9999;
 
-        // input-kentän syötteen maksimipituus. Tarkistetaan virhetilanteissa
-        // ja jos merkkejä yli tuon, niin tyhjennetään kenttä
-        const int MAX_PITUUS = 5;
-        const int SELO_PITUUS = 4;
+
 
         // Luodaan shakinpelaaja, jolla tietoina mm. SELO ja pelimäärä.
         // Uudella pelaajalla SELO 1525, pelimäärä 0
@@ -214,18 +207,18 @@ namespace Selolaskuri
             // onko numero?
             if (int.TryParse(nykyinenSelo_input.Text, out nykyinenSelo) == false)
             {
-                nykyinenSelo = MIN_SELO - 1;  // -> virheilmoitus
+                nykyinenSelo = constants.MIN_SELO - 1;  // -> virheilmoitus
             }
 
             // onko kelvollinen numero?
-            if (nykyinenSelo < MIN_SELO || nykyinenSelo > MAX_SELO)
+            if (nykyinenSelo < constants.MIN_SELO || nykyinenSelo > constants.MAX_SELO)
             {
-                string message = String.Format("VIRHE: Nykyisen SELOn oltava numero {0}-{1}.", MIN_SELO, MAX_SELO);
+                string message = String.Format("VIRHE: Nykyisen SELOn oltava numero {0}-{1}.", constants.MIN_SELO, constants.MAX_SELO);
                 nykyinenSelo_input.ForeColor = Color.Red;
                 MessageBox.Show(message);
                 nykyinenSelo_input.ForeColor = Color.Black;
 
-                if (nykyinenSelo_input.Text.Length > MAX_PITUUS)
+                if (nykyinenSelo_input.Text.Length > constants.MAX_PITUUS)
                     nykyinenSelo_input.Text = "";  // tyhjennetään liian täysi kenttä
                 nykyinenSelo_input.Select();       // takaisin syöttämään
                 return false;
@@ -245,25 +238,25 @@ namespace Selolaskuri
 
             if (string.IsNullOrWhiteSpace(pelimaara_input.Text))
             {
-                pelimaara = MIN_PELIMAARA - 1; // OK
+                pelimaara = constants.MIN_PELIMAARA - 1; // OK
                 return true;   // ei tarkisteta enempää
             }
 
             // onko numero?
             if (int.TryParse(pelimaara_input.Text, out pelimaara) == false)
             {
-                pelimaara = MIN_PELIMAARA - 1;   // -> virheilmoitus
+                pelimaara = constants.MIN_PELIMAARA - 1;   // -> virheilmoitus
             }
 
             // onko kelvollinen numero?
-            if (pelimaara < MIN_PELIMAARA || pelimaara > MAX_PELIMAARA)
+            if (pelimaara < constants.MIN_PELIMAARA || pelimaara > constants.MAX_PELIMAARA)
             {
-                string message = String.Format("VIRHE: pelimäärän oltava numero 0-{0} tai tyhjä.", MAX_PELIMAARA);
+                string message = String.Format("VIRHE: pelimäärän oltava numero 0-{0} tai tyhjä.", constants.MAX_PELIMAARA);
                 pelimaara_input.ForeColor = Color.Red;
                 MessageBox.Show(message);
                 pelimaara_input.ForeColor = Color.Black;
 
-                if (pelimaara_input.Text.Length > MAX_PITUUS)
+                if (pelimaara_input.Text.Length > constants.MAX_PITUUS)
                     pelimaara_input.Text = "";
                 pelimaara_input.Select();
                 return false;
@@ -284,7 +277,10 @@ namespace Selolaskuri
         // Yhden ottelun tulos voidaan antaa kolmella tavalla:
         //   1)  1720      ja tulos erikseen valintanapeilla, esim. 1/2 tasapeli
         //   2)  =1720     tasapeli myös näin
-        //   3)  0.5 1720  tai nain
+        //   3)  0.5 1720  tai näin
+        //
+
+        // XXX:   tarkista_vastustajanSelo() ON LIIAN PITKÄ. JAA OSIIN!
         //
         bool tarkista_vastustajanSelo(out int vastustajanSelo)
         {
@@ -295,13 +291,13 @@ namespace Selolaskuri
 
             if (string.IsNullOrWhiteSpace(vastustajanSelo_input.Text))
             {
-                vastustajanSelo = MIN_SELO - 1;     // ei saa olla tyhjä -> virheilmoitus
+                vastustajanSelo = constants.MIN_SELO - 1;     // ei saa olla tyhjä -> virheilmoitus
             }
-            else if (vastustajanSelo_input.Text.Length == SELO_PITUUS)  // numero 1000-2999
+            else if (vastustajanSelo_input.Text.Length == constants.SELO_PITUUS)  // numero 1000-2999
             {
                 if (int.TryParse(vastustajanSelo_input.Text, out vastustajanSelo) == false)
                 {
-                    vastustajanSelo = MIN_SELO - 1;  // ei ollut numero -> virheilmoitus
+                    vastustajanSelo = constants.MIN_SELO - 1;  // ei ollut numero -> virheilmoitus
                 }
             }
             else
@@ -318,7 +314,7 @@ namespace Selolaskuri
 
                 // Nyt voidaan jakaa syöte merkkijonoihin!
                 List<string> selo_lista = vastustajanSelo_input.Text.Split(' ').ToList();
-                int selo1 = MIN_SELO;
+                int selo1 = constants.MIN_SELO;
                 int tulos1 = 0;
                 bool ensimmainen = true;
                 bool turnauksen_tulos = false;
@@ -350,17 +346,17 @@ namespace Selolaskuri
                     // merkkijono voi alkaa merkillä '+', '=' tai '-'
                     // Mutta tasapeli voidaan antaa myös ilman '='-merkkiä
                     // Jos oli annettu turnauksen tulos, niin selot on syötettävä näin ilman tulosta
-                    if (tulos.Length == SELO_PITUUS)  // numero(4 merkkiä)
+                    if (tulos.Length == constants.SELO_PITUUS)  // numero(4 merkkiä)
                     {
                         if (int.TryParse(tulos, out selo1) == false)
                         {
-                            selo1 = MIN_SELO - 1;  // -> virheilmoitus, ei ollut numero
+                            selo1 = constants.MIN_SELO - 1;  // -> virheilmoitus, ei ollut numero
                             break;
                         }
                         tulos1 = 1;  // 1=tasapeli  HUOM! Jos tulos oli jo annettu, niin tätä ei huomioida laskuissa
                         shakinpelaaja.lista_lisaa_ottelun_tulos(selo1, tulos1);
                     }
-                    else if (tulos.Length == MAX_PITUUS && turnauksen_tulos == false)  // tulos(1 merkki)+numero(4 merkkiä)
+                    else if (tulos.Length == constants.MAX_PITUUS && turnauksen_tulos == false)  // tulos(1 merkki)+numero(4 merkkiä)
                     {
                         // Erillisten tulosten antaminen hyväksytään vain, jos turnauksen
                         // lopputulosta ei oltu jo annettu
@@ -376,15 +372,15 @@ namespace Selolaskuri
                                 tulos1 = 0;
                                 break;
                             default:
-                                selo1 = MIN_SELO - 1;  // ei ollut oikea tulos!
+                                selo1 = constants.MIN_SELO - 1;  // ei ollut oikea tulos!
                                 break;
                         }
-                        if (selo1 >= MIN_SELO)  // Vielä OK?  Selvitä sitten numero
+                        if (selo1 >= constants.MIN_SELO)  // Vielä OK?  Selvitä sitten numero
                         {
                             // parse: ohita +=- eli aloita numerosta, oli esim. =1612
                             if (int.TryParse(tulos.Substring(1), out selo1) == false)
                             {
-                                selo1 = MIN_SELO - 1;  // -> virheilmoitus, ei ollut numero
+                                selo1 = constants.MIN_SELO - 1;  // -> virheilmoitus, ei ollut numero
                                 break;
                             }
 
@@ -394,14 +390,14 @@ namespace Selolaskuri
                     else
                     {
                         // pituus ei ollut SELO_PITUUS (4 esim. 1234) eikä MAX_PITUUS (5 esim. +1234)
-                        selo1 = MIN_SELO - 1; // -> virheellistä dataa
+                        selo1 = constants.MIN_SELO - 1; // -> virheellistä dataa
                         break;
                     }
 
 // DEBUG:           MessageBox.Show(tulos + " : " + selo1.ToString() + " " + tulos1.ToString());
 
                     // Oliko asetettu virhe, mutta ei vielä poistuttu foreach-loopista?
-                    if (selo1 < MIN_SELO)
+                    if (selo1 < constants.MIN_SELO)
                         break;
 
                 } // foreach
@@ -412,7 +408,7 @@ namespace Selolaskuri
                     // Vertailu kokonaislukuina, syötetty tulos 3.5 vs 4, vertailu 7 vs 8.
                     if ((int)(2*syotetty_tulos + 0.01F) > 2*shakinpelaaja.get_vastustajien_lkm_listassa())
                     {
-                        selo1 = MIN_SELO - 2;  // tästä oma virheilmoitus
+                        selo1 = constants.MIN_SELO - 2;  // tästä oma virheilmoitus
                     }
                 }
 
@@ -421,17 +417,17 @@ namespace Selolaskuri
             }
 
             // VIRHEILMOITUKSET
-            if (vastustajanSelo < MIN_SELO || vastustajanSelo > MAX_SELO)
+            if (vastustajanSelo < constants.MIN_SELO || vastustajanSelo > constants.MAX_SELO)
             {
 
                 string message;
-                if (vastustajanSelo == MIN_SELO - 2)
+                if (vastustajanSelo == constants.MIN_SELO - 2)
                     message =
                         String.Format("VIRHE: Turnauksen pistemäärä ({0}) voi olla enintään sama kuin vastustajien lukumäärä ({1}).",
                         syotetty_tulos, shakinpelaaja.get_vastustajien_lkm_listassa());
                 else
                     message =
-                        String.Format("VIRHE: Vastustajan SELOn oltava numero {0}-{1}.", MIN_SELO, MAX_SELO);
+                        String.Format("VIRHE: Vastustajan SELOn oltava numero {0}-{1}.", constants.MIN_SELO, constants.MAX_SELO);
 
                 vastustajanSelo_input.ForeColor = Color.Red;
                 MessageBox.Show(message);
@@ -649,7 +645,7 @@ namespace Selolaskuri
             }
 
             nykyinenSelo_input.Text = selo.ToString();
-            if (pelimaara > MIN_PELIMAARA-1)
+            if (pelimaara > constants.MIN_PELIMAARA-1)
             {
                 // vain, jos pelimaara oli annettu (muutoin on jo valmiiksi tyhjä)
                 pelimaara_input.Text = pelimaara.ToString();
@@ -773,6 +769,22 @@ namespace Selolaskuri
 
     // *****  OMAT LUOKAT *****
 
+    static class constants
+    {
+        // YLEISET VAKIOT, joilla määrätään syötteen rajat
+        // Käytetään pääasiassa tarkista_input() -rutiinissa
+        public const int MIN_SELO = 1000;
+        public const int MAX_SELO = 2999;
+        public const int MIN_PELIMAARA = 0;
+        public const int MAX_PELIMAARA = 9999;
+
+        // input-kentän syötteen maksimipituus. Tarkistetaan virhetilanteissa
+        // ja jos merkkejä yli tuon, niin tyhjennetään kenttä
+        public const int MAX_PITUUS = 5;
+        public const int SELO_PITUUS = 4;
+    }
+
+
     // pelaaja_class
     //   - selo
     //   - pelimäärä (merkitystä, jos 0-10)
@@ -782,16 +794,7 @@ namespace Selolaskuri
     //
     public class pelaaja_class
     {
-        // YLEISET VAKIOT, joilla määrätään syötteen rajat
-        // Käytetään pääasiassa tarkista_input() -rutiinissa
-        //
-        // XXX: näitä vakioita on myös form1-luokassa
-        //
-        const int MIN_SELO = 1000;
-        const int MAX_SELO = 2999;
-        const int MIN_PELIMAARA = 0;
-        const int MAX_PELIMAARA = 9999;
-
+        // pelaajan omat tiedot
         private int miettimisaika;  // miettimisajan mukaan laskukaavat, 90 / 60 / 15 / 5
         private int selo;           // shakinpelaajan vahvuusluku, 1000-2999
         private int pelimaara;      // pelimaara tai -1, jolloin sitä ei huomioida
@@ -893,8 +896,8 @@ namespace Selolaskuri
             this.pelimaara = pelimaara;
             selo_alkuperainen = selo;  // tästä aloitettiin!  XXX: jos selo päivittyy, niin?
             // vaihteluvälin alustus
-            min_selo = MAX_SELO;
-            max_selo = MIN_SELO;
+            min_selo = constants.MAX_SELO;
+            max_selo = constants.MIN_SELO;
 
             uusi_pelimaara = -1;
             turnauksen_vastustajien_lkm = 0;
@@ -1098,7 +1101,7 @@ namespace Selolaskuri
                 selo = pelaa_ottelu(ottelu1.get_vastustajan_selo(), ottelu1.get_ottelun_tulos());
 
                 // päivitä pelimäärää, jos oli annettu
-                if (pelimaara != -1)   // MIN_PELIMAARA - 1
+                if (pelimaara != constants.MIN_PELIMAARA - 1)
                     pelimaara++;
             }
 

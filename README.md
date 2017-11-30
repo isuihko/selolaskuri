@@ -1,9 +1,12 @@
 # selolaskuri
-Shakin vahvuusluvun laskenta, versio v1.0.0.9 28.11.2017
+Shakin vahvuusluvun laskenta
 
-Visual Studio Community 2015, C# ja .NET, Windows 7/10.
+28.11.2017  Visual Studio Community 2015, C# ja .NET, Windows 7/10  
 
-29.11.2017: Myös Java-kielisen version lähdekoodit tulevat tänne pienen tarkastuksen ja siistimisen jälkeen. Nyt jo toimii! Jotain pientä vielä tarvitsee muuttaa, kuten kun valitaan pikashakin laskenta, niin tekstit muutetaan SELO -> PELO.
+29.11.2017  Java, NetBeans IDE 8.2
+
+Java-kielisestä versiosta:
+-Lähdekoodit ovat vielä ns. työn alla. Ohjelma kuitenkin jo toimii vaikka tein ohjelmaan 29.11. hyvin paljon muutoksia. Tulossa paljon lisääkin muutoksia lähdekoodiin. Ulkoisesti muutoksia kuitenkaan ei ole paljoa enää: ehkä vain jotain pientä, kuten kun valitaan pikashakin laskenta, niin tekstit muutetaan SELO -> PELO.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 -SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo

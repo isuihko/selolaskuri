@@ -33,7 +33,6 @@
             this.Pelimäärä = new System.Windows.Forms.Label();
             this.pelimaara_input = new System.Windows.Forms.TextBox();
             this.VastustajanVahvuusluku_teksti = new System.Windows.Forms.Label();
-            this.vastustajanSelo_input = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.Laske_button = new System.Windows.Forms.Button();
             this.UusiSELO_teksti = new System.Windows.Forms.Label();
@@ -66,6 +65,7 @@
             this.tulosTappio_Button = new System.Windows.Forms.RadioButton();
             this.vaihteluvali_output = new System.Windows.Forms.TextBox();
             this.TuloksetPistemaaranKanssa_teksti = new System.Windows.Forms.Label();
+            this.vastustajanSelo_comboBox = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,7 +80,7 @@
             // 
             // nykyinenSelo_input
             // 
-            this.nykyinenSelo_input.Location = new System.Drawing.Point(26, 109);
+            this.nykyinenSelo_input.Location = new System.Drawing.Point(15, 109);
             this.nykyinenSelo_input.Name = "nykyinenSelo_input";
             this.nykyinenSelo_input.Size = new System.Drawing.Size(46, 20);
             this.nykyinenSelo_input.TabIndex = 1;
@@ -96,7 +96,7 @@
             // 
             // pelimaara_input
             // 
-            this.pelimaara_input.Location = new System.Drawing.Point(159, 109);
+            this.pelimaara_input.Location = new System.Drawing.Point(149, 109);
             this.pelimaara_input.Name = "pelimaara_input";
             this.pelimaara_input.Size = new System.Drawing.Size(46, 20);
             this.pelimaara_input.TabIndex = 2;
@@ -109,14 +109,6 @@
             this.VastustajanVahvuusluku_teksti.Size = new System.Drawing.Size(349, 13);
             this.VastustajanVahvuusluku_teksti.TabIndex = 54;
             this.VastustajanVahvuusluku_teksti.Text = "Vastustajan SELO. Tai monta tuloksineen: +1725 -1810 =1612 (tai 1612)";
-            // 
-            // vastustajanSelo_input
-            // 
-            this.vastustajanSelo_input.Location = new System.Drawing.Point(25, 155);
-            this.vastustajanSelo_input.Name = "vastustajanSelo_input";
-            this.vastustajanSelo_input.Size = new System.Drawing.Size(374, 20);
-            this.vastustajanSelo_input.TabIndex = 3;
-            this.vastustajanSelo_input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vastustajanSelo_input_KeyDown);
             // 
             // label3
             // 
@@ -182,11 +174,11 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(176, 489);
+            this.label6.Location = new System.Drawing.Point(184, 488);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(229, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 28.11.2017 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 12.12.2017 Ismo Suihko github/isuihko";
             // 
             // label7
             // 
@@ -301,9 +293,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(12, 178);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(350, 13);
+            this.label13.Size = new System.Drawing.Size(353, 13);
             this.label13.TabIndex = 55;
-            this.label13.Text = "Montaa vahvuuslukua syötettäessä voitto +   tasapeli = tai tyhjä   tappio -";
+            this.label13.Text = "Montaa vahvuuslukua syötettäessä voitto +,   tasapeli = tai tyhjä,  tappio -";
             // 
             // uusiSelo_diff_output
             // 
@@ -356,7 +348,7 @@
             this.miettimisaika_15_59_Button.Size = new System.Drawing.Size(71, 17);
             this.miettimisaika_15_59_Button.TabIndex = 33;
             this.miettimisaika_15_59_Button.TabStop = true;
-            this.miettimisaika_15_59_Button.Text = "15-59 min";
+            this.miettimisaika_15_59_Button.Text = "11-59 min";
             this.miettimisaika_15_59_Button.UseVisualStyleBackColor = true;
             this.miettimisaika_15_59_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_15_59_Button_CheckedChanged);
             // 
@@ -365,10 +357,10 @@
             this.miettimisaika_alle15_Button.AutoSize = true;
             this.miettimisaika_alle15_Button.Location = new System.Drawing.Point(225, 14);
             this.miettimisaika_alle15_Button.Name = "miettimisaika_alle15_Button";
-            this.miettimisaika_alle15_Button.Size = new System.Drawing.Size(75, 17);
+            this.miettimisaika_alle15_Button.Size = new System.Drawing.Size(85, 17);
             this.miettimisaika_alle15_Button.TabIndex = 34;
             this.miettimisaika_alle15_Button.TabStop = true;
-            this.miettimisaika_alle15_Button.Text = "alle 15 min";
+            this.miettimisaika_alle15_Button.Text = "enint. 10 min";
             this.miettimisaika_alle15_Button.UseVisualStyleBackColor = true;
             this.miettimisaika_alle15_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_alle15_Button_CheckedChanged);
             // 
@@ -380,7 +372,7 @@
             this.panel1.Controls.Add(this.miettimisaika_15_59_Button);
             this.panel1.Location = new System.Drawing.Point(80, 40);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 40);
+            this.panel1.Size = new System.Drawing.Size(317, 40);
             this.panel1.TabIndex = 35;
             // 
             // tulosVoitto_Button
@@ -437,11 +429,21 @@
             this.TuloksetPistemaaranKanssa_teksti.TabIndex = 66;
             this.TuloksetPistemaaranKanssa_teksti.Text = "Tai pistemäärä ja vastustajien SELOt: 1.5 1725 1810 1612";
             // 
+            // vastustajanSelo_comboBox
+            // 
+            this.vastustajanSelo_comboBox.FormattingEnabled = true;
+            this.vastustajanSelo_comboBox.Location = new System.Drawing.Point(15, 155);
+            this.vastustajanSelo_comboBox.Name = "vastustajanSelo_comboBox";
+            this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(390, 21);
+            this.vastustajanSelo_comboBox.TabIndex = 3;
+            this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vastustajanSelo_combobox_KeyDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 502);
+            this.ClientSize = new System.Drawing.Size(409, 502);
+            this.Controls.Add(this.vastustajanSelo_comboBox);
             this.Controls.Add(this.TuloksetPistemaaranKanssa_teksti);
             this.Controls.Add(this.vaihteluvali_output);
             this.Controls.Add(this.tulosTappio_Button);
@@ -470,16 +472,15 @@
             this.Controls.Add(this.UusiSELO_teksti);
             this.Controls.Add(this.Laske_button);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.vastustajanSelo_input);
             this.Controls.Add(this.VastustajanVahvuusluku_teksti);
             this.Controls.Add(this.pelimaara_input);
             this.Controls.Add(this.Pelimäärä);
             this.Controls.Add(this.nykyinenSelo_input);
             this.Controls.Add(this.OmaVahvuusluku_teksti);
-            this.MaximumSize = new System.Drawing.Size(420, 540);
-            this.MinimumSize = new System.Drawing.Size(420, 540);
+            this.MaximumSize = new System.Drawing.Size(425, 540);
+            this.MinimumSize = new System.Drawing.Size(425, 540);
             this.Name = "Form1";
-            this.Text = "Selolaskuri v. 1.0.0.9";
+            this.Text = "Selolaskuri v. 1.0.0.10";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -494,7 +495,6 @@
         private System.Windows.Forms.Label Pelimäärä;
         private System.Windows.Forms.TextBox pelimaara_input;
         private System.Windows.Forms.Label VastustajanVahvuusluku_teksti;
-        private System.Windows.Forms.TextBox vastustajanSelo_input;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Laske_button;
         private System.Windows.Forms.Label UusiSELO_teksti;
@@ -527,6 +527,7 @@
         private System.Windows.Forms.RadioButton tulosTappio_Button;
         private System.Windows.Forms.TextBox vaihteluvali_output;
         private System.Windows.Forms.Label TuloksetPistemaaranKanssa_teksti;
+        private System.Windows.Forms.ComboBox vastustajanSelo_comboBox;
     }
 }
 

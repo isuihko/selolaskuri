@@ -49,17 +49,17 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/ncOuKG3qde1uSbqag2QF/U7O3rGBBK1M9GJzOaSq/A=</dsig:DigestValue>
+        <dsig:DigestValue>WwT4zN0wHd1JQWxBARAz+sfeixa564OfXJ25qyEG8HY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Selolaskuri.exe.config" size="189">
+  <file name="Selolaskuri.exe.config" size="184">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>6N7MliNbVJSIAIPrecIshMbZ7zEoKLr5SQvud4LDUOw=</dsig:DigestValue>
+      <dsig:DigestValue>gKxXKIvI1oB2Ujf3NLkY67/jWCAETGNca3j2WtIebak=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

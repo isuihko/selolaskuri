@@ -1,16 +1,13 @@
 # selolaskuri
 Shakin vahvuusluvun laskenta
 
-30.11.2017  Visual Studio Community 2015, C# ja .NET, Windows 7/10  
+12.12.2017  Visual Studio Community 2015, C# ja .NET, Windows 7/10  
 
-30.11.2017  Java, NetBeans IDE 8.2
-
-Java-kielisestä versiosta:
--Lähdekoodit ovat vielä ns. työn alla. Ohjelma kuitenkin jo toimii vaikka tein ohjelmaan 29.11. hyvin paljon muutoksia. Tulossa paljon lisääkin muutoksia lähdekoodiin. Ulkoisesti muutoksia kuitenkaan ei ole paljoa enää tulossa.
+Java-versiolla nyt oma repository jSelolaskuri.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
--SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
--PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia. Eri miettimisajoille on omat kaavansa.
+- SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
+- PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia. Eri miettimisajoille on omat kaavansa.
 
 Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä tai parilla (tarkistan vielä kaavat).
 Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
@@ -22,15 +19,17 @@ Selolaskentaa netissä:
 
 Syötekenttiä:
 * miettimisaika: vähintään 90 min, 60-89 minuuttia, 15-59 minuuttia tai alle 15 minuuttia
-* oman vahvuusluku eli SELO tai jos miettimisaika on alle 15 minuuttia, niin PELO
-* oma aiempi pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa.
-* ottelun tiedot, joissa vaihtoehdot:
+* oman vahvuusluku eli oma SELO tai jos miettimisaika on alle 15 minuuttia, niin PELO
+* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa, vain SELO. Vielä ei ole toteutettu PELO:n laskentaa uudelle pelaajalle.
+* ottelun tiedot eli Vastustajan SELO-kenttä, joissa vaihtoehdot:
  - a) yhden vastustajan vahvuusluku, esim. 1720
  - b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
  - c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
 * yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa.
 
 Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
+
+Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske uusi SELO/PELO -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot.
 
 Painonapit:
 * "Laske uusi SELO" tai "Laske uusi PELO" eli vahvuusluvun laskenta
@@ -72,5 +71,5 @@ Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
 - c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
-Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Frameworkin 4.5.2.
+Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Frameworkin 4.6:n.
 Tai lataa koko Visual Studio -projekti ja käännä.

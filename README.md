@@ -1,9 +1,9 @@
 # selolaskuri
 Shakin vahvuusluvun laskenta
 
-12.12.2017  Visual Studio Community 2015, C# ja .NET, Windows 7/10  
+12.12.2017  Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10  
 
-Java-versiolla nyt oma repository jSelolaskuri.
+Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -73,3 +73,13 @@ Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
 Ohjelman asennus:
 Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Frameworkin 4.6:n.
 Tai lataa koko Visual Studio -projekti ja käännä.
+
+TODO:
+- properties
+- out pois muutaman aliohjelman parametreista, turha
+- lisää kirjastojen käyttöä, mm. Math.max & min
+- optimointia, turhia apumuuttujia pois
+- jaa yksi pitkä aliohjelma pienempiin osiin (vastustajien vahvuuslukukentän käsittely)
+- menut
+- lisälaskentaa
+- tee myös uusi versio käyttäen WPF:ää ja XAML:ia

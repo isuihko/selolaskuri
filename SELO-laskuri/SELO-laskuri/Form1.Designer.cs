@@ -66,13 +66,21 @@
             this.vaihteluvali_output = new System.Windows.Forms.TextBox();
             this.TuloksetPistemaaranKanssa_teksti = new System.Windows.Forms.Label();
             this.vastustajanSelo_comboBox = new System.Windows.Forms.ComboBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.ohjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tietojaOhjelmastaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.laskentakaavatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.suljeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // OmaVahvuusluku_teksti
             // 
             this.OmaVahvuusluku_teksti.AutoSize = true;
-            this.OmaVahvuusluku_teksti.Location = new System.Drawing.Point(12, 93);
+            this.OmaVahvuusluku_teksti.Location = new System.Drawing.Point(11, 102);
             this.OmaVahvuusluku_teksti.Name = "OmaVahvuusluku_teksti";
             this.OmaVahvuusluku_teksti.Size = new System.Drawing.Size(120, 13);
             this.OmaVahvuusluku_teksti.TabIndex = 52;
@@ -80,7 +88,7 @@
             // 
             // nykyinenSelo_input
             // 
-            this.nykyinenSelo_input.Location = new System.Drawing.Point(15, 109);
+            this.nykyinenSelo_input.Location = new System.Drawing.Point(14, 118);
             this.nykyinenSelo_input.Name = "nykyinenSelo_input";
             this.nykyinenSelo_input.Size = new System.Drawing.Size(46, 20);
             this.nykyinenSelo_input.TabIndex = 1;
@@ -88,7 +96,7 @@
             // Pelimäärä
             // 
             this.Pelimäärä.AutoSize = true;
-            this.Pelimäärä.Location = new System.Drawing.Point(146, 93);
+            this.Pelimäärä.Location = new System.Drawing.Point(145, 102);
             this.Pelimäärä.Name = "Pelimäärä";
             this.Pelimäärä.Size = new System.Drawing.Size(224, 13);
             this.Pelimäärä.TabIndex = 53;
@@ -96,7 +104,7 @@
             // 
             // pelimaara_input
             // 
-            this.pelimaara_input.Location = new System.Drawing.Point(149, 109);
+            this.pelimaara_input.Location = new System.Drawing.Point(148, 118);
             this.pelimaara_input.Name = "pelimaara_input";
             this.pelimaara_input.Size = new System.Drawing.Size(46, 20);
             this.pelimaara_input.TabIndex = 2;
@@ -104,7 +112,7 @@
             // VastustajanVahvuusluku_teksti
             // 
             this.VastustajanVahvuusluku_teksti.AutoSize = true;
-            this.VastustajanVahvuusluku_teksti.Location = new System.Drawing.Point(12, 139);
+            this.VastustajanVahvuusluku_teksti.Location = new System.Drawing.Point(11, 148);
             this.VastustajanVahvuusluku_teksti.Name = "VastustajanVahvuusluku_teksti";
             this.VastustajanVahvuusluku_teksti.Size = new System.Drawing.Size(349, 13);
             this.VastustajanVahvuusluku_teksti.TabIndex = 54;
@@ -113,7 +121,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 221);
+            this.label3.Location = new System.Drawing.Point(11, 230);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(359, 13);
             this.label3.TabIndex = 56;
@@ -122,7 +130,7 @@
             // Laske_button
             // 
             this.Laske_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Laske_button.Location = new System.Drawing.Point(70, 307);
+            this.Laske_button.Location = new System.Drawing.Point(69, 316);
             this.Laske_button.Name = "Laske_button";
             this.Laske_button.Size = new System.Drawing.Size(193, 25);
             this.Laske_button.TabIndex = 7;
@@ -134,7 +142,7 @@
             // 
             this.UusiSELO_teksti.AutoSize = true;
             this.UusiSELO_teksti.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UusiSELO_teksti.Location = new System.Drawing.Point(11, 354);
+            this.UusiSELO_teksti.Location = new System.Drawing.Point(10, 363);
             this.UusiSELO_teksti.Name = "UusiSELO_teksti";
             this.UusiSELO_teksti.Size = new System.Drawing.Size(102, 24);
             this.UusiSELO_teksti.TabIndex = 60;
@@ -143,7 +151,7 @@
             // uusiSelo_output
             // 
             this.uusiSelo_output.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uusiSelo_output.Location = new System.Drawing.Point(164, 354);
+            this.uusiSelo_output.Location = new System.Drawing.Point(163, 363);
             this.uusiSelo_output.Name = "uusiSelo_output";
             this.uusiSelo_output.ReadOnly = true;
             this.uusiSelo_output.Size = new System.Drawing.Size(56, 29);
@@ -152,7 +160,7 @@
             // 
             // Kayta_uutta_button
             // 
-            this.Kayta_uutta_button.Location = new System.Drawing.Point(70, 458);
+            this.Kayta_uutta_button.Location = new System.Drawing.Point(69, 467);
             this.Kayta_uutta_button.Name = "Kayta_uutta_button";
             this.Kayta_uutta_button.Size = new System.Drawing.Size(193, 25);
             this.Kayta_uutta_button.TabIndex = 8;
@@ -164,7 +172,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(46, 15);
+            this.label5.Location = new System.Drawing.Point(45, 24);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(304, 25);
             this.label5.TabIndex = 50;
@@ -174,16 +182,16 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(184, 488);
+            this.label6.Location = new System.Drawing.Point(183, 497);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(229, 13);
+            this.label6.Size = new System.Drawing.Size(217, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 12.12.2017 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 7.1.2018 Ismo Suihko github/isuihko";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(233, 415);
+            this.label7.Location = new System.Drawing.Point(232, 424);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(63, 13);
             this.label7.TabIndex = 58;
@@ -191,7 +199,7 @@
             // 
             // odotustulos_output
             // 
-            this.odotustulos_output.Location = new System.Drawing.Point(309, 413);
+            this.odotustulos_output.Location = new System.Drawing.Point(308, 422);
             this.odotustulos_output.Name = "odotustulos_output";
             this.odotustulos_output.ReadOnly = true;
             this.odotustulos_output.Size = new System.Drawing.Size(46, 20);
@@ -201,7 +209,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(233, 434);
+            this.label8.Location = new System.Drawing.Point(232, 443);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(40, 13);
             this.label8.TabIndex = 59;
@@ -209,7 +217,7 @@
             // 
             // kerroin_output
             // 
-            this.kerroin_output.Location = new System.Drawing.Point(309, 432);
+            this.kerroin_output.Location = new System.Drawing.Point(308, 441);
             this.kerroin_output.Name = "kerroin_output";
             this.kerroin_output.ReadOnly = true;
             this.kerroin_output.Size = new System.Drawing.Size(46, 20);
@@ -219,7 +227,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 389);
+            this.label9.Location = new System.Drawing.Point(11, 398);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(76, 13);
             this.label9.TabIndex = 61;
@@ -227,7 +235,7 @@
             // 
             // uusi_pelimaara_output
             // 
-            this.uusi_pelimaara_output.Location = new System.Drawing.Point(164, 389);
+            this.uusi_pelimaara_output.Location = new System.Drawing.Point(163, 398);
             this.uusi_pelimaara_output.Name = "uusi_pelimaara_output";
             this.uusi_pelimaara_output.ReadOnly = true;
             this.uusi_pelimaara_output.Size = new System.Drawing.Size(56, 20);
@@ -237,7 +245,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(233, 396);
+            this.label10.Location = new System.Drawing.Point(232, 405);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 13);
             this.label10.TabIndex = 57;
@@ -245,7 +253,7 @@
             // 
             // seloEro_output
             // 
-            this.seloEro_output.Location = new System.Drawing.Point(309, 394);
+            this.seloEro_output.Location = new System.Drawing.Point(308, 403);
             this.seloEro_output.Name = "seloEro_output";
             this.seloEro_output.ReadOnly = true;
             this.seloEro_output.Size = new System.Drawing.Size(46, 20);
@@ -255,7 +263,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 415);
+            this.label11.Location = new System.Drawing.Point(10, 424);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(133, 13);
             this.label11.TabIndex = 62;
@@ -264,7 +272,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(11, 432);
+            this.label12.Location = new System.Drawing.Point(10, 441);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(124, 13);
             this.label12.TabIndex = 63;
@@ -272,7 +280,7 @@
             // 
             // keskivahvuus_output
             // 
-            this.keskivahvuus_output.Location = new System.Drawing.Point(164, 415);
+            this.keskivahvuus_output.Location = new System.Drawing.Point(163, 424);
             this.keskivahvuus_output.Name = "keskivahvuus_output";
             this.keskivahvuus_output.ReadOnly = true;
             this.keskivahvuus_output.Size = new System.Drawing.Size(56, 20);
@@ -281,7 +289,7 @@
             // 
             // tulos_output
             // 
-            this.tulos_output.Location = new System.Drawing.Point(164, 432);
+            this.tulos_output.Location = new System.Drawing.Point(163, 441);
             this.tulos_output.Name = "tulos_output";
             this.tulos_output.ReadOnly = true;
             this.tulos_output.Size = new System.Drawing.Size(56, 20);
@@ -291,7 +299,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 178);
+            this.label13.Location = new System.Drawing.Point(11, 187);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(353, 13);
             this.label13.TabIndex = 55;
@@ -299,7 +307,7 @@
             // 
             // uusiSelo_diff_output
             // 
-            this.uusiSelo_diff_output.Location = new System.Drawing.Point(226, 359);
+            this.uusiSelo_diff_output.Location = new System.Drawing.Point(225, 368);
             this.uusiSelo_diff_output.Name = "uusiSelo_diff_output";
             this.uusiSelo_diff_output.ReadOnly = true;
             this.uusiSelo_diff_output.Size = new System.Drawing.Size(37, 20);
@@ -309,7 +317,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 56);
+            this.label14.Location = new System.Drawing.Point(11, 65);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(73, 13);
             this.label14.TabIndex = 51;
@@ -370,7 +378,7 @@
             this.panel1.Controls.Add(this.miettimisaika_alle15_Button);
             this.panel1.Controls.Add(this.miettimisaika_60_89_Button);
             this.panel1.Controls.Add(this.miettimisaika_15_59_Button);
-            this.panel1.Location = new System.Drawing.Point(80, 40);
+            this.panel1.Location = new System.Drawing.Point(79, 49);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 40);
             this.panel1.TabIndex = 35;
@@ -378,7 +386,7 @@
             // tulosVoitto_Button
             // 
             this.tulosVoitto_Button.AutoSize = true;
-            this.tulosVoitto_Button.Location = new System.Drawing.Point(28, 275);
+            this.tulosVoitto_Button.Location = new System.Drawing.Point(27, 284);
             this.tulosVoitto_Button.Name = "tulosVoitto_Button";
             this.tulosVoitto_Button.Size = new System.Drawing.Size(69, 17);
             this.tulosVoitto_Button.TabIndex = 6;
@@ -390,7 +398,7 @@
             // tulosTasapeli_Button
             // 
             this.tulosTasapeli_Button.AutoSize = true;
-            this.tulosTasapeli_Button.Location = new System.Drawing.Point(28, 256);
+            this.tulosTasapeli_Button.Location = new System.Drawing.Point(27, 265);
             this.tulosTasapeli_Button.Name = "tulosTasapeli_Button";
             this.tulosTasapeli_Button.Size = new System.Drawing.Size(90, 17);
             this.tulosTasapeli_Button.TabIndex = 5;
@@ -402,7 +410,7 @@
             // tulosTappio_Button
             // 
             this.tulosTappio_Button.AutoSize = true;
-            this.tulosTappio_Button.Location = new System.Drawing.Point(28, 237);
+            this.tulosTappio_Button.Location = new System.Drawing.Point(27, 246);
             this.tulosTappio_Button.Name = "tulosTappio_Button";
             this.tulosTappio_Button.Size = new System.Drawing.Size(72, 17);
             this.tulosTappio_Button.TabIndex = 4;
@@ -413,7 +421,7 @@
             // 
             // vaihteluvali_output
             // 
-            this.vaihteluvali_output.Location = new System.Drawing.Point(279, 359);
+            this.vaihteluvali_output.Location = new System.Drawing.Point(278, 368);
             this.vaihteluvali_output.Name = "vaihteluvali_output";
             this.vaihteluvali_output.ReadOnly = true;
             this.vaihteluvali_output.Size = new System.Drawing.Size(73, 20);
@@ -423,7 +431,7 @@
             // TuloksetPistemaaranKanssa_teksti
             // 
             this.TuloksetPistemaaranKanssa_teksti.AutoSize = true;
-            this.TuloksetPistemaaranKanssa_teksti.Location = new System.Drawing.Point(12, 195);
+            this.TuloksetPistemaaranKanssa_teksti.Location = new System.Drawing.Point(11, 204);
             this.TuloksetPistemaaranKanssa_teksti.Name = "TuloksetPistemaaranKanssa_teksti";
             this.TuloksetPistemaaranKanssa_teksti.Size = new System.Drawing.Size(282, 13);
             this.TuloksetPistemaaranKanssa_teksti.TabIndex = 66;
@@ -432,17 +440,73 @@
             // vastustajanSelo_comboBox
             // 
             this.vastustajanSelo_comboBox.FormattingEnabled = true;
-            this.vastustajanSelo_comboBox.Location = new System.Drawing.Point(15, 155);
+            this.vastustajanSelo_comboBox.Location = new System.Drawing.Point(14, 164);
             this.vastustajanSelo_comboBox.Name = "vastustajanSelo_comboBox";
             this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(390, 21);
             this.vastustajanSelo_comboBox.TabIndex = 3;
             this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vastustajanSelo_combobox_KeyDown);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ohjeToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(409, 24);
+            this.menuStrip1.TabIndex = 67;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // ohjeToolStripMenuItem
+            // 
+            this.ohjeToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ohjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem,
+            this.laskentakaavatToolStripMenuItem,
+            this.tietojaOhjelmastaToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.suljeToolStripMenuItem});
+            this.ohjeToolStripMenuItem.Name = "ohjeToolStripMenuItem";
+            this.ohjeToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.ohjeToolStripMenuItem.Text = "&Menu";
+            // 
+            // tietojaOhjelmastaToolStripMenuItem
+            // 
+            this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
+            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoja ohjelmasta";
+            this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
+            // 
+            // laskentakaavatToolStripMenuItem
+            // 
+            this.laskentakaavatToolStripMenuItem.Name = "laskentakaavatToolStripMenuItem";
+            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
+            this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.laskentakaavatToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(168, 6);
+            // 
+            // suljeToolStripMenuItem
+            // 
+            this.suljeToolStripMenuItem.Name = "suljeToolStripMenuItem";
+            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
+            this.suljeToolStripMenuItem.Click += new System.EventHandler(this.suljeToolStripMenuItem_Click);
+            // 
+            // ohjeitaKäyttöönkeskenToolStripMenuItem
+            // 
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Name = "ohjeitaKäyttöönkeskenToolStripMenuItem";
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Text = "Ohjeita";
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 502);
+            this.ClientSize = new System.Drawing.Size(409, 512);
             this.Controls.Add(this.vastustajanSelo_comboBox);
             this.Controls.Add(this.TuloksetPistemaaranKanssa_teksti);
             this.Controls.Add(this.vaihteluvali_output);
@@ -477,12 +541,17 @@
             this.Controls.Add(this.Pelimäärä);
             this.Controls.Add(this.nykyinenSelo_input);
             this.Controls.Add(this.OmaVahvuusluku_teksti);
-            this.MaximumSize = new System.Drawing.Size(425, 540);
-            this.MinimumSize = new System.Drawing.Size(425, 540);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.MaximumSize = new System.Drawing.Size(425, 550);
+            this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "Form1";
             this.Text = "Selolaskuri v. 1.0.0.10";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -528,6 +597,13 @@
         private System.Windows.Forms.TextBox vaihteluvali_output;
         private System.Windows.Forms.Label TuloksetPistemaaranKanssa_teksti;
         private System.Windows.Forms.ComboBox vastustajanSelo_comboBox;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem ohjeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tietojaOhjelmastaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem laskentakaavatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem suljeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ohjeitaKäyttöönkeskenToolStripMenuItem;
     }
 }
 

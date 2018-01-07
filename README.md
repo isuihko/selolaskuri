@@ -1,9 +1,9 @@
 # selolaskuri
 Shakin vahvuusluvun laskenta
 
-12.12.2017  Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10  
+7.1.2018  Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan.
+Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -18,8 +18,8 @@ Selolaskentaa netissä:
 
 
 Syötekenttiä:
-* miettimisaika: vähintään 90 min, 60-89 minuuttia, 15-59 minuuttia tai alle 15 minuuttia
-* oman vahvuusluku eli oma SELO tai jos miettimisaika on alle 15 minuuttia, niin PELO
+* miettimisaika: vähintään 90 min, 60-89 minuuttia, 11-59 minuuttia tai enintään 10 minuuttia
+* oman vahvuusluku eli oma SELO tai jos miettimisaika on enintään 10 minuuttia, niin PELO
 * aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa, vain SELO. Vielä ei ole toteutettu PELO:n laskentaa uudelle pelaajalle.
 * ottelun tiedot eli Vastustajan SELO-kenttä, joissa vaihtoehdot:
  - a) yhden vastustajan vahvuusluku, esim. 1720
@@ -29,11 +29,17 @@ Syötekenttiä:
 
 Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
 
-Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske uusi SELO/PELO -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot.
+Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske uusi SELO/PELO -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot, jonka jälkeen niitä voidaan tarvittaessa muokata ennen uutta laskentaa.
 
 Painonapit:
 * "Laske uusi SELO" tai "Laske uusi PELO" eli vahvuusluvun laskenta
 * "Käytä uutta SELOa jatkolaskennassa" tai "Käytä uutta PELOa jatkolaskennassa", joka kopioi lasketun vahvuusluvun ja pelimäärän syötekenttiin uutta laskentaa varten tai jos vielä ei ollut laskettu, niin kopioi uuden pelaajan tiedot laskentaa varten: vahvuusluku 1525 ja pelimäärä 0.
+
+Menut:
+* Ohjeita
+* Laskentakaavat
+* Tietoja ohjelmasta
+* Sulje ohjelma
  
 Laskentaa suoritetaan, kun
 - valitaan painike "Laske uusi SELO" tai pikashakin miettimisajalla "Laske uusi PELO"
@@ -75,11 +81,10 @@ Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Fram
 Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO:
-- properties
+- properties (aloitettu, mutta vielä lisää)
 - out pois muutaman aliohjelman parametreista, turha
-- lisää kirjastojen käyttöä, mm. Math.max & min
-- optimointia, turhia apumuuttujia pois
+- lisää valmiiden kirjastojen käyttöä
+- optimointia
 - jaa yksi pitkä aliohjelma pienempiin osiin (vastustajien vahvuuslukukentän käsittely)
-- menut
 - lisälaskentaa
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia

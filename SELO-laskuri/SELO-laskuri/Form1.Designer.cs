@@ -68,11 +68,11 @@
             this.vastustajanSelo_comboBox = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ohjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tietojaOhjelmastaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.laskentakaavatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tietojaOhjelmastaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.suljeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -469,12 +469,12 @@
             this.ohjeToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.ohjeToolStripMenuItem.Text = "&Menu";
             // 
-            // tietojaOhjelmastaToolStripMenuItem
+            // ohjeitaKäyttöönkeskenToolStripMenuItem
             // 
-            this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
-            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoja ohjelmasta";
-            this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Name = "ohjeitaKäyttöönkeskenToolStripMenuItem";
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Text = "Ohjeita";
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
             // 
             // laskentakaavatToolStripMenuItem
             // 
@@ -482,6 +482,13 @@
             this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
             this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.laskentakaavatToolStripMenuItem_Click);
+            // 
+            // tietojaOhjelmastaToolStripMenuItem
+            // 
+            this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
+            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoja ohjelmasta";
+            this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -494,13 +501,6 @@
             this.suljeToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
             this.suljeToolStripMenuItem.Click += new System.EventHandler(this.suljeToolStripMenuItem_Click);
-            // 
-            // ohjeitaKäyttöönkeskenToolStripMenuItem
-            // 
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Name = "ohjeitaKäyttöönkeskenToolStripMenuItem";
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Text = "Ohjeita";
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -546,7 +546,7 @@
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "Form1";
-            this.Text = "Selolaskuri v. 1.0.0.10";
+            this.Text = "Selolaskuri v. 1.0.0.12";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

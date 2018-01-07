@@ -1,7 +1,7 @@
 ﻿//
 // Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 7.1.2018 Ismo Suihko 1.0.0.11
+// 7.1.2018 Ismo Suihko 1.0.0.12
 //
 // C#/.NET, Visual Studio Community 2015, Windows 7.
 //
@@ -15,7 +15,7 @@
 // KOODIA JÄRJESTELLÄÄN JA OPTIMOIDAAN VIELÄ, MUTTA TÄMÄN PITÄISI NYT TOIMIA AIKA HYVIN.
 // Tein ohjelmasta vastaavan version myös Javalla, mutta siitä puuttuu osa uusista ominaisuuksista.
 //
-// Kuva version 1.0.0.11 näytöstä on linkissä
+// Kuva version 1.0.0.12 näytöstä on linkissä
 //   https://goo.gl/pSVZcU ( https://drive.google.com/open?id=1e4z34Rh2YOz5xC8G2fDOK4x9__r-qB5n )
 // Jossa esimerkki: Miettimisika enintään 10 minuuttia, selo 1996, pelimäärä tyhjä
 //                  Vastustajan SELO: 10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684
@@ -176,11 +176,12 @@
 //            -Varmistetaan ohjelmasta poistuminen, kun valitaan Menu->Sulje ohjelma tai suljetaan ikkuna.
 //
 //  Publish --> Versio 1.0.0.11, myös github
+// 7.1.2018    -Päivitetty versionumerot -> 1.0.0.12
+//  Publish --> Versio 1.0.0.12, myös github
 //
 // TODO:
 //            -Tarkista_vastustajanSelo() ym. rutiinit: parametreista pois "out".
 //             kuitenkin int.TryParse() käyttää out.
-//
 //
 //
 

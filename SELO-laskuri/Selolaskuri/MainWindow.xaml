@@ -1,0 +1,121 @@
+﻿<Window x:Class="Selolaskuri.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Selolaskuri"
+        mc:Ignorable="d"
+        Title="Selolaskuri (C#/.NET/WPF-versio)" Height="550" Width="450" MinHeight="660" MinWidth="425" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="151*" />
+            <ColumnDefinition Width="181*" />
+            <ColumnDefinition Width="210*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="40*" />
+        </Grid.RowDefinitions>
+
+        <!-- OTSIKKO -->
+        <Label x:Name="Otsikko_txt" Content="Shakin vahvuusluvun laskenta" FontSize="18" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="71,13,0,10" VerticalAlignment="Center" Height="34" Width="245" />
+        
+        <!-- Miettimisaika radio buttons -->
+        <!--<Label x:Name="Miettimisaika_txt" Content="Miettimisaika :" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="0,4" Width="86" />-->
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <GroupBox Header="Miettimisaika :" >
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Content="väh. 90 min " />
+                    <RadioButton Content="60-89 min  " />
+                    <RadioButton Content="11-69 min  " />
+                    <RadioButton Content="enint. 10 min" />
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+
+
+        <!-- Syötteet: oma vahvuusluku ja pelimäärä / vastustajat+ottelujen tulokset -->
+        <Label x:Name="OmaSELO_txt" Content="Oma SELO (1000-2999)" Grid.Row="2" VerticalAlignment="Top" Height="26" />
+        <TextBox x:Name="OmaSELO_in" HorizontalAlignment="Left" Height="23" Grid.Row="2" Text="1525" VerticalAlignment="Bottom" Width="45"/>
+
+        <Label x:Name="OmaPelimaara_txt" Content="Oma pelimäärä (tyhjä tai jos uusi pelaaja: 0-10)" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="26" />
+        <TextBox x:Name="OmaPelimaara_in" HorizontalAlignment="Left" Height="23" Grid.Row="2" Grid.Column="1" Text="" VerticalAlignment="Bottom" Width="45"/>
+
+        <Label x:Name="VastustajanSELO_txt" Content="Vastustajan SELO. Tai monta tuloksineen: +1725 -1810 =1612 (1612)" HorizontalAlignment="Left" Margin="0" Grid.Row="3" VerticalAlignment="Top" Grid.ColumnSpan="3" Height="26" Width="372" />
+        <TextBox x:Name="VastustajanSELO_in" HorizontalAlignment="Left" Height="23" Grid.Row="3" Grid.Column="0" Text="" VerticalAlignment="Bottom" Width="400" Grid.ColumnSpan="3"/>
+
+        <Label x:Name="Ohje1_txt" Content="Montaa vahvuuslukua syötetettäessä voitto +, tasapeli = tai tyhjä, tappio -" HorizontalAlignment="Left" Margin="0" Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="3" />
+        <Label x:Name="Ohje2_txt" Content="Tai pistemäärä ja vastustajien SELOt: 1.5 1725 1810 1612" HorizontalAlignment="Left" Margin="0" Grid.Row="4" VerticalAlignment="Bottom" Grid.ColumnSpan="3" />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" >
+            <GroupBox Header="Jos annettu yksi vahvuusluku (esim. 1720), niin tuloksen valinta:" Grid.ColumnSpan="3" >
+                <StackPanel Orientation="Vertical">
+                    <RadioButton Content="0 = tappio" />
+                    <RadioButton Content="1/2 = tasapeli" />
+                    <RadioButton Content="1 = voitto" />
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+
+        <!-- 6: Laskentapainike -->
+        <Button x:Name="LaskeUusiSELO_btn" Grid.Row="6" Content="Laske uusi SELO" 
+                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Height="30"  Width="90" Grid.Column="1" Grid.ColumnSpan="2" />
+              
+        <!-- 7-10: TULOSKENTÄT -->
+        <!-- 7: Uusi SELO -->
+        <Label x:Name="UusiSELO_txt" Content="Uusi SELO" FontSize="18"
+               HorizontalAlignment="Left" Margin="0" Grid.Row="7" 
+               VerticalAlignment="Center" Width="88"/>
+        <TextBox x:Name="UusiSELO_out" Grid.Row="7" Grid.Column="1" FontSize="18"
+                 HorizontalAlignment="Left" VerticalAlignment="Center" Text="(uusi SELO)" />
+
+        <!-- 8: Uusi pelimäärä /  NRO  /  Piste-ero  NRO -->
+        <Label x:Name="UusiPelimaara_txt" Grid.Row="8" Content="Uusi pelimäärä"
+               HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="88"/>
+        <TextBox x:Name="UusiPelimaara_out" Grid.Row="8" Grid.Column="1"
+                 HorizontalAlignment="Left" Text="123" VerticalAlignment="Center" Width="50" />
+        <Label x:Name="PisteEro_txt" Grid.Row="8" Grid.Column="2" Content="Piste-ero"
+               HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Width="57"/>
+        <TextBox x:Name="PisteEro_out"  Grid.Row="8" Grid.Column="2" Text="(piste-ero)"
+                 HorizontalAlignment="Right" Width="50"/>
+
+        <!-- 9: Vastustajien keskivahvuus / NRO / Odotustulos NRO -->
+        <Label x:Name="VastustajienKeskivahvuus_txt" Content="Vastustajien keskivahvuus"
+               HorizontalAlignment="Left" Margin="0" Grid.Row="9"  Grid.ColumnSpan="2"/>
+        <TextBox x:Name="VastustajienKeskivahvuus_out" HorizontalAlignment="Left"
+                 Height="23" Grid.Row="9" Grid.Column="1" Text="" Width="50" />
+        <Label x:Name="Odotustulos_txt" Content="Odotustulos" HorizontalAlignment="Left"
+               Grid.Row="9" Grid.Column="2" />
+        <TextBox x:Name="Odotustulos_out"
+                 Grid.Row="9" Grid.Column="2" Text="(odotustulos)" HorizontalAlignment="Right" Width="50"/>
+
+        <!-- 10: Ottelun/turnauksen tulos / NRO / Kerroin NRO -->
+        <Label x:Name="OttelunTurnauksenTulos_txt" Content="Ottelun/turnauksen tulos"
+               HorizontalAlignment="Left" Grid.Row="10" />
+        <TextBox x:Name="OttelunTurnauksenTulos_out" Text="(tulos)"
+               HorizontalAlignment="Left" Grid.Row="10" Grid.Column="1" />
+        <Label x:Name="Kerroin_txt" Content="Kerroin" HorizontalAlignment="Left"
+               Grid.Row="10" Grid.Column="2" />
+        <TextBox x:Name="Kerroin_out"
+                 Grid.Row="10" Grid.Column="2" Text="(kerroin)" HorizontalAlignment="Right" Width="50"/>
+
+        <!-- 11: Käytä uutta SELOa jatkolaskennassa -painike -->
+        <Button x:Name="KaytaUutta_btn" Grid.Row="11" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Käytä uutta SELOa jatkolaskennassa"
+                Height="22" Margin="92,13,140,12" Width="210" Grid.ColumnSpan="3" />
+
+    </Grid>
+</Window>

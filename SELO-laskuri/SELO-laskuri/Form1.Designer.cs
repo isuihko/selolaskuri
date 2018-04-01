@@ -57,8 +57,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.miettimisaika_vah90_Button = new System.Windows.Forms.RadioButton();
             this.miettimisaika_60_89_Button = new System.Windows.Forms.RadioButton();
-            this.miettimisaika_15_59_Button = new System.Windows.Forms.RadioButton();
-            this.miettimisaika_alle15_Button = new System.Windows.Forms.RadioButton();
+            this.miettimisaika_11_59_Button = new System.Windows.Forms.RadioButton();
+            this.miettimisaika_enint10_Button = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tulosVoitto_Button = new System.Windows.Forms.RadioButton();
             this.tulosTasapeli_Button = new System.Windows.Forms.RadioButton();
@@ -186,7 +186,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(217, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 7.1.2018 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 1.4.2018 Ismo Suihko github/isuihko";
             // 
             // label7
             // 
@@ -348,36 +348,36 @@
             this.miettimisaika_60_89_Button.UseVisualStyleBackColor = true;
             this.miettimisaika_60_89_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_60_89_Button_CheckedChanged);
             // 
-            // miettimisaika_15_59_Button
+            // miettimisaika_11_59_Button
             // 
-            this.miettimisaika_15_59_Button.AutoSize = true;
-            this.miettimisaika_15_59_Button.Location = new System.Drawing.Point(156, 14);
-            this.miettimisaika_15_59_Button.Name = "miettimisaika_15_59_Button";
-            this.miettimisaika_15_59_Button.Size = new System.Drawing.Size(71, 17);
-            this.miettimisaika_15_59_Button.TabIndex = 33;
-            this.miettimisaika_15_59_Button.TabStop = true;
-            this.miettimisaika_15_59_Button.Text = "11-59 min";
-            this.miettimisaika_15_59_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_15_59_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_15_59_Button_CheckedChanged);
+            this.miettimisaika_11_59_Button.AutoSize = true;
+            this.miettimisaika_11_59_Button.Location = new System.Drawing.Point(156, 14);
+            this.miettimisaika_11_59_Button.Name = "miettimisaika_11_59_Button";
+            this.miettimisaika_11_59_Button.Size = new System.Drawing.Size(71, 17);
+            this.miettimisaika_11_59_Button.TabIndex = 33;
+            this.miettimisaika_11_59_Button.TabStop = true;
+            this.miettimisaika_11_59_Button.Text = "11-59 min";
+            this.miettimisaika_11_59_Button.UseVisualStyleBackColor = true;
+            this.miettimisaika_11_59_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_11_59_Button_CheckedChanged);
             // 
-            // miettimisaika_alle15_Button
+            // miettimisaika_enint10_Button
             // 
-            this.miettimisaika_alle15_Button.AutoSize = true;
-            this.miettimisaika_alle15_Button.Location = new System.Drawing.Point(225, 14);
-            this.miettimisaika_alle15_Button.Name = "miettimisaika_alle15_Button";
-            this.miettimisaika_alle15_Button.Size = new System.Drawing.Size(85, 17);
-            this.miettimisaika_alle15_Button.TabIndex = 34;
-            this.miettimisaika_alle15_Button.TabStop = true;
-            this.miettimisaika_alle15_Button.Text = "enint. 10 min";
-            this.miettimisaika_alle15_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_alle15_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_alle15_Button_CheckedChanged);
+            this.miettimisaika_enint10_Button.AutoSize = true;
+            this.miettimisaika_enint10_Button.Location = new System.Drawing.Point(225, 14);
+            this.miettimisaika_enint10_Button.Name = "miettimisaika_enint10_Button";
+            this.miettimisaika_enint10_Button.Size = new System.Drawing.Size(85, 17);
+            this.miettimisaika_enint10_Button.TabIndex = 34;
+            this.miettimisaika_enint10_Button.TabStop = true;
+            this.miettimisaika_enint10_Button.Text = "enint. 10 min";
+            this.miettimisaika_enint10_Button.UseVisualStyleBackColor = true;
+            this.miettimisaika_enint10_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_enint10_Button_CheckedChanged);
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.miettimisaika_vah90_Button);
-            this.panel1.Controls.Add(this.miettimisaika_alle15_Button);
+            this.panel1.Controls.Add(this.miettimisaika_enint10_Button);
             this.panel1.Controls.Add(this.miettimisaika_60_89_Button);
-            this.panel1.Controls.Add(this.miettimisaika_15_59_Button);
+            this.panel1.Controls.Add(this.miettimisaika_11_59_Button);
             this.panel1.Location = new System.Drawing.Point(79, 49);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 40);
@@ -588,8 +588,8 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.RadioButton miettimisaika_vah90_Button;
         private System.Windows.Forms.RadioButton miettimisaika_60_89_Button;
-        private System.Windows.Forms.RadioButton miettimisaika_15_59_Button;
-        private System.Windows.Forms.RadioButton miettimisaika_alle15_Button;
+        private System.Windows.Forms.RadioButton miettimisaika_11_59_Button;
+        private System.Windows.Forms.RadioButton miettimisaika_enint10_Button;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton tulosVoitto_Button;
         private System.Windows.Forms.RadioButton tulosTasapeli_Button;

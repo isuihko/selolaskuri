@@ -1,7 +1,12 @@
 # selolaskuri
 Shakin vahvuusluvun laskenta
 
-7.1.2018  Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
+
+1.4.2018 (edellinen 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
+
+Muutokset: Koodin järjestämistä. Ei eroa toiminnassa verrattuna 7.1.2018 versioon.
+
+--
 
 Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
 
@@ -88,3 +93,4 @@ TODO:
 - jaa yksi pitkä aliohjelma pienempiin osiin (vastustajien vahvuuslukukentän käsittely)
 - lisälaskentaa
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
+- automaattinen testaus

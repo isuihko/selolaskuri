@@ -546,7 +546,7 @@
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "Form1";
-            this.Text = "Selolaskuri v. 1.0.0.12";
+            this.Text = "Selolaskuri v. 1.0.0.16";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

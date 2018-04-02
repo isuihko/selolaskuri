@@ -1,7 +1,7 @@
 ﻿//
 // Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 2.4.2018 Ismo Suihko 1.0.0.13
+// 2.4.2018 Ismo Suihko 1.0.0.16
 //
 // Aiempi versio 7.1.2018 1.0.0.12, johon verrattuna tässä ei ole ulkoisia muutoksia muuta kuin päivämäärä.
 //
@@ -188,6 +188,7 @@
 // 2.4.2018   -Lisää koodin siistimistä ja järjestelyä,
 //             mm. syötteen tarkastus omaan moduuliin Form1.Tarkistukset.cs
 //            -Tarkempia tarkastuksia, tarkempia virheilmoituksia.
+//  Publish --> Versio 1.0.0.16, myös github
 //
 // TODO:
 //            -Tarkista_vastustajanSelo() ym. rutiinit: parametrit, pois "out"?

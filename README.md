@@ -2,9 +2,9 @@
 Shakin vahvuusluvun laskenta
 
 
-1.4.2018 (edellinen 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
+2.4.2018 (edelliset isommat muutokset 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-Muutokset: Koodin järjestämistä. Ei eroa toiminnassa verrattuna 7.1.2018 versioon.
+Muutokset: Koodin järjestämistä. Ei eroa toiminnassa verrattuna 7.1.2018 versioon muutoin kuin, että tulostuu uudempi versionumero ja päivämäärä.
 
 --
 
@@ -89,7 +89,7 @@ TODO:
 - properties (aloitettu, mutta vielä lisää)
 - out pois muutaman aliohjelman parametreista, turha
 - lisää valmiiden kirjastojen käyttöä
-- optimointia
+- optimointia (jo tehty 1.4. ja 2.4., mutta vielä lisää)
 - jaa yksi pitkä aliohjelma pienempiin osiin (vastustajien vahvuuslukukentän käsittely)
 - lisälaskentaa
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia

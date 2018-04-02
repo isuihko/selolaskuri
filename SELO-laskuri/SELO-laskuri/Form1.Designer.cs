@@ -186,7 +186,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(217, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 1.4.2018 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 2.4.2018 Ismo Suihko github/isuihko";
             // 
             // label7
             // 

@@ -1,7 +1,7 @@
 ﻿//
 // Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 1.4.2018 Ismo Suihko 1.0.0.12
+// 2.4.2018 Ismo Suihko 1.0.0.13
 //
 // Aiempi versio 7.1.2018 1.0.0.12, johon verrattuna tässä ei ole ulkoisia muutoksia muuta kuin päivämäärä.
 //
@@ -10,12 +10,10 @@
 // Ensimmäinen C#/.NET -ohjelmani.
 // Sisältää käyttöliittymän, syötteen tarkistuksen, laskentaa ja tuloksien näyttämisen.
 //
-// HUOM!  Käännetty binääri/asennusohjelma setup.exe vaatii nyt .NET Framework 4.6:n.
-//        Voiko tässä Community-versiossa muuttaa asetuksia, niin että toimisi
-//        kaikilla versioilla esim. .NET Framework 4.0:sta alkaen?
+// HUOM! Käännetty binääri/asennusohjelma setup.exe vaatinee nyt .NET Framework 4.6:n.
 //
 // KOODIA JÄRJESTELLÄÄN JA OPTIMOIDAAN VIELÄ, MUTTA TÄMÄN PITÄISI NYT TOIMIA AIKA HYVIN.
-// Tein ohjelmasta vastaavan version myös Javalla, mutta siitä puuttuu osa uusista ominaisuuksista (lista syötteistä ja menut).
+// Tein ohjelmasta vastaavan version myös Javalla, mutta siitä puuttunee osa ominaisuuksista (lista syötteistä ja menut).
 //
 // Kuva version 1.0.0.12 näytöstä on linkissä
 //   https://goo.gl/pSVZcU ( https://drive.google.com/open?id=1e4z34Rh2YOz5xC8G2fDOK4x9__r-qB5n )
@@ -187,30 +185,31 @@
 //            -Jotain pientä järjestelyä
 //            Ei muutoksia ohjelman toimintaan, joten ei julkaista uutta versiota.
 //            Vain versionro ja päivämäärä muuttuisivat.
+// 2.4.2018   -Lisää koodin siistimistä ja järjestelyä,
+//             mm. syötteen tarkastus omaan moduuliin Form1.Tarkistukset.cs
+//            -Tarkempia tarkastuksia, tarkempia virheilmoituksia.
 //
 // TODO:
-//            -Tarkista_vastustajanSelo() ym. rutiinit: parametreista pois "out".
-//             kuitenkin int.TryParse() käyttää out.
+//            -Tarkista_vastustajanSelo() ym. rutiinit: parametrit, pois "out"?
 //            -automaattinen testaus (Unit Test Project?), joka vaatinee hieman enemmän koodin muokkausta
 //            -syötteen tarkastukset omaan luokkaansa?
 //
 //
 
 using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 //using System.ComponentModel;
 //using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.Drawing; // Color
+//using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;  // Regex rx, rx.Replace
+using System.Windows.Forms; // MessageBox
 
 
 namespace Selolaskuri
 {
-    // lomakkeen käsittely, mm. syötteen tarkastus ja laskennan kutsuminen
+    // lomakkeen käsittely, syötteen tarkastuksen ja laskennan kutsuminen
 
     public partial class Form1 : Form
     {
@@ -219,6 +218,7 @@ namespace Selolaskuri
         // Uudella pelaajalla SELO 1525, pelimäärä 0
         // Nämä arvot kopioidaan käyttöön, jos valitaan "Käytä uutta SELOa jatkolaskennassa"
         // ilman, että on suoritettu laskentaa sitä ennen.
+
         seloPelaaja shakinpelaaja = new seloPelaaja(1525, 0);
 
         public Form1()
@@ -227,271 +227,7 @@ namespace Selolaskuri
         }
 
 
-        //  KENTTIEN TARKASTUKSET
-
-        // Nämä valintapainikkeet ovat omana ryhmänään paneelissa
-        // Käynnistyksessä valitaan oletukseksi vähintään 90 min.
-        // Magic numbers:   90, 60, 15, 5
-        private void tarkista_miettimisaika()
-        {
-            if (miettimisaika_vah90_Button.Checked)
-                shakinpelaaja.miettimisaika = vakiot.Miettimisaika_vah90min;  // oletuksena
-            else if (miettimisaika_60_89_Button.Checked)
-                shakinpelaaja.miettimisaika = vakiot.Miettimisaika_60_89min;
-            else if (miettimisaika_11_59_Button.Checked)
-                shakinpelaaja.miettimisaika = vakiot.Miettimisaika_11_59min;
-            else
-                shakinpelaaja.miettimisaika = vakiot.Miettimisaika_enint10min;
-        }
-
-        // Tarkista Oma SELO -kenttä, oltava numero ja rajojen sisällä
-        private bool tarkista_nykyinenselo(out int nykyinenSelo)
-        {
-            nykyinenSelo_input.Text = nykyinenSelo_input.Text.Trim();  // remove leading and trailing white spaces
-
-            // onko numero?
-            if (int.TryParse(nykyinenSelo_input.Text, out nykyinenSelo) == false) {
-                nykyinenSelo = vakiot.MIN_SELO - 1;  // -> virheilmoitus
-            }
-
-            // onko kelvollinen numero?
-            if (nykyinenSelo < vakiot.MIN_SELO || nykyinenSelo > vakiot.MAX_SELO) {
-                string message = String.Format("VIRHE: Nykyisen SELOn oltava numero {0}-{1}.", vakiot.MIN_SELO, vakiot.MAX_SELO);
-                nykyinenSelo_input.ForeColor = Color.Red;
-                MessageBox.Show(message);
-                nykyinenSelo_input.ForeColor = Color.Black;
-
-                if (nykyinenSelo_input.Text.Length > vakiot.MAX_PITUUS)
-                    nykyinenSelo_input.Text = "";  // tyhjennetään liian täysi kenttä
-                nykyinenSelo_input.Select();       // takaisin syöttämään
-                return false;
-            }
-            return true; // true = kenttä OK
-        }
-
-        //
-        // tarkista pelimäärä
-        // Saa olla tyhjä, mutta jos annettu, oltava numero, joka on 0-9999.
-        // Käytetään uuden pelaajan laskentakaavaa, jos pelimäärä on 0-10.
-        //
-        bool tarkista_pelimaara(out int pelimaara)
-        {
-            pelimaara_input.Text = pelimaara_input.Text.Trim();  // remove leading and trailing white spaces
-
-            if (string.IsNullOrWhiteSpace(pelimaara_input.Text)) {
-                pelimaara = vakiot.MIN_PELIMAARA - 1; // OK
-                return true;   // ei tarkisteta enempää
-            }
-
-            // onko numero?
-            if (int.TryParse(pelimaara_input.Text, out pelimaara) == false) {
-                pelimaara = vakiot.MIN_PELIMAARA - 1;   // -> virheilmoitus
-            }
-
-            // onko kelvollinen numero?
-            if (pelimaara < vakiot.MIN_PELIMAARA || pelimaara > vakiot.MAX_PELIMAARA) {
-                string message = String.Format("VIRHE: pelimäärän oltava numero 0-{0} tai tyhjä.", vakiot.MAX_PELIMAARA);
-                pelimaara_input.ForeColor = Color.Red;
-                MessageBox.Show(message);
-                pelimaara_input.ForeColor = Color.Black;
-
-                if (pelimaara_input.Text.Length > vakiot.MAX_PITUUS)
-                    pelimaara_input.Text = "";
-                pelimaara_input.Select();
-                return false;
-            }
-
-            return true; // true = kenttä OK
-        }
-
-        // Tarkista Vastustajan SELO -kenttä, oltava numero ja rajojen sisällä
-        //
-        // Syöte voi olla annettu kolmella eri formaatilla:
-        //  1)  1720   -> ja sitten tulos valintanapeilla
-        //  2)  +1624 -1700 =1685 +1400    jossa  '+' voitto, '=' tasapeli ja '-' tappio.
-        //                                 Tasapeli voidaan myös antaa ilman '='-merkkiä.
-        //  3)  2,5 1624 1700 1685 1400    Eli aloitetaan kokonaispistemäärällä.
-        //                                 SELOt ilman erillisiä tuloksia.
-        //
-        // Yhden ottelun tulos voidaan antaa kolmella tavalla:
-        //   1)  1720      ja tulos erikseen valintanapeilla, esim. 1/2 tasapeli
-        //   2)  =1720     tasapeli myös näin
-        //   3)  0.5 1720  tai näin
-        //
-
-        // XXX:   tarkista_vastustajanSelo() ON LIIAN PITKÄ. JAA OSIIN!
-        //
-        bool tarkista_vastustajanSelo(out int vastustajanSelo)
-        {
-            float syotetty_tulos = 0F;
-
-            vastustajanSelo_comboBox.Text = vastustajanSelo_comboBox.Text.Trim();  // remove leading and trailing white spaces
-
-            if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text)) {
-                vastustajanSelo = vakiot.MIN_SELO - 1;     // ei saa olla tyhjä -> virheilmoitus
-            }
-            else if (vastustajanSelo_comboBox.Text.Length == vakiot.SELO_PITUUS)  // numero 1000-2999
-            {
-                if (int.TryParse(vastustajanSelo_comboBox.Text, out vastustajanSelo) == false) {
-                    vastustajanSelo = vakiot.MIN_SELO - 1;  // ei ollut numero -> virheilmoitus
-                }
-            }
-            else {
-                // kentässä voidaan antaa alussa turnauksen tulos, esim. 0.5, 2.0, 2.5, 7.5 eli saadut pisteet
-                shakinpelaaja.set_syotetty_turnauksen_tulos(-1.0F);  // oletus: ei annettu
-
-                // poista sanojen väleistä ylimääräiset välilyönnit!
-                string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
-                string replacement = " ";   // tilalle vain yksi välilyönti
-                Regex rx = new Regex(pattern);
-                vastustajanSelo_comboBox.Text = rx.Replace(vastustajanSelo_comboBox.Text, replacement);
-
-                // Nyt voidaan jakaa syöte merkkijonoihin!
-                List<string> selo_lista = vastustajanSelo_comboBox.Text.Split(' ').ToList();
-                int selo1 = vakiot.MIN_SELO;
-                int tulos1 = 0;
-                bool ensimmainen = true;
-                bool turnauksen_tulos = false;
-
-                // Tutki vastustajanSelo_comboBox-kenttä
-                // Tallenna listaan selo_lista vastustajien SELO:t ja tulokset merkkijonona
-                foreach (string tulos in selo_lista) {
-                    if (ensimmainen) {
-                        // Tarkista, onko alussa annettu turnauksen lopputulos eli kokonaispistemäärä?
-                        ensimmainen = false;
-                        // Auttavatkohan nuo NumberStyles ja CultureInfo... testaa
-                        if (float.TryParse(tulos, System.Globalization.NumberStyles.Any,
-                            System.Globalization.CultureInfo.InvariantCulture, out syotetty_tulos) == true) {
-                            if (syotetty_tulos >= 0.0F && syotetty_tulos <= 99.5F) {
-                                turnauksen_tulos = true;
-                                shakinpelaaja.set_syotetty_turnauksen_tulos(syotetty_tulos);
-
-                                // alussa oli annettu turnauksen lopputulos, jatka SELOjen tarkistamista
-                                // Nyt selojen on oltava ilman tulosmerkintää!
-                                continue;
-                            }
-                        }
-                    }
-
-                    // merkkijono voi alkaa merkillä '+', '=' tai '-'
-                    // Mutta tasapeli voidaan antaa myös ilman '='-merkkiä
-                    // Jos oli annettu turnauksen tulos, niin selot on syötettävä näin ilman tulosta
-                    if (tulos.Length == vakiot.SELO_PITUUS)  // numero(4 merkkiä)
-                    {
-                        if (int.TryParse(tulos, out selo1) == false) {
-                            selo1 = vakiot.MIN_SELO - 1;  // -> virheilmoitus, ei ollut numero
-                            break;
-                        }
-                        tulos1 = 1;  // 1=tasapeli  HUOM! Jos tulos oli jo annettu, niin tätä ei huomioida laskuissa
-                        shakinpelaaja.lista_lisaa_ottelun_tulos(selo1, tulos1);
-                    }
-                    else if (tulos.Length == vakiot.MAX_PITUUS && turnauksen_tulos == false)  // tulos(1 merkki)+numero(4 merkkiä)
-                    {
-                        // Erillisten tulosten antaminen hyväksytään vain, jos turnauksen
-                        // lopputulosta ei oltu jo annettu
-                        switch (tulos[0])  // ensimmäinen merkki antaa tuloksen
-                        {
-                            case '+':   // voitto 1 piste, tallentetaan 2
-                                tulos1 = vakiot.VOITTOx2;
-                                break;
-                            case '=':   // tasapeli 1/2 pistettä, tallentaan 1
-                                tulos1 = vakiot.TASAPELIx2;
-                                break;
-                            case '-':   // tappio, tallennetaan 0
-                                tulos1 = vakiot.TAPPIOx2;
-                                break;
-                            default:
-                                selo1 = vakiot.MIN_SELO - 1;  // ei ollut oikea tulos!
-                                break;
-                        }
-                        if (selo1 >= vakiot.MIN_SELO)  // Vielä OK?  Selvitä sitten numero
-                        {
-                            // parse: ohita +=- eli aloita numerosta, oli esim. =1612
-                            if (int.TryParse(tulos.Substring(1), out selo1) == false) {
-                                selo1 = vakiot.MIN_SELO - 1;  // -> virheilmoitus, ei ollut numero
-                                break;
-                            }
-
-                            shakinpelaaja.lista_lisaa_ottelun_tulos(selo1, tulos1);
-                        }
-                    }
-                    else {
-                        // pituus ei ollut SELO_PITUUS (4 esim. 1234) eikä MAX_PITUUS (5 esim. +1234)
-                        selo1 = vakiot.MIN_SELO - 1; // -> virheellistä dataa
-                        break;
-                    }
-
-                    // DEBUG:           MessageBox.Show(tulos + " : " + selo1.ToString() + " " + tulos1.ToString());
-
-                    // Oliko asetettu virhe, mutta ei vielä poistuttu foreach-loopista?
-                    if (selo1 < vakiot.MIN_SELO)
-                        break;
-
-                } // foreach
-
-                if (turnauksen_tulos) {
-                    // Syötteen annettu turnauksen tulos ei saa olla suurempi kuin pelaajien lukumäärä
-                    // Vertailu kokonaislukuina, syötetty tulos 3.5 vs 4, vertailu 7 vs 8.
-                    if ((int)(2 * syotetty_tulos + 0.01F) > 2 * shakinpelaaja.get_vastustajien_lkm_listassa()) {
-                        selo1 = vakiot.MIN_SELO - 2;  // tästä oma virheilmoitus
-                    }
-                }
-
-                // vain virhetarkastusta varten
-                vastustajanSelo = selo1;
-            }
-
-            // VIRHEILMOITUKSET
-            if (vastustajanSelo < vakiot.MIN_SELO || vastustajanSelo > vakiot.MAX_SELO) {
-
-                string message;
-                if (vastustajanSelo == vakiot.MIN_SELO - 2)
-                    message =
-                        String.Format("VIRHE: Turnauksen pistemäärä (annettu {0}) voi olla enintään sama kuin vastustajien lukumäärä ({1}).",
-                        syotetty_tulos, shakinpelaaja.get_vastustajien_lkm_listassa());
-                else
-                    message =
-                        String.Format("VIRHE: Vastustajan SELOn oltava numero {0}-{1}.", vakiot.MIN_SELO, vakiot.MAX_SELO);
-
-                vastustajanSelo_comboBox.ForeColor = Color.Red;
-                MessageBox.Show(message);
-                vastustajanSelo_comboBox.ForeColor = Color.Black;
-
-                // Ei tyhjennetä kenttää, jotta sitä on helpompi korjata
-                //              if (vastustajanSelo_comboBox.Text.Length > MAX_PITUUS)
-                //                  vastustajanSelo_comboBox.Text = "";
-                // Kentästä on kuitenkin jo poistettu ylimääräiset välilyönnit
-                vastustajanSelo_comboBox.Select();
-                return false;
-            }
-
-            return true;
-        }
-
-        // Tarkista ottelun tulos -painikkeet ja tallenna niiden vaikutus
-        // pisteet: tappiosta 0, tasapelistä puoli ja voitosta yksi
-        //          tallentetaan kokonaisulukuna 0, 1 ja 2
-        bool tarkista_ottelun_tulos(out int pisteet)
-        {
-            if (tulosTappio_Button.Checked)
-                pisteet = vakiot.TAPPIOx2;
-            else if (tulosTasapeli_Button.Checked)
-                pisteet = vakiot.TASAPELIx2;
-            else if (tulosVoitto_Button.Checked)
-                pisteet = vakiot.VOITTOx2;
-            else {
-                MessageBox.Show("Ottelun tulosta ei annettu!");
-                tulosTappio_Button.Select();   // siirry ensimmäiseen valintanapeista
-
-                // Aseta joku arvo, jotta ei tule virheilmoitusta
-                //   "The out parameter must be assigned before control leaves the current method"
-                pisteet = 0;
-                return false;
-            }
-            return true;
-        }
-
-        // FUNKTIO: tarkistaInput
+        // tarkistaInput
         //
         // Tarkistaa
         //      -miettimisaika-valintanapit
@@ -514,27 +250,33 @@ namespace Selolaskuri
 
             // ************ TARKISTA SYÖTE ************
 
-
             // ENSIN TARKISTA MIETTIMISAIKA. Tässä ei voi olla virheellista tietoa.
             tarkista_miettimisaika();
 
             nykyinenSelo = 0; pelimaara = 0; vastustajanSelo = 0; pisteet = 0;  // alkuarvot
 
+            // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
             if (tarkista_nykyinenselo(out nykyinenSelo) == false)
                 return false;
-
             if (tarkista_pelimaara(out pelimaara) == false)
                 return false;
 
+            // TODO: Tässä mietittävää, kun on kaksi eri tallennustapaa
+            //    JOS YKSI OTTELU,   saadaan muuttujassa vastustajanSelo vastustajan vahvuusluku,
+            //                       ottelun tulosta ei voida tietää vielä
+            //    JOS MONTA OTTELUA, ottelut tallennetaan tuloksineen listaan, jossa tuloksetkin ovat mukana
+            //
             if (tarkista_vastustajanSelo(out vastustajanSelo) == false)
                 return false;
 
             // DEBUG:   MessageBox.Show("Syöte: " + nykyinenSelo + " " + pelimaara + " " + vastustajanSelo);
 
-            // jos ottelut ovat listassa, niin ottelutuloksen valintanapeilla ei ole merkitystä
-            if (shakinpelaaja.get_vastustajien_lkm_listassa() > 0)
+            // jos otteluita listalla, niin ottelutuloksen valintanapeilla ei ole merkitystä
+            if (shakinpelaaja.vastustajien_lukumaara_listalla > 0)
                 return true;
 
+            // Jos oli vain yksi ottelu, niin sen yhden vastustajan vahvuusluku on muuttujassa vastustajanSelo.
+            // Haetaan vielä ottelun tulos muuttujaan pisteet
             if (tarkista_ottelun_tulos(out pisteet) == false)
                 return false;
 
@@ -542,57 +284,58 @@ namespace Selolaskuri
         }
 
 
-        // FUNKTIO: suorita_laskenta()
-        //
-        // Laske tulokset
-        // Näytä tulokset
+
+        // Laske tulokset, yhden vastustajan ja useamman vastustajan tapaukset erillisiä
+        // Ensin tarkistetaan syöte ja jos kaikki OK, niin lasketaan.
         private bool suorita_laskenta()
         {
             int nykyinenSelo;
-            int pelimaara;
+            int nykyinenPelimaara;
             int vastustajanSelo;
-            int pisteet;
+            int ottelunTulos;
 
             // tyhjennä ottelulista!
-            shakinpelaaja.lista_tyhjenna();
+            shakinpelaaja.listan_alustus();
 
             // jos annettu yksi ottelu, niin vastustajan tiedot:
             //     vastustajanSelo ja pisteet
-            // jos annettu useampi ottelu, niin ottelut ovat listassa ja get_vastustajien_lkm_listassa > 0
-            if (tarkistaInput(out nykyinenSelo, out pelimaara, out vastustajanSelo, out pisteet) == false)
+            // jos annettu useampi ottelu, niin ottelut ovat listassa ja vastustajien_lukumaara_listalla > 0
+            // Lista on luokassa seloPelaaja (private ottelut_list).
+            if (tarkistaInput(out nykyinenSelo, out nykyinenPelimaara, out vastustajanSelo, out ottelunTulos) == false)
                 return false;
 
             // asettaa omat tiedot, nollaa tilastotiedot ym.
-            shakinpelaaja.aloita_laskenta(nykyinenSelo, pelimaara);
+            shakinpelaaja.aloita_laskenta(nykyinenSelo, nykyinenPelimaara);
 
-            //  *** LASKETAAN ***
+            //  *** NYT LASKETAAN ***
 
             // Lasketaanko yhtä ottelua vai turnausta?
-            if (shakinpelaaja.get_vastustajien_lkm_listassa() == 0) // tyhjä lista
-                shakinpelaaja.pelaa_ottelu(vastustajanSelo, pisteet); // pelaa yksi tietty ottelu
+            // Huom! Turnauksessakin voi olla vain yksi ottelu listalla.
+            if (shakinpelaaja.vastustajien_lukumaara_listalla == 0) // tyhjä lista?
+                shakinpelaaja.pelaa_ottelu(vastustajanSelo, ottelunTulos); // pelaa yksi tietty ottelu
             else
-                shakinpelaaja.pelaa_ottelu();       // pelaa kaikki (turnauksen) ottelut
+                shakinpelaaja.pelaa_ottelu();       // pelaa kaikki (turnauksen) ottelut listalta
 
             return true;
         }
 
         void nayta_tulokset()
         {
-            //  *** NÄYTÄ TULOKSIA ***
-
             // Laskettiinko yhtä ottelua vai turnausta?
-            if (shakinpelaaja.get_vastustajien_lkm_listassa() == 0) {
-                // tyhjä lista, joten yksi ottelu -> näytä uusi vahvuusluku, pelimäärä ym. tiedot
+            if (shakinpelaaja.vastustajien_lukumaara_listalla == 0) {
+                // tyhjä lista, joten yksi ottelu -> näytä tässä ensin odotustulos ja kerroin
                 seloEro_output.Text =
                     Math.Abs(shakinpelaaja.selo_alkuperainen - shakinpelaaja.viimeisin_vastustaja).ToString();
                 odotustulos_output.Text = (shakinpelaaja.odotustulos / 100F).ToString("0.00");
                 kerroin_output.Text = shakinpelaaja.kerroin.ToString();
                 vaihteluvali_output.Text = "";  // ei vaihteluväliä, koska vain yksi luku laskettu
-            }
-            else {
+
+            } else {
+
+                // Laskettiin turnauksena syötettyä vastustajien joukkoa (jossa tosin voi olla myös vain yksi ottelu)
                 // tyhjennä yksittäisen ottelun tuloskentät
                 seloEro_output.Text = "";
-                // odotustulos näytetään, jos ei ollut uuden pelaajan laskenta
+                // laskettu odotustulos näytetään, jos ei ollut uuden pelaajan laskenta
                 if (shakinpelaaja.pelimaara < 0 || shakinpelaaja.pelimaara > 10)
                     odotustulos_output.Text = (shakinpelaaja.odotustuloksien_summa / 100F).ToString("0.00");
                 else
@@ -609,12 +352,11 @@ namespace Selolaskuri
                 // Näytä laskennan aikainen vahvuusluvun vaihteluväli
                 // Jos oli annettu turnauksen tulos, niin laskenta tehdään yhdellä lauseella eikä vaihteluväliä ole
                 // Vaihteluväliä ei ole myöskään, jos oli laskettu yhden ottelun tulosta
-                // On vain, jos tulokset formaatissa "+1622 -1880 =1633"
+                // Vaihteluväli on vain, jos tulokset formaatissa "+1622 -1880 =1633"
                 if (shakinpelaaja.syotetty_turnauksen_tulos < 0 && shakinpelaaja.turnauksen_ottelumaara > 1) {
                     vaihteluvali_output.Text =
                         shakinpelaaja.min_selo.ToString() + " - " + shakinpelaaja.max_selo.ToString();
-                }
-                else
+                } else
                     vaihteluvali_output.Text = "";  // muutoin siis tyhjä
             }
 
@@ -633,23 +375,20 @@ namespace Selolaskuri
                 (shakinpelaaja.turnauksen_tulos / 2F).ToString("0.0") + " / " + shakinpelaaja.turnauksen_ottelumaara;
         }
 
-        // FUNKTIO: Laske_button_Click
-        // 
+
         // Suoritetaan laskenta -button
         private void Laske_button_Click(object sender, EventArgs e)
         {
             if (suorita_laskenta()) {
                 nayta_tulokset();
 
-                // 12.12.1027: Annettu teksti talteen -> Drop-down Combo box
+                // 12.12.1027: Annettu teksti talteen (jos ei ennestään ollut) -> Drop-down Combo box
                 if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                     vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
             }
         }
 
 
-        // FUNKTIO: Kayta_uutta_button_Click
-        //
         // Käytä uutta SELOa jatkolaskennassa -button
         //
         // Kopioi lasketun uuden selon ja mahdollisen pelimäärän käytettäväksi, jotta
@@ -669,7 +408,7 @@ namespace Selolaskuri
             }
 
             nykyinenSelo_input.Text = selo.ToString();
-            if (pelimaara > vakiot.MIN_PELIMAARA - 1) {
+            if (pelimaara > vakiot.VIRHE_PELIMAARA) {
                 // vain, jos pelimaara oli annettu (muutoin on jo valmiiksi tyhjä)
                 pelimaara_input.Text = pelimaara.ToString();
             }
@@ -677,10 +416,6 @@ namespace Selolaskuri
         }
 
 
-        // FUNKTIO: tulosTappio_Button_Enter
-        // FUNKTIO: tulosTasapeli_Button_Enter
-        // FUNKTIO: tulosVoitto_Button_Enter
-        //
         // Suorita laskenta aina kun siirrytään tulos-painikkeeseen.
         // Ennen laskentaa asetetaan nykyinen painike valituksi, koska sitä ei
         // muutoin vielä oltu valittu kenttään siirryttäessä.
@@ -698,7 +433,6 @@ namespace Selolaskuri
         private void tulosTasapeli_Button_Enter(object sender, EventArgs e)
         {
             tulosTasapeli_Button.Checked = true;
-            suorita_laskenta();
             if (suorita_laskenta())
                 nayta_tulokset();
         }
@@ -706,13 +440,10 @@ namespace Selolaskuri
         private void tulosVoitto_Button_Enter(object sender, EventArgs e)
         {
             tulosVoitto_Button.Checked = true;
-            suorita_laskenta();
             if (suorita_laskenta())
                 nayta_tulokset();
         }
 
-        // FUNKTIO: vastustajanSelo_combobox_KeyDown_KeyDown
-        //
         // Kun painettu Enter vastustajan SELO-kentässä, suoritetaan laskenta
         //
         private void vastustajanSelo_combobox_KeyDown(object sender, KeyEventArgs e)
@@ -741,8 +472,7 @@ namespace Selolaskuri
                 alkup = "PELO";
                 uusi = "SELO";
                 TuloksetPistemaaranKanssa_teksti.Font = new Font(TuloksetPistemaaranKanssa_teksti.Font, FontStyle.Regular);
-            }
-            else {
+            } else {
                 alkup = "SELO";
                 uusi = "PELO";
                 // korosta PELO-ohje

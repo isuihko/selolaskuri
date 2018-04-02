@@ -13,6 +13,11 @@ namespace Selolaskuri
     //
     // pelaa shakkiotteluita, joissa on vastustaja (selo) ja tulos (tappio, tasapeli tai voitto)
     //
+    // vastustajien_lukumaara_listalla = listan alkioiden lukumaara
+    //
+    // turnauksen_ottelumaara = turnauksen_vastustajien_lkm
+    //     = ottelujen lukumäärä, joka päivitetään laskennan edetessä
+    //
     public class seloPelaaja
     {
         //  XXX: NÄMÄ ON MUUTETTY -> PROPERTY
@@ -46,7 +51,6 @@ namespace Selolaskuri
         //private int syotetty_turnauksen_tulos;
 
 
-        // FUNKTIO: seloPelaaja (constructor)
         public seloPelaaja(int selo, int pelimaara)
         {
             this.selo = selo;
@@ -77,19 +81,16 @@ namespace Selolaskuri
         private IList<ottelu_table> ottelut_list = null;
 
 
-        // FUNKTIO: lista_lisaa_ottelun_tulos()
+        // Ottelutuloksen (vastustaja ja tulos) lisääminen listaan
         public void lista_lisaa_ottelun_tulos(int vastustajan_selo, int tulos)
         {
             ottelu_table ottelu = new ottelu_table(vastustajan_selo, tulos);
-
             ottelut_list.Add(ottelu);
         }
 
-        // FUNKTIO: lista_tyhjenna()
-        //
-        // Listan tyhjennys ennen vastustajan SELO -kentän tarkistusta
-        // jotta listaan voidaan tallentaa uudet ottelut
-        public void lista_tyhjenna()
+
+        // Listan tyhjennys, jotta siihen voidaan tallentaa ottelujen tiedot
+        public void listan_alustus()
         {
             // Luo lista tuloksia varten, jos puuttui.
             // Jos oli jo olemassa, niin tyhjennä!
@@ -103,9 +104,11 @@ namespace Selolaskuri
         //
         // Kun pelaajat on syötetty listaan, niin tämä on sama kuin turnauksen_vastustajien_lkm
         // Mutta yhden vastustajan tapauksessa tämä on nolla, koska ei ole käytetty listaa!
-        public int get_vastustajien_lkm_listassa()
+        public int vastustajien_lukumaara_listalla
         {
-            return ottelut_list.Count;   // Myös: onko lista olemassa
+            get {
+                return ottelut_list.Count;
+            }
         }
 
 
@@ -116,8 +119,9 @@ namespace Selolaskuri
         {
             this.selo = selo;
             this.pelimaara = pelimaara;
-            selo_alkuperainen = selo;  // tästä aloitettiin!  XXX: jos selo päivittyy, niin?
-            // vaihteluvälin alustus
+            selo_alkuperainen = selo;  // tästä aloitettiin!
+            
+            // vaihteluvälin alustus näin, jotta min ja max toimisivat
             min_selo = vakiot.MAX_SELO;
             max_selo = vakiot.MIN_SELO;
 
@@ -256,7 +260,7 @@ namespace Selolaskuri
 
             // DEBUG:   MessageBox.Show("Odotus " + odotustulos + " kerroin " + kerroin + " selo " + selo + " pelim " + pelimaara + " vastus " + vastustajan_selo);
 
-            if (pelimaara >= 0 && pelimaara <= 10) {
+            if (pelimaara >= vakiot.MIN_PELIMAARA && pelimaara <= vakiot.MAX_UUSI_PELAAJA) {
                 // Uuden pelaajan SELO, kun pelimäärä 0-10
                 // Jos pelimäärä on 0, niin nykyinenSelo-kentän arvolla ei ole merkitystä
                 // XXX: tarvitseeko pyöristää jakolaskun jälkeen? (+0,5F)
@@ -268,7 +272,7 @@ namespace Selolaskuri
                 uusi_selo = (int)Math.Round((selo + kerroin * lisakerroin * ((tulos / 2F) - (odotustulos / 100F)) + 0.1F));
             }
 
-            if (pelimaara >= 0)
+            if (pelimaara >= vakiot.MIN_PELIMAARA)
                 uusi_pelimaara = pelimaara + 1;
 
             // laskenta etenee!
@@ -299,7 +303,7 @@ namespace Selolaskuri
                 selo = pelaa_ottelu(ottelu1.vastustajan_selo, ottelu1.ottelun_tulos);
 
                 // päivitä pelimäärää, jos oli annettu
-                if (pelimaara != vakiot.MIN_PELIMAARA - 1)
+                if (pelimaara != vakiot.PELIMAARA_TYHJA)
                     pelimaara++;
             }
 

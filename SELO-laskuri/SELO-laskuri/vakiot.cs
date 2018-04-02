@@ -14,6 +14,14 @@ namespace Selolaskuri
         public const int MAX_SELO = 2999;
         public const int MIN_PELIMAARA = 0;
         public const int MAX_PELIMAARA = 9999;
+        public const int MAX_UUSI_PELAAJA = 10;
+
+        // syötteen tarkastuksessa käytetyt statukset, eivät ole syötteiden arvoarvoalueella
+        public const int VIRHE_SELO      = -1;
+        public const int VIRHE_PELIMAARA = -2;
+        public const int VIRHE_TULOS     = -3;
+        public const int VIRHE_YKSITTAINEN_TULOS = -4;
+        public const int PELIMAARA_TYHJA = -1;
 
         // input-kentän syötteen maksimipituus. Tarkistetaan virhetilanteissa
         // ja jos merkkejä yli tuon, niin tyhjennetään kenttä

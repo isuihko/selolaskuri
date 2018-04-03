@@ -307,9 +307,12 @@ namespace Selolaskuri
                     pelimaara++;
             }
 
-
             // Pikashakin laskentakaavaan mennään täällä eli sitä käytetään vain
             // jos ottelun pisteet on annettu ensimmäisenä
+            //
+            // XXX: tämä ei toimi uuden pelaajan selon laskennassa, vaan siinä ottelun tulos
+            //      olisi annettava aina kunkin pelaajan kohdalla
+            // XXX: Eli laskentakaava ei toimi uudella pelaajalla.
             if (syotetty_turnauksen_tulos >= 0) {
                 // DEBUG         MessageBox.Show("laske turnauksen tulos: " + syotetty_turnauksen_tulos + "selo/alkup " + selo + "/" + selo_alkuperainen);
 
@@ -342,6 +345,8 @@ namespace Selolaskuri
                 else {
                     //
                     // pidemmän miettimisajan pelit eli > 10 min
+                    //
+                    // XXX: laskentakaava ei toimi uudella pelaajalla
                     //
                     float lisakerroin = maarita_lisakerroin();
                     // myös 0.5F pyöristystä varten

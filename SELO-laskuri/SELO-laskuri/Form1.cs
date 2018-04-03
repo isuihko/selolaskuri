@@ -1,7 +1,7 @@
 ﻿//
 // Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 2.4.2018 Ismo Suihko 1.0.0.16
+// 3.4.2018 Ismo Suihko 1.0.0.18
 //
 // Aiempi versio 7.1.2018 1.0.0.12, johon verrattuna tässä ei ole ulkoisia muutoksia muuta kuin päivämäärä.
 //
@@ -65,12 +65,14 @@
 //                  turnauksen tulos
 //                  SELOn vaihteluväli, jos annettu useampi SELO tuloksineen +1622 -1880 =1633
 //
-// TODO:
+// TODO: (TODO.1)
 //      -Onko muuttujien ja aliohjelmien nimeäminen ym. C#-käytännön mukaista?
 //       Tämä on nyt tehty ilman erityisiä ohjeita. Tullaan tarkistamaan!
 //
 //      -Tarkista luokkien ja objektiläheisen ohjelmoinnin käyttö, onko parantamista?
 //         ... voi ollakin, koska tämä on ensimmäinen oikea C#-ohjelmani
+//
+//      -Tietoja on tuplana eri luokissa. Tutki ja korjaa.
 //
 //      -Syötekenttien merkkimäärän rajoittaminen niin ettei voi laittaa satoja merkkejä
 //      -Tarkista laskentakaavat vielä, esim. tarvitaanko pyöristää (+0.5) ennen kokonaisluvuksi muuttamista.
@@ -190,10 +192,17 @@
 //            -Tarkempia tarkastuksia, tarkempia virheilmoituksia.
 //  Publish --> Versio 1.0.0.16, myös github
 //
-// TODO:
-//            -Tarkista_vastustajanSelo() ym. rutiinit: parametrit, pois "out"?
-//            -automaattinen testaus (Unit Test Project?), joka vaatinee hieman enemmän koodin muokkausta
-//            -syötteen tarkastukset omaan luokkaansa?
+// 3.4.2018   -"out"-parametrien käyttö pois syötetietojen tarkastuksista. Tuloksien
+//              välittämisessä käytetään luokkaa, jossa on int-kentät mm. selo, pelimäärä.
+//  Publish --> Versio 1.0.0.18, myös github
+//
+// TODO: (TODO.2)
+//          -automaattinen testaus (Unit Test Project?), joka vaatinee hieman enemmän koodin muokkausta
+//          -syötteen tarkastukset omaan luokkaansa?
+//          -lisää koodi siistimistä
+//          -poista tietojen tallentaminen tuplana (samoja tietoja on luokissa seloPelaaja ja tässä Form1:ssä).
+//          -uuden pelaajan laskentakaava käyttöön myös, jos on annettu turnauksen tulos ja
+//           sitten vastustajien selot (esim. 1.5 1722 1581 1608)
 //
 //
 
@@ -222,6 +231,27 @@ namespace Selolaskuri
 
         seloPelaaja shakinpelaaja = new seloPelaaja(1525, 0);
 
+        // Tietorakenne syötetiedoille
+        //
+        // XXX: Muuten OK, mutta entä jos on syötetty useita vastustajia,
+        // XXX: niin ne ovat tiedossa tuloksineen vain seloPelaaja-luokassa.
+        // XXX: Ja nämä tiedot ovat kaikki seloPelaaja-luokassa. Toistoa.
+        private class Syotetiedot
+        {
+            public int nykyinenSelo;
+            public int nykyinenPelimaara;
+            public int vastustajanSelo;
+            public int ottelunTulos;
+
+            public Syotetiedot()
+            {
+                nykyinenSelo = 0;
+                nykyinenPelimaara = 0;
+                vastustajanSelo = 0;
+                ottelunTulos = 0;
+            }
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -246,54 +276,58 @@ namespace Selolaskuri
         //    Jos jokin syötekenttä on virheellinen, annetaan virheilmoitus, siirrytään ko kenttään ja keskeytetään.
         //    Kenttiä tarkistetaan yo. järjestyksessä ja vain ensimmäisestä virheestä annetaan virheilmoitus.
         //
-        private bool tarkistaInput(out int nykyinenSelo, out int pelimaara, out int vastustajanSelo, out int pisteet)
+        //    Virhetarkastukset ja -käsittelyt (ilmoitusikkuna) ovat kutsuttavissa rutiineissa.
+        //
+        private bool tarkistaInput(Syotetiedot syotteet)
         {
+            bool status = false;
 
             // ************ TARKISTA SYÖTE ************
 
             // ENSIN TARKISTA MIETTIMISAIKA. Tässä ei voi olla virheellista tietoa.
             tarkista_miettimisaika();
 
-            nykyinenSelo = 0; pelimaara = 0; vastustajanSelo = 0; pisteet = 0;  // alkuarvot
+            do {
+                // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
+                if ((syotteet.nykyinenSelo = tarkista_nykyinenselo()) == vakiot.VIRHE_SELO)
+                    break;
+                if ((syotteet.nykyinenPelimaara = tarkista_pelimaara()) == vakiot.VIRHE_PELIMAARA)
+                    break;
 
-            // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
-            if (tarkista_nykyinenselo(out nykyinenSelo) == false)
-                return false;
-            if (tarkista_pelimaara(out pelimaara) == false)
-                return false;
+                // TODO: Tässä mietittävää, kun on kaksi eri tallennustapaa
+                //    JOS YKSI OTTELU,   saadaan muuttujassa vastustajanSelo vastustajan vahvuusluku,
+                //                       ottelun tulosta ei voida tietää vielä
+                //    JOS MONTA OTTELUA, ottelut tallennetaan tuloksineen listaan, jossa tuloksetkin ovat mukana
+                //
+                if ((syotteet.vastustajanSelo = tarkista_vastustajanSelo()) == vakiot.VIRHE_SELO)
+                    break;
 
-            // TODO: Tässä mietittävää, kun on kaksi eri tallennustapaa
-            //    JOS YKSI OTTELU,   saadaan muuttujassa vastustajanSelo vastustajan vahvuusluku,
-            //                       ottelun tulosta ei voida tietää vielä
-            //    JOS MONTA OTTELUA, ottelut tallennetaan tuloksineen listaan, jossa tuloksetkin ovat mukana
-            //
-            if (tarkista_vastustajanSelo(out vastustajanSelo) == false)
-                return false;
+                // DEBUG:   MessageBox.Show("Syöte: " + nykyinenSelo + " " + pelimaara + " " + vastustajanSelo);
 
-            // DEBUG:   MessageBox.Show("Syöte: " + nykyinenSelo + " " + pelimaara + " " + vastustajanSelo);
+                // jos otteluita listalla, niin ottelutuloksen valintanapeilla ei ole merkitystä
+                if (shakinpelaaja.vastustajien_lukumaara_listalla > 0) {
+                    status = true;
+                    break;
+                }
 
-            // jos otteluita listalla, niin ottelutuloksen valintanapeilla ei ole merkitystä
-            if (shakinpelaaja.vastustajien_lukumaara_listalla > 0)
-                return true;
+                // Jos oli vain yksi ottelu, niin sen yhden vastustajan vahvuusluku on muuttujassa vastustajanSelo.
+                // Haetaan vielä ottelun tulos muuttujaan pisteet
+                if ((syotteet.ottelunTulos = tarkista_ottelun_tulos()) == vakiot.VIRHE_TULOS)
+                    break;
 
-            // Jos oli vain yksi ottelu, niin sen yhden vastustajan vahvuusluku on muuttujassa vastustajanSelo.
-            // Haetaan vielä ottelun tulos muuttujaan pisteet
-            if (tarkista_ottelun_tulos(out pisteet) == false)
-                return false;
+                status = true; // kaikki OK
 
-            return true;
+            } while (false);
+
+            return status;
         }
-
 
 
         // Laske tulokset, yhden vastustajan ja useamman vastustajan tapaukset erillisiä
         // Ensin tarkistetaan syöte ja jos kaikki OK, niin lasketaan.
         private bool suorita_laskenta()
         {
-            int nykyinenSelo;
-            int nykyinenPelimaara;
-            int vastustajanSelo;
-            int ottelunTulos;
+            Syotetiedot syotteet = new Syotetiedot(); // tiedot nollataan
 
             // tyhjennä ottelulista!
             shakinpelaaja.listan_alustus();
@@ -302,18 +336,18 @@ namespace Selolaskuri
             //     vastustajanSelo ja pisteet
             // jos annettu useampi ottelu, niin ottelut ovat listassa ja vastustajien_lukumaara_listalla > 0
             // Lista on luokassa seloPelaaja (private ottelut_list).
-            if (tarkistaInput(out nykyinenSelo, out nykyinenPelimaara, out vastustajanSelo, out ottelunTulos) == false)
+            if (tarkistaInput(syotteet) == false)
                 return false;
 
-            // asettaa omat tiedot, nollaa tilastotiedot ym.
-            shakinpelaaja.aloita_laskenta(nykyinenSelo, nykyinenPelimaara);
+            // asettaa omat tiedot (selo ja pelimäärä) seloPelaaja-luokkaan, nollaa tilastotiedot ym.
+            shakinpelaaja.aloita_laskenta(syotteet.nykyinenSelo, syotteet.nykyinenPelimaara);
 
             //  *** NYT LASKETAAN ***
 
             // Lasketaanko yhtä ottelua vai turnausta?
             // Huom! Turnauksessakin voi olla vain yksi ottelu listalla.
             if (shakinpelaaja.vastustajien_lukumaara_listalla == 0) // tyhjä lista?
-                shakinpelaaja.pelaa_ottelu(vastustajanSelo, ottelunTulos); // pelaa yksi tietty ottelu
+                shakinpelaaja.pelaa_ottelu(syotteet.vastustajanSelo, syotteet.ottelunTulos); // pelaa yksi tietty ottelu
             else
                 shakinpelaaja.pelaa_ottelu();       // pelaa kaikki (turnauksen) ottelut listalta
 
@@ -560,7 +594,6 @@ namespace Selolaskuri
                 e.Cancel = true; // Ei poistutakaan
             }
         }
-
     }
 
 } // END Form1.cs

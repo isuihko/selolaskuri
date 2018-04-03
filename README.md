@@ -2,13 +2,13 @@
 Shakin vahvuusluvun laskenta
 
 
-2.4.2018 (edelliset isommat muutokset 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
+1.-3.4.2018 (edelliset isommat muutokset 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-Muutokset: Koodin järjestämistä. Ei eroa toiminnassa verrattuna 7.1.2018 versioon muutoin kuin, että tulostuu uudempi versionumero ja päivämäärä. Ja virhetilanteissa (virheellinen syöte) voi tulostua tarkempi virheilmoitus.
+Muutokset 1.-3.4.: Koodin järjestämistä. Ei eroa toiminnassa verrattuna 7.1.2018 versioon muutoin kuin, että tulostuu uudempi versionumero ja päivämäärä. Ja virhetilanteissa (virheellinen syöte) on tarkempia tarkastuksia ja voi tulostua tarkempi virheilmoitus.
 
 --
 
-Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
+Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja. Aion tehdä Java-versioon myös nämä samat koodin siistimiset ja optimoinnit, joita olen tehnyt nyt 1.-3.4.2018.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -86,12 +86,10 @@ Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatii .NET Fram
 Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO:
-- Koodin jako moduuleihin/tiedostohin/luokkiin ei ehkä ole oikea ja paras mahdollinen, tarkista!
-- properties (aloitettu, mutta vielä lisää)
-- out pois muutaman aliohjelman parametreista, turha
+- Koodin jako moduuleihin/tiedostohin/luokkiin ei ole paras mahdollinen, tarkista!
 - lisää valmiiden kirjastojen käyttöä
-- optimointia (jo tehty 1.4. ja 2.4., mutta vielä lisää)
-- jaa yksi pitkä aliohjelma pienempiin osiin (vastustajien vahvuuslukukentän käsittely)
+- koodin optimointia ja siistimistä (jo tehty 1.-3.4., mutta vielä lisää)
+- jaa eräs pitkä aliohjelma pienempiin osiin (vastustajien vahvuuslukukentän käsittely)
 - lisälaskentaa
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - automaattinen testaus, vaatii ehkä muutoksia koodiinkin ennen kuin testausrutiineja voi kirjoittaa

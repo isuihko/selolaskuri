@@ -2,15 +2,21 @@
 Shakin vahvuusluvun laskenta
 
 
-1.-6.4.2018 (edelliset isommat muutokset 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
+1.-7.4.2018 (edelliset isommat muutokset 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-Muutokset 1.-6.4.: Koodin järjestämistä, luokkien jako moduuleihin. Ei eroa toiminnassa verrattuna 7.1.2018 versioon muutoin kuin, että tulostuu uudempi versionumero ja päivämäärä. Ja virhetilanteissa (virheellinen syöte) on tarkempia tarkastuksia ja voi tulostua tarkempi virheilmoitus.
+Muutokset 1.-7.4.: Hyvin paljon koodin järjestämistä, uusia luokkia ja moduuleja!
+Silti ei eroa toiminnassa verrattuna 7.1.2018 versioon muutoin kuin, että tulostuu uudempi versionumero ja päivämäärä. Ja virhetilanteissa (jos virheellinen syöte) on tarkempia tarkastuksia ja voi tulostua tarkempi virheilmoitus. Mutta sisäisesti ohjelma on muuttunut hyvin paljon. Nyt osaa uuden pelaajan vahvuusluvun laskennan useammasta eri formaatista.
+
+--
 
 TODO: Vielä pitää miettiä luokkajakoa ja tietojen välittämistä, jotta myös voidaan tehdä automaattista testausta.
 
 --
 
-Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja. Aion tehdä Java-versioon myös nämä samat koodin siistimiset ja optimoinnit, joita olen tehnyt nyt 1.-6.4.2018 sekä jatkossa tekemäni muutokset.
+Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
+Aion tehdä Java-versioon myös nämä samat koodin siistimiset ja optimoinnit, joita olen tehnyt nyt 1.-7.4.2018.
+
+--
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -32,6 +38,7 @@ Syötekenttiä:
  - a) yhden vastustajan vahvuusluku, esim. 1720
  - b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
  - c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
+ 
 * yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa.
 
 Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
@@ -88,9 +95,7 @@ Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatinee ainakin
 Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO:
-- Koodin jako moduuleihin/tiedostohin/luokkiin ei ole paras mahdollinen, tarkista!
-- lisää valmiiden kirjastojen käyttöä
-- koodin optimointia ja siistimistä (jo tehty 1.-6.4., mutta vielä lisää)
+- koodin optimointia ja siistimistä (jo tehty hyvin paljon 1.-7.4., mutta vielä lisääkin voi tehdä)
 - lisälaskentaa
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
-- automaattinen testaus, vaatii ehkä muutoksia koodiinkin ennen kuin testausrutiineja voi kirjoittaa
+- automaattinen testaus, joka vaatii muutoksia koodiinkin ennen kuin testausrutiineja voidaan kirjoittaa

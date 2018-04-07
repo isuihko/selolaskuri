@@ -14,21 +14,23 @@ namespace Selolaskuri
     //
     public class Syotetiedot
     {
+        public Vakiot.Miettimisaika_enum miettimisaika;
+
         public int nykyinenSelo;
         public int nykyinenPelimaara;
-        public int vastustajanSelo;
-        public int ottelunTulos;
-        public int miettimisaika;
 
-        public string vastustajienSelot_str;
+        public int vastustajanSelo;
+        public Vakiot.OttelunTulos_enum ottelunTulos;
+        
+        public string vastustajienSelot_str;  // vastustajan/vastustajien tiedot ja tulokset
 
         public Syotetiedot()
         {
+            miettimisaika = 0;
             nykyinenSelo = 0;
             nykyinenPelimaara = 0;
             vastustajanSelo = 0;
-            ottelunTulos = 0;
-            miettimisaika = 0;
+            ottelunTulos = Vakiot.OttelunTulos_enum.MAARITTELEMATON;
             vastustajienSelot_str = null;
         }
     }

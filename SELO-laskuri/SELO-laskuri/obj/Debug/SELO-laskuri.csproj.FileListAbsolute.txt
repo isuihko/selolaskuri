@@ -1,4 +1,3 @@
-c:\users\ismo\documents\visual studio 2015\Projects\SELO-laskuri\SELO-laskuri\obj\Debug\SELO-laskuri.csprojResolveAssemblyReference.cache
 c:\users\ismo\documents\visual studio 2015\Projects\SELO-laskuri\SELO-laskuri\obj\Debug\SELO-laskuri.csproj.GenerateResource.Cache
 C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\bin\Debug\Selolaskuri.exe.config
 C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\bin\Debug\Selolaskuri.exe.manifest

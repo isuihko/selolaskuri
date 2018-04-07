@@ -14,7 +14,7 @@ namespace Selolaskuri
     {
         public struct Ottelu
         {
-            public Ottelu(int selo, int tulos)  // tallentaa
+            public Ottelu(int selo, Vakiot.OttelunTulos_enum tulos)  // tallentaa
             {
                 vastustajanSelo = selo;
                 ottelunTulos    = tulos;
@@ -22,39 +22,39 @@ namespace Selolaskuri
             }
 
             public int vastustajanSelo { get; }
-            public int ottelunTulos    { get; }
+            public Vakiot.OttelunTulos_enum ottelunTulos { get; }
             //private bool ensimmainen;
         }
 
         // Lista vastustajien tiedoille ja ottelutuloksille
-        public IList<Ottelu> ottelulista = new List<Ottelu>();
+        public IList<Ottelu> tallennetutOttelut = new List<Ottelu>();
 
         // Listan tyhjennys ennen kuin siihen tallennetaan uusia otteluita
         public void Tyhjenna()
         {
-            ottelulista.Clear();
+            tallennetutOttelut.Clear();
         }
 
         // Ottelutuloksen (vastustaja ja tulos) lisääminen listaan
-        public void LisaaOttelunTulos(int vastustajanSelo, int ottelunTulos)
+        public void LisaaOttelunTulos(int vastustajanSelo, Vakiot.OttelunTulos_enum ottelunTulos)
         {
             Ottelu ottelu = new Ottelu(vastustajanSelo, ottelunTulos);
-            ottelulista.Add(ottelu);
+            tallennetutOttelut.Add(ottelu);
+            ///*DEBUG*/
+            //System.Windows.Forms.MessageBox.Show("Lisää vastustaja " + vastustajanSelo + " tulos " + ottelunTulos + " otteluita " + vastustajienLukumaara);
         }
 
         public IEnumerator GetEnumerator()
         {
-            return ((IEnumerable)ottelulista).GetEnumerator();
+            return ((IEnumerable)tallennetutOttelut).GetEnumerator();
         }
 
-
-        // FUNKTIO: get_vastustajien_lkm_listassa()
         //
         // Kun pelaajat on syötetty listaan, niin tämä on sama kuin turnauksen_vastustajien_lkm
         // Mutta yhden vastustajan tapauksessa tämä on nolla, koska ei ole käytetty listaa!
         public int vastustajienLukumaara {
             get {
-                return ottelulista.Count;
+                return tallennetutOttelut.Count;
             }
         }
     }

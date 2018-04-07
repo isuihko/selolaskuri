@@ -29,41 +29,41 @@
         private void InitializeComponent()
         {
             this.OmaVahvuusluku_teksti = new System.Windows.Forms.Label();
-            this.nykyinenSelo_input = new System.Windows.Forms.TextBox();
+            this.nykyinenSelo_in = new System.Windows.Forms.TextBox();
             this.Pelimäärä = new System.Windows.Forms.Label();
-            this.pelimaara_input = new System.Windows.Forms.TextBox();
+            this.pelimaara_in = new System.Windows.Forms.TextBox();
             this.VastustajanVahvuusluku_teksti = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.Laske_button = new System.Windows.Forms.Button();
             this.UusiSELO_teksti = new System.Windows.Forms.Label();
-            this.uusiSelo_output = new System.Windows.Forms.TextBox();
+            this.uusiSelo_out = new System.Windows.Forms.TextBox();
             this.Kayta_uutta_button = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.odotustulos_output = new System.Windows.Forms.TextBox();
+            this.odotustulos_out = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.kerroin_output = new System.Windows.Forms.TextBox();
+            this.kerroin_out = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.uusi_pelimaara_output = new System.Windows.Forms.TextBox();
+            this.uusiPelimaara_out = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.seloEro_output = new System.Windows.Forms.TextBox();
+            this.pisteEro_out = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.keskivahvuus_output = new System.Windows.Forms.TextBox();
-            this.tulos_output = new System.Windows.Forms.TextBox();
+            this.keskivahvuus_out = new System.Windows.Forms.TextBox();
+            this.turnauksenTulos_out = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.uusiSelo_diff_output = new System.Windows.Forms.TextBox();
+            this.selomuutos_out = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.miettimisaika_vah90_Button = new System.Windows.Forms.RadioButton();
-            this.miettimisaika_60_89_Button = new System.Windows.Forms.RadioButton();
-            this.miettimisaika_11_59_Button = new System.Windows.Forms.RadioButton();
+            this.miettimisaika_vah90_btn = new System.Windows.Forms.RadioButton();
+            this.miettimisaika_60_89_btn = new System.Windows.Forms.RadioButton();
+            this.miettimisaika_11_59_btn = new System.Windows.Forms.RadioButton();
             this.miettimisaika_enint10_Button = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tulosVoitto_Button = new System.Windows.Forms.RadioButton();
-            this.tulosTasapeli_Button = new System.Windows.Forms.RadioButton();
-            this.tulosTappio_Button = new System.Windows.Forms.RadioButton();
-            this.vaihteluvali_output = new System.Windows.Forms.TextBox();
+            this.tulosVoitto_btn = new System.Windows.Forms.RadioButton();
+            this.tulosTasapeli_btn = new System.Windows.Forms.RadioButton();
+            this.tulosTappio_btn = new System.Windows.Forms.RadioButton();
+            this.vaihteluvali_out = new System.Windows.Forms.TextBox();
             this.TuloksetPistemaaranKanssa_teksti = new System.Windows.Forms.Label();
             this.vastustajanSelo_comboBox = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -86,12 +86,12 @@
             this.OmaVahvuusluku_teksti.TabIndex = 52;
             this.OmaVahvuusluku_teksti.Text = "Oma SELO (1000-2999)";
             // 
-            // nykyinenSelo_input
+            // nykyinenSelo_in
             // 
-            this.nykyinenSelo_input.Location = new System.Drawing.Point(14, 118);
-            this.nykyinenSelo_input.Name = "nykyinenSelo_input";
-            this.nykyinenSelo_input.Size = new System.Drawing.Size(46, 20);
-            this.nykyinenSelo_input.TabIndex = 1;
+            this.nykyinenSelo_in.Location = new System.Drawing.Point(14, 118);
+            this.nykyinenSelo_in.Name = "nykyinenSelo_in";
+            this.nykyinenSelo_in.Size = new System.Drawing.Size(46, 20);
+            this.nykyinenSelo_in.TabIndex = 1;
             // 
             // Pelimäärä
             // 
@@ -102,12 +102,12 @@
             this.Pelimäärä.TabIndex = 53;
             this.Pelimäärä.Text = "Oma pelimäärä (tyhjä tai jos uusi pelaaja: 0-10)";
             // 
-            // pelimaara_input
+            // pelimaara_in
             // 
-            this.pelimaara_input.Location = new System.Drawing.Point(148, 118);
-            this.pelimaara_input.Name = "pelimaara_input";
-            this.pelimaara_input.Size = new System.Drawing.Size(46, 20);
-            this.pelimaara_input.TabIndex = 2;
+            this.pelimaara_in.Location = new System.Drawing.Point(148, 118);
+            this.pelimaara_in.Name = "pelimaara_in";
+            this.pelimaara_in.Size = new System.Drawing.Size(46, 20);
+            this.pelimaara_in.TabIndex = 2;
             // 
             // VastustajanVahvuusluku_teksti
             // 
@@ -148,15 +148,15 @@
             this.UusiSELO_teksti.TabIndex = 60;
             this.UusiSELO_teksti.Text = "Uusi SELO";
             // 
-            // uusiSelo_output
+            // uusiSelo_out
             // 
-            this.uusiSelo_output.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uusiSelo_output.Location = new System.Drawing.Point(163, 363);
-            this.uusiSelo_output.Name = "uusiSelo_output";
-            this.uusiSelo_output.ReadOnly = true;
-            this.uusiSelo_output.Size = new System.Drawing.Size(56, 29);
-            this.uusiSelo_output.TabIndex = 12;
-            this.uusiSelo_output.TabStop = false;
+            this.uusiSelo_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uusiSelo_out.Location = new System.Drawing.Point(163, 363);
+            this.uusiSelo_out.Name = "uusiSelo_out";
+            this.uusiSelo_out.ReadOnly = true;
+            this.uusiSelo_out.Size = new System.Drawing.Size(56, 29);
+            this.uusiSelo_out.TabIndex = 12;
+            this.uusiSelo_out.TabStop = false;
             // 
             // Kayta_uutta_button
             // 
@@ -186,7 +186,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(217, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 5.4.2018 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 7.4.2018 Ismo Suihko github/isuihko";
             // 
             // label7
             // 
@@ -197,14 +197,14 @@
             this.label7.TabIndex = 58;
             this.label7.Text = "Odotustulos";
             // 
-            // odotustulos_output
+            // odotustulos_out
             // 
-            this.odotustulos_output.Location = new System.Drawing.Point(308, 422);
-            this.odotustulos_output.Name = "odotustulos_output";
-            this.odotustulos_output.ReadOnly = true;
-            this.odotustulos_output.Size = new System.Drawing.Size(46, 20);
-            this.odotustulos_output.TabIndex = 17;
-            this.odotustulos_output.TabStop = false;
+            this.odotustulos_out.Location = new System.Drawing.Point(308, 422);
+            this.odotustulos_out.Name = "odotustulos_out";
+            this.odotustulos_out.ReadOnly = true;
+            this.odotustulos_out.Size = new System.Drawing.Size(46, 20);
+            this.odotustulos_out.TabIndex = 17;
+            this.odotustulos_out.TabStop = false;
             // 
             // label8
             // 
@@ -215,14 +215,14 @@
             this.label8.TabIndex = 59;
             this.label8.Text = "Kerroin";
             // 
-            // kerroin_output
+            // kerroin_out
             // 
-            this.kerroin_output.Location = new System.Drawing.Point(308, 441);
-            this.kerroin_output.Name = "kerroin_output";
-            this.kerroin_output.ReadOnly = true;
-            this.kerroin_output.Size = new System.Drawing.Size(46, 20);
-            this.kerroin_output.TabIndex = 19;
-            this.kerroin_output.TabStop = false;
+            this.kerroin_out.Location = new System.Drawing.Point(308, 441);
+            this.kerroin_out.Name = "kerroin_out";
+            this.kerroin_out.ReadOnly = true;
+            this.kerroin_out.Size = new System.Drawing.Size(46, 20);
+            this.kerroin_out.TabIndex = 19;
+            this.kerroin_out.TabStop = false;
             // 
             // label9
             // 
@@ -233,14 +233,14 @@
             this.label9.TabIndex = 61;
             this.label9.Text = "Uusi pelimäärä";
             // 
-            // uusi_pelimaara_output
+            // uusiPelimaara_out
             // 
-            this.uusi_pelimaara_output.Location = new System.Drawing.Point(163, 398);
-            this.uusi_pelimaara_output.Name = "uusi_pelimaara_output";
-            this.uusi_pelimaara_output.ReadOnly = true;
-            this.uusi_pelimaara_output.Size = new System.Drawing.Size(56, 20);
-            this.uusi_pelimaara_output.TabIndex = 21;
-            this.uusi_pelimaara_output.TabStop = false;
+            this.uusiPelimaara_out.Location = new System.Drawing.Point(163, 398);
+            this.uusiPelimaara_out.Name = "uusiPelimaara_out";
+            this.uusiPelimaara_out.ReadOnly = true;
+            this.uusiPelimaara_out.Size = new System.Drawing.Size(56, 20);
+            this.uusiPelimaara_out.TabIndex = 21;
+            this.uusiPelimaara_out.TabStop = false;
             // 
             // label10
             // 
@@ -251,14 +251,14 @@
             this.label10.TabIndex = 57;
             this.label10.Text = "Piste-ero";
             // 
-            // seloEro_output
+            // pisteEro_out
             // 
-            this.seloEro_output.Location = new System.Drawing.Point(308, 403);
-            this.seloEro_output.Name = "seloEro_output";
-            this.seloEro_output.ReadOnly = true;
-            this.seloEro_output.Size = new System.Drawing.Size(46, 20);
-            this.seloEro_output.TabIndex = 23;
-            this.seloEro_output.TabStop = false;
+            this.pisteEro_out.Location = new System.Drawing.Point(308, 403);
+            this.pisteEro_out.Name = "pisteEro_out";
+            this.pisteEro_out.ReadOnly = true;
+            this.pisteEro_out.Size = new System.Drawing.Size(46, 20);
+            this.pisteEro_out.TabIndex = 23;
+            this.pisteEro_out.TabStop = false;
             // 
             // label11
             // 
@@ -278,23 +278,23 @@
             this.label12.TabIndex = 63;
             this.label12.Text = "Ottelun/turnauksen tulos";
             // 
-            // keskivahvuus_output
+            // keskivahvuus_out
             // 
-            this.keskivahvuus_output.Location = new System.Drawing.Point(163, 424);
-            this.keskivahvuus_output.Name = "keskivahvuus_output";
-            this.keskivahvuus_output.ReadOnly = true;
-            this.keskivahvuus_output.Size = new System.Drawing.Size(56, 20);
-            this.keskivahvuus_output.TabIndex = 26;
-            this.keskivahvuus_output.TabStop = false;
+            this.keskivahvuus_out.Location = new System.Drawing.Point(163, 424);
+            this.keskivahvuus_out.Name = "keskivahvuus_out";
+            this.keskivahvuus_out.ReadOnly = true;
+            this.keskivahvuus_out.Size = new System.Drawing.Size(56, 20);
+            this.keskivahvuus_out.TabIndex = 26;
+            this.keskivahvuus_out.TabStop = false;
             // 
-            // tulos_output
+            // turnauksenTulos_out
             // 
-            this.tulos_output.Location = new System.Drawing.Point(163, 441);
-            this.tulos_output.Name = "tulos_output";
-            this.tulos_output.ReadOnly = true;
-            this.tulos_output.Size = new System.Drawing.Size(56, 20);
-            this.tulos_output.TabIndex = 27;
-            this.tulos_output.TabStop = false;
+            this.turnauksenTulos_out.Location = new System.Drawing.Point(163, 441);
+            this.turnauksenTulos_out.Name = "turnauksenTulos_out";
+            this.turnauksenTulos_out.ReadOnly = true;
+            this.turnauksenTulos_out.Size = new System.Drawing.Size(56, 20);
+            this.turnauksenTulos_out.TabIndex = 27;
+            this.turnauksenTulos_out.TabStop = false;
             // 
             // label13
             // 
@@ -305,14 +305,14 @@
             this.label13.TabIndex = 55;
             this.label13.Text = "Montaa vahvuuslukua syötettäessä voitto +,   tasapeli = tai tyhjä,  tappio -";
             // 
-            // uusiSelo_diff_output
+            // selomuutos_out
             // 
-            this.uusiSelo_diff_output.Location = new System.Drawing.Point(225, 368);
-            this.uusiSelo_diff_output.Name = "uusiSelo_diff_output";
-            this.uusiSelo_diff_output.ReadOnly = true;
-            this.uusiSelo_diff_output.Size = new System.Drawing.Size(37, 20);
-            this.uusiSelo_diff_output.TabIndex = 29;
-            this.uusiSelo_diff_output.TabStop = false;
+            this.selomuutos_out.Location = new System.Drawing.Point(225, 368);
+            this.selomuutos_out.Name = "selomuutos_out";
+            this.selomuutos_out.ReadOnly = true;
+            this.selomuutos_out.Size = new System.Drawing.Size(37, 20);
+            this.selomuutos_out.TabIndex = 29;
+            this.selomuutos_out.TabStop = false;
             // 
             // label14
             // 
@@ -323,42 +323,42 @@
             this.label14.TabIndex = 51;
             this.label14.Text = "Miettimisaika: ";
             // 
-            // miettimisaika_vah90_Button
+            // miettimisaika_vah90_btn
             // 
-            this.miettimisaika_vah90_Button.AutoSize = true;
-            this.miettimisaika_vah90_Button.Checked = true;
-            this.miettimisaika_vah90_Button.Location = new System.Drawing.Point(3, 14);
-            this.miettimisaika_vah90_Button.Name = "miettimisaika_vah90_Button";
-            this.miettimisaika_vah90_Button.Size = new System.Drawing.Size(80, 17);
-            this.miettimisaika_vah90_Button.TabIndex = 9;
-            this.miettimisaika_vah90_Button.TabStop = true;
-            this.miettimisaika_vah90_Button.Text = "väh. 90 min";
-            this.miettimisaika_vah90_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_vah90_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_vah90_Button_CheckedChanged);
+            this.miettimisaika_vah90_btn.AutoSize = true;
+            this.miettimisaika_vah90_btn.Checked = true;
+            this.miettimisaika_vah90_btn.Location = new System.Drawing.Point(3, 14);
+            this.miettimisaika_vah90_btn.Name = "miettimisaika_vah90_btn";
+            this.miettimisaika_vah90_btn.Size = new System.Drawing.Size(80, 17);
+            this.miettimisaika_vah90_btn.TabIndex = 9;
+            this.miettimisaika_vah90_btn.TabStop = true;
+            this.miettimisaika_vah90_btn.Text = "väh. 90 min";
+            this.miettimisaika_vah90_btn.UseVisualStyleBackColor = true;
+            this.miettimisaika_vah90_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_vah90_Button_CheckedChanged);
             // 
-            // miettimisaika_60_89_Button
+            // miettimisaika_60_89_btn
             // 
-            this.miettimisaika_60_89_Button.AutoSize = true;
-            this.miettimisaika_60_89_Button.Location = new System.Drawing.Point(84, 14);
-            this.miettimisaika_60_89_Button.Name = "miettimisaika_60_89_Button";
-            this.miettimisaika_60_89_Button.Size = new System.Drawing.Size(71, 17);
-            this.miettimisaika_60_89_Button.TabIndex = 32;
-            this.miettimisaika_60_89_Button.TabStop = true;
-            this.miettimisaika_60_89_Button.Text = "60-89 min";
-            this.miettimisaika_60_89_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_60_89_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_60_89_Button_CheckedChanged);
+            this.miettimisaika_60_89_btn.AutoSize = true;
+            this.miettimisaika_60_89_btn.Location = new System.Drawing.Point(84, 14);
+            this.miettimisaika_60_89_btn.Name = "miettimisaika_60_89_btn";
+            this.miettimisaika_60_89_btn.Size = new System.Drawing.Size(71, 17);
+            this.miettimisaika_60_89_btn.TabIndex = 32;
+            this.miettimisaika_60_89_btn.TabStop = true;
+            this.miettimisaika_60_89_btn.Text = "60-89 min";
+            this.miettimisaika_60_89_btn.UseVisualStyleBackColor = true;
+            this.miettimisaika_60_89_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_60_89_Button_CheckedChanged);
             // 
-            // miettimisaika_11_59_Button
+            // miettimisaika_11_59_btn
             // 
-            this.miettimisaika_11_59_Button.AutoSize = true;
-            this.miettimisaika_11_59_Button.Location = new System.Drawing.Point(156, 14);
-            this.miettimisaika_11_59_Button.Name = "miettimisaika_11_59_Button";
-            this.miettimisaika_11_59_Button.Size = new System.Drawing.Size(71, 17);
-            this.miettimisaika_11_59_Button.TabIndex = 33;
-            this.miettimisaika_11_59_Button.TabStop = true;
-            this.miettimisaika_11_59_Button.Text = "11-59 min";
-            this.miettimisaika_11_59_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_11_59_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_11_59_Button_CheckedChanged);
+            this.miettimisaika_11_59_btn.AutoSize = true;
+            this.miettimisaika_11_59_btn.Location = new System.Drawing.Point(156, 14);
+            this.miettimisaika_11_59_btn.Name = "miettimisaika_11_59_btn";
+            this.miettimisaika_11_59_btn.Size = new System.Drawing.Size(71, 17);
+            this.miettimisaika_11_59_btn.TabIndex = 33;
+            this.miettimisaika_11_59_btn.TabStop = true;
+            this.miettimisaika_11_59_btn.Text = "11-59 min";
+            this.miettimisaika_11_59_btn.UseVisualStyleBackColor = true;
+            this.miettimisaika_11_59_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_11_59_Button_CheckedChanged);
             // 
             // miettimisaika_enint10_Button
             // 
@@ -374,59 +374,59 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.miettimisaika_vah90_Button);
+            this.panel1.Controls.Add(this.miettimisaika_vah90_btn);
             this.panel1.Controls.Add(this.miettimisaika_enint10_Button);
-            this.panel1.Controls.Add(this.miettimisaika_60_89_Button);
-            this.panel1.Controls.Add(this.miettimisaika_11_59_Button);
+            this.panel1.Controls.Add(this.miettimisaika_60_89_btn);
+            this.panel1.Controls.Add(this.miettimisaika_11_59_btn);
             this.panel1.Location = new System.Drawing.Point(79, 49);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 40);
             this.panel1.TabIndex = 35;
             // 
-            // tulosVoitto_Button
+            // tulosVoitto_btn
             // 
-            this.tulosVoitto_Button.AutoSize = true;
-            this.tulosVoitto_Button.Location = new System.Drawing.Point(27, 284);
-            this.tulosVoitto_Button.Name = "tulosVoitto_Button";
-            this.tulosVoitto_Button.Size = new System.Drawing.Size(69, 17);
-            this.tulosVoitto_Button.TabIndex = 6;
-            this.tulosVoitto_Button.TabStop = true;
-            this.tulosVoitto_Button.Text = "1 = voitto";
-            this.tulosVoitto_Button.UseVisualStyleBackColor = true;
-            this.tulosVoitto_Button.Enter += new System.EventHandler(this.tulosVoitto_Button_Enter);
+            this.tulosVoitto_btn.AutoSize = true;
+            this.tulosVoitto_btn.Location = new System.Drawing.Point(27, 284);
+            this.tulosVoitto_btn.Name = "tulosVoitto_btn";
+            this.tulosVoitto_btn.Size = new System.Drawing.Size(69, 17);
+            this.tulosVoitto_btn.TabIndex = 6;
+            this.tulosVoitto_btn.TabStop = true;
+            this.tulosVoitto_btn.Text = "1 = voitto";
+            this.tulosVoitto_btn.UseVisualStyleBackColor = true;
+            this.tulosVoitto_btn.Enter += new System.EventHandler(this.tulosVoitto_Button_Enter);
             // 
-            // tulosTasapeli_Button
+            // tulosTasapeli_btn
             // 
-            this.tulosTasapeli_Button.AutoSize = true;
-            this.tulosTasapeli_Button.Location = new System.Drawing.Point(27, 265);
-            this.tulosTasapeli_Button.Name = "tulosTasapeli_Button";
-            this.tulosTasapeli_Button.Size = new System.Drawing.Size(90, 17);
-            this.tulosTasapeli_Button.TabIndex = 5;
-            this.tulosTasapeli_Button.TabStop = true;
-            this.tulosTasapeli_Button.Text = "1/2 = tasapeli";
-            this.tulosTasapeli_Button.UseVisualStyleBackColor = true;
-            this.tulosTasapeli_Button.Enter += new System.EventHandler(this.tulosTasapeli_Button_Enter);
+            this.tulosTasapeli_btn.AutoSize = true;
+            this.tulosTasapeli_btn.Location = new System.Drawing.Point(27, 265);
+            this.tulosTasapeli_btn.Name = "tulosTasapeli_btn";
+            this.tulosTasapeli_btn.Size = new System.Drawing.Size(90, 17);
+            this.tulosTasapeli_btn.TabIndex = 5;
+            this.tulosTasapeli_btn.TabStop = true;
+            this.tulosTasapeli_btn.Text = "1/2 = tasapeli";
+            this.tulosTasapeli_btn.UseVisualStyleBackColor = true;
+            this.tulosTasapeli_btn.Enter += new System.EventHandler(this.tulosTasapeli_Button_Enter);
             // 
-            // tulosTappio_Button
+            // tulosTappio_btn
             // 
-            this.tulosTappio_Button.AutoSize = true;
-            this.tulosTappio_Button.Location = new System.Drawing.Point(27, 246);
-            this.tulosTappio_Button.Name = "tulosTappio_Button";
-            this.tulosTappio_Button.Size = new System.Drawing.Size(72, 17);
-            this.tulosTappio_Button.TabIndex = 4;
-            this.tulosTappio_Button.TabStop = true;
-            this.tulosTappio_Button.Text = "0 = tappio";
-            this.tulosTappio_Button.UseVisualStyleBackColor = true;
-            this.tulosTappio_Button.Enter += new System.EventHandler(this.tulosTappio_Button_Enter);
+            this.tulosTappio_btn.AutoSize = true;
+            this.tulosTappio_btn.Location = new System.Drawing.Point(27, 246);
+            this.tulosTappio_btn.Name = "tulosTappio_btn";
+            this.tulosTappio_btn.Size = new System.Drawing.Size(72, 17);
+            this.tulosTappio_btn.TabIndex = 4;
+            this.tulosTappio_btn.TabStop = true;
+            this.tulosTappio_btn.Text = "0 = tappio";
+            this.tulosTappio_btn.UseVisualStyleBackColor = true;
+            this.tulosTappio_btn.Enter += new System.EventHandler(this.tulosTappio_Button_Enter);
             // 
-            // vaihteluvali_output
+            // vaihteluvali_out
             // 
-            this.vaihteluvali_output.Location = new System.Drawing.Point(278, 368);
-            this.vaihteluvali_output.Name = "vaihteluvali_output";
-            this.vaihteluvali_output.ReadOnly = true;
-            this.vaihteluvali_output.Size = new System.Drawing.Size(73, 20);
-            this.vaihteluvali_output.TabIndex = 65;
-            this.vaihteluvali_output.TabStop = false;
+            this.vaihteluvali_out.Location = new System.Drawing.Point(278, 368);
+            this.vaihteluvali_out.Name = "vaihteluvali_out";
+            this.vaihteluvali_out.ReadOnly = true;
+            this.vaihteluvali_out.Size = new System.Drawing.Size(73, 20);
+            this.vaihteluvali_out.TabIndex = 65;
+            this.vaihteluvali_out.TabStop = false;
             // 
             // TuloksetPistemaaranKanssa_teksti
             // 
@@ -509,44 +509,44 @@
             this.ClientSize = new System.Drawing.Size(409, 512);
             this.Controls.Add(this.vastustajanSelo_comboBox);
             this.Controls.Add(this.TuloksetPistemaaranKanssa_teksti);
-            this.Controls.Add(this.vaihteluvali_output);
-            this.Controls.Add(this.tulosTappio_Button);
-            this.Controls.Add(this.tulosTasapeli_Button);
-            this.Controls.Add(this.tulosVoitto_Button);
+            this.Controls.Add(this.vaihteluvali_out);
+            this.Controls.Add(this.tulosTappio_btn);
+            this.Controls.Add(this.tulosTasapeli_btn);
+            this.Controls.Add(this.tulosVoitto_btn);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label14);
-            this.Controls.Add(this.uusiSelo_diff_output);
+            this.Controls.Add(this.selomuutos_out);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.tulos_output);
-            this.Controls.Add(this.keskivahvuus_output);
+            this.Controls.Add(this.turnauksenTulos_out);
+            this.Controls.Add(this.keskivahvuus_out);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.seloEro_output);
+            this.Controls.Add(this.pisteEro_out);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.uusi_pelimaara_output);
+            this.Controls.Add(this.uusiPelimaara_out);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.kerroin_output);
+            this.Controls.Add(this.kerroin_out);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.odotustulos_output);
+            this.Controls.Add(this.odotustulos_out);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.Kayta_uutta_button);
-            this.Controls.Add(this.uusiSelo_output);
+            this.Controls.Add(this.uusiSelo_out);
             this.Controls.Add(this.UusiSELO_teksti);
             this.Controls.Add(this.Laske_button);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.VastustajanVahvuusluku_teksti);
-            this.Controls.Add(this.pelimaara_input);
+            this.Controls.Add(this.pelimaara_in);
             this.Controls.Add(this.Pelimäärä);
-            this.Controls.Add(this.nykyinenSelo_input);
+            this.Controls.Add(this.nykyinenSelo_in);
             this.Controls.Add(this.OmaVahvuusluku_teksti);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "Form1";
-            this.Text = "Selolaskuri v. 1.0.0.19";
+            this.Text = "Selolaskuri v. 1.0.1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -560,41 +560,41 @@
         #endregion
 
         private System.Windows.Forms.Label OmaVahvuusluku_teksti;
-        private System.Windows.Forms.TextBox nykyinenSelo_input;
+        private System.Windows.Forms.TextBox nykyinenSelo_in;
         private System.Windows.Forms.Label Pelimäärä;
-        private System.Windows.Forms.TextBox pelimaara_input;
+        private System.Windows.Forms.TextBox pelimaara_in;
         private System.Windows.Forms.Label VastustajanVahvuusluku_teksti;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Laske_button;
         private System.Windows.Forms.Label UusiSELO_teksti;
-        private System.Windows.Forms.TextBox uusiSelo_output;
+        private System.Windows.Forms.TextBox uusiSelo_out;
         private System.Windows.Forms.Button Kayta_uutta_button;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox odotustulos_output;
+        private System.Windows.Forms.TextBox odotustulos_out;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox kerroin_output;
+        private System.Windows.Forms.TextBox kerroin_out;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox uusi_pelimaara_output;
+        private System.Windows.Forms.TextBox uusiPelimaara_out;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox seloEro_output;
+        private System.Windows.Forms.TextBox pisteEro_out;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox keskivahvuus_output;
-        private System.Windows.Forms.TextBox tulos_output;
+        private System.Windows.Forms.TextBox keskivahvuus_out;
+        private System.Windows.Forms.TextBox turnauksenTulos_out;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox uusiSelo_diff_output;
+        private System.Windows.Forms.TextBox selomuutos_out;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.RadioButton miettimisaika_vah90_Button;
-        private System.Windows.Forms.RadioButton miettimisaika_60_89_Button;
-        private System.Windows.Forms.RadioButton miettimisaika_11_59_Button;
+        private System.Windows.Forms.RadioButton miettimisaika_vah90_btn;
+        private System.Windows.Forms.RadioButton miettimisaika_60_89_btn;
+        private System.Windows.Forms.RadioButton miettimisaika_11_59_btn;
         private System.Windows.Forms.RadioButton miettimisaika_enint10_Button;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RadioButton tulosVoitto_Button;
-        private System.Windows.Forms.RadioButton tulosTasapeli_Button;
-        private System.Windows.Forms.RadioButton tulosTappio_Button;
-        private System.Windows.Forms.TextBox vaihteluvali_output;
+        private System.Windows.Forms.RadioButton tulosVoitto_btn;
+        private System.Windows.Forms.RadioButton tulosTasapeli_btn;
+        private System.Windows.Forms.RadioButton tulosTappio_btn;
+        private System.Windows.Forms.TextBox vaihteluvali_out;
         private System.Windows.Forms.Label TuloksetPistemaaranKanssa_teksti;
         private System.Windows.Forms.ComboBox vastustajanSelo_comboBox;
         private System.Windows.Forms.MenuStrip menuStrip1;

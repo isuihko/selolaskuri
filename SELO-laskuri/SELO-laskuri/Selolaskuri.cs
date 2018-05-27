@@ -1,7 +1,7 @@
 ﻿//
 // Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 27.5.2018 Ismo Suihko 1.0.1.4   Huhtikuusta alkaen järjestetty koodia melkoisesti!
+// 27.5.2018 Ismo Suihko  -  Huhtikuusta alkaen järjestetty koodia melkoisesti!
 //
 // C#/.NET, Visual Studio Community 2015, Windows 7.
 //
@@ -159,7 +159,7 @@
 //  Publish --> Versio 1.0.1.0, myös github
 // 
 // 27.5.2018 - Hieman koodin järjestelyä ja dokumentointia, ei näkyviä muutoksia toimintaan
-//  Publish --> Versio 1.0.1.4, myös github
+//  Publish --> Versio 1.0.1.5, myös github
 //
 // TODO:
 //          -testaa testaa testaa, tarkista tarkista tarkista

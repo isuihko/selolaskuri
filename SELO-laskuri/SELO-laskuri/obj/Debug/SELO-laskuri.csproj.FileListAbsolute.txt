@@ -10,3 +10,4 @@ C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\ob
 C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\obj\Debug\Selolaskuri.application
 C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\obj\Debug\Selolaskuri.exe
 C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\obj\Debug\Selolaskuri.pdb
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\SELO-laskuri\SELO-laskuri\obj\Debug\SELO-laskuri.csprojResolveAssemblyReference.cache

@@ -1,11 +1,11 @@
 # selolaskuri
-Shakin vahvuusluvun laskenta
 
+Selolaskuri - Shakin vahvuusluvun laskenta
 
-1.-7.4.2018 (edelliset isommat muutokset 7.1.2018) Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
+Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-Muutokset 1.-7.4.: Hyvin paljon koodin järjestämistä, uusia luokkia ja moduuleja!
-Silti ei eroa toiminnassa verrattuna 7.1.2018 versioon muutoin kuin, että tulostuu uudempi versionumero ja päivämäärä. Ja virhetilanteissa (jos virheellinen syöte) on tarkempia tarkastuksia ja voi tulostua tarkempi virheilmoitus. Mutta sisäisesti ohjelma on muuttunut hyvin paljon. Nyt osaa uuden pelaajan vahvuusluvun laskennan useammasta eri formaatista.
+27.5.2018 Koodin järjestämistä, ei muutoksia toimintaan muutuin kuin, että tulostuu uudempi versionro 1.0.1.5 ja nykyinen pvm.
+1.-7.4.2018: Hyvin paljon koodin järjestämistä, uusia luokkia ja moduuleja! Erot toiminnassa verrattuna versioon 7.1.2018: 1) Uusi versionro ja pvm, 2) Syötteen tarkastus on tarkempi ja on uusia virheilmoituksia, 3) osaa uuden pelaajan vahvuusluvun laskennan useammasta eri formaatista.
 
 --
 
@@ -13,8 +13,8 @@ TODO: Vielä pitää miettiä luokkajakoa ja tietojen välittämistä, jotta my�
 
 --
 
-Tein tästä myös Java-version, jolla tein oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
-Aion tehdä Java-versioon myös nämä samat koodin siistimiset ja optimoinnit, joita olen tehnyt nyt 1.-7.4.2018.
+Tein tästä myös Java-version, jolla tein tänne oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
+Aion tehdä myös Java-versioon nämä samat koodin siistimiset ja optimoinnit, joita olen tehnyt nyt huhtikuusta alkaen.
 
 --
 
@@ -33,7 +33,7 @@ Selolaskentaa netissä:
 Syötekenttiä:
 * miettimisaika: vähintään 90 min, 60-89 minuuttia, 11-59 minuuttia tai enintään 10 minuuttia
 * oman vahvuusluku eli oma SELO tai jos miettimisaika on enintään 10 minuuttia, niin PELO
-* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa, vain SELO. Vielä ei ole toteutettu PELO:n laskentaa uudelle pelaajalle.
+* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa (vain SELO). Vielä ei ole toteutettu PELO:n laskentaa uudelle pelaajalle.
 * ottelun tiedot eli Vastustajan SELO-kenttä, joissa vaihtoehdot:
  - a) yhden vastustajan vahvuusluku, esim. 1720
  - b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
@@ -64,7 +64,7 @@ Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ott
 
 Virhetarkastukset:
 - SELO-lukujen oltava välillä kokonaisluku 1000-2999
-- jos on annettu oma pelimäärä, sen on oltava kokonaisluku 0-9999
+- jos on annettu oma pelimäärä, sen on oltava kokonaisluku 0-9999 (laskennan jälkeen uusi pelimäärä saa olla isompikin kuin 9999)
 - (a) jos on annettu yksi SELO, niin ottelun tulos on annettava valintapainikkeilla 0, 1/2 ja 1
 - (b) onko annettu muita merkkejä kuin +, - ja = tuloksia syötettäessä
 - (c) turnauksen pistemäärän oltava vähintään nolla ja enintään annettujen vastustajien lukumäärä
@@ -95,7 +95,9 @@ Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatinee ainakin
 Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO:
-- koodin optimointia ja siistimistä (jo tehty hyvin paljon 1.-7.4., mutta vielä lisääkin voi tehdä)
-- lisälaskentaa
-- tee myös uusi versio käyttäen WPF:ää ja XAML:ia
+- koodin optimointia ja siistimistä (jo tehty hyvin paljon huhtikuusta alkaen, mutta vielä lisääkin voi tehdä)
+- lisälaskentaa (suorituslukulaskenta)
 - automaattinen testaus, joka vaatii muutoksia koodiinkin ennen kuin testausrutiineja voidaan kirjoittaa
+- tee myös uusi versio käyttäen WPF:ää ja XAML:ia
+- Java-versioon samat koodin järjestämiset/refaktoroinnit
+

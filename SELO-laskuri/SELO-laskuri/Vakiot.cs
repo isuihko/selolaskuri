@@ -19,7 +19,8 @@ namespace Selolaskuri
         public const int VIRHE_TULOS             = -3;
         public const int VIRHE_YKSITTAINEN_TULOS = -4;
         public const int VIRHE_TURNAUKSEN_TULOS  = -5;
-        public const int PELIMAARA_TYHJA         = -1;
+
+        public const int PELIMAARA_TYHJA         = -1;  // OK, ei pakko antaa
 
         // input-kentän syötteen maksimipituus. Tarkistetaan virhetilanteissa
         // ja jos merkkejä yli tuon, niin tyhjennetään kenttä

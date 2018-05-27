@@ -399,7 +399,7 @@ namespace Selolaskuri
             }
 
             nykyinenSelo_in.Text = selo.ToString();
-            if (pelimaara > Vakiot.VIRHE_PELIMAARA) {
+            if (pelimaara != Vakiot.PELIMAARA_TYHJA) {
                 // vain, jos pelimaara oli annettu (muutoin on jo valmiiksi tyhjä)
                 pelimaara_in.Text = pelimaara.ToString();
             }

@@ -1,14 +1,19 @@
 ﻿//
 // Selolaskuri   https://github.com/isuihko/selolaskuri
 //
-// 7.4.2018 Ismo Suihko 1.0.1.0   1.-7.4.2018 järjestetty koodia melkoisesti!! Uusia moduuleja ja luokkia.
-//
-// Aiempi versio 7.1.2018 1.0.0.12, johon verrattuna tässä on muuttunut: versiotiedot, virheilmoituksia, laskenta.
+// 27.5.2018 Ismo Suihko 1.0.1.4   Huhtikuusta alkaen järjestetty koodia melkoisesti!
 //
 // C#/.NET, Visual Studio Community 2015, Windows 7.
 //
 // Ensimmäinen C#/.NET -ohjelmani.
 // Sisältää käyttöliittymän, syötteen tarkistuksen, laskentaa ja tuloksien näyttämisen.
+//
+// Ohjelma laskee pelaajalle vahvuusluvun miettimisaikojen vähintään 90, 60-89 ja 11-59 minuutin peleistä,
+// sekä pikapelistä, kun miettimisaika on enintään 10 minuuttia.
+//
+// Jos pelimäärä 0-10, käytetään uuden pelaajan selon kaavaa. Jos pelataan turnaus, niin kaikissa turnauksen otteluissa.
+// Jos pelimäärä tyhjä tai > 10, käytetään normaalia laskukaavaa.
+//
 //
 // HUOM! Käännetty binääri/asennusohjelma setup.exe vaatinee nyt .NET Framework 4.6:n.
 //
@@ -19,58 +24,72 @@
 //              siitä puuttuu osa ominaisuuksista (lista syötteistä ja menut).
 //              Ja myös se pitäisi järjestää uusiksi.
 //
+// Kuvia ohjelman toiminnasta:
 //
-// Kuva version 1.0.0.12 (7.1.2018) näytöstä on linkissä
-//   https://goo.gl/pSVZcU ( https://drive.google.com/open?id=1e4z34Rh2YOz5xC8G2fDOK4x9__r-qB5n )
-// Jossa esimerkki: Miettimiaika enintään 10 minuuttia, selo 1996, pelimäärä tyhjä
-//                  Vastustajan SELO: 10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684
-//                  Tulos: 2033 +37 (jos lasketaan miettimisajalla väh. 90 min, saadaan eri tulos 2048)
-//  Toinen esimerkkikuva, Uuden pelaajan selo, miettimisaika väh. 90 min.
-//                  Oma SELO 1525, pelimäärä 0, vastustajat: +1525 +1441 -1973 +1718 -1784 -1660 -1966
-//                  Tulos 1695 +170
-//                  Tai vastustajat ja ottelut: 3 1525 1441 1973 1718 1784 1660 1966
+// Ensimmäinen kuva "Selolaskuri PELOn laskenta turnauksesta.png" - pikashakin laskenta
+// https://github.com/isuihko/selolaskuri/blob/master/Selolaskuri%20PELOn%20laskenta%20turnauksesta.png
+//      Miettimiaika     : enint. 10 min
+//      Oma PELO         : 1996
+//      Oma pelimäärä    : tyhjä
+//      Vastustajan PELO : 10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684
+// Tulos
+//      Uusi PELO        : 2033 +37 (jos lasketaan miettimisajalla väh. 90 min, saadaan tulos 2048 +52)
+//
+// Toinen kuva "Selolaskuri uuden pelaajan SELO.png" - uuden pelaajan vahvuusluvun laskenta
+// https://raw.githubusercontent.com/isuihko/selolaskuri/master/Selolaskuri%20uuden%20pelaajan%20SELO.png
+//      Miettimisaika    : väh. 90 min.
+//      Oma SELO         : 1525
+//      Oma pelimäärä    : 0
+//      Vastustajan SELO : +1525 +1441 -1973 +1718 -1784 -1660 -1966
+// Tulos
+//      Uusi SELO        : 1695 +170 (1683 - 1764)
+//
+// Samaan tulokseen päästään jälkimmäisessä, jos annetaan tulokset formaatissa
+//      Vastustajan SELO : 3 1525 1441 1973 1718 1784 1660 1966
+// Tai lähtemällä tilanteesta 1525 ja 0 ja sitten syöttämällä kukin ottelu erikseen
+// (vastustajan selo ja valintanapeista tulos, esim. 1525 (x) 1 = voitto)
+// ja klikkaamalla Käytä uutta SELOa jatkolaskennassa (seuraava 1441 (x) 1 = voitto jne.).
 //
 //
-// Laskee pelaajalle vahvuusluvun miettimisaikojen vähintään 90, 60-89 ja 11-59 minuutin peleistä,
-// sekä pikapelistä, kun miettimisaika on enintään 10 minuuttia.
+// Lomakkeella kentät tässä järjestyksessä ylhäältä alas:
 //
-// Jos pelimäärä 0-10, käytetään uuden pelaajan selon kaavaa. Jos pelataan turnaus, niin kaikissa turnauksen otteluissa.
-// Jos pelimäärä tyhjä tai > 10, käytetään normaalia laskukaavaa.
+//    Valintanapit: Miettimisaika: väh. 90 min, 60-89 min, 11-59 min ja enint. 10 min.
 //
-// Lomakkeella kentät:
-//        Valintanapit:  Miettimisaika: väh. 90 min, 60-89 min, 15-59 min ja alle 15 min.
+//    Numerot: Oma SELO (1000-2999)
+//             Oma pelimäärä (tyhjä tai jos uusi pelaaja: 0-10)
+//    Numero/numeroita/merkkijono, joka muistaa laskennassa käytetyt syötteet (comboBox):
+//             Vastustajan SELO. Tai monta tuloksineen: +1725 -1810 =1612 (tai 1612)
+//             (ohjetekstiä)   Montaa vahvuuslukua syötettäessä voitto +, tasapeli = tai tyhjä, tappio -
+//                             Tai pistemäärä ja vastustajien SELOt: 1.5 1725 1810 1612
 //
-//        Numerot: Nykyinen oma SELO   (1000-2999)
-//                 Oma pelimäärä       (tyhjä tai numero 0-9999)
-//                 vastustajan SELO    (1000-2999) tai jos turnaus, niin
-//                                     useampi SELO tuloksineen, esim. +1622 -1880 =1633
-//                                     tai 1.5 1622 1880 1683
-//        Valintanapit: ottelun tulos, jossa vaihtoehdot:  0, 1/2 ja 1.
-//
-//        Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet (comboBox-kenttä).
-//        Syöte tallennetaan listaan kun on painettu kentässä Enter tai valittu Laske uusi SELO/PELO.
+//    Valintanapit: Ottelun tulos, jossa vaihtoehdot: 0 = tappio, 1/2 = tasapeli ja 1 = voitto.
 //
 // Painikkeet:
-//    - Laske uusi SELO     Uusi SELO lasketaan myös aina kun valitaan ottelun tulos.
+//    - Laske uusi SELO
 //    - Käytä uutta SELOa jatkolaskennassa -> kopioi tuloksen & pelimäärän uutta laskentaa varten
 //                                            Jos ei vielä laskettu, asettaa arvot 1525 ja 0.
+// Lisäksi laskenta tehdään, kun vastustajan SELO-kentässä painetaan Enter sekä
+// yhden vastustajan tapauksessa kun selataan ottelun tuloksia valintapainikkeista.
 //
-// Kun valittu miettimisajaksi enintään 10 minuuttia, niin lomakkeen SELO-tekstit vaihdetaan -> PELO.
+// Kun valittu miettimisajaksi enintään 10 minuuttia eli pikashakki,
+// niin lomakkeen SELO-tekstit vaihdetaan -> PELO.
 //
 // Laskentakaavat:  http://skore.users.paivola.fi/selo.html  (odotustulos, kerroin, SELO)
 // Käytössä on kaavat miettimisajoille väh. 90 min, 60-89 min ja 11-59 min
 // sekä PELO:n laskenta enintään 10 min.
 //
 // Tulostiedot:
-//                  Uusi SELO             laskettu uusi vahvuusluku
-//                  pelimäärä             jos annettu, niin yhdellä lisättynä
-//                  piste-ero             annettujen selojen ero (jos yksi vastustaja)
-//                  odotustulos           voiton todennäköisyys/turnauksessa kaikkien odotustuloksien summa
-//                  kerroin               laskennassa käytetty kerroin
-//                  vastustajien keskivahvuus
-//                  turnauksen tulos
-//                  SELOn vaihteluväli, jos annettu useampi SELO tuloksineen +1622 -1880 =1633
+//                  Uusi SELO (PELO)      laskettu uusi vahvuusluku
+//                  Vahvuusuvun muutos sekä useamman vastustajan tapauksessa SELOn vaihteluväli laskennan aikana.
+//                  Uusi pelimäärä        jos annettu, niin vastustajien lukumäärällä lisättynä
+//                  Piste-ero             annettujen selojen ero (vain jos yksi vastustaja)
+//                  Odotustulos           voiton todennäköisyys/turnauksessa kaikkien odotustuloksien summa
+//                  Kerroin               laskennassa käytetty kerroin
+//                  Vastustajien keskivahvuus
+//                  Ottelun/turnauksen tulos
 //
+//
+// XXX: Versiohistoriaa voi ehkä tiivistääkin
 //
 // Versiohistoria:
 //
@@ -82,12 +101,11 @@
 //             -Näytetään virheilmoituksen aikana kentän arvo punaisena.
 //  Publish --> Versio 1.0.0.3
 //
-// 24.11.2017  -Muutettu lomaketta, jotta voitaisiin jatkossa syöttää useamman ottelun tulokset
+// 24.-27.11.2017 -Muutettu lomaketta, jotta voitaisiin jatkossa syöttää useamman ottelun tulokset
 //             -Lisätty tuloskentät: Vastustajien keskivahvuus ja Tulos.
 //             -Muutettu varsinainen laskenta omaksi aliohjelmakseen, jotta sitä voidaan kutsua
 //              jokaiselle tulokselle erikseen.
-//
-// 25.-27.11.2017 -Luotu luokka: SeloPelaaja
+//             -Luotu luokka: SeloPelaaja
 //             -Nyt osaa lukea useamman ottelun tuloksen ja laskea niistä vahvuusluvun, vastustajien keskiselon
 //              ja myös turnauksen pistemäärän. Ottelut annetaan formaatissa +1716 -1822 =1681 +1444.
 //             -Tasapeli voidaan antaa myös ilman '='-merkkiä eli myös OK: +1716 -1822 1681 +1444.
@@ -102,7 +120,6 @@
 //
 // 28.11.2017 -Lisätty pikashakin vahvuusluvun laskenta (PELO).
 //            .Kun valitaan miettimisajaksi alle 15 min, niin vaihdetaan tekstit SELO->PELO.
-//  Publish --> Versio 1.0.0.7
 //            -Vaihdettu ohjelman nimi ikkunasta "SELO-laskuri" -> "Selolaskuri".
 //            -Myös namespace SELO_laskuri -> Selolaskuri, tiedostot: Form1.cs ja Program.cs
 //            -Nyt käännetty ohjelma tulee nimelle "Selolaskuri.exe".
@@ -112,7 +129,7 @@
 //             tarvittiin korjauksia. Nyt laskee oikein!
 //  Publish --> Versio 1.0.0.9, myös github
 // 30.11.2017 -Oma luokka vakioille, jotta niitä ei tarvitse määritellä kaikissa luokissa.
-//             Kaikki vakiot nyt ovat luokassa constants.
+//             Kaikki vakiot nyt ovat luokassa constants (myöhemmin nimetty Vakiot).
 //
 // 12.12.2017 -VastustajanSelo-kentästä tehty ComboBox, josta voidaan nähdä ja valita aiempiakin syötteitä
 //               Korvattu kenttä vastustajanSelo_in kentällä vastustajanSelo_combobox.
@@ -125,7 +142,7 @@
 // 7.1.2018   -Käytä C# properties: selo, pelimaara, miettimisaika ja selo_alkuperainen.
 //            -Turhat apumuuttujat pois, kun tulos voidaan sijoittaa suoraankin
 //                Esim. nykyinenSelo_in.Text = nykyinenSelo_in.Text.Trim();
-//            -Math.Min, Max ja Round käyttöön.
+//            -Math-rutiineja käyttöön (Min, Max ja Round)
 //            -Luokat omiin tiedostoihinsa: -> seloPelaaja.cs ja vakiot.cs
 //            -Lisätty valikot: Menu-> Ohjeita/Tietoja ohjelmasta/Laskentakaavat/Sulje ohjelma
 //            -Varmistetaan ohjelmasta poistuminen, kun valitaan Menu->Sulje ohjelma tai suljetaan ikkuna.
@@ -138,26 +155,24 @@
 //
 // 7.4.2018 -melkoisesti koodin järjestämistä, uusia moduuleja ja luokkia, muuttujien uudelleen nimeämistä, ...
 //          -uuden pelaajan selon laskenta toimii nyt myös formaatista 1.5 1722 1581 1608
+//           Samaa laskentakaavaa käytetään koko turnauksesta, jos pelaaja on alussa ns. uusi pelaaja!
 //  Publish --> Versio 1.0.1.0, myös github
 // 
+// 27.5.2018 - Hieman koodin järjestelyä ja dokumentointia, ei näkyviä muutoksia toimintaan
+//  Publish --> Versio 1.0.1.4, myös github
+//
 // TODO:
-//          -testaa testaa testaa
+//          -testaa testaa testaa, tarkista tarkista tarkista
 //          -automaattinen testaus (Unit Test Project), joka vaatinee hieman enemmän koodin muokkausta
-//          -lisää koodi siistimistä
-//          -tarkista vielä, onko turhia apumuuttujia
+//          -lisää koodi siistimistä ja refaktorointia, sekä mieti luokkien käyttöä
 //
 
 using System;
 using System.Collections.Generic; // List<string>
-//using System.ComponentModel;
-//using System.Data;
-using System.Drawing; // Color
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-using System.Windows.Forms; // MessageBox mm. menuista tulostettavat ikkunat
+using System.Drawing;        // Color
+using System.Windows.Forms;  // MessageBox mm. menuista tulostettavat ikkunat
 using System.Text.RegularExpressions; // Regex rx, rx.Replace
-using System.Linq; // tempString.Contains(',')
+using System.Linq;           // tempString.Contains(',')
 
 
 namespace Selolaskuri
@@ -236,7 +251,7 @@ namespace Selolaskuri
                     //
                     // Jos oli vain yksi ottelu, niin vastustajan vahvuusluku on vastustajanSelo-kentässä
                     // Haetaan vielä ottelunTulos -kenttään tulospisteet tuplana (0=tappio,1=tasapeli,2=voitto)
-                    if ((syotteet.ottelunTulos = TarkistaOttelunTulos()) == Vakiot.OttelunTulos_enum.MAARITTELEMATON)
+                    if ((syotteet.ottelunTulos = TarkistaOttelunTulos()) == Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON)
                         break;
 
                     ///* DEBUG */MessageBox.Show("Syotteet: " + syotteet.nykyinenSelo +
@@ -286,6 +301,7 @@ namespace Selolaskuri
         void NaytaTulokset()
         {
 
+            // vastustajien vahvuuslukujen keskiarvo
             int turnauksenKeskivahvuus = (int)Math.Round(ottelulista.tallennetutOttelut.Average(x => x.vastustajanSelo));
 
 
@@ -342,8 +358,9 @@ namespace Selolaskuri
                 uusiPelimaara_out.Text = shakinpelaaja.laskettuPelimaara.ToString();
             else
                 uusiPelimaara_out.Text = "";
-            //keskivahvuus_out.Text = shakinpelaaja.turnauksenKeskivahvuus.ToString();
+
             keskivahvuus_out.Text = turnauksenKeskivahvuus.ToString();
+
             // Turnauksen loppupisteet / ottelujen lkm, esim.  2.5 / 6
             turnauksenTulos_out.Text =
                 (shakinpelaaja.laskettuTurnauksenTulos / 2F).ToString("0.0") + " / " + shakinpelaaja.kasitellytOttelut;
@@ -376,7 +393,7 @@ namespace Selolaskuri
             int selo = shakinpelaaja.laskettuSelo;
             int pelimaara = shakinpelaaja.laskettuPelimaara;
 
-            if (selo == 0) { // ei ollut vielä laskentaa
+            if (selo == 0) { // ei ollut vielä laskentaa (1525, 0)
                 selo = shakinpelaaja.selo;
                 pelimaara = shakinpelaaja.pelimaara;
             }
@@ -429,13 +446,14 @@ namespace Selolaskuri
                 if (SuoritaLaskenta())
                     NaytaTulokset();
 
-                // 12.12.1027: Annettu teksti talteen -> Drop-down Combo box
+                // 12.12.1027: Annettu teksti talteen -> Drop-down combobox
                 if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                         vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
             }
         }
 
 
+        // Normaalissa laskennassa käytetään tekstiä SELO, pikashakissa PELO
         private void vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum suunta)
         {
             string alkup, uusi;
@@ -654,8 +672,8 @@ namespace Selolaskuri
         private int TarkistaVastustajanSelo()
         {
             bool status = true;
-            int tulos = 0;           // palautettava vastustajan selo
-            int virhekoodi = 0;  // tai tästä saatu virhestatus
+            int tulos = 0;        // palautettava vastustajan selo
+            int virhekoodi = 0;   // tai tästä saatu virhestatus
 
             bool onko_turnauksen_tulos = false;  // oliko tulos ensimmäisenä?
             float syotetty_tulos = 0F;           // tähän sitten sen tulos desimaalilukuna (esim. 2,5)
@@ -701,7 +719,7 @@ namespace Selolaskuri
 
                 // Apumuuttujat
                 int selo1 = Vakiot.MIN_SELO;
-                Vakiot.OttelunTulos_enum tulos1 = Vakiot.OttelunTulos_enum.MAARITTELEMATON;
+                Vakiot.OttelunTulos_enum tulos1 = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
                 bool ensimmainen = true;
 
                 // Tutki vastustajanSelo_comboBox-kenttä
@@ -752,7 +770,7 @@ namespace Selolaskuri
                         }
 
                         // Tallennetaan tasapelinä, ei ollut +:aa tai -:sta
-                        ottelulista.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TASAPELIx2);
+                        ottelulista.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_TASAPELIx2);
 
                     } else if (onko_turnauksen_tulos == false && vastustaja.Length == Vakiot.MAX_PITUUS) {
                         // 5)
@@ -767,13 +785,13 @@ namespace Selolaskuri
                             // Ensimmäinen merkki kertoo tuloksen
                             switch (vastustaja[0]) {
                                 case '+':
-                                    tulos1 = Vakiot.OttelunTulos_enum.VOITTOx2;
+                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_VOITTOx2;
                                     break;
                                 case '=':
-                                    tulos1 = Vakiot.OttelunTulos_enum.TASAPELIx2;
+                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_TASAPELIx2;
                                     break;
                                 case '-':
-                                    tulos1 = Vakiot.OttelunTulos_enum.TAPPIOx2;
+                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_TAPPIOx2;
                                     break;
                                 default: // ei sallittu tuloksen kertova merkki
                                     virhekoodi = Vakiot.VIRHE_YKSITTAINEN_TULOS;
@@ -817,6 +835,7 @@ namespace Selolaskuri
 
                 // Lisää tarkastuksia
                 // 6) Annettu turnauksen tulos ei saa olla suurempi kuin pelaajien lukumäärä
+                //    Jos tulos on sama kuin pelaajien lkm, on voitettu kaikki ottelut.
                 if (status && onko_turnauksen_tulos) {
                     // Vertailu kokonaislukuina, esim. syötetty tulos 3.5 ja pelaajia 4, vertailu 7 > 8.
                     if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelulista.vastustajienLukumaara) {
@@ -869,14 +888,14 @@ namespace Selolaskuri
         //          palautetaan kokonaislukuna 0, 1 ja 2
         public Vakiot.OttelunTulos_enum TarkistaOttelunTulos()
         {
-            Vakiot.OttelunTulos_enum pisteet = Vakiot.OttelunTulos_enum.MAARITTELEMATON;
+            Vakiot.OttelunTulos_enum pisteet = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
 
             if (tulosTappio_btn.Checked)
-                pisteet = Vakiot.OttelunTulos_enum.TAPPIOx2;
+                pisteet = Vakiot.OttelunTulos_enum.TULOS_TAPPIOx2;
             else if (tulosTasapeli_btn.Checked)
-                pisteet = Vakiot.OttelunTulos_enum.TASAPELIx2;
+                pisteet = Vakiot.OttelunTulos_enum.TULOS_TASAPELIx2;
             else if (tulosVoitto_btn.Checked)
-                pisteet = Vakiot.OttelunTulos_enum.VOITTOx2;
+                pisteet = Vakiot.OttelunTulos_enum.TULOS_VOITTOx2;
             else {
                 MessageBox.Show("Ottelun tulosta ei annettu!");
                 tulosTappio_btn.Select();   // siirry ensimmäiseen valintanapeista

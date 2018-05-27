@@ -184,9 +184,9 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(183, 497);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(217, 13);
+            this.label6.Size = new System.Drawing.Size(223, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 7.4.2018 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 27.5.2018 Ismo Suihko github/isuihko";
             // 
             // label7
             // 
@@ -546,7 +546,7 @@
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "Form1";
-            this.Text = "Selolaskuri v. 1.0.1.0";
+            this.Text = "Selolaskuri v. 1.0.1.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

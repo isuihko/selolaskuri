@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections;
-//using System.Collections.IENumerable;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Selolaskuri
 {
-    // Ottelujen tietojen tallennus, vastustajan vahvuusluku ja ottelun tulos
+    //
+    // Ottelujen tietojen tallennus listaan, vastustajan vahvuusluku ja ottelun tulos
+    //
     public class Ottelulista : IEnumerable
     {
         public struct Ottelu

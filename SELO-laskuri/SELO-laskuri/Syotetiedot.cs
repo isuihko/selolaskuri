@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 
 namespace Selolaskuri
 {
-    // Tietorakenne syötetiedoille
+    // Luokka/tietorakenne syötetiedoille
     //
     // Tähän talteen annetut syötetiedot, jotka välitetään SeloPelaaja-luokkaan
-    // XXX: Mutta syötteenä annettua merkkijonoa ei tallenneta tähän,
-    // XXX: vaan se jaetaan yksittäisiin otteluihin ja on listassa SeloPelaaja-luokassa.
+    //
+    // Tarkoitus on, että tätä luokkaa/tietorakennetta käytetään automaattissa testauksessa!
+    // Luokan constructor voi siksi muuttua vielä.
     //
     public class Syotetiedot
     {
         public Vakiot.Miettimisaika_enum miettimisaika;
 
-        public int nykyinenSelo;
-        public int nykyinenPelimaara;
+        public int nykyinenSelo { get; set; }
+        public int nykyinenPelimaara { get; set; }
 
-        public int vastustajanSelo;
-        public Vakiot.OttelunTulos_enum ottelunTulos;
-        
-        public string vastustajienSelot_str;  // vastustajan/vastustajien tiedot ja tulokset
+        public int vastustajanSelo { get; set; }
+        public Vakiot.OttelunTulos_enum ottelunTulos { get; set; }
+
+        public string vastustajienSelot_str { get; set; }  // vastustajan/vastustajien tiedot ja tulokset
 
         public Syotetiedot()
         {
@@ -30,7 +31,7 @@ namespace Selolaskuri
             nykyinenSelo = 0;
             nykyinenPelimaara = 0;
             vastustajanSelo = 0;
-            ottelunTulos = Vakiot.OttelunTulos_enum.MAARITTELEMATON;
+            ottelunTulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
             vastustajienSelot_str = null;
         }
     }

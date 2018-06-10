@@ -1,0 +1,8 @@
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.Tests.dll
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.Tests.pdb
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.exe
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.pdb
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.dll
+C:\Users\Ismo\Documents\Visual Studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.pdb

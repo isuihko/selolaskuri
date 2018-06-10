@@ -1,22 +1,20 @@
 # selolaskuri
 
-Selolaskuri - Shakin vahvuusluvun laskenta
+Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess ratings
 
 Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-27.5.2018 Koodin järjestämistä, ei muutoksia toimintaan muutuin kuin, että tulostuu uudempi versionro 1.0.1.5 ja nykyinen pvm.
-1.-7.4.2018: Hyvin paljon koodin järjestämistä, uusia luokkia ja moduuleja! Erot toiminnassa verrattuna versioon 7.1.2018: 1) Uusi versionro ja pvm, 2) Syötteen tarkastus on tarkempi ja on uusia virheilmoituksia, 3) osaa uuden pelaajan vahvuusluvun laskennan useammasta eri formaatista.
+New refactored version of Selolaskuri is in the directory Selolaskuri :  https://github.com/isuihko/selolaskuri/tree/master/Selolaskuri
+
+10.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated operations and calculations (i.e. business logic) from the form. Unit tests are in Selolaskuri.Tests.
 
 --
 
-TODO: Vielä pitää miettiä luokkajakoa ja tietojen välittämistä, jotta myös voidaan tehdä automaattista testausta.
+There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version.
 
 --
 
-Tein tästä myös Java-version, jolla tein tänne oman repositoryn jSelolaskuri. Ohjelma on muuten samanlainen, paitsi vastustajien vahvuuslukukenttään syötettyjä tietoja ei tallenneta listaan, eikä ole menuja.
-Aion tehdä myös Java-versioon nämä samat koodin siistimiset ja optimoinnit, joita olen tehnyt nyt huhtikuusta alkaen.
-
---
+Next is only in Finnish. Tells about the usage of the SELO calculation application.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -65,7 +63,7 @@ Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ott
 Virhetarkastukset:
 - SELO-lukujen oltava välillä kokonaisluku 1000-2999
 - jos on annettu oma pelimäärä, sen on oltava kokonaisluku 0-9999 (laskennan jälkeen uusi pelimäärä saa olla isompikin kuin 9999)
-- (a) jos on annettu yksi SELO, niin ottelun tulos on annettava valintapainikkeilla 0, 1/2 ja 1
+- (a) jos on annettu yksi SELO eli on vain yksi vastustaja, niin ottelun tulos on annettava valintapainikkeilla 0, 1/2 ja 1
 - (b) onko annettu muita merkkejä kuin +, - ja = tuloksia syötettäessä
 - (c) turnauksen pistemäärän oltava vähintään nolla ja enintään annettujen vastustajien lukumäärä
 - (c) annetuissa vahvuusluvuissa ei saa antaa tulosta, koska pistemäärä oli jo annettu
@@ -83,21 +81,18 @@ Tulostiedot:
 
 Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä kolmella tavalla:
 - a) annetaan vahvuusluku numerona, esim. 1720 ja valitaan tulos valintapainikkeista 0, 1/2 ja 1.
-- b) Annetaan tulos vahvuusluvun kanssa, esim. +1720, =1720 tai -1720, eikä tuloksen valintapainikkeita käytetä.
-- c) Annetaan tulos numerona ennen vahvuuslukua, esim. 1 1720, 0.5 1720 tai 0 1720, eikä valintapainikkeita käytetä.
+- b) Annetaan tulos vahvuusluvun kanssa, esim. +1720, =1720 tai -1720, eikä tuloksen valintapainikkeita ole käytetty.
+- c) Annetaan tulos numerona ennen vahvuuslukua, esim. 1 1720, 0.5 1720 tai 0 1720, eikä valintapainikkeita ole käytetty.
 
 Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
 - b) Tulokset vahvuuslukujen yhteydessä, esim. +1622 -1880 =1633 +1717
 - c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
-Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Vaatinee ainakin .NET Frameworkin 4.6:n.
-Tai lataa koko Visual Studio -projekti ja käännä.
+Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Tai lataa koko Visual Studio -projekti ja käännä.
 
-TODO:
-- koodin optimointia ja siistimistä (jo tehty hyvin paljon huhtikuusta alkaen, mutta vielä lisääkin voi tehdä)
+TODO: (Nyt on listalla pitkään ollut automaattinen testaus toteutettu/10.6.2018)
+- vielä hieman lisälaskentaa
 - lisälaskentaa (suorituslukulaskenta)
-- automaattinen testaus, joka vaatii muutoksia koodiinkin ennen kuin testausrutiineja voidaan kirjoittaa
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - Java-versioon samat koodin järjestämiset/refaktoroinnit
-

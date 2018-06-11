@@ -5,6 +5,8 @@
 // Nyt myös yksikkötestaus (Selolaskuri.Tests) on mahdollista ilman että tarvitaan ikkunaa ja lomaketta.
 //
 // Luotu 10.6.2018 Ismo Suihko
+// Muutokset:
+//  11.6.2018 Kommentit
 //
 
 using System;
@@ -27,16 +29,18 @@ namespace Selolaskuri
         // Initialize calculation etc
         public SelolaskuriOperations()
         {
-            shakinpelaaja = new SeloPelaaja(1525, 0);
+            shakinpelaaja = new SeloPelaaja(1525, 0); // Uuden pelaajan alkuperäinen selo ja pelimäärä
             ottelulista = new Ottelulista();
         }
 
+        // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
         public Tuple<int, int> KopioiLasketutTulokset()
         {
             int selo = shakinpelaaja.laskettuSelo;
             int pelimaara = shakinpelaaja.laskettuPelimaara;
 
-            if (selo == 0) { // ei ollut vielä laskentaa (1525, 0)
+            if (selo == 0) {
+                // Jos ei ollut vielä laskentaa, niin laitetaan luotaessa käytetyt arvot 1525,0
                 selo = shakinpelaaja.selo;
                 pelimaara = shakinpelaaja.pelimaara;
             }
@@ -427,7 +431,6 @@ namespace Selolaskuri
 
             shakinpelaaja.PelaaKaikkiOttelut(ottelulista);       // pelaa kaikki ottelut listalta
 
-
             //
             // Siirrä kaikki tulokset tietorakenteeseen Tulokset palautettavaksi
             // 
@@ -437,12 +440,13 @@ namespace Selolaskuri
             tulokset.vastustajienLkm = ottelulista.vastustajienLukumaara;
             tulokset.alkuperainenSelo = shakinpelaaja.alkuperainenSelo;
 
+            // Laskettiinko yhtä ottelua vai turnausta?
             if (ottelulista.vastustajienLukumaara == 1) {
                 tulokset.pisteero = Math.Abs(shakinpelaaja.alkuperainenSelo - tulokset.turnauksenKeskivahvuus);
                 tulokset.odotustulos = shakinpelaaja.odotustulos;  // 100-kertainen, tulostusta varten tullaan jakamaan 100:lla
                 tulokset.kerroin = shakinpelaaja.kerroin;
             } else {
-                if (shakinpelaaja.pelimaara < 0 || shakinpelaaja.pelimaara > 10) {
+                if (shakinpelaaja.pelimaara == Vakiot.PELIMAARA_TYHJA || shakinpelaaja.pelimaara > Vakiot.MAX_UUSI_PELAAJA) {
                     tulokset.odotustuloksienSumma = shakinpelaaja.odotustuloksienSumma; // 100-kertainen
                 }
                 tulokset.kerroin = shakinpelaaja.kerroin;
@@ -450,7 +454,7 @@ namespace Selolaskuri
                 tulokset.maxSelo = shakinpelaaja.maxSelo;
             }
             tulokset.laskettuSelo = shakinpelaaja.laskettuSelo;
-            if (shakinpelaaja.laskettuPelimaara >= 0)
+            if (shakinpelaaja.pelimaara != Vakiot.PELIMAARA_TYHJA)
                 tulokset.laskettuPelimaara = shakinpelaaja.laskettuPelimaara;
 
             tulokset.laskettuTurnauksenTulos = shakinpelaaja.laskettuTurnauksenTulos;

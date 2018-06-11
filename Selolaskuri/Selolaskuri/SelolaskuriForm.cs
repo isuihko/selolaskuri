@@ -13,6 +13,8 @@
 //
 // Publish --> Versio 2.0.0.0, myös github
 //
+//  11.6.2018   Jos ei annettu pelimääärää, niin uusi pelimäärä pitää olla tyhjä
+//
 // TODO: Tarkista, ovatko kaikki ohjelman kommentit uuden rakenteen mukaisia
 //
 
@@ -220,7 +222,7 @@ namespace Selolaskuri
             if ((tulos = so.TarkistaSyote(syotteet)) != Vakiot.SYOTE_STATUS_OK) {
                 NaytaVirheilmoitus(tulos);
             } else {
-                so.SuoritaLaskenta(syotteet, ref tulokset);  // Pitääkö olla ref, kun on eri luokassa?
+                so.SuoritaLaskenta(syotteet, ref tulokset);  // tarvitaan ref
                 NaytaTulokset(syotteet, tulokset);
             }
 
@@ -230,6 +232,7 @@ namespace Selolaskuri
 
         private void NaytaTulokset(Syotetiedot syotteet, Tulokset tulokset)
         {
+            // XXX: Tarkista muuttujien käyttö, kun voi olla toistoa
             // Laskettiinko yhtä ottelua vai turnausta?
             if (tulokset.vastustajienLkm == 1) {
                 // yksi ottelu -> näytä tässä piste-ero vastustajaan, odotustulos ja kerroin
@@ -245,7 +248,7 @@ namespace Selolaskuri
                 // tyhjennä yksittäisen ottelun tuloskentät
                 pisteEro_out.Text = "";
                 // laskettu odotustulos näytetään, jos ei ollut uuden pelaajan laskenta
-                if (tulokset.alkuperainenPelimaara < 0 || tulokset.alkuperainenPelimaara > 10)
+                if (tulokset.alkuperainenPelimaara == Vakiot.PELIMAARA_TYHJA || tulokset.alkuperainenPelimaara > Vakiot.MAX_UUSI_PELAAJA)
                     odotustulos_out.Text = (tulokset.odotustuloksienSumma / 100F).ToString("0.00");
                 else
                     odotustulos_out.Text = "";
@@ -274,7 +277,7 @@ namespace Selolaskuri
             uusiSelo_out.Text = tulokset.laskettuSelo.ToString();
             selomuutos_out.Text =
                 (tulokset.laskettuSelo - tulokset.alkuperainenSelo).ToString("+#;-#;0");
-            if (tulokset.laskettuPelimaara >= 0)
+            if (tulokset.alkuperainenPelimaara != Vakiot.PELIMAARA_TYHJA)
                 uusiPelimaara_out.Text = tulokset.laskettuPelimaara.ToString();
             else
                 uusiPelimaara_out.Text = "";
@@ -337,26 +340,26 @@ namespace Selolaskuri
         // --------------------------------------------------------------------------------
         //    Ohjeita
         //    Laskentakaavat
-        //    Tietoja ohjelmasta
+        //    Tietoa ohjelmasta
         //    Sulje ohjelma
         private void ohjeitaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Oletuksena tulee OK-painike
-            MessageBox.Show("(kesken)Ohjeita: "
+            MessageBox.Show("Ohjeita: "
                 + "\r\n" + "Syötä oma vahvuusluku. Jos olet uusi pelaaja, niin anna oma pelimäärä 0-10, jolloin käytetään uuden pelaajan laskentakaavaa."
                 + "\r\n" + "Syötä lisäksi joko "
-                + "\r\n" + "  1) Vastustajan vahvuusluku ja valitse ottelun tulos 0/0,5/1nuolinäppäimillä tai "
-                + "\r\n" + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558 tai "
+                + "\r\n" + "  1) Vastustajan vahvuusluku ja valitse ottelun tulos 0/0,5/1 nuolinäppäimillä tai hiirellä "
+                + "\r\n" + "  2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
                 + "\r\n" + "  3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
-                + "\r\n" + "Lisäksi voidaan valita miettimisaika yläreunan valintapainikkeilla."
-                + "\r\n" + " Ohjelma sisältää sekä SELO:n (pitkä peli) että PELO:n (pikashakki) laskennat.",
+                + "\r\n" + "Lisäksi valitaan miettimisaika yläreunan valintapainikkeilla."
+                + "\r\n" + "Ohjelma sisältää sekä SELO:n (pitkä peli) että PELO:n (pikashakki) laskennat.",
                 "Ohjeikkuna");
         }
 
         private void laskentakaavatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Oletuksena tulee OK-painike
-            MessageBox.Show("(kesken)Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
+            MessageBox.Show("Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
                 + " \r\n" + "Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo",
                 "Laskentakaavat");
         }
@@ -364,7 +367,8 @@ namespace Selolaskuri
         private void tietojaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Oletuksena tulee OK-painike
-            MessageBox.Show("(kesken)Shakin vahvuusluvun laskenta, ohjelmointikieli: C#/.NET/WinForms, https://github.com/isuihko/selolaskuri", "Tietoja selolaskurista");
+            MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli: C#/.NET/WinForms, https://github.com/isuihko/selolaskuri",
+                "Tietoa Selolaskurista");
         }
 
         private void suljeToolStripMenuItem_Click(object sender, EventArgs e)

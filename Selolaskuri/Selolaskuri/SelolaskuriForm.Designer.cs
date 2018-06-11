@@ -486,7 +486,7 @@
             // 
             this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
             this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoja ohjelmasta";
+            this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
             this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1

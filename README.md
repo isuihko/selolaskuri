@@ -1,20 +1,20 @@
 # selolaskuri
 
-Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess ratings
+Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess ratings - My hobby project (I'm also chess player)
 
 Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-New refactored version of Selolaskuri is in the directory Selolaskuri :  https://github.com/isuihko/selolaskuri/tree/master/Selolaskuri
+New refactored version of Selolaskuri version 2 is in the directory "Selolaskuri" (old version in the directory "SELO-laskuri" is being deleted).
 
-10.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated operations and calculations (i.e. business logic) from the form. Unit tests are in Selolaskuri.Tests.
-
---
-
-There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version.
+10.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated operations and calculations (i.e. business logic) from the form. Unit tests are in Selolaskuri.Tests and it makes testing of the parameter checking and calculations easy.
 
 --
 
-Next is only in Finnish. Tells about the usage of the SELO calculation application.
+There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version. 
+
+--
+
+The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -31,7 +31,7 @@ Selolaskentaa netissä:
 Syötekenttiä:
 * miettimisaika: vähintään 90 min, 60-89 minuuttia, 11-59 minuuttia tai enintään 10 minuuttia
 * oman vahvuusluku eli oma SELO tai jos miettimisaika on enintään 10 minuuttia, niin PELO
-* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa (vain SELO). Vielä ei ole toteutettu PELO:n laskentaa uudelle pelaajalle.
+* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa (vain SELO).
 * ottelun tiedot eli Vastustajan SELO-kenttä, joissa vaihtoehdot:
  - a) yhden vastustajan vahvuusluku, esim. 1720
  - b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
@@ -92,7 +92,6 @@ Ohjelman asennus:
 Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO: (Nyt on listalla pitkään ollut automaattinen testaus toteutettu/10.6.2018)
-- vielä hieman lisälaskentaa
-- lisälaskentaa (suorituslukulaskenta)
+- vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttö (voi olla turhiakin vielä)
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - Java-versioon samat koodin järjestämiset/refaktoroinnit

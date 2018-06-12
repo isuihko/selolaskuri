@@ -6,7 +6,7 @@
 //
 // Luotu 10.6.2018 Ismo Suihko
 // Muutokset:
-//  11.6.2018 Kommentit
+//  11.-12.6.2018 Kommentit, muutama vakio
 //
 
 using System;
@@ -80,8 +80,8 @@ namespace Selolaskuri
 
             // ************ TARKISTA SYÖTE ************
 
-            // ENSIN TARKISTA MIETTIMISAIKA. Tässä ei voi olla virheellista tietoa.
-            // XXX: TARKISTETTU JA HAETTU JO!
+            // ENSIN TARKISTA MIETTIMISAIKA.
+            // Jo haettu lomakkeelta eikä tässä voi olla virhettä, joten ei tehdä virhetarkastusta.
             syotteet.miettimisaika = TarkistaMiettimisaika(syotteet.miettimisaika);
 
             do {

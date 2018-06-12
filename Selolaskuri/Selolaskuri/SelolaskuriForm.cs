@@ -434,6 +434,5 @@ namespace Selolaskuri
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
         }
-
     }
 }

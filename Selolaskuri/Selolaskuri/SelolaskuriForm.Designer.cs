@@ -130,7 +130,7 @@
             // 
             this.Laske_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Laske_btn.Location = new System.Drawing.Point(69, 316);
-            this.Laske_btn.Name = "Laske_button";
+            this.Laske_btn.Name = "Laske_btn";
             this.Laske_btn.Size = new System.Drawing.Size(193, 25);
             this.Laske_btn.TabIndex = 7;
             this.Laske_btn.Text = "Laske uusi SELO";
@@ -160,7 +160,7 @@
             // KaytaTulosta_btn
             // 
             this.KaytaTulosta_btn.Location = new System.Drawing.Point(69, 467);
-            this.KaytaTulosta_btn.Name = "Kayta_uutta_button";
+            this.KaytaTulosta_btn.Name = "KaytaTulosta_btn";
             this.KaytaTulosta_btn.Size = new System.Drawing.Size(193, 25);
             this.KaytaTulosta_btn.TabIndex = 8;
             this.KaytaTulosta_btn.Text = "Käytä uutta SELOa jatkolaskennassa";
@@ -185,7 +185,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(223, 13);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 10.6.2018 Ismo Suihko github/isuihko";
+            this.label6.Text = "C#/.NET 12.6.2018 Ismo Suihko github/isuihko";
             // 
             // label7
             // 
@@ -471,37 +471,37 @@
             // ohjeitaKäyttöönkeskenToolStripMenuItem
             // 
             this.ohjeitaKäyttöönkeskenToolStripMenuItem.Name = "ohjeitaKäyttöönkeskenToolStripMenuItem";
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.ohjeitaKäyttöönkeskenToolStripMenuItem.Text = "Ohjeita";
             this.ohjeitaKäyttöönkeskenToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
             // 
             // laskentakaavatToolStripMenuItem
             // 
             this.laskentakaavatToolStripMenuItem.Name = "laskentakaavatToolStripMenuItem";
-            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
             this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.laskentakaavatToolStripMenuItem_Click);
             // 
             // tietojaOhjelmastaToolStripMenuItem
             // 
             this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
-            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
             this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
             // 
             // suljeToolStripMenuItem
             // 
             this.suljeToolStripMenuItem.Name = "suljeToolStripMenuItem";
-            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
             this.suljeToolStripMenuItem.Click += new System.EventHandler(this.suljeToolStripMenuItem_Click);
             // 
-            // Form1
+            // SelolaskuriForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -544,8 +544,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
-            this.Name = "Selolaskuri Form";
-            this.Text = "Selolaskuri v. 2.0.0.0";
+            this.Name = "SelolaskuriForm";
+            this.Text = "Selolaskuri v. 2.0.0.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

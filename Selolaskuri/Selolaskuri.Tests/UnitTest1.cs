@@ -54,18 +54,51 @@ namespace Selolaskuri.Tests
         }
 
         [TestMethod]
-        public void UudenPelaajanOttelutKerralla()
+        public void UudenPelaajanOttelutKerralla1()
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 1695);
             Assert.AreEqual(tulokset.Item2, 7);
         }
 
+        [TestMethod]
+        public void UudenPelaajanOttelutKerralla2()
+        {
+            var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "3 1525 1441 1973 1718 1784 1660 1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            Assert.AreEqual(tulokset.Item1, 1695);
+            Assert.AreEqual(tulokset.Item2, 7);
+        }
+
+        // Kolme tapaa syöttää ottelun tulos
+        [TestMethod]
+        public void TulosPainikkeilla()
+        {
+            var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "1900", Vakiot.OttelunTulos_enum.TULOS_VOITTOx2);
+            Assert.AreEqual(tulokset.Item1, 1823);
+            Assert.AreEqual(tulokset.Item2, 0);
+        }
+
+        [TestMethod]
+        public void TulosSelossa()
+        {
+            var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "+1900", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            Assert.AreEqual(tulokset.Item1, 1823);
+            Assert.AreEqual(tulokset.Item2, 0);
+        }
+
+        [TestMethod]
+        public void TulosNumeronaEnnenSeloa()
+        {
+            var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "1.0 1900", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            Assert.AreEqual(tulokset.Item1, 1823);
+            Assert.AreEqual(tulokset.Item2, 0);
+        }
+
         // Merkkijonoissa ylimääräisiä välilyöntejä
         [TestMethod]
         public void UudenPelaajanOttelutValilyonteja()
         {
-            var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "    1525  ", "0  ", "     +1525 +1441           -1973 +1718    -1784 -1660     -1966   ", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "    1525  ", "0  ", "     +1525  +1441           -1973 +1718    -1784 -1660     -1966   ", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 1695);
             Assert.AreEqual(tulokset.Item2, 7);
         }
@@ -167,6 +200,8 @@ namespace Selolaskuri.Tests
 
         // Testauksen apurutiini, joka palauttaa tuloksista lasketun vahvuusluvun ja pelimäärän
         // Tietorakenteesta Tulokset saisi otettua myös muitakin laskettuja tietoja tarkistettavaksi
+        // Esim. -otteluista saatu yhteispistemäärä (tulokset.laskettuTurnauksenTulos)
+        //       -vastustajien vahvuuslukujen keskiarvo (tulokset.turnauksenKeskivahvuus)
         //
         // Virhetilanteessa palautetaan virhestatus ja nolla
         // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa

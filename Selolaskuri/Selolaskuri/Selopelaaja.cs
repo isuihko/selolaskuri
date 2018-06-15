@@ -6,8 +6,9 @@
 // Muokattu
 //   1.-7.4.2018 Laskennan korjauksia, uuden pelaajan laskenta turnauksen tuloksesta
 //   10.6.2018   Laskennan korjaukset (pelimäärä vaikutti tulokseen)
+//   15.6.2018   Laskennassa käytettyjen apumuuttujien käyttö aloitettu, turhat poistetaan
 //
-// TODO: Tarkista apumuuttujien tarpeellisuus
+// TODO: Tarkista apumuuttujien tarpeellisuus ja nimeäminen (työ on nyt aloitettu)
 //
 
 using System;
@@ -51,8 +52,8 @@ namespace Selolaskuri
             this.alkuperaisetSyotteet = syotteet;  // selo, pelimaara, miettimisaika
 
             // laskettavat tiedot
-            this.selo = syotteet.nykyinenSelo;
-            this.pelimaara = syotteet.nykyinenPelimaara;
+            this.selo = syotteet.alkuperainenSelo;
+            this.pelimaara = syotteet.alkuperainenPelimaara;
 
             // vaihteluvälin alustus näin, jotta min ja max toimisivat
             minSelo = Vakiot.MAX_SELO;
@@ -86,7 +87,7 @@ namespace Selolaskuri
 
         public int alkuperainenSelo {
             get {
-                return this.alkuperaisetSyotteet.nykyinenSelo;
+                return this.alkuperaisetSyotteet.alkuperainenSelo;
             }
         }
 
@@ -136,8 +137,8 @@ namespace Selolaskuri
         {
             // Vanhan pelaajan SELOn laskennassa käytetään odotustulosta ja kerrointa
             // Mutta nämä lasketaan täällä, koska ne näytetään myös uuden pelaajan tuloksissa
-            odotustulos = MaaritaOdotustulos(vastustajanSelo);
-            kerroin = MaaritaKerroin();
+            odotustulos = MaaritaOdotustulos(alkuperainenSelo, vastustajanSelo);
+            kerroin = MaaritaKerroin(selo);
 
             ///*DEBUG*/System.Windows.Forms.MessageBox.Show("Odotus " + odotustulos +
             //    " kerroin " + kerroin + " selo " + selo +
@@ -153,7 +154,7 @@ namespace Selolaskuri
                 // XXX: pyöristykset jakolaskun jälkeen?
                 laskettuSelo = (int)Math.Round((selo * pelimaara + (vastustajanSelo + selomuutos[(int)tulos])) / (pelimaara + 1F));
             } else {
-                float lisakerroin = MaaritaLisakerroin();
+                float lisakerroin = MaaritaLisakerroin(miettimisaika);
                 // vanhan pelaajan SELO, kun pelimäärä jätetty tyhjäksi tai on yli 10.
                 // XXX: SELOn pyöristys? lisätään 0.5F, kaavassa lisäksi +0.1F
                 laskettuSelo = (int)Math.Round((selo + kerroin * lisakerroin * (((int)tulos / 2F) - (odotustulos / 100F)) + 0.1F));
@@ -221,8 +222,7 @@ namespace Selolaskuri
                 // laskennassa mukana myös aiemmin tallennetut miettimisaika ja pelimäärä
                 selo = PelaaOttelu(ottelu1.vastustajanSelo, ottelu1.ottelunTulos);
 
-                // päivitä pelimäärää, jos oli annettu
-                // XXX: Tarkista tämä
+                // päivitä pelimäärää vain jos oli annettu
                 if (pelimaara != Vakiot.PELIMAARA_TYHJA)
                     pelimaara++;
             }
@@ -230,11 +230,11 @@ namespace Selolaskuri
             // Laskenta, jos on annettu ensin turnauksen pistemäärä ja sen perään selot ilman erillistä tulostietoa
             // Esim. 1.5 1622 1880 1683
             //
-            // HUOM! Tämä kaava ei toimi uudella pelaajalla, joten tarkistetaan alkuperäinen pelimäärä
+            // HUOM! Seuraava laskenta ei toimi uudella pelaajalla, joka onkin käsitelty aiemmin
             //
             if (annettuTurnauksenTulos >= 0 &&
-                (alkuperaisetSyotteet.nykyinenPelimaara > Vakiot.MAX_UUSI_PELAAJA ||
-                 alkuperaisetSyotteet.nykyinenPelimaara == Vakiot.PELIMAARA_TYHJA))
+                (alkuperaisetSyotteet.alkuperainenPelimaara > Vakiot.MAX_UUSI_PELAAJA ||
+                 alkuperaisetSyotteet.alkuperainenPelimaara == Vakiot.PELIMAARA_TYHJA))
             {
                 ///*DEBUG*/
                 //System.Windows.Forms.MessageBox.Show("annettu turnauksen tulos " + annettuTurnauksenTulos +
@@ -270,13 +270,13 @@ namespace Selolaskuri
                     //
                     // pidemmän miettimisajan pelit eli > 10 min
                     //
-                    // XXX: laskentakaava ei toimi uudella pelaajalla
+                    // Laskentakaava ei toimi uudella pelaajalla, joka onkin käsitelty aiemmin
                     //
-                    float lisakerroin = MaaritaLisakerroin();
+                    float lisakerroin = MaaritaLisakerroin(miettimisaika);
                     // Lisätään vielä pelattujen pelien lkm * 0.1
                     // 0.5F pyöristystä varten
                     laskettuSelo =
-                        (int)((selo + MaaritaKerroin() * lisakerroin * (annettuTurnauksenTulos / 2F - odotustuloksienSumma / 100F)) + (kasiteltyjenOttelujenLkm * 0.1F) + 0.5F);
+                        (int)((selo + MaaritaKerroin(selo) * lisakerroin * (annettuTurnauksenTulos / 2F - odotustuloksienSumma / 100F)) + (kasiteltyjenOttelujenLkm * 0.1F) + 0.5F);
                     minSelo = maxSelo = laskettuSelo;  // tässä ei voida laskea minimi- eikä maksimiseloa
                 }
             }
@@ -290,11 +290,10 @@ namespace Selolaskuri
         //
         // Odotustulos voi olla enintään 92. Paitsi pikashakissa voi olla jopa 100.
         // ks. ohje http://skore.users.paivola.fi/selo.html
-        private int MaaritaOdotustulos(int vastustajanSelo)
+        // odotustulokset lasketaan aina alkuperäisellä selolla
+        private int MaaritaOdotustulos(int alkuperainenSelo, int vastustajanSelo)
         {
-            int odotustulos;
-            // odotustulokset lasketaan aina alkuperäisellä selolla
-            int SELO_diff = alkuperainenSelo - vastustajanSelo;    // XXX: selo_alkuperainen
+            int SELO_diff = alkuperainenSelo - vastustajanSelo;
             int diff = Math.Abs(SELO_diff);   // itseisarvo
             int sign = Math.Sign(SELO_diff);  // etumerkki
 
@@ -324,7 +323,7 @@ namespace Selolaskuri
 
             // laske odotustulos taulukon paikkaa eli indeksiä käyttäen
             // jos ei löytynyt, niin index 50 ja odotustulos 0 (0,00) tai 100 (1,00)
-            odotustulos = 50 + sign * index;
+            int odotustulos = 50 + sign * index;
 
             // Pikashakissa ei odotustulosta rajoiteta 92:een (kun miettimisaika <= 10 min)
             return (odotustulos > 92 && miettimisaika >= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN) ? 92 : odotustulos;
@@ -332,7 +331,7 @@ namespace Selolaskuri
 
         // Kerroin määritetään alkuperäisen selon mukaan.
         // ks. kerrointaulukko http://skore.users.paivola.fi/selo.html
-        private int MaaritaKerroin()
+        private int MaaritaKerroin(int selo)
         {
             if (selo >= 2050)
                 return 20;
@@ -342,14 +341,14 @@ namespace Selolaskuri
         }
 
         // Eri miettimisajoilla voi olla omia kertoimia
-        private float MaaritaLisakerroin()
+        private float MaaritaLisakerroin(Vakiot.Miettimisaika_enum aika)
         {
             float f = 1.0F;
 
             // Tämä ei vaikuta uuden pelaajan SELOn laskentaan
-            if (miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
+            if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
                 f = 0.5F;
-            else if (miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
+            else if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
                 f = (selo < 2300) ? 0.3F : 0.15F;
             return f;
         }

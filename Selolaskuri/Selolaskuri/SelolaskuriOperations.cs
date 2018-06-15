@@ -86,13 +86,13 @@ namespace Selolaskuri
 
             do {
                 // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
-                if ((tulos = TarkistaNykyinenSelo(syotteet.nykyinenSelo_str)) == Vakiot.SYOTE_VIRHE_OMA_SELO)
+                if ((tulos = TarkistaNykyinenSelo(syotteet.alkuperainenSelo_str)) == Vakiot.SYOTE_VIRHE_OMA_SELO)
                     break;
-                syotteet.nykyinenSelo = tulos;
+                syotteet.alkuperainenSelo = tulos;
 
-                if ((tulos = TarkistaPelimaara(syotteet.nykyinenPelimaara_str)) == Vakiot.SYOTE_VIRHE_PELIMAARA)
+                if ((tulos = TarkistaPelimaara(syotteet.alkuperainenPelimaara_str)) == Vakiot.SYOTE_VIRHE_PELIMAARA)
                     break;
-                syotteet.nykyinenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
+                syotteet.alkuperainenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
 
                 // TODO: Tässä mietittävää, kun on kaksi eri tallennustapaa
                 //    JOS YKSI OTTELU,   saadaan muuttujassa vastustajanSelo vastustajan vahvuusluku,
@@ -101,7 +101,7 @@ namespace Selolaskuri
                 //
                 if ((tulos = TarkistaVastustajanSelo(syotteet.vastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
-                syotteet.vastustajanSelo = tulos;
+                syotteet.vastustajanSeloYksittainen = tulos;
 
                 // merkkijonokin talteen sitten kun siitä on poistettu ylimääräiset välilyönnit
                 // XXX: ON JO TALLESSA, TARKISTA
@@ -125,7 +125,7 @@ namespace Selolaskuri
                     //                ", " + syotteet.ottelunTulos);
 
                     // Nyt voidaan tallentaa ottelun tiedot (vastustajanSelo, ottelunTulos)
-                    ottelulista.LisaaOttelunTulos(syotteet.vastustajanSelo, syotteet.ottelunTulos);
+                    ottelulista.LisaaOttelunTulos(syotteet.vastustajanSeloYksittainen, syotteet.ottelunTulos);
                 }
 
                 tulos = Vakiot.SYOTE_STATUS_OK; // syötekentät OK, jos päästy tänne asti
@@ -327,7 +327,7 @@ namespace Selolaskuri
                         }
 
                         // Tallennetaan tasapelinä, ei ollut +:aa tai -:sta
-                        ottelulista.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_TASAPELIx2);
+                        ottelulista.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_TASAPELI);
 
                     } else if (onko_turnauksen_tulos == false && vastustaja.Length == Vakiot.MAX_PITUUS) {
                         // 5)
@@ -342,13 +342,13 @@ namespace Selolaskuri
                             // Ensimmäinen merkki kertoo tuloksen
                             switch (vastustaja[0]) {
                                 case '+':
-                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_VOITTOx2;
+                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_VOITTO;
                                     break;
                                 case '=':
-                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_TASAPELIx2;
+                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_TASAPELI;
                                     break;
                                 case '-':
-                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_TAPPIOx2;
+                                    tulos1 = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
                                     break;
                                 default: // ei sallittu tuloksen kertova merkki
                                     virhekoodi = Vakiot.SYOTE_VIRHE_YKSITTAINEN_TULOS;
@@ -458,8 +458,6 @@ namespace Selolaskuri
                 tulokset.laskettuPelimaara = shakinpelaaja.laskettuPelimaara;
 
             tulokset.laskettuTurnauksenTulos = shakinpelaaja.laskettuTurnauksenTulos;
-            tulokset.kasitellytOttelut = shakinpelaaja.kasitellytOttelut;
-
             tulokset.alkuperainenPelimaara = shakinpelaaja.pelimaara;
             tulokset.selomuutos = shakinpelaaja.laskettuSelo - shakinpelaaja.alkuperainenSelo;
         }

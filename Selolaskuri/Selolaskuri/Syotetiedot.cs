@@ -15,37 +15,36 @@ namespace Selolaskuri
     //
     public class Syotetiedot
     {
-
         // Alkuperäiset syötteet
         public Vakiot.Miettimisaika_enum miettimisaika;
-        public string nykyinenSelo_str { get; set; }
-        public string nykyinenPelimaara_str { get; set; }
+        public string alkuperainenSelo_str { get; set; }
+        public string alkuperainenPelimaara_str { get; set; }
         public string vastustajienSelot_str { get; set; }  // vastustajan/vastustajien tiedot ja tulokset
         public Vakiot.OttelunTulos_enum ottelunTulos { get; set; }
 
 
         // Tarkastetut syötteet, merkkijonot muutettu numeroiksi
-        public int nykyinenSelo { get; set; }
-        public int nykyinenPelimaara { get; set; }
-        public int vastustajanSelo { get; set; }
+        public int alkuperainenSelo { get; set; }
+        public int alkuperainenPelimaara { get; set; }
+        public int vastustajanSeloYksittainen { get; set; }
 
         public Syotetiedot()
         {
-            miettimisaika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
-            nykyinenSelo = 0;
-            nykyinenPelimaara = 0;
-            vastustajanSelo = 0;
-            ottelunTulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
-            //vastustajienSelot_str = null;
+            this.miettimisaika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;  // =oletus
+            this.alkuperainenSelo = 0;
+            this.alkuperainenPelimaara = 0;
+            this.vastustajanSeloYksittainen = 0;
+            this.ottelunTulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
+            //this.vastustajienSelot_str = null;
         }
 
-        // KÄYTETÄÄN TESTATTAESSA, Tiedot syötetään constructorille
-        // Syotetiedot ottelu1 = new Syotetiedot(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "1525", Vakiot.OttelunTulos_enum.TULOS_VOITTOx2);
+        // KÄYTETÄÄN TESTATTAESSA (UnitTest), Tiedot syötetään constructorille, enum ja merkkijonot
+        // Syotetiedot ottelu = new Syotetiedot(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "1525", Vakiot.OttelunTulos_enum.TULOS_VOITTOx2);
         public Syotetiedot(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             this.miettimisaika = aika;
-            this.nykyinenSelo_str = selo;
-            this.nykyinenPelimaara_str = pelimaara;
+            this.alkuperainenSelo_str = selo;
+            this.alkuperainenPelimaara_str = pelimaara;
             this.vastustajienSelot_str = vastustajat;
             this.ottelunTulos = tulos;
         }

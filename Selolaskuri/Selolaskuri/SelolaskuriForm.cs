@@ -14,6 +14,7 @@
 // Publish --> Versio 2.0.0.0, myös github
 //
 //  11.6.2018   Jos ei annettu pelimääärää, niin uusi pelimäärä pitää olla tyhjä
+//  15.6.2018   Korjattu vastustajanSelo_combobox:iin virheellisen syötteen tallentuminen (vastustajanSelo_combobox_KeyDown)
 //
 // TODO: Tarkista, ovatko kaikki ohjelman kommentit uuden rakenteen mukaisia
 //
@@ -51,45 +52,46 @@ namespace Selolaskuri
         // Myös ottelun tulos voi/saa olla antamatta, joten silloin se on määrittelemätön
         private void HaeSyotteetLomakkeelta(Syotetiedot syotteet)
         {
-            syotteet.miettimisaika = HaeMiettimisaika();                    // valittu button -> enum
-            syotteet.nykyinenSelo_str = nykyinenSelo_in.Text;               // merkkijono
-            syotteet.nykyinenPelimaara_str = pelimaara_in.Text;             // merkkijono
-            syotteet.vastustajienSelot_str = vastustajanSelo_comboBox.Text; // merkkijono
-            syotteet.ottelunTulos = HaeOttelunTulos();                      // valittu button -> enum
+            syotteet.miettimisaika             = HaeMiettimisaika();            // valittu button -> enum
+            syotteet.alkuperainenSelo_str      = nykyinenSelo_in.Text;          // merkkijono
+            syotteet.alkuperainenPelimaara_str = pelimaara_in.Text;             // merkkijono
+            syotteet.vastustajienSelot_str     = vastustajanSelo_comboBox.Text; // merkkijono
+            syotteet.ottelunTulos              = HaeOttelunTulos();             // valittu button -> enum tai määrittelemätön
         }
 
         // Nämä miettimisajan valintapainikkeet ovat omana ryhmänään paneelissa
         // Aina on joku valittuna, joten ei voi olla virhetilannetta.
         private Vakiot.Miettimisaika_enum HaeMiettimisaika()
         {
-            Vakiot.Miettimisaika_enum aika;
+            Vakiot.Miettimisaika_enum valinta;
 
             if (miettimisaika_vah90_btn.Checked)
-                aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
+                valinta = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
             else if (miettimisaika_60_89_btn.Checked)
-                aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
+                valinta = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
             else if (miettimisaika_11_59_btn.Checked)
-                aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;
+                valinta = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;
             else
-                aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
+                valinta = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
 
-            return aika;
+            return valinta;
         }
 
+        // Ottelun tulos voi olla valittu radiobuttoneilla tai valitsematta (MAARITTELEMATON)
         public Vakiot.OttelunTulos_enum HaeOttelunTulos()
         {
-            Vakiot.OttelunTulos_enum pisteet;
+            Vakiot.OttelunTulos_enum valinta;
 
             if (tulosTappio_btn.Checked)
-                pisteet = Vakiot.OttelunTulos_enum.TULOS_TAPPIOx2;
+                valinta = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
             else if (tulosTasapeli_btn.Checked)
-                pisteet = Vakiot.OttelunTulos_enum.TULOS_TASAPELIx2;
+                valinta = Vakiot.OttelunTulos_enum.TULOS_TASAPELI;
             else if (tulosVoitto_btn.Checked)
-                pisteet = Vakiot.OttelunTulos_enum.TULOS_VOITTOx2;
+                valinta = Vakiot.OttelunTulos_enum.TULOS_VOITTO;
             else
-                pisteet = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
+                valinta = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
 
-            return pisteet;
+            return valinta;
         }
 
 
@@ -129,6 +131,7 @@ namespace Selolaskuri
         }
 
         // Näyttää virheen mukaisen ilmoituksen sekä siirtää kursorin kenttään, jossa virhe
+        // Virheellisen kentän arvo näytetään punaisella kunnes ilmoitusikkuna kuitataan
         private void NaytaVirheilmoitus(int tulos)
         {
             string message;
@@ -144,7 +147,7 @@ namespace Selolaskuri
                     MessageBox.Show(message);
                     nykyinenSelo_in.ForeColor = Color.Black;
 
-                    // Tyhjennä liian täysi kenttä? Takaisin kenttään ja virhestatus
+                    // Tyhjennä liian täysi kenttä? Tyhjennä
                     if (nykyinenSelo_in.Text.Length > Vakiot.MAX_PITUUS)
                         nykyinenSelo_in.Text = "";
                     nykyinenSelo_in.Select();
@@ -168,15 +171,16 @@ namespace Selolaskuri
                     MessageBox.Show(message);
                     pelimaara_in.ForeColor = Color.Black;
 
-                    // Tyhjennä liian täysi kenttä? Takaisin kenttään ja virhestatus
+                    // Tyhjennä liian täysi kenttä? Tyhjennä
                     if (pelimaara_in.Text.Length > Vakiot.MAX_PITUUS)
                         pelimaara_in.Text = "";
                     pelimaara_in.Select();
                     break;
 
-                case Vakiot.SYOTE_VIRHE_BUTTON_TULOS:  // tulos puuttuu painonapeista
+                // tulos puuttuu painonapeista, siirry ensimmäiseen valintanapeista
+                case Vakiot.SYOTE_VIRHE_BUTTON_TULOS:  
                     MessageBox.Show("Ottelun tulosta ei valittu!");
-                    tulosTappio_btn.Select();   // siirry ensimmäiseen valintanapeista
+                    tulosTappio_btn.Select();
                     break;
 
                 case Vakiot.SYOTE_VIRHE_YKSITTAINEN_TULOS:
@@ -191,8 +195,6 @@ namespace Selolaskuri
                 case Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS:
                     message =
                         String.Format("VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä).");
-                    //String.Format("VIRHE: Turnauksen pistemäärä (annettu {0}) voi olla enintään sama kuin vastustajien lukumäärä ({1}).",
-                    //    syotetty_tulos, ottelulista.vastustajienLukumaara);
                     vastustajanSelo_comboBox.ForeColor = Color.Red;
                     MessageBox.Show(message);
                     vastustajanSelo_comboBox.ForeColor = Color.Black;
@@ -211,7 +213,7 @@ namespace Selolaskuri
         //
         private bool LaskeOttelunTulosLomakkeelta()
         {
-
+            bool status = true;
             Syotetiedot syotteet = new Syotetiedot(); // tiedot nollataan
             Tulokset tulokset = new Tulokset();
 
@@ -221,12 +223,13 @@ namespace Selolaskuri
 
             if ((tulos = so.TarkistaSyote(syotteet)) != Vakiot.SYOTE_STATUS_OK) {
                 NaytaVirheilmoitus(tulos);
+                status = false;
             } else {
                 so.SuoritaLaskenta(syotteet, ref tulokset);  // tarvitaan ref
                 NaytaTulokset(syotteet, tulokset);
             }
 
-            return true;
+            return status;
         }
 
 
@@ -265,7 +268,7 @@ namespace Selolaskuri
                 // Jos oli annettu turnauksen tulos, niin laskenta tehdään yhdellä lauseella eikä vaihteluväliä ole
                 // Vaihteluväliä ei ole myöskään, jos oli laskettu yhden ottelun tulosta
                 // Vaihteluväli on vain, jos tulokset formaatissa "+1622 -1880 =1633"
-                if (tulokset.annettuTurnauksenTulos < 0 && tulokset.kasitellytOttelut > 1) {
+                if (tulokset.annettuTurnauksenTulos < 0 && tulokset.vastustajienLkm > 1) {
                     vaihteluvali_out.Text =
                         tulokset.minSelo.ToString() + " - " + tulokset.maxSelo.ToString();
                 } else
@@ -286,7 +289,7 @@ namespace Selolaskuri
 
             // Turnauksen loppupisteet / ottelujen lkm, esim.  2.5 / 6
             turnauksenTulos_out.Text =
-                (tulokset.laskettuTurnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.kasitellytOttelut;
+                (tulokset.laskettuTurnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.vastustajienLkm;
         }
 
 
@@ -327,11 +330,12 @@ namespace Selolaskuri
             if (e.KeyCode == Keys.Enter) {
                 // Kun painettu Enter, niin lasketaan
                 // siirrytäänkö myös kentän loppuun? Nyt jäädään samaan paikkaan, mikä myös OK.
-                LaskeOttelunTulosLomakkeelta();
+                if (LaskeOttelunTulosLomakkeelta()) {
 
-                // 12.12.1027: Annettu teksti talteen -> Drop-down combobox
-                if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
-                    vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
+                    // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syötä -> Drop-down combobox
+                    if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
+                        vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
+                }
             }
         }
 

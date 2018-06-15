@@ -40,9 +40,9 @@ namespace Selolaskuri {
         public enum OttelunTulos_enum
         {
             TULOS_MAARITTELEMATON = -1,
-            TULOS_TAPPIOx2 = 0,
-            TULOS_TASAPELIx2 = 1,
-            TULOS_VOITTOx2 = 2
+            TULOS_TAPPIO = 0,
+            TULOS_TASAPELI = 1,
+            TULOS_VOITTO = 2
         };
 
         // Miettimisajat (miettimisajan pituuden mukaan nousevassa järjestyksessä)

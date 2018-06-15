@@ -7,6 +7,9 @@
 //       1. käyttöliittymälle (SelolaskuriForm) näytettäväksi
 //       2. yksikkötestaukseen (Selolaskuri.Tests) tarkistusta varten
 //
+// Muutoksia:
+//  16.6.2018 Poistettu turhana kasitellytOttelut
+//
 namespace Selolaskuri {
 
     public struct Tulokset {
@@ -16,7 +19,6 @@ namespace Selolaskuri {
         public int alkuperainenPelimaara;
 
         public int annettuTurnauksenTulos;
-        public int kasitellytOttelut;
         public int laskettuTurnauksenTulos;
 
         public int pisteero;

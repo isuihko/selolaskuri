@@ -36,14 +36,15 @@ namespace Selolaskuri
         // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
         public Tuple<int, int> KopioiLasketutTulokset()
         {
-            int selo = shakinpelaaja.laskettuSelo;
-            int pelimaara = shakinpelaaja.laskettuPelimaara;
+            int selo      = shakinpelaaja.lasketaanSelo;
+            int pelimaara = shakinpelaaja.lasketaanPelimaara;
 
-            if (selo == 0) {
-                // Jos ei ollut vielä laskentaa, niin laitetaan luotaessa käytetyt arvot 1525,0
-                selo = shakinpelaaja.selo;
-                pelimaara = shakinpelaaja.pelimaara;
-            }
+            // XXX: tarkista
+            //if (selo == 0) {
+            //    // Jos ei ollut vielä laskentaa, niin laitetaan luotaessa käytetyt arvot 1525,0
+            //    selo      = shakinpelaaja.lasketaanSelo;
+            //    pelimaara = shakinpelaaja.lasketaanPelimaara;
+            //}
 
             return Tuple.Create(selo, pelimaara);
         }
@@ -116,15 +117,9 @@ namespace Selolaskuri
                     // XXX: ottelunTulos HAETTU JO! Täällä virheilmoitus
                     if ((tulos = TarkistaOttelunTulos(syotteet.ottelunTulos)) == Vakiot.SYOTE_VIRHE_BUTTON_TULOS)
                         break;
-
                     //syotteet.ottelunTulos = (Vakiot.OttelunTulos_enum)tulos;
 
-                    ///* DEBUG */MessageBox.Show("Syotteet: " + syotteet.nykyinenSelo +
-                    //                ", " + syotteet.nykyinenPelimaara +
-                    //                ", " + syotteet.vastustajanSelo +
-                    //                ", " + syotteet.ottelunTulos);
-
-                    // Nyt voidaan tallentaa ottelun tiedot (vastustajanSelo, ottelunTulos)
+                    // Nyt voidaan tallentaa ainoan ottelun tiedot (vastustajanSelo, ottelunTulos)
                     ottelulista.LisaaOttelunTulos(syotteet.vastustajanSeloYksittainen, syotteet.ottelunTulos);
                 }
 
@@ -434,32 +429,37 @@ namespace Selolaskuri
             //
             // Siirrä kaikki tulokset tietorakenteeseen Tulokset palautettavaksi
             // 
-            // XXX: Tätä pitää vielä tarkistaa, koska voi olla jotain turhaankin
-            // XXX: Nyt formaatti (if-tarkistukset) on tulostusrutiinin mukaan
-            tulokset.turnauksenKeskivahvuus = (int)Math.Round(ottelulista.tallennetutOttelut.Average(x => x.vastustajanSelo));
-            tulokset.vastustajienLkm = ottelulista.vastustajienLukumaara;
-            tulokset.alkuperainenSelo = shakinpelaaja.alkuperainenSelo;
+
+            tulokset.vastustajienLkm         = ottelulista.vastustajienLukumaara;
+            tulokset.turnauksenKeskivahvuus  = (int)Math.Round(ottelulista.tallennetutOttelut.Average(x => x.vastustajanSelo));
+            tulokset.laskettuTurnauksenTulos = shakinpelaaja.laskettuTurnauksenTulos;
+            //tulokset.alkuperainenSelo        = shakinpelaaja.alkuperainenSelo;
 
             // Laskettiinko yhtä ottelua vai turnausta?
             if (ottelulista.vastustajienLukumaara == 1) {
                 tulokset.pisteero = Math.Abs(shakinpelaaja.alkuperainenSelo - tulokset.turnauksenKeskivahvuus);
-                tulokset.odotustulos = shakinpelaaja.odotustulos;  // 100-kertainen, tulostusta varten tullaan jakamaan 100:lla
-                tulokset.kerroin = shakinpelaaja.kerroin;
-            } else {
-                if (shakinpelaaja.pelimaara == Vakiot.PELIMAARA_TYHJA || shakinpelaaja.pelimaara > Vakiot.MAX_UUSI_PELAAJA) {
-                    tulokset.odotustuloksienSumma = shakinpelaaja.odotustuloksienSumma; // 100-kertainen
-                }
-                tulokset.kerroin = shakinpelaaja.kerroin;
-                tulokset.minSelo = shakinpelaaja.minSelo;
-                tulokset.maxSelo = shakinpelaaja.maxSelo;
-            }
-            tulokset.laskettuSelo = shakinpelaaja.laskettuSelo;
-            if (shakinpelaaja.pelimaara != Vakiot.PELIMAARA_TYHJA)
-                tulokset.laskettuPelimaara = shakinpelaaja.laskettuPelimaara;
 
-            tulokset.laskettuTurnauksenTulos = shakinpelaaja.laskettuTurnauksenTulos;
-            tulokset.alkuperainenPelimaara = shakinpelaaja.pelimaara;
-            tulokset.selomuutos = shakinpelaaja.laskettuSelo - shakinpelaaja.alkuperainenSelo;
+            } else {
+                if (shakinpelaaja.lasketaanPelimaara == Vakiot.PELIMAARA_TYHJA || shakinpelaaja.lasketaanPelimaara > Vakiot.MAX_UUSI_PELAAJA) {
+                    //tulokset.odotustulos = shakinpelaaja.odotustuloksienSumma; // 100-kertainen
+                }
+
+
+            }
+
+            tulokset.minSelo = shakinpelaaja.minSelo;
+            tulokset.maxSelo = shakinpelaaja.maxSelo;
+
+            // Yhden ottelun odotustulos tai useiden summa
+            tulokset.odotustulos = shakinpelaaja.laskettuOdotustulos;  // 100-kertainen, tulostusta varten tullaan jakamaan 100:lla
+
+            tulokset.kerroin = shakinpelaaja.laskettuKerroin;
+            tulokset.laskettuSelo = shakinpelaaja.lasketaanSelo;
+
+            if (shakinpelaaja.lasketaanPelimaara != Vakiot.PELIMAARA_TYHJA)
+                tulokset.laskettuPelimaara = shakinpelaaja.lasketaanPelimaara;
+            else
+                tulokset.laskettuPelimaara = 0;
         }
     }
 }

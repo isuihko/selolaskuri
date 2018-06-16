@@ -216,11 +216,13 @@ namespace Selolaskuri
             bool status = true;
             Syotetiedot syotteet = new Syotetiedot(); // tiedot nollataan
             Tulokset tulokset = new Tulokset();
-
-            HaeSyotteetLomakkeelta(syotteet);
-
             int tulos;
 
+            // hakee syötetyt tekstit ja tehdyt valinnat, ei virhetarkastusta
+            HaeSyotteetLomakkeelta(syotteet);  
+
+            // Virhetarkastus ja laskenta erillisessä luokassa SelolaskuriOperations,
+            // jotta niitä voidaan kutsua myös yksikkötestauksesta
             if ((tulos = so.TarkistaSyote(syotteet)) != Vakiot.SYOTE_STATUS_OK) {
                 NaytaVirheilmoitus(tulos);
                 status = false;
@@ -233,60 +235,54 @@ namespace Selolaskuri
         }
 
 
+        // Lasketut tulokset lomakkeelle
+        //   Uusi vahvuusluku ja sen muutos +/- NN pistettä
+        //   uusi pelimäärä tai tyhjä
+        //   piste-ero
         private void NaytaTulokset(Syotetiedot syotteet, Tulokset tulokset)
         {
-            // XXX: Tarkista muuttujien käyttö, kun voi olla toistoa
-            // Laskettiinko yhtä ottelua vai turnausta?
-            if (tulokset.vastustajienLkm == 1) {
-                // yksi ottelu -> näytä tässä piste-ero vastustajaan, odotustulos ja kerroin
-                pisteEro_out.Text =
-                    Math.Abs(tulokset.alkuperainenSelo - tulokset.turnauksenKeskivahvuus).ToString();
-                odotustulos_out.Text = (tulokset.odotustulos / 100F).ToString("0.00");
-                kerroin_out.Text = tulokset.kerroin.ToString();
-                vaihteluvali_out.Text = "";  // ei vaihteluväliä, koska vain yksi luku laskettu
-
-            } else {
-
-                // Laskettiin turnauksena syötettyä vastustajien joukkoa (jossa tosin voi olla myös vain yksi ottelu)
-                // tyhjennä yksittäisen ottelun tuloskentät
-                pisteEro_out.Text = "";
-                // laskettu odotustulos näytetään, jos ei ollut uuden pelaajan laskenta
-                if (tulokset.alkuperainenPelimaara == Vakiot.PELIMAARA_TYHJA || tulokset.alkuperainenPelimaara > Vakiot.MAX_UUSI_PELAAJA)
-                    odotustulos_out.Text = (tulokset.odotustuloksienSumma / 100F).ToString("0.00");
-                else
-                    odotustulos_out.Text = "";
-
-                // kerroin on laskettu alkuperäisestä omasta selosta
-                kerroin_out.Text = tulokset.kerroin.ToString();
-
-                // Valintanapeilla ei merkitystä, kun käsitellään turnausta eli valinnat pois
-                tulosTappio_btn.Checked = false;
-                tulosTasapeli_btn.Checked = false;
-                tulosVoitto_btn.Checked = false;
-
-                // Näytä laskennan aikainen vahvuusluvun vaihteluväli
-                // Jos oli annettu turnauksen tulos, niin laskenta tehdään yhdellä lauseella eikä vaihteluväliä ole
-                // Vaihteluväliä ei ole myöskään, jos oli laskettu yhden ottelun tulosta
-                // Vaihteluväli on vain, jos tulokset formaatissa "+1622 -1880 =1633"
-                if (tulokset.annettuTurnauksenTulos < 0 && tulokset.vastustajienLkm > 1) {
-                    vaihteluvali_out.Text =
-                        tulokset.minSelo.ToString() + " - " + tulokset.maxSelo.ToString();
-                } else
-                    vaihteluvali_out.Text = "";  // muutoin siis tyhjä
-            }
-
-            // Näytä uusi vahvuusluku ja pelimäärä. Näytä myös vahvuusluvun muutos +/-NN pistettä,
-            // sekä vastustajien keskivahvuus ja omat pisteet.
+            //   Uusi vahvuusluku ja sen muutos +/- NN pistettä
             uusiSelo_out.Text = tulokset.laskettuSelo.ToString();
-            selomuutos_out.Text =
-                (tulokset.laskettuSelo - tulokset.alkuperainenSelo).ToString("+#;-#;0");
-            if (tulokset.alkuperainenPelimaara != Vakiot.PELIMAARA_TYHJA)
+            selomuutos_out.Text = (tulokset.laskettuSelo - syotteet.alkuperainenSelo).ToString("+#;-#;0");
+
+            //   uusi pelimäärä tai tyhjä
+            if (syotteet.alkuperainenPelimaara != Vakiot.PELIMAARA_TYHJA)
                 uusiPelimaara_out.Text = tulokset.laskettuPelimaara.ToString();
             else
                 uusiPelimaara_out.Text = "";
 
-            keskivahvuus_out.Text = tulokset.turnauksenKeskivahvuus.ToString();
+            // Yksi vastustaja: 
+            //     piste-ero vastustajaan ja odotustulos
+            if (tulokset.vastustajienLkm == 1)
+                pisteEro_out.Text = Math.Abs(syotteet.alkuperainenSelo - tulokset.turnauksenKeskivahvuus).ToString();
+            else
+                pisteEro_out.Text = "";
 
+            // Odotustulosta tai sen summaa ei uudelle pelaajalle
+            if (syotteet.alkuperainenPelimaara == Vakiot.PELIMAARA_TYHJA || syotteet.alkuperainenPelimaara > Vakiot.MAX_UUSI_PELAAJA)
+                odotustulos_out.Text = (tulokset.odotustulos / 100F).ToString("0.00");
+            else
+                odotustulos_out.Text = "";
+
+            // Valintanapit tyhjiksi, jos oli muu kuin yksittäisen vastustajan tapaus
+            if (syotteet.vastustajanSeloYksittainen == 0) {
+                // nappeja on voinut jäädä valituksi, jos on lopulta syötetty yhden ottelun tulos muodossa "1.0 1434" tai "+1434"
+                tulosTappio_btn.Checked   = false;
+                tulosTasapeli_btn.Checked = false;
+                tulosVoitto_btn.Checked   = false;
+            }
+
+            // Vahvuusluku on voinut vaihdella laskennan aikana vain, jos tulokset ovat olleet formaatissa "+1622 -1880 =1633"
+            // Vaihteluväliä ei ole, jos laskenta on tehty yhdellä lausekkeella tai on ollut vain yksi vastustaja
+            if (tulokset.minSelo < tulokset.maxSelo)
+                vaihteluvali_out.Text = tulokset.minSelo.ToString() + " - " + tulokset.maxSelo.ToString();
+            else
+                vaihteluvali_out.Text = "";
+
+            // kerroin on laskettu alkuperäisestä omasta selosta
+            kerroin_out.Text = tulokset.kerroin.ToString();
+
+            keskivahvuus_out.Text = tulokset.turnauksenKeskivahvuus.ToString();
             // Turnauksen loppupisteet / ottelujen lkm, esim.  2.5 / 6
             turnauksenTulos_out.Text =
                 (tulokset.laskettuTurnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.vastustajienLkm;

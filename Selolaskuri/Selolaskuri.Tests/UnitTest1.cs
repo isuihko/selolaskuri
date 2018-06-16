@@ -229,7 +229,7 @@ namespace Selolaskuri.Tests
         //      -uuden pelimäärän
         //      -turnauksen pistemäärä, huom! kaksinkertaisena jotta saadaan kokonaislukuna (esim. 1,5 tulee lukuna 3)
         //      -vastustajien keskivahvuuden
-        // Tietorakenteesta saisi otettua myös muitakin laskettuja tietoja tarkistettavaksi, kuten tulokset.vastustajienLkm
+        // Tietorakenteesta saisi otettua myös muitakin laskettuja tietoja tarkistettavaksi, kuten vastustajien lukumäärä ja odotustulos.
         //
         // Virhetilanteessa palautetaan virhestatus ja muuten nollaa
         //
@@ -242,10 +242,10 @@ namespace Selolaskuri.Tests
             int status;
 
             if ((status = so.TarkistaSyote(ottelu)) != Vakiot.SYOTE_STATUS_OK) {
-                return Tuple.Create(status, 0, 0, 0);             // Palautetaan virhestatus
+                return Tuple.Create(status, 0, 0, 0);       // Palautetaan virhestatus
             } else {
                 so.SuoritaLaskenta(ottelu, ref tulokset);   // tarvitaan ref
-                // Palautetaan uusi vahvuusluku ja pelimäärä tarkistettavaksi
+                // Palautetaan lasketut tiedot tarkastettavaksi
                 return Tuple.Create(tulokset.laskettuSelo, tulokset.laskettuPelimaara, tulokset.laskettuTurnauksenTulos, tulokset.turnauksenKeskivahvuus);
             }
         }

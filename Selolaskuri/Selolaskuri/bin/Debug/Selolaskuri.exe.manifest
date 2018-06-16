@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Selolaskuri.exe" size="37888">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Selolaskuri.exe" size="37376">
       <assemblyIdentity name="Selolaskuri" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>HzLrvCg/O2bX9Zh414Qp25q8Pv2IfFYg005r29jM4Zg=</dsig:DigestValue>
+        <dsig:DigestValue>LdC+JkZJNSQIyEVDzW5Fjv9r9Z5BIIvYW0smgNQ9TkE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -17,7 +17,7 @@
 //  15.6.2018       Korjattu vastustajanSelo_combobox:iin virheellisen syötteen tallentuminen (vastustajanSelo_combobox_KeyDown)
 //  16.-17.6.2018   Tarkistettu laskennassa käytettyjä apumuuttujia ja poistettu turhia. Päivitetty kommentteja.
 //
-// Publish --> Versio 2.0.0.2, myös github
+// Publish --> Versio 2.0.0.3, myös github
 //
 
 using System;

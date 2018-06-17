@@ -213,8 +213,11 @@ namespace Selolaskuri
                     // 0.5F pyöristystä varten
                     uusiSelo =
                         (int)((uusiSelo + MaaritaKerroin(uusiSelo) * lisakerroin * (annettuTurnauksenTulos / 2F - laskettuOdotustulos / 100F)) + (vastustajienLkm * 0.1F) + 0.5F);
-                    minSelo = maxSelo = uusiSelo;  // tässä ei voida laskea minimi- eikä maksimiseloa
                 }
+                // tällä tavalla ilmoitetuista tuloksista ei voida tietää minSeloa ja maxSeloa,
+                //  joten ne alustetaan samoiksi ettei niitä näytettäisi tuloksissa
+                minSelo = uusiSelo;
+                maxSelo = uusiSelo;
             }
         }
 

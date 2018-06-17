@@ -18,9 +18,9 @@ The following text is only in Finnish. There is about the usage of the Finland's
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
-- PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on alle 15 minuuttia. Eri miettimisajoille on omat kaavansa.
+- PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on enintään 10 minuuttia. Eri miettimisajoille on omat laskentakaavansa.
 
-Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä tai parilla (tarkistan vielä kaavat).
+Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä pyöristyksistä johtuen.
 Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
 
 Selolaskentaa netissä: 
@@ -94,4 +94,5 @@ Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy asenn
 TODO: (Nyt on listalla pitkään ollut automaattinen testaus toteutettu/10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttö (voi olla turhiakin vielä)
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
-- Java-versioon samat koodin järjestämiset/refaktoroinnit
+- käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea
+- Java-versioon samat koodin järjestämiset/refaktoroinnit/yksikkötestaukset

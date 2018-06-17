@@ -4,9 +4,9 @@ Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess rating
 
 Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
-New refactored version of Selolaskuri version 2 is in the directory "Selolaskuri" (old version in the directory "SELO-laskuri" is being deleted).
+New refactored version of Selolaskuri!
 
-10.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated operations and calculations (i.e. business logic) from the form. Unit tests are in Selolaskuri.Tests and it makes testing of the parameter checking and calculations easy.
+10.-17.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned the code a lot.
 
 --
 
@@ -31,13 +31,13 @@ Selolaskentaa netissä:
 Syötekenttiä:
 * miettimisaika: vähintään 90 min, 60-89 minuuttia, 11-59 minuuttia tai enintään 10 minuuttia
 * oman vahvuusluku eli oma SELO tai jos miettimisaika on enintään 10 minuuttia, niin PELO
-* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa (vain SELO).
+* aiempi oma pelimäärä tai tyhjä. Jos pelimääräksi annetaan 0-10, käytetään uuden pelaajan vahvuusluvun laskentakaavaa.
 * ottelun tiedot eli Vastustajan SELO-kenttä, joissa vaihtoehdot:
  - a) yhden vastustajan vahvuusluku, esim. 1720
  - b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
  - c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
  
-* yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa.
+* yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa kun kentissä liikutaan.
 
 Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
 
@@ -89,7 +89,7 @@ Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
 - c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
-Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe. Tai lataa koko Visual Studio -projekti ja käännä.
+Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy asennus. Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO: (Nyt on listalla pitkään ollut automaattinen testaus toteutettu/10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttö (voi olla turhiakin vielä)

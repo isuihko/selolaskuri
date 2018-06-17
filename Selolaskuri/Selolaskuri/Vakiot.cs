@@ -6,6 +6,7 @@
 // Muutettu:
 //   1.-6.4.2018    Koodin järjestämistä, vakioiden nimet selkeämmiksi
 //   10.6.2018      Uusi Selolaskuri-projekti, nimiä selkeämmiksi
+//   17.6.2018      Lisätty UUDEN_PELAAJAN_ALKUSELO
 //    
 
 namespace Selolaskuri {
@@ -18,11 +19,12 @@ namespace Selolaskuri {
         public const int MAX_PELIMAARA  = 9999;
 
         // Vahvuuslukuarvon maksimipituus
-        public const int MAX_PITUUS  = 5;   // Sisältää ottelun tuloksen kertovan +, - tai =
+        public const int MAX_PITUUS  = 5; // Sisältää ottelun tuloksen kertovan +, - tai =
         public const int SELO_PITUUS = 4;
 
         // Kun ottelumäärä on 0-10, käytetään uuden pelaajan laskentakaavaa
-        public const int MAX_UUSI_PELAAJA = 10;
+        public const int MAX_PELIMAARA_UUSI_PELAAJA = 10;
+        public const int UUDEN_PELAAJAN_ALKUSELO    = 1525;
 
         // syötteen tarkastuksessa käytetyt virhestatukset eivät ole syötteiden arvoarvoalueella
         public const int SYOTE_STATUS_OK                = 0;
@@ -32,7 +34,6 @@ namespace Selolaskuri {
         public const int SYOTE_VIRHE_BUTTON_TULOS       = -4;
         public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -5;
         public const int SYOTE_VIRHE_TURNAUKSEN_TULOS   = -6;
-
 
         public const int PELIMAARA_TYHJA = -1;  // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
 

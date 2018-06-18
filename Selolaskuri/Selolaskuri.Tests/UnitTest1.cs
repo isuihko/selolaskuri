@@ -14,6 +14,8 @@
 //      5) vastustajien lukumäärän
 //      6) odotustuloksen tai niiden summan, jos useita otteluita
 //
+// Ks. apurutiini Testaa(), johon voidaan lisätä muitakin tarkistettavia tuloksia
+//
 // Tuloksia on verrattu muiden laskentaohjelmien tuloksiin
 //      http://shakki.kivij.info/performance_calculator.shtml
 //      http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html
@@ -23,12 +25,12 @@
 // jolloin virallisen selolaskennan tulos on määräävä ja johon on tässä ohjelmassa myös pyritty.
 //
 // Muutokset:
-//  11.6.2018  Järjestetty aiempia testitapauksia ja lisätty uusia
-//  15.6.2018  Lisätty tarkistettavia tietoja: pistemäärä ja keskivahvuus
-//  17.6.2018  Lisätty tarkistettavia tietoja: vastustajien lkm, odotustulos
-//             Odotustulosta ei näytetä uuden pelaajan tuloksissa, mutta sekin on laskettu ja voidaan tarkistaa
-//             Myös lisätty testitapauksia (turnauksen tuloksen virheet). Nyt niitä on 22 kpl eli aika kattavasti.
-// 
+//   11.6.2018  Järjestetty aiempia testitapauksia ja lisätty uusia
+//   15.6.2018  Lisätty tarkistettavia tietoja: pistemäärä ja keskivahvuus
+//   17.6.2018  Lisätty tarkistettavia tietoja: vastustajien lkm, odotustulos
+//              Odotustulosta ei näytetä uuden pelaajan tuloksissa, mutta sekin on laskettu ja voidaan tarkistaa
+//              Myös lisätty testitapauksia (turnauksen tuloksen virheet). Nyt niitä on 22 kpl eli aika kattavasti.
+//   18.6.2018  Tarkistettu näkyvyyttä -> private Testaa()
 //
 
 using System;
@@ -39,12 +41,17 @@ namespace Selolaskuri.Tests
     [TestClass]
     public class UnitTest1
     {
-        // Testataan uuden pelaajan vahvuusluvun muutokset ottelu kerrallaan.
-        // Seuraavaan testiin otetaan edellisestä saatu vahvuusluku ja pelimäärä.
-        
+
+        // --------------------------------------------------------------------------------
+        // Testataan vahvuusluvun ym. laskentaa
+        // --------------------------------------------------------------------------------
+
         [TestMethod]
         public void UudenPelaajanOttelutYksittain()
         {
+            // Testataan uuden pelaajan vahvuusluvun muutokset ottelu kerrallaan.
+            // Seuraavaan testiin otetaan edellisestä saatu vahvuusluku ja pelimäärä.
+
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "1525", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
             Assert.AreEqual(tulokset.Item1, 1725);  // uusi vahvuusluku
             Assert.AreEqual(tulokset.Item2, 1);     // uusi pelimäärä 0+1=1
@@ -101,7 +108,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(tulokset.Item3, 3 * 2);
             Assert.AreEqual(tulokset.Item4, 1724);
             Assert.AreEqual(tulokset.Item5, 7);    // seitsemän vastustajaa
-            Assert.AreEqual(tulokset.Item6, 199);  // 1,99*100
+            Assert.AreEqual(tulokset.Item6, 199);  // odotustulos 1,99*100
         }
 
         [TestMethod]
@@ -124,7 +131,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(tulokset.Item3, 3 * 2);
             Assert.AreEqual(tulokset.Item4, 1724);
             Assert.AreEqual(tulokset.Item5, 7);    // seitsemän vastustajaa
-            Assert.AreEqual(tulokset.Item6, 199);  // 1,99*100
+            Assert.AreEqual(tulokset.Item6, 199);  // odotustulos 1,99*100
         }
 
         [TestMethod]
@@ -136,7 +143,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(tulokset.Item3, 3 * 2);
             Assert.AreEqual(tulokset.Item4, 1724);
             Assert.AreEqual(tulokset.Item5, 7);    // seitsemän vastustajaa
-            Assert.AreEqual(tulokset.Item6, 199);  // 1,99*100
+            Assert.AreEqual(tulokset.Item6, 199);  // odotustulos 1,99*100
         }
 
         // Kolme tapaa syöttää ottelun tulos
@@ -145,7 +152,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "1900", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
             Assert.AreEqual(tulokset.Item1, 1823);
-            Assert.AreEqual(tulokset.Item6, 36);   // 0,36*100
+            Assert.AreEqual(tulokset.Item6, 36);   // odotustulos 0,36*100
         }
 
         [TestMethod]
@@ -153,7 +160,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "+1900", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 1823);
-            Assert.AreEqual(tulokset.Item6, 36);   // 0,36*100
+            Assert.AreEqual(tulokset.Item6, 36);   // odotustulos 0,36*100
         }
 
         [TestMethod]
@@ -161,7 +168,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "1.0 1900", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 1823);
-            Assert.AreEqual(tulokset.Item6, 36);   // 0,36*100
+            Assert.AreEqual(tulokset.Item6, 36);   // odotustulos 0,36*100
         }
 
         // Merkkijonoissa ylimääräisiä välilyöntejä
@@ -175,7 +182,6 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(tulokset.Item4, 1724);
         }
 
-
         [TestMethod]
         public void PikashakinVahvuuslukuTurnauksesta()
         {
@@ -185,7 +191,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(tulokset.Item3, (int)(10.5F * 2));
             Assert.AreEqual(tulokset.Item4, 1827);  // (1977+2013+1923+1728+1638+1684+1977+2013+1923+1728+1638+1684)/12 = 1827,167
             Assert.AreEqual(tulokset.Item5, 12);    // 12 vastustajaa
-            Assert.AreEqual(tulokset.Item6, 840);   // 8,40*100
+            Assert.AreEqual(tulokset.Item6, 840);   // odotustulos 8,40*100
         }
 
         // Testataan eri pelimäärillä, ettei tulos riipu pelimäärästä silloin kun ei ole uuden pelaajan laskenta
@@ -198,7 +204,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(tulokset.Item3, (int)(10.5F * 2));
             Assert.AreEqual(tulokset.Item4, 1827);
             Assert.AreEqual(tulokset.Item5, 12);
-            Assert.AreEqual(tulokset.Item6, 840);   // 8,40*100
+            Assert.AreEqual(tulokset.Item6, 840);   // odotustulos 8,40*100
         }
 
         [TestMethod]
@@ -219,8 +225,10 @@ namespace Selolaskuri.Tests
         }
 
 
-        // Testataan virheellisiä syötteitä, joista saadaan virheen mukainen virhestatus
-   
+        // --------------------------------------------------------------------------------
+        // Testataan virheellisiä syötteitä, joista pitää saada virheen mukainen virhestatus
+        // --------------------------------------------------------------------------------
+
         // Testataan virheellinen syöte, tässä virheellinen oma vahvuusluku
         [TestMethod]
         public void VirheellinenSyoteOmaSELO()
@@ -300,9 +308,10 @@ namespace Selolaskuri.Tests
         }
 
 
-
+        // --------------------------------------------------------------------------------
         // Testauksen apurutiini
-        //
+        // --------------------------------------------------------------------------------
+
         // Tuloksista voidaan tarkistaa
         //      1) lasketun vahvuusluvun
         //      2) uuden pelimäärän
@@ -310,22 +319,24 @@ namespace Selolaskuri.Tests
         //      4) vastustajien keskivahvuuden
         //      5) vastustajien lukumäärän
         //      6) odotustuloksen tai niiden summan, jos useita otteluita
-        // Tietorakenteesta saisi otettua myös muitakin laskettuja tietoja tarkistettavaksi, kuten vastustajien lukumäärä.
         //
-        // Virhetilanteessa palautetaan virhestatus ja muuten nollaa
+        // Tietorakenteesta saisi otettua myös muitakin laskettuja tietoja tarkistettavaksi,
+        // kuten vastustajien lukumäärä. Ks. Tulokset.cs.
+        //
+        // Virhetilanteessa palautetaan virhestatus.
         //
         // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
-        public Tuple<int, int, int, int, int, int> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
+        private Tuple<int, int, int, int, int, int> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             SelolaskuriOperations so = new SelolaskuriOperations();
-            Syotetiedot ottelu = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos);
+            Syotetiedot s = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos);  // nollaa ottelulistan
             Tulokset t = new Tulokset();
             int status;
 
-            if ((status = so.TarkistaSyote(ottelu)) != Vakiot.SYOTE_STATUS_OK) {
+            if ((status = so.TarkistaSyote(s)) != Vakiot.SYOTE_STATUS_OK) {
                 return Tuple.Create(status, 0, 0, 0, 0, 0);       // Palautetaan vain virhestatus
             } else {
-                so.SuoritaLaskenta(ottelu, ref t);   // tarvitaan ref
+                so.SuoritaLaskenta(s, ref t);   // tarvitaan ref
                 // Palautetaan lasketut tiedot tarkastettavaksi
                 return Tuple.Create(t.uusiSelo, t.uusiPelimaara, t.laskettuTurnauksenTulos, t.turnauksenKeskivahvuus, t.vastustajienLkm, t.odotustulos);
             }

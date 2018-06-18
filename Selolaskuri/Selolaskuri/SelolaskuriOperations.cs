@@ -1,24 +1,29 @@
 ﻿//
 // Luokka syötteen tarkistamiseen ja laskennan suorittamiseen
-// Varsinainen laskenta suoritetaan luokassa Selopelaaja
 //
-// Tämän luokan avulla lomake ja käsiteltävät tiedot ja toiminnat erotetaan toisistaan.
-// Nyt myös yksikkötestaus (Selolaskuri.Tests) on mahdollista ilman että tarvitaan ikkunaa ja lomaketta.
+// Public:
+//      HaeViimeksiLasketutTulokset  (käytetty lomakkeesta)
+//      TarkistaSyote
+//      SuoritaLaskenta
+//
+// Tämän luokan rutiinit olivat alunperin lomakkeen moduulissa. Kun nämä nyt erotettiin lomakkeesta,
+// myös yksikkötestaus (Selolaskuri.Tests) on mahdollista ilman että tarvitaan ikkunaa ja lomaketta.
+//
+// Varsinainen laskenta suoritetaan kutsumalla luokan Selopelaaja rutiineja.
 //
 // Luotu 10.6.2018 Ismo Suihko
 // Muutokset:
 //  11.-12.6.2018 Kommentit, muutama vakio
-//  17.6.2018     Järjestelyä, dokumentointia
+//  17.-18.6.2018 Järjestelyä, dokumentointia
 //
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions; // Regex rx, rx.Replace (ylimääräisten välilyöntien poisto)
 
 namespace Selolaskuri
 {
-    // Selolaskuri must be public to be used in Selolaskuri.Tests
+    // SelolaskuriOperations must be public to be used in Selolaskuri.Tests
 
     // This has business logic of Selolaskuri
     // Called from
@@ -70,7 +75,7 @@ namespace Selolaskuri
             int tulos = Vakiot.SYOTE_STATUS_OK;
 
             // tyhjennä ottelulista, johon tallennetaan vastustajat tuloksineen
-            syotteet.ottelut.Tyhjenna();
+            //syotteet.ottelut.Tyhjenna();  Ei tarvitse, kun aiempi new Syotetiedot() tyhjentää
 
             // ************ TARKISTA SYÖTE ************
 
@@ -99,7 +104,7 @@ namespace Selolaskuri
 
 
                 // vain jos otteluita ei ole listalla, tarkista ottelutuloksen valintanapit
-                if (syotteet.ottelut.vastustajienLukumaara == 0) {
+                if (syotteet.ottelut.HaeVastustajienLukumaara == 0) {
                     //
                     // Vastustajan vahvuusluku on vastustajanSeloYksittainen-kentässä
                     // Haetaan vielä ottelunTulos -kenttään tulospisteet tuplana (0=tappio,1=tasapeli,2=voitto)
@@ -364,7 +369,7 @@ namespace Selolaskuri
                 //    Jos tulos on sama kuin pelaajien lkm, on voitettu kaikki ottelut.
                 if (status && onko_turnauksen_tulos) {
                     // Vertailu kokonaislukuina, esim. syötetty tulos 3.5 ja pelaajia 4, vertailu 7 > 8.
-                    if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.vastustajienLukumaara) {
+                    if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.HaeVastustajienLukumaara) {
                         virhekoodi = Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS;  // tästä oma virheilmoitus
                         status = false;
                     }
@@ -394,12 +399,10 @@ namespace Selolaskuri
         //
         public void SuoritaLaskenta(Syotetiedot syotteet, ref Tulokset tulokset)
         {
-            // asettaa omat tiedot (selo ja pelimäärä) seloPelaaja-luokkaan, nollaa tilastotiedot ym.
-            selopelaaja.AlustaLaskenta(syotteet);
-
             //  *** NYT LASKETAAN ***
+            //
+            selopelaaja.PelaaKaikkiOttelut(syotteet);       // pelaa kaikki ottelut listalta
 
-            selopelaaja.PelaaKaikkiOttelut(syotteet.ottelut);       // pelaa kaikki ottelut listalta
 
             //  *** KOPIOI TULOKSET ***
             //
@@ -412,7 +415,7 @@ namespace Selolaskuri
             else
                 tulokset.uusiPelimaara = 0;
 
-            tulokset.vastustajienLkm         = syotteet.ottelut.vastustajienLukumaara;
+            tulokset.vastustajienLkm         = syotteet.ottelut.HaeVastustajienLukumaara;
             tulokset.turnauksenKeskivahvuus  = (int)Math.Round(syotteet.ottelut.tallennetutOttelut.Average(x => x.vastustajanSelo));
             tulokset.laskettuTurnauksenTulos = selopelaaja.laskettuTurnauksenTulos;
 

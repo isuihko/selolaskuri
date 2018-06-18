@@ -3,7 +3,7 @@
 //
 // Luotu 10.6.2018 Ismo Suihko
 //
-// Tietorakenteella välitetään tulokset laskentaluokasta (SelolaskuriOperations)
+// Tietorakenteella välitetään tulokset laskentaluokasta (SelolaskuriOperations.SuoritaLaskenta)
 //       1. käyttöliittymälle (SelolaskuriForm) näytettäväksi
 //       2. yksikkötestaukseen (Selolaskuri.Tests) tarkistusta varten
 //
@@ -18,11 +18,11 @@ namespace Selolaskuri {
         public int minSelo;                 // laskennan aikainen vaihtelu
         public int maxSelo;
 
+        public int odotustulos;             // myös odotustuloksien summa, jos useita vastustajia
+        public int kerroin;                 // laskennan aputieto
+
         public int vastustajienLkm;
         public int turnauksenKeskivahvuus;
         public int laskettuTurnauksenTulos;
-
-        public int odotustulos;             // myös odotustuloksien summa, jos useita vastustajia
-        public int kerroin;                 // laskennan aputieto
     }
 }

@@ -1,6 +1,10 @@
 ﻿//
 // Luokka syötetietoja varten
 //
+// Public:
+//      Syotetiedot() ilman parametreja ja parametrein
+//      UudenPelaajanLaskenta
+//
 // Luotu 5.4.2018 Ismo Suihko
 //
 // Muutokset:

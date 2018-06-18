@@ -15,7 +15,8 @@
 //
 //  11.6.2018       Jos ei annettu pelimääärää, niin uusi pelimäärä pitää olla tyhjä
 //  15.6.2018       Korjattu vastustajanSelo_combobox:iin virheellisen syötteen tallentuminen (vastustajanSelo_combobox_KeyDown)
-//  16.-17.6.2018   Tarkistettu laskennassa käytettyjä apumuuttujia ja poistettu turhia. Päivitetty kommentteja.
+//  16.-18.6.2018   Tarkistettu laskennassa käytettyjä apumuuttujia ja poistettu turhia. Päivitetty kommentteja.
+//                  Tarkistettu näkyvyyttä (public vs. private).
 //
 // Publish --> Versio 2.0.0.3, myös github
 //
@@ -69,7 +70,7 @@ namespace Selolaskuri
         }
 
         // Ottelun tulos voi olla valittu radiobuttoneilla tai valitsematta (MAARITTELEMATON)
-        public Vakiot.OttelunTulos_enum HaeOttelunTulos()
+        private Vakiot.OttelunTulos_enum HaeOttelunTulos()
         {
             Vakiot.OttelunTulos_enum valinta;
 
@@ -205,7 +206,7 @@ namespace Selolaskuri
         private bool LaskeOttelunTulosLomakkeelta()
         {
             bool status = true;
-            Syotetiedot syotteet = new Syotetiedot(); // tiedot nollataan
+            Syotetiedot syotteet = new Syotetiedot(); // tiedot nollataan, myös ottelulista
             Tulokset tulokset = new Tulokset();
             int tulos;
 

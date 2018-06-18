@@ -6,7 +6,7 @@ Visual Studio Community 2015, C# ja .NET/WinForms, Windows 7/10
 
 New refactored version of Selolaskuri!
 
-10.-17.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned the code a lot.
+10.-18.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
 
 --
 
@@ -89,10 +89,10 @@ Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
 - c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
-Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy asennus. Tai lataa koko Visual Studio -projekti ja käännä.
+Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä.
 
-TODO: (Nyt on listalla pitkään ollut automaattinen testaus toteutettu/10.6.2018)
+TODO: (Nyt listalla pitkään ollut automaattinen testaus on toteutettu/10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttö (voi olla turhiakin vielä)
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea
-- Java-versioon samat koodin järjestämiset/refaktoroinnit/yksikkötestaukset
+- Java-versioon samat koodin järjestämiset/refaktoroinnit/yksikkötestaukset/dokumentoinnit

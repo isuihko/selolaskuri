@@ -102,11 +102,11 @@ namespace Selolaskuri
                     break;
                 syotteet.vastustajanSeloYksittainen = tulos; // tässä tulos siis on vahvuusluku
 
-
-                // vain jos otteluita ei ole listalla, tarkista ottelutuloksen valintanapit
+                // vain jos otteluita ei jo ole listalla (ja TarkistaVastustajanSelo palautti kelvollisen vahvuusluvun),
+                // niin tarkista ottelutuloksen valintanapit -> TarkistaOttelunTulos()
                 if (syotteet.ottelut.HaeVastustajienLukumaara == 0) {
                     //
-                    // Vastustajan vahvuusluku on vastustajanSeloYksittainen-kentässä
+                    // Vastustajan vahvuusluku on nyt vastustajanSeloYksittainen-kentässä
                     // Haetaan vielä ottelunTulos -kenttään tulospisteet tuplana (0=tappio,1=tasapeli,2=voitto)
 
                     // Tarvitaan tulos (voitto, tasapeli tai tappio)
@@ -159,7 +159,7 @@ namespace Selolaskuri
 
         // tarkista pelimäärä
         // Saa olla tyhjä, mutta jos annettu, oltava numero, joka on 0-9999.
-        // Käytetään uuden pelaajan laskentakaavaa, jos pelimäärä on 0-10.
+        // Jos pelimäärä on 0-10, tullaan käyttämään uuden pelaajan laskentakaavaa.
         // Paluuarvo joko kelvollinen pelimäärä, PELIMAARA_TYHJA tai VIRHE_PELIMAARA.
         private int TarkistaPelimaara(string syote)
         {
@@ -205,11 +205,11 @@ namespace Selolaskuri
         // HUOM! Jos tuloksessa on desimaalit väärin, esim. 2.37 tai 0,9,
         //       niin ylimääräiset desimaalit "pyöristyvät" alas -> 2,0 tai 0,5.
         //
-        // Paluuarvo joko kelvollinen seloluku, PELIMAARA_TYHJA tai virhestatus.
+        // Paluuarvo joko kelvollinen seloluku (vain yksi vastustaja annettu), nolla (jos ottelut ovat listassa) tai virhestatus.
         private int TarkistaVastustajanSelo(Ottelulista ottelut, string syote)
         {
             bool status = true;
-            int tulos = 0;        // palautettava vastustajan selo tai nolla tai virhestatus
+            int vastustajanSelo = 0;   // palautettava vastustajan selo tai nolla tai virhestatus
             int virhekoodi = 0; 
 
             bool onko_turnauksen_tulos = false;  // oliko tulos ensimmäisenä?
@@ -225,17 +225,18 @@ namespace Selolaskuri
             if (string.IsNullOrWhiteSpace(syote)) {
                 status = false;
             } else if (syote.Length == Vakiot.SELO_PITUUS) {
-                if (int.TryParse(syote, out tulos) == false) {
+                if (int.TryParse(syote, out vastustajanSelo) == false) {
                     // 2) Jos on annettu neljä merkkiä (esim. 1728), niin sen on oltava numero
                     status = false;
                     virhekoodi = Vakiot.SYOTE_VIRHE_VAST_SELO;
-                } else if (tulos < Vakiot.MIN_SELO || tulos > Vakiot.MAX_SELO) {
+                } else if (vastustajanSelo < Vakiot.MIN_SELO || vastustajanSelo > Vakiot.MAX_SELO) {
                     // 3) Numeron on oltava sallitulla lukualueella
                     //    Mutta jos oli OK, niin vastustajanSelo sisältää nyt sallitun vahvuusluvun eikä tulla tähän
                     status = false;
                     virhekoodi = Vakiot.SYOTE_VIRHE_VAST_SELO;
                 }
-                // Yhden ottelun tulosta ei tallenneta vielä tässä listaan, koska ei tiedetä tulosta
+                // Jos OK, yhden ottelun tulosta ei kuitenkaan vielä tallenneta listaan
+                // vaan nyt palataan tästä funktiosta ja seuraavaksi selvitetään ottelun tulos
 
             } else {
                 // Jäljellä vielä hankalammat tapaukset:
@@ -376,14 +377,14 @@ namespace Selolaskuri
                 }
             }
 
-            // Palauta virhekoodi tai laskettu yksittäisen vastustajan selo (voi olla 0)
-            return virhekoodi < 0 ? virhekoodi : tulos;
+            // Palauta virhekoodi tai selvitetty yksittäisen vastustajan selo (joka on 0, jos ottelut listassa)
+            return virhekoodi < 0 ? virhekoodi : vastustajanSelo;
         }
 
 
-        // Tarkista ottelun tulos -painikkeet ja tallenna niiden vaikutus
-        // pisteet: tappiosta 0, tasapelistä puoli ja voitosta yksi
-        //          palautetaan kokonaislukuna 0, 1 ja 2
+        // Tarkista valitun ottelun tulos -painikkeen kelvollisuus
+        // Virhestatus palautetaan, jos oli valittu TULOS_MAARITTELEMATON
+        //
         private int TarkistaOttelunTulos(Vakiot.OttelunTulos_enum ottelunTulos)
         {
             int tulos = Vakiot.SYOTE_STATUS_OK;
@@ -397,18 +398,18 @@ namespace Selolaskuri
 
         // Laske tulokset, syöte on jo tarkistettu tätä ennen
         //
+        // Lisäksi kopioi lasketut tulokset tietorakenteeseen Tulokset, josta ne myöhemmin
+        // näytetään (SelolaskuriForm.cs) tai ) yksikkötestauksessa tarkistetaan (Selolaskuri.Tests/UnitTest1.cs)
+        //
         public void SuoritaLaskenta(Syotetiedot syotteet, ref Tulokset tulokset)
         {
             //  *** NYT LASKETAAN ***
             //
-            selopelaaja.PelaaKaikkiOttelut(syotteet);       // pelaa kaikki ottelut listalta
+            selopelaaja.PelaaKaikkiOttelut(syotteet);   // pelaa kaikki ottelut listalta
 
 
             //  *** KOPIOI TULOKSET ***
-            //
-            // Kopioi tulokset tietorakenteeseen tulokset, josta ne myöhemmin näytetään (SelolaskuriForm.cs)
-            // tai tarkistetaan yksikkötestauksessa (Selolaskuri.Tests/UnitTest1.cs)
-            // 
+
             tulokset.uusiSelo = selopelaaja.uusiSelo;
             if (syotteet.alkuperainenPelimaara != Vakiot.PELIMAARA_TYHJA)
                 tulokset.uusiPelimaara = selopelaaja.uusiPelimaara;
@@ -416,14 +417,12 @@ namespace Selolaskuri
                 tulokset.uusiPelimaara = 0;
 
             tulokset.vastustajienLkm         = syotteet.ottelut.HaeVastustajienLukumaara;
-            tulokset.turnauksenKeskivahvuus  = (int)Math.Round(syotteet.ottelut.tallennetutOttelut.Average(x => x.vastustajanSelo));
-            tulokset.laskettuTurnauksenTulos = selopelaaja.laskettuTurnauksenTulos;
+            tulokset.turnauksenKeskivahvuus  = (int)Math.Round(syotteet.ottelut.tallennetutOttelut.Average(x => x.vastustajanSelo)); // Linq
+            tulokset.laskettuTurnauksenTulos = selopelaaja.laskettuTurnauksenTulos;  // tuplana, jotta on kokonaisuluku
 
             tulokset.minSelo = selopelaaja.minSelo;
             tulokset.maxSelo = selopelaaja.maxSelo;
 
-            // Yhden ottelun odotustulos tai useiden ottelujen odotustuksien summa
-            // eli ottelusta tai turnauksesta odotettu tulos
             tulokset.odotustulos = selopelaaja.laskettuOdotustulos; // 100-kertainen, tulostusta varten tullaan jakamaan 100:lla
             tulokset.kerroin = selopelaaja.laskettuKerroin;
         }

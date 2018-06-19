@@ -14,7 +14,7 @@
 // Luotu 10.6.2018 Ismo Suihko
 // Muutokset:
 //  11.-12.6.2018 Kommentit, muutama vakio
-//  17.-18.6.2018 Järjestelyä, dokumentointia
+//  17.-19.6.2018 Järjestelyä, dokumentointia
 //
 
 using System;
@@ -253,11 +253,12 @@ namespace Selolaskuri
                 int selo1 = Vakiot.MIN_SELO;
                 bool ensimmainen = true;  // ensimmäinen syötekentän numero tai merkkijono
 
-                // Tutki vastustajanSelo_comboBox-kenttä
-                // Tallenna listaan selo_lista vastustajien SELO:t ja tulokset merkkijonona
+                // Tutki vastustajanSelo_comboBox-kenttä välilyönnein erotettu merkkijono kerrallaan
                 foreach (string vastustaja in syote.Split(' ').ToList()) {
                     if (ensimmainen) {
+                        // need to use temporary variable because can't modify foreach iteration variable
                         string tempString = vastustaja;
+                        
                         // 4) Onko annettu kokonaispistemäärä? (eli useamman ottelun yhteistulos)
                         ensimmainen = false;
 

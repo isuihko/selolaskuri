@@ -9,7 +9,7 @@
 // Muokattu
 //   1.-7.4.2018    Laskennan korjauksia, uuden pelaajan laskenta turnauksen tuloksesta
 //   15.6.2018      Laskennan korjaukset (alkuperäinen pelimäärä vaikutti tulokseen)
-//   15.-18.6.2018  Laskennassa käytettyjen apumuuttujien käytön tarkistusta ja turhiksi jääneiden poistoa,
+//   15.-19.6.2018  Laskennassa käytettyjen apumuuttujien käytön tarkistusta ja turhiksi jääneiden poistoa,
 //                  sekä kommenttien päivitystä (laskentaa muutettu aika paljon).
 //                  Tarkistettu näkyvyyttä (public vs. private).
 //
@@ -147,7 +147,7 @@ namespace Selolaskuri
 
 
             // Entä jos vanhan pelaajan ottelut olivatkin formaatissa "1.5 1622 1880 1683"?
-            // Jos näin oli, niin unohdetaan vanha laskenta, josta käytetään vain odotustulos.
+            // Jos näin oli, niin unohdetaan vanha laskenta, josta käytetään vain laskettuOdotustulos sekä uusiPelimaara.
             //
             // HUOM! Seuraava ei toimisi uudella pelaajalla, mutta se erikoistapaus onkin käsitelty aiemmin
             //
@@ -169,7 +169,7 @@ namespace Selolaskuri
                     // pelo = vanha pelo - 200 + 200 * e(tulos - odotustulos) / 10 , kun saavutettu tulos on odotustulosta pienempi
                     //            Loppuosan pitää olla e((tulos - odotustulos) / 10)  eli sulut lisää, jakolasku ensin.
                     // turnauksen tulos on kokonaisulukuna, pitää jakaa 2:lla
-                    // odotustuloksien_summa on kokonaisluku ja pitää jakaa 100:lla
+                    // laskettuOdotustulos on kokonaisluku ja pitää jakaa 100:lla
                     if ((annettuTurnauksenTulos / 2F) > (laskettuOdotustulos / 100F)) {
                         uusiSelo =
                             (int)(uusiSelo + 200 - 200 * Math.Pow(Math.E, (laskettuOdotustulos / 100F - annettuTurnauksenTulos / 2F) / 10F));
@@ -214,7 +214,7 @@ namespace Selolaskuri
             odotustulos     = MaaritaOdotustulos(alkuperaisetSyotteet.alkuperainenSelo, vastustajanSelo);
             laskettuKerroin = MaaritaKerroin(uusiSelo);
 
-            laskettuOdotustulos     += odotustulos;
+            laskettuOdotustulos     += odotustulos;  // monta ottelua -> odotustuloksien summa
             laskettuTurnauksenTulos += (int)tulos;
 
             if (alkuperaisetSyotteet.UudenPelaajanLaskenta()) {

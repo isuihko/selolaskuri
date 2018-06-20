@@ -2,15 +2,15 @@
 
 Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess ratings - My hobby project (I'm also chess player)
 
-Visual Studio Community 2015 or 2017, C# ja .NET/WinForms, Windows 7/10
+Visual Studio Community 2017 (also 2015), C# and .NET/WinForms, Windows 7 and Windows 10
 
-New refactored version of Selolaskuri!
+New refactored version of Selolaskuri! Even more modifications coming to make this more object-oriented.
 
 10.-19.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
 
 --
 
-There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version. 
+There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version. Will be updated as soon as this is ready.
 
 --
 
@@ -92,7 +92,8 @@ Ohjelman asennus:
 Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä.
 
 TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
-- vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttö (voi olla turhiakin vielä)
+- vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttöä
+- järjestä ohjelmaa vielä enemmän objektiläheisemmäksi
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea (harjoituksen vuoksi)
 - Java-versioon samat koodin järjestämiset/refaktoroinnit/yksikkötestaukset/dokumentoinnit

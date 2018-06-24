@@ -29,7 +29,7 @@ namespace Selolaskuri {
         // syötteen tarkastuksessa käytetyt virhestatukset eivät ole syötteiden arvoarvoalueella
         public const int SYOTE_STATUS_OK                = 0;
         public const int SYOTE_VIRHE_OMA_SELO           = -1;
-        public const int SYOTE_VIRHE_VAST_SELO          = -2;
+        public const int SYOTE_VIRHE_VASTUSTAJAN_SELO          = -2;
         public const int SYOTE_VIRHE_PELIMAARA          = -3;
         public const int SYOTE_VIRHE_BUTTON_TULOS       = -4;
         public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -5;

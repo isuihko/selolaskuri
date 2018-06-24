@@ -23,7 +23,7 @@ namespace Selolaskuri
     //
     // pelaa shakkiotteluita, joissa on vastustaja (vastustajan selo) ja tulos (tappio, tasapeli tai voitto)
     //
-    public class SeloPelaaja
+    public class SeloPelaaja                        // XXX: : Tulokset
     {
         public SeloPelaaja()
         {

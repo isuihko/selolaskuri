@@ -12,9 +12,10 @@
 //
 namespace Selolaskuri {
 
-    public struct Tulokset {
+    public class Tulokset {
         public int uusiSelo;
         public int uusiPelimaara;           // jos ei annettu, palautuu 0
+
         public int minSelo;                 // laskennan aikainen vaihtelu
         public int maxSelo;
 

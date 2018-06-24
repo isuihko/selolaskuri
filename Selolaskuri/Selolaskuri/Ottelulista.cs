@@ -57,11 +57,11 @@ namespace Selolaskuri
             tallennetutOttelut.Add(ottelu);
         }
 
-        public int HaeVastustajienLukumaara {
-            get {
-                return tallennetutOttelut.Count;
-            }
-        }
+        //public int HaeVastustajienLukumaara {
+        //    get {
+        //        return tallennetutOttelut.Count;
+        //    }
+        //}
 
         public IEnumerator GetEnumerator()
         {

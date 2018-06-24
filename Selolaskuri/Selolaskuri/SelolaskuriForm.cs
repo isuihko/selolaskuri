@@ -20,6 +20,8 @@
 //
 // Publish --> Versio 2.0.0.3, myös github
 //
+// 19.6.2018        Otettu käyttöön Visual Studio Community 2017 + Git
+//
 
 using System;
 using System.Drawing;
@@ -145,7 +147,7 @@ namespace Selolaskuri
                     nykyinenSelo_in.Select();
                     break;
 
-                case Vakiot.SYOTE_VIRHE_VAST_SELO:
+                case Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO:
                     message =
                         String.Format("VIRHE: Vastustajan vahvuusluvun on oltava numero {0}-{1}.",
                                 Vakiot.MIN_SELO, Vakiot.MAX_SELO);

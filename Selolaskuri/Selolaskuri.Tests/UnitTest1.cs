@@ -127,7 +127,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "", "+1525 +1441 -1973 +1718 -1784 -1660 -1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 1571);
-            Assert.AreEqual(tulokset.Item2, 0);    // pelimäärää ei ole laskettu
+            Assert.AreEqual(tulokset.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
             Assert.AreEqual(tulokset.Item3, 3 * 2);
             Assert.AreEqual(tulokset.Item4, 1724);
             Assert.AreEqual(tulokset.Item5, 7);    // seitsemän vastustajaa
@@ -139,7 +139,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "", "3 1525 1441 1973 1718 1784 1660 1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 1571);
-            Assert.AreEqual(tulokset.Item2, 0);    // pelimäärää ei ole laskettu
+            Assert.AreEqual(tulokset.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
             Assert.AreEqual(tulokset.Item3, 3 * 2);
             Assert.AreEqual(tulokset.Item4, 1724);
             Assert.AreEqual(tulokset.Item5, 7);    // seitsemän vastustajaa
@@ -187,7 +187,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 2033);
-            Assert.AreEqual(tulokset.Item2, 0);  // pelimäärä 0, koska sitä ei annettu ("") eikä siten laskettu (nolla ei voi olla laskettukaan tulos)
+            Assert.AreEqual(tulokset.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
             Assert.AreEqual(tulokset.Item3, (int)(10.5F * 2));
             Assert.AreEqual(tulokset.Item4, 1827);  // (1977+2013+1923+1728+1638+1684+1977+2013+1923+1728+1638+1684)/12 = 1827,167
             Assert.AreEqual(tulokset.Item5, 12);    // 12 vastustajaa
@@ -212,7 +212,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1996", "", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(tulokset.Item1, 2050);
-            Assert.AreEqual(tulokset.Item2, 0);
+            Assert.AreEqual(tulokset.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
         }
 
         // Testataan eri pelimäärillä, ettei tulos riipu pelimäärästä silloin kun ei ole uuden pelaajan laskenta
@@ -242,7 +242,7 @@ namespace Selolaskuri.Tests
         public void VirheellinenSyoteVastustajanSELO()
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "c5sdffew25", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
-            Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_VAST_SELO);
+            Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
 
         // Pelimäärä virheellinen, annettu liian suureksi
@@ -293,7 +293,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "-6 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             //Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS);
-            Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_VAST_SELO);
+            Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
 
         // Annettu isompi pistemäärä (150) kuin mitä on otteluita (12 kpl)
@@ -304,7 +304,7 @@ namespace Selolaskuri.Tests
         {
             var tulokset = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "150 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             //Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS);
-            Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_VAST_SELO);
+            Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
 
 

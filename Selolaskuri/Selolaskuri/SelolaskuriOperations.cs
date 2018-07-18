@@ -15,6 +15,7 @@
 // Muutokset:
 //  11.-12.6.2018 Kommentit, muutama vakio
 //  17.-19.6.2018 Järjestelyä, dokumentointia
+//  18.7.2018     SuoritaLaskenta() voi kopioida nyt kaikki tulokset Selopelaaja-luokasta Tulokset-luokkaan.
 //
 
 using System;
@@ -31,12 +32,12 @@ namespace Selolaskuri
     //    -Unit Tests
     public class SelolaskuriOperations
     {
-        SeloPelaaja selopelaaja;
+        Selopelaaja selopelaaja;
 
         // Initialize calculation, clear selopelaaja etc
         public SelolaskuriOperations()
         {
-            selopelaaja = new SeloPelaaja();
+            selopelaaja = new Selopelaaja();
         }
 
         // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
@@ -409,19 +410,17 @@ namespace Selolaskuri
             selopelaaja.PelaaKaikkiOttelut(syotteet);   // pelaa kaikki ottelut listalta
 
             //  *** KOPIOI TULOKSET ***
-
-            tulokset.uusiSelo = selopelaaja.uusiSelo;
+            tulokset.uusiSelo      = selopelaaja.uusiSelo;
             tulokset.uusiPelimaara = selopelaaja.uusiPelimaara;
-            tulokset.minSelo = selopelaaja.minSelo;
-            tulokset.maxSelo = selopelaaja.maxSelo;
+            tulokset.minSelo       = selopelaaja.minSelo;
+            tulokset.maxSelo       = selopelaaja.maxSelo;
 
-            tulokset.odotustulos = selopelaaja.laskettuOdotustulos; // 100-kertainen, tulostusta varten tullaan jakamaan 100:lla
-            tulokset.kerroin = selopelaaja.laskettuKerroin;
+            tulokset.odotustulos   = selopelaaja.odotustulos; // 100-kertainen, tulostuksessa jaetaan 100:lla
+            tulokset.kerroin       = selopelaaja.kerroin;
 
-            tulokset.vastustajienLkm         = syotteet.ottelut.tallennetutOttelut.Count;
-            tulokset.turnauksenKeskivahvuus  = (int)Math.Round(syotteet.ottelut.tallennetutOttelut.Average(x => x.vastustajanSelo)); // Linq
-
-            tulokset.laskettuTurnauksenTulos = selopelaaja.laskettuTurnauksenTulos;  // tuplana, jotta on kokonaisuluku
+            tulokset.turnauksenTulos        = selopelaaja.turnauksenTulos;  // on tuplana, jotta kokonaisluku
+            tulokset.vastustajienLkm        = selopelaaja.vastustajienLkm;
+            tulokset.turnauksenKeskivahvuus = selopelaaja.turnauksenKeskivahvuus;
         }
     }
 }

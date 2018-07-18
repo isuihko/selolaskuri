@@ -12,6 +12,8 @@
 //   15.-19.6.2018  Laskennassa käytettyjen apumuuttujien käytön tarkistusta ja turhiksi jääneiden poistoa,
 //                  sekä kommenttien päivitystä (laskentaa muutettu aika paljon).
 //                  Tarkistettu näkyvyyttä (public vs. private).
+//   18.7.2018      Nyt Selopelaaja-luokka käyttää Tulokset-luokkaa pohjana eikä esittele samoja kenttiä uudestaan laskentaa varten.
+//                  Lisäksi selvitetään vastustajienLkm ja turnauksenKeskivahvuus, joita tarvitaan laskennassa.
 //
 
 using System;
@@ -19,13 +21,31 @@ using System.Linq;
 
 namespace Selolaskuri
 {
-    // class SeloPelaaja 
+    // class Selopelaaja 
     //
     // pelaa shakkiotteluita, joissa on vastustaja (vastustajan selo) ja tulos (tappio, tasapeli tai voitto)
     //
-    public class SeloPelaaja                        // XXX: : Tulokset
+    public class Selopelaaja : Tulokset // Lasketaan uusiSelo, uusiPelimäärä, minSelo, maxSelo,
+                                        //           odotustulos, kerroin, turnauksenTulos,
+                                        //           vastustajienLkm, turnauksenKeskivahvuus
     {
-        public SeloPelaaja()
+        // Mahdollisesti annettu turnauksen tulos voi olla 0 - vastustajienlkm
+        // Tallennetaan kokonaislukuna tuplana: esim. (int)(2*10,5) eli 21
+        //
+        // Turnauksen tulos voidaan antaa vastustajan SELO-kentässä ensimmäisenä
+        // Esim. "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684"
+        //
+        // Huom! Jos tulos on annettu virheellisesti esim. 0,9 tai 2,4, niin pyöristys alas
+        // em. syötteistä saadaan 0,5 tai 2,0 (tallennus 1 tai 4)
+        private int annettuTurnauksenTulos;
+
+        // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
+        public void SetAnnettuTurnauksenTulos(float f) // Käytetty SelolaskuriOperations.cs
+        {
+            annettuTurnauksenTulos = (int)(2 * f + 0.01F); // pyöristys
+        }
+
+        public Selopelaaja()
         {
         }
 
@@ -33,41 +53,6 @@ namespace Selolaskuri
         // alkuperäinen vahvuusluku ja pelimäärä sekä ottelulista.
         // Käytetään tämän luokan rutiineissa suoraan.
         private Syotetiedot alkuperaisetSyotteet;
-
-        // --------------------------------------------------------------------------------
-        // Laskennan aikana päivitettävät tiedot, jotka kopioidaan tuloksiin
-        // ks. SeloLaskuriOperations.SuoritaLaskenta sekä struct Tulokset
-        // --------------------------------------------------------------------------------
-
-        public int uusiSelo { get; private set; }
-        public int uusiPelimaara { get; private set; }
-
-        // Lasketun selon vaihteluväli, jos vastustajien selot ja tulokset formaatissa: +1622 -1880 =1633
-        public int minSelo { get; private set; }
-        public int maxSelo { get; private set; }
-        
-        // laskennan aputiedot
-        public int laskettuOdotustulos { get; private set; }  // jos usea vastustaja, niin summa
-        public int laskettuKerroin { get; private set; }
-
-        // Selvitetään tulos, jos ottelut formaatissa "+1525 =1600 -1611 +1558", josta esim. saadaan
-        // tulokseksi 2,5 (2 voittoa ja 1 tasapeli). Tallennetaan kokonaislukuna tuplana 2*2,5 -> (int)5.
-        public int laskettuTurnauksenTulos { get; private set; }
-
-        // Turnauksen tulos voidaan antaa vastustajan SELO-kentässä ensimmäisenä
-        // Esim. "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684"
-        //
-        // Tallennetaan kokonaislukuna tuplana: esim. 10,5 -> 21
-        // Huom! Jos tulos on annettu virheellisesti esim. 0,9 tai 2,4, niin pyöristys alas
-        // (0,5 ja 2,0) ja tallentuvat kokonaislukuina 1 ja 4.
-        private int annettuTurnauksenTulos;
-
-        // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
-        public void SetAnnettuTurnauksenTulos(float f)
-        {
-            annettuTurnauksenTulos = (int)(2 * f + 0.01F); // pyöristys
-        }
-
 
         // --------------------------------------------------------------------------------
         // Laskenta
@@ -85,12 +70,22 @@ namespace Selolaskuri
             uusiSelo         = syotteet.alkuperainenSelo;
             uusiPelimaara    = syotteet.alkuperainenPelimaara;
 
-            laskettuTurnauksenTulos = 0;  // lasketaan otteluista kokonaislukuna
-            laskettuOdotustulos     = 0;  // summa odotustuloksista
+            turnauksenTulos = 0;  // lasketaan otteluista kokonaislukuna
+            odotustulos     = 0;  // summa yksittäisten otteluiden odotustuloksista
+
+            // palautettava kerroin alkuperäisen selon mukaan
+            // laskennassa käytetään sen hetkisestä selosta laskettua kerrointa
+            kerroin = MaaritaKerroin(uusiSelo);  
 
             // vaihteluvälin alustus
             minSelo = Vakiot.MAX_SELO;
             maxSelo = Vakiot.MIN_SELO;
+
+            // Lisäksi selvitä syötetiedoista (tarvitaan laskennassa, tulostetaan lomakkeelle)
+            //   - vastustajien eli otteluiden lkm
+            //   - turnauksen eli vastustajien keskivahvuus
+            vastustajienLkm = syotteet.ottelut.tallennetutOttelut.Count;
+            turnauksenKeskivahvuus = (int)Math.Round(syotteet.ottelut.tallennetutOttelut.Average(x => x.vastustajanSelo)); // Linq
         }
 
 
@@ -116,17 +111,15 @@ namespace Selolaskuri
                 // keskitulos/matsi = 1
                 
                 // apumuuttujia (lausekkeiden selkiyttämiseksi ja lyhentämiseksi)
-                int keskimSelo    = (int)Math.Round(ottelulista.tallennetutOttelut.Average(x => x.vastustajanSelo));  // Linq
-                int pelaajia      = ottelulista.tallennetutOttelut.Count;
-                float keskimTulos = (annettuTurnauksenTulos / 2F) / pelaajia;   // 0-1
+                float keskimTulos = (annettuTurnauksenTulos / 2F) / vastustajienLkm;   // 0.0 - 1.0
                 float muutos = 400 * (keskimTulos - 0.5F) + 0.5F;   // tuloksella tasapeli pysytään samassa kuin keskiSelo
 
                 // vanhan selon painoarvo ja uuden lasketun selon painoarvo riippuvat pelimääristä
-                uusiSelo       = ((uusiSelo * uusiPelimaara) + (int)(keskimSelo + muutos) * pelaajia) / (uusiPelimaara + pelaajia);
-                uusiPelimaara += pelaajia;
+                uusiSelo       = ((uusiSelo * uusiPelimaara) + (int)(turnauksenKeskivahvuus + muutos) * vastustajienLkm) / (uusiPelimaara + vastustajienLkm);
+                uusiPelimaara += vastustajienLkm;
 
                 // turnauksen tulos annettu, joten ei laskettavaa
-                laskettuTurnauksenTulos = annettuTurnauksenTulos;  
+                turnauksenTulos = annettuTurnauksenTulos;  
 
                 return;
             }
@@ -156,7 +149,7 @@ namespace Selolaskuri
                 // Aiemmasta laskennasta tarvitaan laskettuOdotustulos.
                 //
                 uusiSelo = alkuperaisetSyotteet.alkuperainenSelo; // aloitetaan alusta
-                laskettuTurnauksenTulos = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
+                turnauksenTulos = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
 
                 if (alkuperaisetSyotteet.miettimisaika <= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN) {
                     //
@@ -170,12 +163,12 @@ namespace Selolaskuri
                     //            Loppuosan pitää olla e((tulos - odotustulos) / 10)  eli sulut lisää, jakolasku ensin.
                     // turnauksen tulos on kokonaisulukuna, pitää jakaa 2:lla
                     // laskettuOdotustulos on kokonaisluku ja pitää jakaa 100:lla
-                    if ((annettuTurnauksenTulos / 2F) > (laskettuOdotustulos / 100F)) {
+                    if ((annettuTurnauksenTulos / 2F) > (odotustulos / 100F)) {
                         uusiSelo =
-                            (int)(uusiSelo + 200 - 200 * Math.Pow(Math.E, (laskettuOdotustulos / 100F - annettuTurnauksenTulos / 2F) / 10F));
+                            (int)(uusiSelo + 200 - 200 * Math.Pow(Math.E, (odotustulos / 100F - annettuTurnauksenTulos / 2F) / 10F));
                     } else {
                         uusiSelo =
-                            (int)(uusiSelo - 200 + 200 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2F - laskettuOdotustulos / 100F) / 10F));
+                            (int)(uusiSelo - 200 + 200 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2F - odotustulos / 100F) / 10F));
                     }
                 } else {
                     //
@@ -184,7 +177,7 @@ namespace Selolaskuri
                     float lisakerroin = MaaritaLisakerroin(alkuperaisetSyotteet.miettimisaika);
                     // Lisätään vielä pelattujen pelien lkm * 0.1
                     uusiSelo =
-                        (int)((uusiSelo + MaaritaKerroin(uusiSelo) * lisakerroin * (annettuTurnauksenTulos / 2F - laskettuOdotustulos / 100F)) + (ottelulista.tallennetutOttelut.Count * 0.1F) + 0.5F);
+                        (int)((uusiSelo + MaaritaKerroin(uusiSelo) * lisakerroin * (annettuTurnauksenTulos / 2F - odotustulos / 100F)) + (ottelulista.tallennetutOttelut.Count * 0.1F) + 0.5F);
                 }
 
                 // tällä tavalla saaduista tuloksista ei voida tietää minSeloa ja maxSeloa (koska laskenta tehdään kerralla),
@@ -204,18 +197,19 @@ namespace Selolaskuri
         //
         private int PelaaOttelu(int vastustajanSelo, Vakiot.OttelunTulos_enum tulos)
         {
-            int odotustulos;
+            int odotustulos1;  // yhden ottelun odotustulos, lisätään turnauksen odotustulokseen
+            int kerroin1;      // tämän hetkisen vahvuusluvun mukainen
             int selo;
 
             // Vanhan pelaajan SELOn laskennassa käytetään odotustulosta ja kerrointa
             //
             // Mutta nämä lasketaan kaikille, koska myös kerroin näytetään uuden pelaajan tuloksissa
             // Uuden pelaajan odotustuloskin on tarkistettavissa testauksessa vaikka sitä ei näytetä.
-            odotustulos     = MaaritaOdotustulos(alkuperaisetSyotteet.alkuperainenSelo, vastustajanSelo);
-            laskettuKerroin = MaaritaKerroin(uusiSelo);
+            odotustulos1    = MaaritaOdotustulos(alkuperaisetSyotteet.alkuperainenSelo, vastustajanSelo);
+            kerroin1 = MaaritaKerroin(uusiSelo);
 
-            laskettuOdotustulos     += odotustulos;  // monta ottelua -> odotustuloksien summa
-            laskettuTurnauksenTulos += (int)tulos;
+            odotustulos     += odotustulos1;  // monta ottelua -> odotustuloksien summa
+            turnauksenTulos += (int)tulos;
 
             if (alkuperaisetSyotteet.UudenPelaajanLaskenta()) {
                 // Uuden pelaajan laskennassa käytetään vastustajan seloa tuloksen mukaan -200 / +0 / +200
@@ -227,7 +221,7 @@ namespace Selolaskuri
             } else {
                 float lisakerroin = MaaritaLisakerroin(alkuperaisetSyotteet.miettimisaika);
                 // vanhan pelaajan SELO, kun pelimäärä jätetty tyhjäksi tai on yli 10.
-                selo = (int)Math.Round((uusiSelo + laskettuKerroin * lisakerroin * (((int)tulos / 2F) - (odotustulos / 100F)) + 0.1F));
+                selo = (int)Math.Round((uusiSelo + kerroin1 * lisakerroin * (((int)tulos / 2F) - (odotustulos1 / 100F)) + 0.1F));
             }
 
             // tallenna vaihteluväli (jos yksi ottelu, niin jäävät samoiksi)

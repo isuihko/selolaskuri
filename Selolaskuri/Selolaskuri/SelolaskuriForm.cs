@@ -255,7 +255,7 @@ namespace Selolaskuri
             keskivahvuus_out.Text = tulokset.turnauksenKeskivahvuus.ToString();
             // Turnauksen loppupisteet / ottelujen lkm, esim.  2.5 / 6
             turnauksenTulos_out.Text =
-                (tulokset.laskettuTurnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.vastustajienLkm;
+                (tulokset.turnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.vastustajienLkm;
 
             // Vahvuusluku on voinut vaihdella laskennan edetessä, jos vastustajat ovat olleet formaatissa "+1622 -1880 =1633"
             // Vaihteluväliä ei ole, jos laskenta on tehty yhdellä lausekkeella tai on ollut vain yksi vastustaja

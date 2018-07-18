@@ -8,6 +8,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 10.-19.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
 
+18.7.2018 : More code refactoring (no new executable yet). Some data was defined twice similary. Now uses one definision. The 'kerroin' which is shown in form, is now calculated from initial 'selo'. I'll upload new executable after additinal testing.
+
 --
 
 There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version. Will be updated as soon as this is ready.

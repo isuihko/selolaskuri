@@ -66,14 +66,14 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2, 2);     // uusi pelimäärä 1+1=2
             Assert.AreEqual(t.Item3, 1 * 2);
             Assert.AreEqual(t.Item4, 1441);
-            Assert.AreEqual(t.Item6, 84);  // 0,84*100
+            Assert.AreEqual(t.Item6, 84);    // 0,84*100
 
             t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1973", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
             Assert.AreEqual(t.Item1, 1713);
             Assert.AreEqual(t.Item2, 3);
             Assert.AreEqual(t.Item3, 0);
             Assert.AreEqual(t.Item4, 1973);
-            Assert.AreEqual(t.Item6, 16);  // 0,16*100
+            Assert.AreEqual(t.Item6, 16);   // 0,16*100
 
             t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1718", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
             Assert.AreEqual(t.Item1, 1764);
@@ -334,13 +334,13 @@ namespace Selolaskuri.Tests
             int status;
 
             if ((status = so.TarkistaSyote(s)) != Vakiot.SYOTE_STATUS_OK) {
-                // Palautetaan vain virhestatus
+                // Virhestatus
                 return Tuple.Create(status, 0, 0, 0, 0, 0);
             } else {
                 // Syötteet OK, joten voidaan edetä laskentaan
                 so.SuoritaLaskenta(s, ref t);   // tarvitaan ref
 
-                // Palautetaan lasketut tiedot tarkastettavaksi
+                // Lasketut tiedot tarkastettavaksi
                 return Tuple.Create(t.uusiSelo, t.uusiPelimaara, t.turnauksenTulos, t.turnauksenKeskivahvuus, t.vastustajienLkm, t.odotustulos);
             }
         }

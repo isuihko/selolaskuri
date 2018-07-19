@@ -1,7 +1,7 @@
 ﻿//
 // Shakin vahvuuslukulaskennan lomakkeen käsittely, tarkistuksen ja laskennan kutsuminen, sekä tuloksien näyttäminen
 //
-// Luotu 10.6.2018 Ismo Suihko (aiemmin 17.11.2017 "Selolaskuri.cs" sisältäen pitkän muutoshistorian)
+// Luotu 10.6.2018 Ismo Suihko (aiemmin 17.11.2017 "Selolaskuri.cs", alkuvaiheen muutoshistoria poistettu)
 //
 // Muutokset:
 //  10.6.2018   Syötteen tarkistukset ja laskenta siirretty omaan moduuliinsa SelolaskuriOperations.cs,
@@ -21,6 +21,9 @@
 // Publish --> Versio 2.0.0.3, myös github
 //
 // 19.6.2018        Otettu käyttöön Visual Studio Community 2017 + Git
+// 19.7.2018        Muokattu ohjetekstejä, pientä järjestelyä
+//
+// Publish --> Versio 2.0.0.4, myös github
 //
 
 using System;
@@ -31,7 +34,7 @@ namespace Selolaskuri
 {
     public partial class SelolaskuriForm : Form
     {
-        SelolaskuriOperations so = new SelolaskuriOperations();   // voidaan käyttää luokassa so.TarkistaSyote
+        SelolaskuriOperations so = new SelolaskuriOperations();   //  Syötteen tarkastus ja laskennan kutsuminen. Esim. so.TarkistaSyote
 
         public SelolaskuriForm()
         {
@@ -235,7 +238,7 @@ namespace Selolaskuri
         //   piste-ero
         private void NaytaTulokset(Syotetiedot syotteet, Tulokset tulokset)
         {
-            //   Uusi vahvuusluku ja sen muutos +/- NN pistettä
+            //   Uusi vahvuusluku ja sen muutos +NN, -NN tai 0 pistettä
             uusiSelo_out.Text = tulokset.uusiSelo.ToString();
             selomuutos_out.Text = (tulokset.uusiSelo - syotteet.alkuperainenSelo).ToString("+#;-#;0");
 
@@ -253,7 +256,8 @@ namespace Selolaskuri
 
             // Vastustajien vahvuuslukujen keskiarvo
             keskivahvuus_out.Text = tulokset.turnauksenKeskivahvuus.ToString();
-            // Turnauksen loppupisteet / ottelujen lkm, esim.  2.5 / 6
+
+            // Turnauksen loppupisteet yhdellä desimaalilla / ottelujen lkm, esim.  2.5 / 6 tai 2.0 / 6
             turnauksenTulos_out.Text =
                 (tulokset.turnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.vastustajienLkm;
 
@@ -336,52 +340,60 @@ namespace Selolaskuri
         //    Laskentakaavat
         //    Tietoa ohjelmasta
         //    Sulje ohjelma
+        //
+        // Ohjeikkunassa ym. on MessageBox.Show:ssa oletuksena oleva OK-painike
+        // Jos tarvitaan muokattua tekstiä, voitaisiin luoda uusi lomake ohjeikkunaa varten
         private void ohjeitaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Oletuksena tulee OK-painike
-            MessageBox.Show("Ohjeita: "
-                + "\r\n" + "Syötä oma vahvuusluku. Jos olet uusi pelaaja, niin anna oma pelimäärä 0-10, jolloin käytetään uuden pelaajan laskentakaavaa."
-                + "\r\n" + "Syötä lisäksi joko "
-                + "\r\n" + "  1) Vastustajan vahvuusluku ja valitse ottelun tulos 0/0,5/1 nuolinäppäimillä tai hiirellä "
-                + "\r\n" + "  2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
-                + "\r\n" + "  3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
-                + "\r\n" + "Lisäksi valitaan miettimisaika yläreunan valintapainikkeilla."
-                + "\r\n" + "Ohjelma sisältää sekä SELO:n (pitkä peli) että PELO:n (pikashakki) laskennat.",
-                "Ohjeikkuna");
+            MessageBox.Show("Shakin vahvuusluvun laskenta SELO ja PELO"
+                + "\r\n"
+                + "\r\n" + "Annettavat tiedot:"
+                + "\r\n"
+                + "\r\n" + "-Miettimisaika. Pitkä peli (väh. 90 minuuttia) on oletuksena. Jos valitset enint. 10 minuuttia, lasketaan pikashakin vahvuuslukua (PELO)"
+                + "\r\n" + "-Oma vahvuusluku"
+                + "\r\n" + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
+                + "\r\n" + "-Vastustajien vahvuusluvut ja tulokset jollakin kolmesta tavasta:"
+                + "\r\n" + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 0/0,5/1 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
+                + "\r\n" + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
+                + "\r\n" + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
+                + "\r\n"
+                + "\r\n" + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
+                + "\r\n"
+                + "\r\n" + "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä uutta SELOa jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
+
+                "Ohjeita");
         }
 
         private void laskentakaavatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Oletuksena tulee OK-painike
             MessageBox.Show("Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
-                + " \r\n" + "Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo",
+                + "\r\n" +"Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo",
                 "Laskentakaavat");
         }
 
         private void tietojaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Oletuksena tulee OK-painike
-            MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli: C#/.NET/WinForms, https://github.com/isuihko/selolaskuri",
+            MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET/WinForms"
+                + "\r\n" + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri",
                 "Tietoa Selolaskurista");
         }
 
         private void suljeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Application.Exit() kutsuu ikkunan FormClosing() -rutiinia, jossa varmistus.
+            // Application.Exit() kutsuu ikkunan FormClosing() -rutiinia, jossa varmistus ja voidaan perua poistuminen.
             System.Windows.Forms.Application.Exit();
         }
 
         // Lopetuksen varmistaminen
         //      Suljettu ikkuna
         //      Valittu Menu->Sulje ohjelma (-> Application.Exit())
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void SelolaskuriForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult vastaus = MessageBox.Show("Haluatko poistua ohjelmasta?", "Exit/Close window", MessageBoxButtons.YesNo);
-            if (vastaus == DialogResult.No) {
+            if (vastaus == DialogResult.No) { 
                 e.Cancel = true;    // Ei poistutakaan
             }
-        }
-
+        }      
 
         // --------------------------------------------------------------------------------
         // Miettimisajan valinnan mukaan tekstit: SELO (pidempi peli) vai PELO (pikashakki)
@@ -409,6 +421,8 @@ namespace Selolaskuri
             KaytaTulosta_btn.Text = KaytaTulosta_btn.Text.Replace(alkup, uusi);
         }
 
+        // Miettimisajan valinta ei tee laskentaa uusiksi automaattisesti. Vaihtaa vain tekstit SELO <-> PELO.
+        // Jos miettimisaika valitaan alussa, eikä kaikkia tietoja ei ole syötetty, niin saataisiin virheilmoitus.
         private void miettimisaika_vah90_Button_CheckedChanged(object sender, EventArgs e)
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);

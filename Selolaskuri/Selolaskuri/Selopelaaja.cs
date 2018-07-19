@@ -14,6 +14,7 @@
 //                  Tarkistettu näkyvyyttä (public vs. private).
 //   18.7.2018      Nyt Selopelaaja-luokka käyttää Tulokset-luokkaa pohjana eikä esittele samoja kenttiä uudestaan laskentaa varten.
 //                  Lisäksi selvitetään vastustajienLkm ja turnauksenKeskivahvuus, joita tarvitaan laskennassa.
+//   19.7.2018      Luokan Ottelulista sisältö piilotettu, joten käytetään mm. Lukumaara, HaeEnsimmainen() ym.
 //
 
 using System;
@@ -84,8 +85,8 @@ namespace Selolaskuri
             // Lisäksi selvitä syötetiedoista (tarvitaan laskennassa, tulostetaan lomakkeelle)
             //   - vastustajien eli otteluiden lkm
             //   - turnauksen eli vastustajien keskivahvuus
-            vastustajienLkm = syotteet.ottelut.tallennetutOttelut.Count;
-            turnauksenKeskivahvuus = (int)Math.Round(syotteet.ottelut.tallennetutOttelut.Average(x => x.vastustajanSelo)); // Linq
+            vastustajienLkm = syotteet.ottelut.Lukumaara;
+            turnauksenKeskivahvuus = syotteet.ottelut.Keskivahvuus; 
         }
 
 
@@ -128,14 +129,17 @@ namespace Selolaskuri
             // Varsinainen laskenta: Käydään läpi kaikki listan ottelut, jotka olivat formaatissa
             // "+1525 =1600 -1611 +1558". Tällöin myös minSelo ja maxSelo voidaan selvittää.
             //
-            foreach (Ottelulista.Ottelu ottelu in ottelulista) {
-
+            var ottelu = ottelulista.HaeEnsimmainen(); // vastustajanSelo, ottelunTulos
+            while (ottelu.Item2 != Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON) {
+                
                 // päivitä seloa ja tilastoja jokaisen ottelun laskennassa, myös laske odotustulos
-                uusiSelo = PelaaOttelu(ottelu.vastustajanSelo, ottelu.ottelunTulos);
+                uusiSelo = PelaaOttelu(ottelu.Item1, ottelu.Item2);
 
                 // päivitä pelimäärää vain jos oli annettu
                 if (uusiPelimaara != Vakiot.PELIMAARA_TYHJA)
                     uusiPelimaara++;
+
+                ottelu = ottelulista.HaeSeuraava();
             }
 
 
@@ -174,10 +178,10 @@ namespace Selolaskuri
                     //
                     // pidemmän miettimisajan pelit eli > 10 min
                     //
-                    float lisakerroin = MaaritaLisakerroin(alkuperaisetSyotteet.miettimisaika);
+                    float lisakerroin = MaaritaLisakerroin(uusiSelo, alkuperaisetSyotteet.miettimisaika);
                     // Lisätään vielä pelattujen pelien lkm * 0.1
                     uusiSelo =
-                        (int)((uusiSelo + MaaritaKerroin(uusiSelo) * lisakerroin * (annettuTurnauksenTulos / 2F - odotustulos / 100F)) + (ottelulista.tallennetutOttelut.Count * 0.1F) + 0.5F);
+                        (int)((uusiSelo + MaaritaKerroin(uusiSelo) * lisakerroin * (annettuTurnauksenTulos / 2F - odotustulos / 100F)) + (ottelulista.Lukumaara * 0.1F) + 0.5F);
                 }
 
                 // tällä tavalla saaduista tuloksista ei voida tietää minSeloa ja maxSeloa (koska laskenta tehdään kerralla),
@@ -219,7 +223,7 @@ namespace Selolaskuri
                 // Jos pelimäärä on 0, niin nykyinenSelo-kentän arvolla ei ole merkitystä
                 selo = (int)Math.Round((uusiSelo * uusiPelimaara + (vastustajanSelo + selomuutos[(int)tulos])) / (uusiPelimaara + 1F));
             } else {
-                float lisakerroin = MaaritaLisakerroin(alkuperaisetSyotteet.miettimisaika);
+                float lisakerroin = MaaritaLisakerroin(uusiSelo, alkuperaisetSyotteet.miettimisaika);
                 // vanhan pelaajan SELO, kun pelimäärä jätetty tyhjäksi tai on yli 10.
                 selo = (int)Math.Round((uusiSelo + kerroin1 * lisakerroin * (((int)tulos / 2F) - (odotustulos1 / 100F)) + 0.1F));
             }
@@ -293,7 +297,7 @@ namespace Selolaskuri
         }
 
         // Eri miettimisajoilla voi olla omia kertoimia
-        private float MaaritaLisakerroin(Vakiot.Miettimisaika_enum aika)
+        private float MaaritaLisakerroin(int selo, Vakiot.Miettimisaika_enum aika)
         {
             float f = 1.0F;
 
@@ -301,7 +305,7 @@ namespace Selolaskuri
             if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
                 f = 0.5F;
             else if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
-                f = (uusiSelo < 2300) ? 0.3F : 0.15F;
+                f = (selo < 2300) ? 0.3F : 0.15F;
             return f;
         }
     }

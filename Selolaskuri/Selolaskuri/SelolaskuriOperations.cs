@@ -105,7 +105,7 @@ namespace Selolaskuri
 
                 // vain jos otteluita ei jo ole listalla (ja TarkistaVastustajanSelo palautti kelvollisen vahvuusluvun),
                 // niin tarkista ottelutuloksen valintanapit -> TarkistaOttelunTulos()
-                if (syotteet.ottelut.tallennetutOttelut.Count == 0) {
+                if (syotteet.ottelut.Lukumaara == 0) {
                     //
                     // Vastustajan vahvuusluku on nyt vastustajanSeloYksittainen-kentässä
                     // Haetaan vielä ottelunTulos -kenttään tulospisteet tuplana (0=tappio,1=tasapeli,2=voitto)
@@ -372,7 +372,7 @@ namespace Selolaskuri
                 //    Jos tulos on sama kuin pelaajien lkm, on voitettu kaikki ottelut.
                 if (status && onko_turnauksen_tulos) {
                     // Vertailu kokonaislukuina, esim. syötetty tulos 3.5 ja pelaajia 4, vertailu 7 > 8.
-                    if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.tallennetutOttelut.Count) {
+                    if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.Lukumaara) {
                         virhekoodi = Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS;  // tästä oma virheilmoitus
                         status = false;
                     }

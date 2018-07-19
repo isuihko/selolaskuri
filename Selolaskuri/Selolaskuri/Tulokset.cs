@@ -27,8 +27,8 @@ namespace Selolaskuri {
         public int maxSelo { get; set; }
 
         // laskennan aputiedot
-        public int odotustulos { get;  set; }   // jos usea vastustaja, niin summa
-        public int kerroin { get;  set; }       // tämä on viimeisimmästä laskennasta
+        public int odotustulos { get;  set; }
+        public int kerroin { get;  set; }
 
         // Turnauksen tulos
         //

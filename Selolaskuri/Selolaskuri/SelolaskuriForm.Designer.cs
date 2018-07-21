@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             this.OmaVahvuusluku_teksti = new System.Windows.Forms.Label();
-            this.nykyinenSelo_in = new System.Windows.Forms.TextBox();
+            this.selo_in = new System.Windows.Forms.TextBox();
             this.Pelimäärä = new System.Windows.Forms.Label();
             this.pelimaara_in = new System.Windows.Forms.TextBox();
             this.VastustajanVahvuusluku_teksti = new System.Windows.Forms.Label();
@@ -85,12 +85,12 @@
             this.OmaVahvuusluku_teksti.TabIndex = 52;
             this.OmaVahvuusluku_teksti.Text = "Oma SELO (1000-2999)";
             // 
-            // nykyinenSelo_in
+            // selo_in
             // 
-            this.nykyinenSelo_in.Location = new System.Drawing.Point(14, 118);
-            this.nykyinenSelo_in.Name = "nykyinenSelo_in";
-            this.nykyinenSelo_in.Size = new System.Drawing.Size(46, 20);
-            this.nykyinenSelo_in.TabIndex = 1;
+            this.selo_in.Location = new System.Drawing.Point(14, 118);
+            this.selo_in.Name = "selo_in";
+            this.selo_in.Size = new System.Drawing.Size(46, 20);
+            this.selo_in.TabIndex = 1;
             // 
             // Pelimäärä
             // 
@@ -538,7 +538,7 @@
             this.Controls.Add(this.VastustajanVahvuusluku_teksti);
             this.Controls.Add(this.pelimaara_in);
             this.Controls.Add(this.Pelimäärä);
-            this.Controls.Add(this.nykyinenSelo_in);
+            this.Controls.Add(this.selo_in);
             this.Controls.Add(this.OmaVahvuusluku_teksti);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -559,7 +559,7 @@
         #endregion
 
         private System.Windows.Forms.Label OmaVahvuusluku_teksti;
-        private System.Windows.Forms.TextBox nykyinenSelo_in;
+        private System.Windows.Forms.TextBox selo_in;
         private System.Windows.Forms.Label Pelimäärä;
         private System.Windows.Forms.TextBox pelimaara_in;
         private System.Windows.Forms.Label VastustajanVahvuusluku_teksti;

@@ -2,8 +2,8 @@
 // Luokka syötetietoja varten
 //
 // Public:
-//      Syotetiedot()           konstruktori ilman parametreja ja parametrein
-//      UudenPelaajanLaskenta
+//      Syotetiedot()           konstruktori lomakkeelle ilman parametreja ja yksikkötestauksessa käytettäväksi parametrein
+//      UudenPelaajanLaskenta   tarkistaa, tarvitaanko pelimäärän mukaan uuden pelaajan laskusääntöä
 //
 // Luotu 5.4.2018 Ismo Suihko
 //
@@ -22,56 +22,57 @@ namespace Selolaskuri
     public class Syotetiedot
     {
         // Alkuperäiset syötteet (sama järjestys kuin näytöllä)
-        public Vakiot.Miettimisaika_enum  miettimisaika;
-        public string alkuperainenSelo_str;
-        public string alkuperainenPelimaara_str;
-        public string vastustajienSelot_str;  // vastustajan/vastustajien tiedot ja tulokset
-        public Vakiot.OttelunTulos_enum ottelunTulos;
+        public Vakiot.Miettimisaika_enum  Miettimisaika { get; private set; }
+        public string AlkuperainenSelo_str { get; private set; }
+        public string AlkuperainenPelimaara_str { get; private set; }
+        public string VastustajienSelot_str { get; private set; }
+        public Vakiot.OttelunTulos_enum OttelunTulos { get; private set; }
 
         // Tarkastuksessa merkkijonot muutettu numeroiksi
-        public int alkuperainenSelo;
-        public int alkuperainenPelimaara;
-        public int vastustajanSeloYksittainen;
+        public int AlkuperainenSelo { get; set; }
+        public int AlkuperainenPelimaara { get; set; }
+        public int VastustajanSeloYksittainen { get; set; }
 
-        public Ottelulista ottelut;   // sis. vastustajien selot ja ottelutulokset
+        public Ottelulista Ottelut { get; private set; }   // sis. vastustajien selot ja ottelutulokset
 
 
         // Oikeastaan kaikkea ei tarvitsisi alustaa, koska tiedot täytetään lomakkeelta
         // ks. SelolaskuriForm.cs/HaeSyotteetLomakkeelta()
         //
-        // Ottelulista pitää kuitenkin luoda ja tehdään nyt kaikki muukin alustus
+        // Ottelulista pitää kuitenkin luoda ja tehdään nyt kaikki muukin alustus. Constructor chaining.
         public Syotetiedot() : this(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, null, null, null, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON)
         {          
         }
 
-        // KÄYTETÄÄN TESTATTAESSA (UnitTest)
+        // KÄYTETÄÄN TESTATTAESSA (UnitTest1.cs)
         // esim. Syotetiedot ottelu =
         //   new Syotetiedot(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1725", "1", "1441", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
         public Syotetiedot(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
-            miettimisaika              = aika;
-            alkuperainenSelo_str       = selo;
-            alkuperainenPelimaara_str  = pelimaara;
-            vastustajienSelot_str      = vastustajat;
-            ottelunTulos               = tulos;
+            Miettimisaika              = aika;
+            AlkuperainenSelo_str       = selo;
+            AlkuperainenPelimaara_str  = pelimaara;
+            VastustajienSelot_str      = vastustajat;
+            OttelunTulos               = tulos;
 
             // Clear these too although not actually needed
-            alkuperainenSelo            = 0;
-            alkuperainenPelimaara       = 0;
-            vastustajanSeloYksittainen  = 0;
+            AlkuperainenSelo            = 0;
+            AlkuperainenPelimaara       = 0;
+            VastustajanSeloYksittainen  = 0;
             
             // Create en empty list for matches (opponent's selo, match result)
-            ottelut = new Ottelulista();
+            Ottelut = new Ottelulista();
         }
+
 
         // Uuden pelaajan laskennassa ja tulostuksissa joitain erikoistapauksia
         //
-        // Tarkistetaan alkuperäisestä pelimäärästä, koska turnauksen laskenta tehdään
+        // Tarkistetaan alkuperäisestä pelimäärästä, sillä turnauksen laskenta tehdään
         // uuden pelaajan kaavalla vaikka pelimäärä laskennan aikana ylittäisikin rajan
         public bool UudenPelaajanLaskenta()
         {
-            return (alkuperainenPelimaara >= Vakiot.MIN_PELIMAARA &&
-                    alkuperainenPelimaara <= Vakiot.MAX_PELIMAARA_UUSI_PELAAJA);
+            return (AlkuperainenPelimaara >= Vakiot.MIN_PELIMAARA &&
+                    AlkuperainenPelimaara <= Vakiot.MAX_PELIMAARA_UUSI_PELAAJA);
         }
     }
 }

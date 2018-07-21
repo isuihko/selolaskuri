@@ -43,8 +43,8 @@ namespace Selolaskuri
         // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
         public Tuple<int, int> HaeViimeksiLasketutTulokset()
         {
-            int selo      = selopelaaja.uusiSelo;
-            int pelimaara = selopelaaja.uusiPelimaara;
+            int selo      = selopelaaja.UusiSelo;
+            int pelimaara = selopelaaja.UusiPelimaara;
 
             // Jos ei vielä ollut laskentaa, palautetaan uuden pelaajan alkuselo
             if (selo == 0 && pelimaara == 0)
@@ -56,20 +56,25 @@ namespace Selolaskuri
 
         // TarkistaSyote
         //
+        // Kutsuttu: 
+        //      -SelolaskuriForm.cs
+        //      -Selolaskuri.Tests/UnitTest1.cs
+        //
         // Tarkistaa
         //      -miettimisaika-valintanapit (ei voi olla virhettä)
-        //      -nykyinen SELO eli oma alkuselo (onko kelvollinen numero)
-        //      -nykyinen oma pelimäärä   (kelvollinen numero tai tyhjä)
+        //      -oma SELO eli nykyinen vahvuusluku (onko kelvollinen numero)
+        //      -oma pelimäärä (kelvollinen numero tai tyhjä)
         //      -vastustajan SELO (onko numero) tai vastustajien SELOT (onko turnauksen tulos+selot tai selot tuloksineen)
         //      -yhtä ottelua syötettäessä tuloksen valintanapit (jos yksi vastustaja, niin tulos pitää valita)
         //
+        // Syotetiedot syotteet  = oma nykyinen selo ja pelimäärä, vastustajan selo, ottelun tulos sekä merkkijono
+        //
         // Tuloksena
-        //    Syotetiedot syotteet  = oma nykyinen selo ja pelimäärä, vastustajan selo, ottelun tulos sekä merkkijono
         //    syotteet.ottelut sisältää listan vastustajista tuloksineen: ottelu(selo, tulos) 
         //
         // Virhetilanteet:
         //    Kenttiä tarkistetaan yo. järjestyksessä ja lopetetaan, kun kohdataan ensimmäinen virhe.
-        //    Palautetaan virhestatus ja virheilmoitukset näytetään ylemmällä tasolla.
+        //    Palautetaan tarkka virhestatus ja virheilmoitukset näytetään ylemmällä tasolla.
         //
         public int TarkistaSyote(Syotetiedot syotteet)
         {
@@ -81,44 +86,44 @@ namespace Selolaskuri
             // ************ TARKISTA SYÖTE ************
 
             // ENSIN TARKISTA MIETTIMISAIKA.
-            // Jo haettu lomakkeelta eikä tässä voi olla virhettä, joten ei tehdä virhetarkastusta.
-            syotteet.miettimisaika = TarkistaMiettimisaika(syotteet.miettimisaika);
+            // Jo haettu lomakkeelta eikä tässä voi olla virhettä, joten ei tehdä virhetarkastusta
+            // syotteet.miettimisaika = TarkistaMiettimisaika(syotteet.miettimisaika);
 
             do {
                 // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
-                if ((tulos = TarkistaNykyinenSelo(syotteet.alkuperainenSelo_str)) == Vakiot.SYOTE_VIRHE_OMA_SELO)
+                if ((tulos = TarkistaOmaSelo(syotteet.AlkuperainenSelo_str)) == Vakiot.SYOTE_VIRHE_OMA_SELO)
                     break;
-                syotteet.alkuperainenSelo = tulos;
+                syotteet.AlkuperainenSelo = tulos;
 
-                if ((tulos = TarkistaPelimaara(syotteet.alkuperainenPelimaara_str)) == Vakiot.SYOTE_VIRHE_PELIMAARA)
+                if ((tulos = TarkistaPelimaara(syotteet.AlkuperainenPelimaara_str)) == Vakiot.SYOTE_VIRHE_PELIMAARA)
                     break;
-                syotteet.alkuperainenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
+                syotteet.AlkuperainenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
 
 
                 //    JOS YKSI OTTELU,   saadaan muuttujassa vastustajanSeloYksittainen vastustajan vahvuusluku,
                 //                       ottelun tulosta ei voida tietää vielä
                 //    JOS MONTA OTTELUA, palautuu 0 ja ottelut on tallennettu tuloksineen listaan
                 //
-                if ((tulos = TarkistaVastustajanSelo(syotteet.ottelut, syotteet.vastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
+                if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
-                syotteet.vastustajanSeloYksittainen = tulos; // tässä tulos siis on vahvuusluku
+                syotteet.VastustajanSeloYksittainen = tulos; // tässä tulos siis on vahvuusluku
 
                 // vain jos otteluita ei jo ole listalla (ja TarkistaVastustajanSelo palautti kelvollisen vahvuusluvun),
                 // niin tarkista ottelutuloksen valintanapit -> TarkistaOttelunTulos()
-                if (syotteet.ottelut.Lukumaara == 0) {
+                if (syotteet.Ottelut.Lukumaara == 0) {
                     //
                     // Vastustajan vahvuusluku on nyt vastustajanSeloYksittainen-kentässä
                     // Haetaan vielä ottelunTulos -kenttään tulospisteet tuplana (0=tappio,1=tasapeli,2=voitto)
 
                     // Tarvitaan tulos (voitto, tasapeli tai tappio)
-                    if ((tulos = TarkistaOttelunTulos(syotteet.ottelunTulos)) == Vakiot.SYOTE_VIRHE_BUTTON_TULOS)
+                    if ((tulos = TarkistaOttelunTulos(syotteet.OttelunTulos)) == Vakiot.SYOTE_VIRHE_BUTTON_TULOS)
                         break;
 
                     // Nyt voidaan tallentaa ainoan ottelun tiedot listaan (vastustajanSelo, ottelunTulos), josta
                     // ne on helppo hakea laskennassa.
                     // Myös vastustajanSeloYksittainen jää alustetuksi, koska siitä nähdään että vahvuusluku oli
                     // annettu erikseen, jolloin myös ottelun tuloksen on oltava annettuna valintapainikkeilla.
-                    syotteet.ottelut.LisaaOttelunTulos(syotteet.vastustajanSeloYksittainen, syotteet.ottelunTulos);
+                    syotteet.Ottelut.LisaaOttelunTulos(syotteet.VastustajanSeloYksittainen, syotteet.OttelunTulos);
                 }
 
                 tulos = Vakiot.SYOTE_STATUS_OK; // syötekentät OK, jos päästy tänne asti
@@ -130,6 +135,8 @@ namespace Selolaskuri
         }
 
 
+        // ************ TARKISTA MIETTIMISAIKA ************
+        //
         // Nämä miettimisajan valintapainikkeet ovat omana ryhmänään paneelissa
         // Aina on joku valittuna, joten ei voi olla virhetilannetta.
         private Vakiot.Miettimisaika_enum TarkistaMiettimisaika(Vakiot.Miettimisaika_enum aika)
@@ -137,9 +144,11 @@ namespace Selolaskuri
             return aika;   // Ei tarkistusta, koska ei voi olla virhetilanteita
         }
 
+        // ************ TARKISTA NYKYINEN SELO ************
+        //
         // Tarkista Oma SELO -kenttä, oltava numero ja rajojen sisällä
         // Paluuarvo joko kelvollinen SELO (MIN_SELO .. MAX_SELO) tai negatiivinen virhestatus
-        private int TarkistaNykyinenSelo(string syote)
+        private int TarkistaOmaSelo(string syote)
         {
             bool status = true;
             int tulos;
@@ -184,6 +193,7 @@ namespace Selolaskuri
             }
             return tulos;
         }
+
 
         // Tarkista Vastustajan SELO -kenttä
         // Ottelut (selot ja tulokset) tallennetaan listaan
@@ -400,6 +410,10 @@ namespace Selolaskuri
 
         // Laske tulokset, syöte on jo tarkistettu tätä ennen
         //
+        // Kutsuttu: 
+        //      -SelolaskuriForm.cs
+        //      -Selolaskuri.Tests/UnitTest1.cs
+        //
         // Lisäksi kopioi lasketut tulokset tietorakenteeseen Tulokset, josta ne myöhemmin
         // näytetään (SelolaskuriForm.cs) tai ) yksikkötestauksessa tarkistetaan (Selolaskuri.Tests/UnitTest1.cs)
         //
@@ -410,17 +424,21 @@ namespace Selolaskuri
             selopelaaja.PelaaKaikkiOttelut(syotteet);   // pelaa kaikki ottelut listalta
 
             //  *** KOPIOI TULOKSET ***
-            tulokset.uusiSelo      = selopelaaja.uusiSelo;
-            tulokset.uusiPelimaara = selopelaaja.uusiPelimaara;
-            tulokset.minSelo       = selopelaaja.minSelo;
-            tulokset.maxSelo       = selopelaaja.maxSelo;
 
-            tulokset.odotustulos   = selopelaaja.odotustulos; // 100-kertainen, tulostuksessa jaetaan 100:lla
-            tulokset.kerroin       = selopelaaja.kerroin;
-
-            tulokset.turnauksenTulos        = selopelaaja.turnauksenTulos;  // on tuplana, jotta kokonaisluku
-            tulokset.vastustajienLkm        = selopelaaja.vastustajienLkm;
-            tulokset.turnauksenKeskivahvuus = selopelaaja.turnauksenKeskivahvuus;
+            // Ei tarvitse kopioida jokaista kenttää erikseen, public class Selopelaaja : Tulokset { ... }
+            tulokset = selopelaaja;
+         
+            //tulokset.UusiSelo               = selopelaaja.UusiSelo;
+            //tulokset.UusiPelimaara          = selopelaaja.UusiPelimaara;
+            //tulokset.MinSelo                = selopelaaja.MinSelo;
+            //tulokset.MaxSelo                = selopelaaja.MaxSelo;
+            //
+            //tulokset.Odotustulos            = selopelaaja.Odotustulos; // 100-kertainen, tulostuksessa jaetaan 100:lla
+            //tulokset.kerroin                = selopelaaja.kerroin;
+            //
+            //tulokset.turnauksenTulos        = selopelaaja.turnauksenTulos;  // on tuplana, jotta kokonaisluku
+            //tulokset.vastustajienLkm        = selopelaaja.vastustajienLkm;
+            //tulokset.turnauksenKeskivahvuus = selopelaaja.turnauksenKeskivahvuus;
         }
     }
 }

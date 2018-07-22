@@ -86,7 +86,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selopelaaja.cs" />
     <Compile Include="Syotetiedot.cs" />
-    <Compile Include="Tulokset.cs" />
     <Compile Include="Vakiot.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

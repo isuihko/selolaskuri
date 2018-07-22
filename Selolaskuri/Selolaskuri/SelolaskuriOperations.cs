@@ -417,28 +417,15 @@ namespace Selolaskuri
         // Lisäksi kopioi lasketut tulokset tietorakenteeseen Tulokset, josta ne myöhemmin
         // näytetään (SelolaskuriForm.cs) tai ) yksikkötestauksessa tarkistetaan (Selolaskuri.Tests/UnitTest1.cs)
         //
-        public void SuoritaLaskenta(Syotetiedot syotteet, ref Tulokset tulokset)
-        {
+        public Selopelaaja SuoritaLaskenta(Syotetiedot syotteet)
+        {          
             //  *** NYT LASKETAAN ***
             //
             selopelaaja.PelaaKaikkiOttelut(syotteet);   // pelaa kaikki ottelut listalta
 
-            //  *** KOPIOI TULOKSET ***
+            //  *** PALAUTA TULOKSET ***
 
-            // Ei tarvitse kopioida jokaista kenttää erikseen, public class Selopelaaja : Tulokset { ... }
-            tulokset = selopelaaja;
-         
-            //tulokset.UusiSelo               = selopelaaja.UusiSelo;
-            //tulokset.UusiPelimaara          = selopelaaja.UusiPelimaara;
-            //tulokset.MinSelo                = selopelaaja.MinSelo;
-            //tulokset.MaxSelo                = selopelaaja.MaxSelo;
-            //
-            //tulokset.Odotustulos            = selopelaaja.Odotustulos; // 100-kertainen, tulostuksessa jaetaan 100:lla
-            //tulokset.kerroin                = selopelaaja.kerroin;
-            //
-            //tulokset.turnauksenTulos        = selopelaaja.turnauksenTulos;  // on tuplana, jotta kokonaisluku
-            //tulokset.vastustajienLkm        = selopelaaja.vastustajienLkm;
-            //tulokset.turnauksenKeskivahvuus = selopelaaja.turnauksenKeskivahvuus;
-        }
+            return selopelaaja;
+         }
     }
 }

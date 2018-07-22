@@ -10,6 +10,7 @@
 // Muutokset:
 // 16.-17.6.2018  pientä järjestelyä, lisätty tarkistus UudenPelaajanLaskenta()
 // 19.6.2018      constructor: poistettu toistoa käyttämällä konstruktorien ketjutusta (constructor chaining)
+// 21.-22.7.2018  Now uses only the constructor with parameters and setting most of the data is private, only by constructor.
 
 namespace Selolaskuri
 {
@@ -36,17 +37,17 @@ namespace Selolaskuri
         public Ottelulista Ottelut { get; private set; }   // sis. vastustajien selot ja ottelutulokset
 
 
-        // Oikeastaan kaikkea ei tarvitsisi alustaa, koska tiedot täytetään lomakkeelta
-        // ks. SelolaskuriForm.cs/HaeSyotteetLomakkeelta()
-        //
-        // Ottelulista pitää kuitenkin luoda ja tehdään nyt kaikki muukin alustus. Constructor chaining.
-        public Syotetiedot() : this(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, null, null, null, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON)
-        {          
-        }
+        // Constructor chaining. This constructor without parameters is not used any more.
+        //public Syotetiedot() : this(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, null, null, null, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON)
+        //{          
+        //}
 
-        // KÄYTETÄÄN TESTATTAESSA (UnitTest1.cs)
-        // esim. Syotetiedot ottelu =
-        //   new Syotetiedot(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1725", "1", "1441", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
+        // Constructorin käyttö:
+        //  - Lomakkeelta (SelolaskuriForm.cs)
+        //     return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
+        //  - TESTATTAESSA (UnitTest1.cs)
+        //     Syotetiedot ottelu =
+        //        new Syotetiedot(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1725", "1", "1441", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
         public Syotetiedot(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             Miettimisaika              = aika;

@@ -27,10 +27,37 @@ namespace Selolaskuri
     //
     // pelaa shakkiotteluita, joissa on vastustaja (vastustajan selo) ja tulos (tappio, tasapeli tai voitto)
     //
-    public class Selopelaaja : Tulokset // Lasketaan UusiSelo, UusiPelimäärä, MinSelo, MaxSelo,
+    public class Selopelaaja // : Tulokset // Lasketaan UusiSelo, UusiPelimäärä, MinSelo, MaxSelo,
                                         //           Odotustulos, Kerroin, TurnauksenTulos,
                                         //           VastustajienLkm, TurnauksenKeskivahvuus
     {
+        //// --------------------------------------------------------------------------------
+        //// Laskennan aikana päivitettävät tiedot, jotka kopioidaan tuloksiin
+        //// ks. SeloLaskuriOperations.SuoritaLaskenta sekä struct Tulokset
+        //// --------------------------------------------------------------------------------
+
+        public int UusiSelo { get; private set; }
+        public int UusiPelimaara { get; private set; }
+
+        // Lasketun selon vaihteluväli, jos vastustajien selot ja tulokset formaatissa: +1622 -1880 =1633
+        public int MinSelo { get; private set; }
+        public int MaxSelo { get; private set; }
+
+        // laskennan aputiedot
+        public int Odotustulos { get; private set; }
+        public int Kerroin { get; private set; }
+
+        // Turnauksen tulos
+        //
+        // Syötteistä laskettu tulos
+        // Selvitetään tulos, jos ottelut formaatissa "+1525 =1600 -1611 +1558", josta esim. saadaan
+        // tulokseksi 2,5 (2 voittoa ja 1 tasapeli). Tallennetaan kokonaislukuna tuplana (int)(2*2,5) eli 5.
+        public int TurnauksenTulos { get; private set; }
+
+        public int VastustajienLkm { get; private set; }
+        public int TurnauksenKeskivahvuus { get; private set; }
+
+        
         // Mahdollisesti annettu turnauksen tulos voi olla 0 - vastustajienlkm
         // Tallennetaan kokonaislukuna tuplana: esim. (int)(2*10,5) eli 21
         //
@@ -264,10 +291,10 @@ namespace Selolaskuri
 
 
         // --------------------------------------------------------------------------------
-        // Laskennan apurutiinit, joilla määritetään Odotustulos, kerroin ja lisäkerroin
+        // Laskennan apurutiinit, joilla määritetään odotustulos, kerroin ja lisäkerroin
         // --------------------------------------------------------------------------------
 
-        // Selvitä ottelun Odotustulos vertaamalla SELO-lukuja
+        // Selvitä ottelun odotustulos vertaamalla SELO-lukuja
         //    50 (eli 0,50), jos samantasoiset eli SELO-ero 0-3 pistettä
         //    > 50, jos voitto odotetumpi, esim. 51 jos 4-10 pistettä parempi
         //    < 50, jos tappio odotetumpi, esim. 49, jos 4-10 pistettä alempi
@@ -296,7 +323,7 @@ namespace Selolaskuri
             // etsi taulukosta
             // esim. SELOt 1500 ja 1505, diff = 5 pistettä
             //   5 < difftable[0]? Ei, joten jatketaan...
-            //   5 < difftable[1] On. Indeksi 1 ja Odotustulos siten 49 (50-indeksi)
+            //   5 < difftable[1] On. Indeksi 1 ja odotustulos siten 49 (50-indeksi)
             int index = 0;
             while (index < difftable.Length) {
                 if (diff < difftable[index])

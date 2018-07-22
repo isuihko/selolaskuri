@@ -50,11 +50,6 @@ namespace Selolaskuri
         private Syotetiedot HaeSyotteetLomakkeelta()
         {
             return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
-            //syotteet.Miettimisaika             = HaeMiettimisaika();            // valittu button -> enum
-            //syotteet.AlkuperainenSelo_str      = selo_in.Text;                  // merkkijono
-            //syotteet.AlkuperainenPelimaara_str = pelimaara_in.Text;             // merkkijono
-            //syotteet.VastustajienSelot_str     = vastustajanSelo_comboBox.Text; // merkkijono
-            //syotteet.OttelunTulos              = HaeOttelunTulos();             // valittu button -> enum tai määrittelemätön
         }
 
         // Nämä miettimisajan valintapainikkeet ovat omana ryhmänään paneelissa
@@ -212,8 +207,6 @@ namespace Selolaskuri
         private bool LaskeOttelunTulosLomakkeelta()
         {
             bool status = true;
-            //Syotetiedot syotteet = new Syotetiedot(); // tiedot nollataan, myös ottelulista
-            Tulokset tulokset = new Tulokset();
             int tulos;
 
             // hakee syötetyt tekstit ja tehdyt valinnat, ei virhetarkastusta
@@ -225,7 +218,7 @@ namespace Selolaskuri
                 NaytaVirheilmoitus(tulos);
                 status = false;
             } else {
-                so.SuoritaLaskenta(syotteet, ref tulokset);  // tarvitaan ref
+                Selopelaaja tulokset = so.SuoritaLaskenta(syotteet);
                 NaytaTulokset(syotteet, tulokset);
             }
 
@@ -237,7 +230,7 @@ namespace Selolaskuri
         //   Uusi vahvuusluku ja sen muutos +/- NN pistettä
         //   uusi pelimäärä tai tyhjä
         //   piste-ero
-        private void NaytaTulokset(Syotetiedot syotteet, Tulokset tulokset)
+        private void NaytaTulokset(Syotetiedot syotteet, Selopelaaja tulokset)
         {
             //   Uusi vahvuusluku ja sen muutos +NN, -NN tai 0 pistettä
             uusiSelo_out.Text = tulokset.UusiSelo.ToString();

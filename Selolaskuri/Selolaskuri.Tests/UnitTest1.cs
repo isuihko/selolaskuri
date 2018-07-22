@@ -12,7 +12,7 @@
 //      3) turnauksen pistemäärä/tulos, huom! kaksinkertaisena jotta saadaan kokonaislukuna (esim. 1,5 tulee lukuna 3)
 //      4) vastustajien keskivahvuus
 //      5) vastustajien lukumäärä
-//      6) odotustulos
+//      6) Odotustulos
 //
 // Ks. apurutiini Testaa(), johon voidaan lisätä muitakin tarkistettavia tuloksia (mm. kerroin).
 //
@@ -27,7 +27,7 @@
 // Muutokset:
 //   11.6.2018  Järjestetty aiempia testitapauksia ja lisätty uusia
 //   15.6.2018  Lisätty tarkistettavia tietoja: pistemäärä ja keskivahvuus
-//   17.6.2018  Lisätty tarkistettavia tietoja: vastustajien lkm, odotustulos
+//   17.6.2018  Lisätty tarkistettavia tietoja: vastustajien lkm, Odotustulos
 //              Odotustulosta ei näytetä uuden pelaajan tuloksissa, mutta sekin on laskettu ja voidaan tarkistaa
 //              Myös lisätty testitapauksia (turnauksen tuloksen virheet). Nyt niitä on 22 kpl eli aika kattavasti.
 //   18.6.2018  Tarkistettu näkyvyyttä -> private Testaa()
@@ -329,19 +329,20 @@ namespace Selolaskuri.Tests
         private Tuple<int, int, int, int, int, int> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             SelolaskuriOperations so = new SelolaskuriOperations();
-            Syotetiedot s = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos);
-            Tulokset t = new Tulokset();
+            Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos);
             int status;
 
-            if ((status = so.TarkistaSyote(s)) != Vakiot.SYOTE_STATUS_OK) {
+            if ((status = so.TarkistaSyote(syotetiedot)) != Vakiot.SYOTE_STATUS_OK) {
                 // Virhestatus
                 return Tuple.Create(status, 0, 0, 0, 0, 0);
             } else {
-                // Syötteet OK, joten voidaan edetä laskentaan
-                so.SuoritaLaskenta(s, ref t);   // tarvitaan ref
+                // Syötteet OK, joten voidaan edetä laskentaan, saadaan Selopelaaja tulokset 
+                Selopelaaja tulokset = so.SuoritaLaskenta(syotetiedot);
 
                 // Lasketut tiedot tarkastettavaksi
-                return Tuple.Create(t.uusiSelo, t.uusiPelimaara, t.turnauksenTulos, t.turnauksenKeskivahvuus, t.vastustajienLkm, t.odotustulos);
+                return Tuple.Create(tulokset.UusiSelo, tulokset.UusiPelimaara,
+                                    tulokset.TurnauksenTulos, tulokset.TurnauksenKeskivahvuus,
+                                    tulokset.VastustajienLkm, tulokset.Odotustulos);
             }
         }
     }  

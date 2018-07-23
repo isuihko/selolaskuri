@@ -71,6 +71,7 @@ namespace Selolaskuri
         //
         // Tuloksena
         //    syotteet.ottelut sisältää listan vastustajista tuloksineen: ottelu(selo, tulos) 
+        //    syotteet.VastustajanSeloYksittainen on joko yhden vastustajan selo tai 0 (jos monta ottelua)
         //
         // Virhetilanteet:
         //    Kenttiä tarkistetaan yo. järjestyksessä ja lopetetaan, kun kohdataan ensimmäinen virhe.
@@ -100,16 +101,17 @@ namespace Selolaskuri
                 syotteet.AlkuperainenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
 
 
-                //    JOS YKSI OTTELU,   saadaan muuttujassa vastustajanSeloYksittainen vastustajan vahvuusluku,
-                //                       ottelun tulosta ei voida tietää vielä
+                //    JOS YKSI OTTELU,   saadaan sen yhden vastustajan vahvuusluku, eikä otteluja ole listassa
                 //    JOS MONTA OTTELUA, palautuu 0 ja ottelut on tallennettu tuloksineen listaan
-                //
                 if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
-                syotteet.VastustajanSeloYksittainen = tulos; // tässä tulos siis on vahvuusluku
+
+                // tässä siis voi olla vahvuusluku tai 0
+                syotteet.VastustajanSeloYksittainen = tulos;
 
                 // vain jos otteluita ei jo ole listalla (ja TarkistaVastustajanSelo palautti kelvollisen vahvuusluvun),
                 // niin tarkista ottelutuloksen valintanapit -> TarkistaOttelunTulos()
+                // ja sitten lisää tämä yksi ottelu listaan!
                 if (syotteet.Ottelut.Lukumaara == 0) {
                     //
                     // Vastustajan vahvuusluku on nyt vastustajanSeloYksittainen-kentässä
@@ -126,7 +128,7 @@ namespace Selolaskuri
                     syotteet.Ottelut.LisaaOttelunTulos(syotteet.VastustajanSeloYksittainen, syotteet.OttelunTulos);
                 }
 
-                tulos = Vakiot.SYOTE_STATUS_OK; // syötekentät OK, jos päästy tänne asti
+                tulos = Vakiot.SYOTE_STATUS_OK; // syötekentät OK, jos päästy tänne asti ja ottelu/ottelut ovat listassa
 
             } while (false);
 

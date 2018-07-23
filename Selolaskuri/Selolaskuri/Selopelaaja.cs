@@ -27,9 +27,9 @@ namespace Selolaskuri
     //
     // pelaa shakkiotteluita, joissa on vastustaja (vastustajan selo) ja tulos (tappio, tasapeli tai voitto)
     //
-    public class Selopelaaja // : Tulokset // Lasketaan UusiSelo, UusiPelimäärä, MinSelo, MaxSelo,
-                                        //           Odotustulos, Kerroin, TurnauksenTulos,
-                                        //           VastustajienLkm, TurnauksenKeskivahvuus
+    public class Selopelaaja // Tulokset: UusiSelo, UusiPelimäärä, MinSelo, MaxSelo,
+                             //           Odotustulos, Kerroin, TurnauksenTulos,
+                             //           VastustajienLkm, TurnauksenKeskivahvuus
     {
         //// --------------------------------------------------------------------------------
         //// Laskennan aikana päivitettävät tiedot, jotka kopioidaan tuloksiin
@@ -39,7 +39,7 @@ namespace Selolaskuri
         public int UusiSelo { get; private set; }
         public int UusiPelimaara { get; private set; }
 
-        // Lasketun selon vaihteluväli, jos vastustajien selot ja tulokset formaatissa: +1622 -1880 =1633
+        // Selon vaihteluväli mahdollinen selvittää, jos ottelut formaatissa: +1622 -1880 =1633
         public int MinSelo { get; private set; }
         public int MaxSelo { get; private set; }
 
@@ -57,7 +57,28 @@ namespace Selolaskuri
         public int VastustajienLkm { get; private set; }
         public int TurnauksenKeskivahvuus { get; private set; }
 
-        
+        // Tuloksien näyttämisessä tarvitaan alkuperäistä seloa -> muutos, sekä ero keskivahvuuteen
+        public int AlkuperainenSelo {
+            get {
+                return alkuperaisetSyotteet.AlkuperainenSelo;
+            }
+        }
+
+        // Tuloksien näyttämisessä tarvitaan tieto, koska odotustulosta ei näytetä uudelle pelaajalle
+        public bool UudenPelaajanLaskenta {
+            get {
+                return alkuperaisetSyotteet.UudenPelaajanLaskenta();
+            }
+        }
+
+        // Tuloksien näyttämisessä tarvitaan tieto, koska tulospainikkeet tyhjennetään varalta, jos niitä ei käytetty
+        // Voivat jäädä päälle yhtä ottelua syötettäessä, jos vaihdettu tuloksen syöttötapa -> "1.0 1434" tai "+1434"
+        public bool KaytettiinkoTulospainikkeita {
+            get {
+                return (alkuperaisetSyotteet.VastustajanSeloYksittainen != 0);
+            }
+        }
+       
         // Mahdollisesti annettu turnauksen tulos voi olla 0 - vastustajienlkm
         // Tallennetaan kokonaislukuna tuplana: esim. (int)(2*10,5) eli 21
         //
@@ -161,7 +182,11 @@ namespace Selolaskuri
                 UusiPelimaara += VastustajienLkm;
 
                 // turnauksen tulos annettu, joten ei laskettavaa
-                TurnauksenTulos = annettuTurnauksenTulos;  
+                TurnauksenTulos = annettuTurnauksenTulos;
+
+                // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
+                MinSelo = UusiSelo;
+                MaxSelo = UusiSelo;
 
                 return;
             }
@@ -227,8 +252,7 @@ namespace Selolaskuri
                         (int)((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2F - Odotustulos / 100F)) + (ottelulista.Lukumaara * 0.1F) + 0.5F);
                 }
 
-                // koska laskenta tehdään kerralla, ei tuloksista voida tietää minSeloa ja maxSeloa,
-                // joten ne alustetaan samoiksi ettei niitä näytettäisi tuloksissa
+                // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
                 MinSelo = UusiSelo;
                 MaxSelo = UusiSelo;
             }

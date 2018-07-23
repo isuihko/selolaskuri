@@ -1,5 +1,5 @@
 ﻿//
-// Luokka syötetietoja varten
+// Luokka lomakkeen kentistä saatuja syötetietoja varten
 //
 // Public:
 //      Syotetiedot()           konstruktori lomakkeelle ilman parametreja ja yksikkötestauksessa käytettäväksi parametrein

@@ -219,7 +219,9 @@ namespace Selolaskuri
                 status = false;
             } else {
                 Selopelaaja tulokset = so.SuoritaLaskenta(syotteet);
-                NaytaTulokset(syotteet, tulokset);
+
+                // Tuloksissa näytetään myös selo-muutos
+                NaytaTulokset(tulokset);
             }
 
             return status;
@@ -230,23 +232,20 @@ namespace Selolaskuri
         //   Uusi vahvuusluku ja sen muutos +/- NN pistettä
         //   uusi pelimäärä tai tyhjä
         //   piste-ero
-        private void NaytaTulokset(Syotetiedot syotteet, Selopelaaja tulokset)
+        private void NaytaTulokset(Selopelaaja tulokset)
         {
             //   Uusi vahvuusluku ja sen muutos +NN, -NN tai 0 pistettä
             uusiSelo_out.Text = tulokset.UusiSelo.ToString();
-            selomuutos_out.Text = (tulokset.UusiSelo - syotteet.AlkuperainenSelo).ToString("+#;-#;0");
+            selomuutos_out.Text = (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0");
 
             //   uusi pelimäärä tai tyhjä
-            if (syotteet.AlkuperainenPelimaara != Vakiot.PELIMAARA_TYHJA)
+            if (tulokset.UusiPelimaara != Vakiot.PELIMAARA_TYHJA)
                 uusiPelimaara_out.Text = tulokset.UusiPelimaara.ToString();
             else
                 uusiPelimaara_out.Text = "";
 
-            // Yksi vastustaja: piste-ero vastustajaan
-            if (tulokset.VastustajienLkm == 1)
-                pisteEro_out.Text = Math.Abs(syotteet.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
-            else
-                pisteEro_out.Text = "";
+            // piste-ero turnauksen keskivahvuuteen nähden
+            pisteEro_out.Text = Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
 
             // Vastustajien vahvuuslukujen keskiarvo
             keskivahvuus_out.Text = tulokset.TurnauksenKeskivahvuus.ToString();
@@ -262,8 +261,8 @@ namespace Selolaskuri
             else
                 vaihteluvali_out.Text = "";
 
-            // Odotustulosta tai sen summaa ei uudelle pelaajalle
-            if (syotteet.UudenPelaajanLaskenta())
+            // Odotustulosta tai sen summaa ei näytetä uudelle pelaajalle, koska vahvuusluku on vielä provisional
+            if (tulokset.UudenPelaajanLaskenta)
                 odotustulos_out.Text = "";
             else
                 odotustulos_out.Text = (tulokset.Odotustulos / 100F).ToString("0.00");
@@ -271,9 +270,9 @@ namespace Selolaskuri
             // kerroin on laskettu alkuperäisestä omasta selosta (laskennan aputieto)
             kerroin_out.Text = tulokset.Kerroin.ToString();
 
-            // Valintanapit tyhjiksi, jos oli muu kuin yksittäisen vastustajan tapaus
-            if (syotteet.VastustajanSeloYksittainen == 0) {
-                // nappeja on voinut jäädä valituksi, jos on lopulta syötetty yhden ottelun tulos muodossa "1.0 1434" tai "+1434"
+            // Jos ei käytetty tulospainikkeita, niin tuloksen valintanapit varmuuden vuoksi pois päältä
+            // Tulospainikkeita käytettäessä yksi vastustajan selo, eikä tulosta annettu muodossa "1.0 1434" tai "+1434"
+            if (!tulokset.KaytettiinkoTulospainikkeita) {
                 tulosTappio_btn.Checked   = false;
                 tulosTasapeli_btn.Checked = false;
                 tulosVoitto_btn.Checked   = false;

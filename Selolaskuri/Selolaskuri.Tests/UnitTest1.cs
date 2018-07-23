@@ -6,13 +6,15 @@
 // TOIMII!! Nyt on helppo tarkistaa muutoksien jälkeen, onko syötteen tarkastus ja laskenta kunnossa!
 // Yksi virhekin tuli korjattua. Pelimäärä saattoi joillakin syötteillä vaikuttaa tulokseen.
 //
-// Tuloksista voidaan tarkistaa
+// Tuloksista voidaan tarkistaa mm.
 //      1) laskettu vahvuusluku
 //      2) uusi pelimäärä
 //      3) turnauksen pistemäärä/tulos, huom! kaksinkertaisena jotta saadaan kokonaislukuna (esim. 1,5 tulee lukuna 3)
 //      4) vastustajien keskivahvuus
 //      5) vastustajien lukumäärä
 //      6) Odotustulos
+//      7) laskennan aikainen minimiselo (riippuu ottelujen syöttötavasta)
+//      7) laskennan aikainen maksimiselo (riippuu ottelujen syöttötavasta)
 //
 // Ks. apurutiini Testaa(), johon voidaan lisätä muitakin tarkistettavia tuloksia (mm. kerroin).
 //
@@ -32,6 +34,9 @@
 //              Myös lisätty testitapauksia (turnauksen tuloksen virheet). Nyt niitä on 22 kpl eli aika kattavasti.
 //   18.6.2018  Tarkistettu näkyvyyttä -> private Testaa()
 //   18.7.2018  Selkeytetty
+//   23.7.2018  Muutettu Testaa()-rutiinin paluuarvo: <syötteen tarkistuksen status, tulokset>
+//              Tällöin ylemmällä tasolla voidaan viitata suoraan tulostietorakenteen kenttiin
+//              Nyt voidaan tarkistaa myös MinSelo ja MaxSelo
 //
 
 using System;
@@ -51,75 +56,90 @@ namespace Selolaskuri.Tests
         public void UudenPelaajanOttelutYksittain()
         {
             // Testataan uuden pelaajan vahvuusluvun muutokset ottelu kerrallaan.
-            // Seuraavaan testiin otetaan edellisestä saatu vahvuusluku ja pelimäärä.
 
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "1525", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
-            Assert.AreEqual(t.Item1, 1725);  // uusi vahvuusluku
-            Assert.AreEqual(t.Item2, 1);     // uusi pelimäärä 0+1=1
-            Assert.AreEqual(t.Item3, 1 * 2); // tulos voitto (tulee kokonaislukuna 2)
-            Assert.AreEqual(t.Item4, 1525);  // keskivahvuus
-            Assert.AreEqual(t.Item5, 1);     // yksi vastustaja
-            Assert.AreEqual(t.Item6, 50);    // 0,50*100  odotustulos palautuu 100-kertaisena
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1725);                // uusi vahvuusluku
+            Assert.AreEqual(t.Item2.UusiPelimaara, 1);              // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 1 * 2);        // tulos voitto (tulee kokonaislukuna 2)
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1525);  // keskivahvuus
+            Assert.AreEqual(t.Item2.VastustajienLkm, 1);            // yksi vastustaja
+            Assert.AreEqual(t.Item2.Odotustulos, 50);               // 0,50*100  odotustulos palautuu 100-kertaisena
+            Assert.AreEqual(t.Item2.MinSelo, t.Item2.UusiSelo);     // yksi ottelu, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.MaxSelo, t.Item2.UusiSelo);     // yksi ottelu, sama kuin UusiSelo
 
-            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1441", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
-            Assert.AreEqual(t.Item1, 1683);
-            Assert.AreEqual(t.Item2, 2);     // uusi pelimäärä 1+1=2
-            Assert.AreEqual(t.Item3, 1 * 2);
-            Assert.AreEqual(t.Item4, 1441);
-            Assert.AreEqual(t.Item6, 84);    // 0,84*100
+            // Ja tästä eteenpäin käytetään edellisestä laskennasta saatuja UusiSelo ja UusiPelimaara
+            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1441", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1683);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 2);              // uusi pelimäärä 1+1 = 2
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 1 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1441);
+            Assert.AreEqual(t.Item2.Odotustulos, 84);               // 0,84*100
 
-            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1973", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
-            Assert.AreEqual(t.Item1, 1713);
-            Assert.AreEqual(t.Item2, 3);
-            Assert.AreEqual(t.Item3, 0);
-            Assert.AreEqual(t.Item4, 1973);
-            Assert.AreEqual(t.Item6, 16);   // 0,16*100
+            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1973", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1713);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 3);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 0);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1973);
+            Assert.AreEqual(t.Item2.Odotustulos, 16);               // 0,16*100
 
-            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1718", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
-            Assert.AreEqual(t.Item1, 1764);
-            Assert.AreEqual(t.Item2, 4);
-            Assert.AreEqual(t.Item3, 1 * 2);
-            Assert.AreEqual(t.Item4, 1718);
+            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1718", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1764);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 4);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 1 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1718);
 
-            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1784", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
-            Assert.AreEqual(t.Item1, 1728);
-            Assert.AreEqual(t.Item2, 5);
-            Assert.AreEqual(t.Item3, 0);
-            Assert.AreEqual(t.Item4, 1784);
+            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1784", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1728);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 5);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 0);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1784);
 
-            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1660", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
-            Assert.AreEqual(t.Item1, 1683);
-            Assert.AreEqual(t.Item2, 6);
-            Assert.AreEqual(t.Item3, 0);
-            Assert.AreEqual(t.Item4, 1660);
+            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1660", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1683);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 6);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 0);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1660);
 
-            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item1.ToString(), t.Item2.ToString(), "1966", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
-            Assert.AreEqual(t.Item1, 1695);
-            Assert.AreEqual(t.Item2, 7);
-            Assert.AreEqual(t.Item3, 0);
-            Assert.AreEqual(t.Item4, 1966);
+            t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1966", Vakiot.OttelunTulos_enum.TULOS_TAPPIO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1695);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 7);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 0);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1966);
         }
 
         [TestMethod]
         public void UudenPelaajanOttelutKerralla1()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1695);
-            Assert.AreEqual(t.Item2, 7);
-            Assert.AreEqual(t.Item3, 3 * 2);
-            Assert.AreEqual(t.Item4, 1724); // keskivahvuus
-            Assert.AreEqual(t.Item5, 7);    // seitsemän vastustajaa
-            Assert.AreEqual(t.Item6, 199);  // odotustulos 1,99*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1695);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 7);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
+            Assert.AreEqual(t.Item2.VastustajienLkm, 7);
+            Assert.AreEqual(t.Item2.Odotustulos, 199);          // odotustulos 1,99*100
+            Assert.AreEqual(t.Item2.MinSelo, 1683);             // laskennan aikainen minimi
+            Assert.AreEqual(t.Item2.MaxSelo, 1764);             // laskennan aikainen maksimi
         }
 
         [TestMethod]
         public void UudenPelaajanOttelutKerralla2()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "3 1525 1441 1973 1718 1784 1660 1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1695);
-            Assert.AreEqual(t.Item2, 7);
-            Assert.AreEqual(t.Item3, 3 * 2);
-            Assert.AreEqual(t.Item4, 1724);// keskivahvuus
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1695);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 7);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
+            Assert.AreEqual(t.Item2.MinSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.MaxSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
         }
 
         // Tässä lasketaan samat ottelut kuin uudelle pelaajalle, mutta vanhan pelaajan kaavalla (pelimäärä "")
@@ -127,24 +147,28 @@ namespace Selolaskuri.Tests
         public void SamatOttelutKuinUudella1() // Turnauksen tulos lasketaan otteluista
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "", "+1525 +1441 -1973 +1718 -1784 -1660 -1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1571);
-            Assert.AreEqual(t.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
-            Assert.AreEqual(t.Item3, 3 * 2);
-            Assert.AreEqual(t.Item4, 1724); // keskivahvuus
-            Assert.AreEqual(t.Item5, 7);    // seitsemän vastustajaa
-            Assert.AreEqual(t.Item6, 199);  // odotustulos 1,99*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1571);
+            Assert.AreEqual(t.Item2.UusiPelimaara, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
+            Assert.AreEqual(t.Item2.VastustajienLkm, 7);        // seitsemän vastustajaa
+            Assert.AreEqual(t.Item2.Odotustulos, 199);          // odotustulos 1,99*100
+            Assert.AreEqual(t.Item2.MinSelo, 1548);             // laskennan aikainen minimi
+            Assert.AreEqual(t.Item2.MaxSelo, 1596);             // laskennan aikainen maksimi
         }
 
         [TestMethod]
         public void SamatOttelutKuinUudella2() // Turnauksen tulos annettu numerona
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "", "3 1525 1441 1973 1718 1784 1660 1966", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1571);
-            Assert.AreEqual(t.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
-            Assert.AreEqual(t.Item3, 3 * 2);
-            Assert.AreEqual(t.Item4, 1724);
-            Assert.AreEqual(t.Item5, 7);    // seitsemän vastustajaa
-            Assert.AreEqual(t.Item6, 199);  // odotustulos 1,99*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1571);
+            Assert.AreEqual(t.Item2.UusiPelimaara, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
+            Assert.AreEqual(t.Item2.VastustajienLkm, 7);        // seitsemän vastustajaa
+            Assert.AreEqual(t.Item2.Odotustulos, 199);          // odotustulos 1,99*100
         }
 
         // Kolme tapaa syöttää ottelun tulos
@@ -152,24 +176,27 @@ namespace Selolaskuri.Tests
         public void TulosPainikkeilla()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "1900", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
-            Assert.AreEqual(t.Item1, 1823);
-            Assert.AreEqual(t.Item6, 36);   // odotustulos 0,36*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1823);
+            Assert.AreEqual(t.Item2.Odotustulos, 36);   // odotustulos 0,36*100
         }
 
         [TestMethod]
         public void TulosSelossa()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "+1900", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1823);
-            Assert.AreEqual(t.Item6, 36);   // odotustulos 0,36*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1823);
+            Assert.AreEqual(t.Item2.Odotustulos, 36);   // odotustulos 0,36*100
         }
 
         [TestMethod]
         public void TulosNumeronaEnnenSeloa()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1800", "", "1.0 1900", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1823);
-            Assert.AreEqual(t.Item6, 36);   // odotustulos 0,36*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1823);
+            Assert.AreEqual(t.Item2.Odotustulos, 36);   // odotustulos 0,36*100
         }
 
         // Merkkijonoissa ylimääräisiä välilyöntejä
@@ -177,22 +204,26 @@ namespace Selolaskuri.Tests
         public void UudenPelaajanOttelutValilyonteja()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "    1525  ", "0  ", "     +1525  +1441           -1973 +1718    -1784 -1660     -1966   ", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 1695);
-            Assert.AreEqual(t.Item2, 7);
-            Assert.AreEqual(t.Item3, 3 * 2);
-            Assert.AreEqual(t.Item4, 1724);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1695);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 7);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
         }
 
         [TestMethod]
         public void PikashakinVahvuuslukuTurnauksesta()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 2033);
-            Assert.AreEqual(t.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
-            Assert.AreEqual(t.Item3, (int)(10.5F * 2));
-            Assert.AreEqual(t.Item4, 1827);  // (1977+2013+1923+1728+1638+1684+1977+2013+1923+1728+1638+1684)/12 = 1827,167
-            Assert.AreEqual(t.Item5, 12);    // 12 vastustajaa
-            Assert.AreEqual(t.Item6, 840);   // odotustulos 8,40*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 2033);
+            Assert.AreEqual(t.Item2.UusiPelimaara, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
+            Assert.AreEqual(t.Item2.TurnauksenTulos, (int)(10.5F * 2));
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1827);  // (1977+2013+1923+1728+1638+1684+1977+2013+1923+1728+1638+1684)/12 = 1827,167
+            Assert.AreEqual(t.Item2.VastustajienLkm, 12);           // 12 vastustajaa eli ottelua
+            Assert.AreEqual(t.Item2.Odotustulos, 840);              // odotustulos 8,40*100
+            Assert.AreEqual(t.Item2.MinSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.MaxSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
         }
 
         // Testataan eri pelimäärillä, ettei tulos riipu pelimäärästä silloin kun ei ole uuden pelaajan laskenta
@@ -200,20 +231,22 @@ namespace Selolaskuri.Tests
         public void PikashakinVahvuuslukuTurnauksestaPelimaaralla()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "75", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 2033);
-            Assert.AreEqual(t.Item2, 87);    // 75 + 12 ottelua = 87
-            Assert.AreEqual(t.Item3, (int)(10.5F * 2));
-            Assert.AreEqual(t.Item4, 1827);
-            Assert.AreEqual(t.Item5, 12);
-            Assert.AreEqual(t.Item6, 840);   // odotustulos 8,40*100
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 2033);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 87);             // 75 + 12 ottelua = 87
+            Assert.AreEqual(t.Item2.TurnauksenTulos, (int)(10.5F * 2));
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1827);
+            Assert.AreEqual(t.Item2.VastustajienLkm, 12);
+            Assert.AreEqual(t.Item2.Odotustulos, 840);              // odotustulos 8,40*100
         }
 
         [TestMethod]
         public void ShakinVahvuuslukuTurnauksesta()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1996", "", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 2050);
-            Assert.AreEqual(t.Item2, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 2050);
+            Assert.AreEqual(t.Item2.UusiPelimaara, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
         }
 
         // Testataan eri pelimäärillä, ettei tulos riipu pelimäärästä silloin kun ei ole uuden pelaajan laskenta
@@ -221,8 +254,9 @@ namespace Selolaskuri.Tests
         public void ShakinVahvuuslukuTurnauksestaPelimaaralla()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1996", "150", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            Assert.AreEqual(t.Item1, 2050);
-            Assert.AreEqual(t.Item2, 162);   // 150 + 12 ottelua  = 162
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 2050);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 162);        // 150 + 12 ottelua  = 162
         }
 
 
@@ -313,37 +347,32 @@ namespace Selolaskuri.Tests
         // Testauksen apurutiini
         // --------------------------------------------------------------------------------
 
-        // Tuloksista voidaan tarkistaa
+        // Tuloksista voidaan tarkistaa mm. (ks. class Selopelaaja)
         //      1) laskettu vahvuusluku
         //      2) uusi pelimäärä
         //      3) turnauksen pistemäärä/tulos, huom! kaksinkertaisena jotta saadaan kokonaislukuna (esim. 1,5 tulee lukuna 3)
         //      4) vastustajien keskivahvuus
         //      5) vastustajien lukumäärä
         //      6) odotustulos
-        //
-        // Tietorakenteesta saisi otettua myös muitakin laskettuja tietoja tarkistettavaksi, ks. Tulokset.cs
+        //      7) laskennan aikainen minimiselo (riippuu ottelujen syöttötavasta)
+        //      8) laskennan aikainen maksimiselo (riippuu ottelujen syöttötavasta)
         //
         // Virhetilanteessa palautetaan vain virhestatus
         //
         // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
-        private Tuple<int, int, int, int, int, int> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
+        private Tuple<int, Selopelaaja> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             SelolaskuriOperations so = new SelolaskuriOperations();
             Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos);
             int status;
+            Selopelaaja tulokset = null;
 
-            if ((status = so.TarkistaSyote(syotetiedot)) != Vakiot.SYOTE_STATUS_OK) {
-                // Virhestatus
-                return Tuple.Create(status, 0, 0, 0, 0, 0);
-            } else {
+            if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK) {
                 // Syötteet OK, joten voidaan edetä laskentaan, saadaan Selopelaaja tulokset 
-                Selopelaaja tulokset = so.SuoritaLaskenta(syotetiedot);
-
-                // Lasketut tiedot tarkastettavaksi
-                return Tuple.Create(tulokset.UusiSelo, tulokset.UusiPelimaara,
-                                    tulokset.TurnauksenTulos, tulokset.TurnauksenKeskivahvuus,
-                                    tulokset.VastustajienLkm, tulokset.Odotustulos);
+                tulokset = so.SuoritaLaskenta(syotetiedot);
             }
+
+            return Tuple.Create(status, tulokset);
         }
     }  
 }

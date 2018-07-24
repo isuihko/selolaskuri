@@ -1,32 +1,29 @@
 ﻿//
-// Yksikkötestaukset - laskennan muutoksien testaus
+// Unit testing of Selolaskuri's parameter checking and calculation routines
 //
-// Luotu 10.6.2018 Ismo Suihko
+// 10.6.2018 Ismo Suihko
 //
-// TOIMII!! Nyt on helppo tarkistaa muutoksien jälkeen, onko syötteen tarkastus ja laskenta kunnossa!
-// Yksi virhekin tuli korjattua. Pelimäärä saattoi joillakin syötteillä vaikuttaa tulokseen.
+// Now with this it is easy to check the checking of input and calculating results.
 //
-// Tuloksista voidaan tarkistaa mm.
-//      1) laskettu vahvuusluku
-//      2) uusi pelimäärä
-//      3) turnauksen pistemäärä/tulos, huom! kaksinkertaisena jotta saadaan kokonaislukuna (esim. 1,5 tulee lukuna 3)
-//      4) vastustajien keskivahvuus
-//      5) vastustajien lukumäärä
-//      6) Odotustulos
-//      7) laskennan aikainen minimiselo (riippuu ottelujen syöttötavasta)
-//      7) laskennan aikainen maksimiselo (riippuu ottelujen syöttötavasta)
+// You can check from the results
+//      1) new SELO
+//      2) new game count
+//      3) amount of points won from the given opponents (1/2 from draw, 1 from win). Stored as double so can use integer.
+//      4) average strengt of the opponents
+//      5) number of opponents
+//      6) expected results (odotustulos)
+//      7) minumum selo during calculations (if not possible to calculate, then same as new selo)
+//      7) maximum selo during calculations (if not possible to calculate, then same as new selo)
 //
-// Ks. apurutiini Testaa(), johon voidaan lisätä muitakin tarkistettavia tuloksia (mm. kerroin).
 //
-// Tuloksia on verrattu muiden laskentaohjelmien tuloksiin
+// The results were compared and can be compared to the other calcuating programs
 //      http://shakki.kivij.info/performance_calculator.shtml
 //      http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html
-// sekä selolaskennassa kerrottujen turnauksien ja otteluiden tuloksiin.
+// and also chess tournament results.
 //
-// Tuloksissa voi olla yhden pisteen verran heittoa eri laskentaohjelmien välillä pyöristyksistä johtuen,
-// jolloin virallisen selolaskennan tulos on määräävä ja johon on tässä ohjelmassa myös pyritty.
+// Occasionally there can be one point difference to official calcuations, maybe caused by rounding.
 //
-// Muutokset:
+// Modifications:
 //   11.6.2018  Järjestetty aiempia testitapauksia ja lisätty uusia
 //   15.6.2018  Lisätty tarkistettavia tietoja: pistemäärä ja keskivahvuus
 //   17.6.2018  Lisätty tarkistettavia tietoja: vastustajien lkm, Odotustulos
@@ -114,6 +111,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1966);
         }
 
+        // Calculation from the format ""+1525 +1441 -1973 +1718..." takes more time than from "3 1525 1441 1973 1718..."
         [TestMethod]
         public void UudenPelaajanOttelutKerralla1()
         {
@@ -327,7 +325,6 @@ namespace Selolaskuri.Tests
         public void VirheellinenSyoteTurnauksenTulos3()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "-6 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            //Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS);
             Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
 
@@ -338,7 +335,6 @@ namespace Selolaskuri.Tests
         public void VirheellinenSyoteTurnauksenTulos4()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "150 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            //Assert.AreEqual(tulokset.Item1, Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS);
             Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
 
@@ -347,19 +343,7 @@ namespace Selolaskuri.Tests
         // Testauksen apurutiini
         // --------------------------------------------------------------------------------
 
-        // Tuloksista voidaan tarkistaa mm. (ks. class Selopelaaja)
-        //      1) laskettu vahvuusluku
-        //      2) uusi pelimäärä
-        //      3) turnauksen pistemäärä/tulos, huom! kaksinkertaisena jotta saadaan kokonaislukuna (esim. 1,5 tulee lukuna 3)
-        //      4) vastustajien keskivahvuus
-        //      5) vastustajien lukumäärä
-        //      6) odotustulos
-        //      7) laskennan aikainen minimiselo (riippuu ottelujen syöttötavasta)
-        //      8) laskennan aikainen maksimiselo (riippuu ottelujen syöttötavasta)
-        //
-        // Virhetilanteessa palautetaan vain virhestatus
-        //
-        // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
+        // Use old Tuple, because Visual Studio Community 2015 has older C#
         private Tuple<int, Selopelaaja> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             SelolaskuriOperations so = new SelolaskuriOperations();
@@ -368,7 +352,9 @@ namespace Selolaskuri.Tests
             Selopelaaja tulokset = null;
 
             if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK) {
-                // Syötteet OK, joten voidaan edetä laskentaan, saadaan Selopelaaja tulokset 
+
+                // If the input was OK, continue and calculate
+                // If wasn't, then tulokset is left null and error status will be returned
                 tulokset = so.SuoritaLaskenta(syotetiedot);
             }
 

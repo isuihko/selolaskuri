@@ -1,12 +1,10 @@
 ﻿//
-// Selolaskurissa käytetyt vakiot
+// All the constants
 //
-// Luotu 7.1.2018 Ismo Suihko
+// 7.1.2018 Ismo Suihko
 //
-// Muutettu:
-//   1.-6.4.2018    Koodin järjestämistä, vakioiden nimet selkeämmiksi
-//   10.6.2018      Uusi Selolaskuri-projekti, nimiä selkeämmiksi
-//   17.6.2018      Lisätty UUDEN_PELAAJAN_ALKUSELO
+// Modifications:
+//   17.6.2018      Added UUDEN_PELAAJAN_ALKUSELO
 //    
 
 namespace Selolaskuri {

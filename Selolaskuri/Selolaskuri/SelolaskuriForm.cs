@@ -1,9 +1,9 @@
 ﻿//
-// Shakin vahvuuslukulaskennan lomakkeen käsittely, tarkistuksen ja laskennan kutsuminen, sekä tuloksien näyttäminen
+// The form with input fields and menus, calling of input checking and calculations, showing the results
 //
-// Luotu 10.6.2018 Ismo Suihko (aiemmin 17.11.2017 "Selolaskuri.cs", alkuvaiheen muutoshistoria poistettu)
+// 10.6.2018 Ismo Suihko (earlier version history removed)
 //
-// Muutokset:
+// Modifcations
 //  10.6.2018   Syötteen tarkistukset ja laskenta siirretty omaan moduuliinsa SelolaskuriOperations.cs,
 //              jotta niitä voidaan kutsua yksikkötestauksesta (Selolaskuri.Tests / UnitTest1.cs).
 //              Syötteet haetaan lomakkeelta erikseen ja sitten kutsutaan tarkistusrutiinia,
@@ -24,6 +24,8 @@
 // 19.7.2018        Muokattu ohjetekstejä, pientä järjestelyä
 //
 // Publish --> Versio 2.0.0.4, myös github
+//
+// 20.-24.7.2018    Muutoksia mm. luokassa Selopelaaja ja yksikkötestauksessa, koodia selkeytetty ym.
 //
 
 using System;

@@ -1,24 +1,28 @@
 ﻿//
-// Luokka ottelujen tallentamiseen
+// Store the played matches (one or many) and the needed routines
 //
 // Public:
-//      LisaaOttelunTulos
-//      Lukumaara
-//      Keskivahvuus
-//      HaeEnsimmainen
-//      HaeSeuraava
+//      LisaaOttelunTulos  - adds a new match with opponent selo and the result (lost/draw/won)
+//      Lukumaara          - returns number of stored matches
+//      Keskivahvuus       - returns average opponent strength / selo strength
+//      HaeEnsimmainen     - returns the first match
+//      HaeSeuraava        - returns the next match
 //
-// Luotu 2.4.2018 Ismo Suihko
+// 2.4.2018 Ismo Suihko
 //
-// Sisältyy luokkaan Syotetiedot
-// Alustus: SelolaskuriOperations: TarkistaSyote() ja TarkistaVastustajanSelo()
-// Käyttö:  SelolaskuriOperations: SuoritaLaskenta()
-//          SeloPelaaja: PelaaKaikkiOttelut()
+// Created in Syotetiedot. Ottelut = new Ottelulista();
+// Data is stored in SelolaskuriOperations
+// Data is fetched for calculations in Selolaskuri PelaaKaikkiOttelut().
 // 
-// Muutokset:
-//  18.6.2018  Listan tyhjennystä ei tarvita erikseen. Tyhjä luonnin jälkeen, new Syotetiedot()
-//  19.7.2018  Piilotettu tallennettujen ottelujen lista -> private ... tallennetutOttelut ... ja private struct Ottelu
-//             ja lisätty Lukumaara, Keskivahvuus, HaeEnsimmainen ja HaeSeuraava
+// Public:
+//  LisaaOttelunTulos() - store a new match
+//  HaeEnsimmainen()    - return the first match
+//  HaeSeuraava()       - return the next match
+//  Lukumaara           - number of matches
+//  Keskivahvuus        - average strength of the opponents
+// 
+// Modifications:
+//   19.7.2018  Data is hidden, added routines Lukumaara, Keskivahvuus, HaeEnsimmainen ja HaeSeuraava
 //
 
 using System;  // needed for Tuple
@@ -50,13 +54,6 @@ namespace Selolaskuri
         // hakea lukumäärä (Count) sekä laskea alkioista keskiarvo (Average(x => x.vastustajanSelo))
         private IList<Ottelu> tallennetutOttelut = new List<Ottelu>();
 
-        //// Listan tyhjennys ennen kuin siihen tallennetaan uusia otteluita
-        // Ei tarvitakaan, koska lista on tyhjennetty jo luotaessa syotetietoja, new Syotetiedot()
-        //public void Tyhjenna()
-        //{
-        //    tallennetutOttelut.Clear();
-        //}
-
         // Ottelutuloksen (vastustaja ja tulos) lisääminen listaan
         public void LisaaOttelunTulos(int vastustajanSelo, Vakiot.OttelunTulos_enum ottelunTulos)
         {
@@ -66,10 +63,13 @@ namespace Selolaskuri
 
         private int index;
 
-        // Hae ottelut taulukkomuotoisesti
+        // Returns the first match  HaeEnsimmainen()
+        // Returns the next match   HaeSeuraava()
+        // If no more matchess left, returns TULOS_MAARITTELEMATON
         public Tuple<int, Vakiot.OttelunTulos_enum> HaeEnsimmainen()
         {
             index = 0;
+            // Same code as in HaeSeuraava()
             if (index < Lukumaara)
                 return Tuple.Create(tallennetutOttelut[index].vastustajanSelo, tallennetutOttelut[index].ottelunTulos);
             else
@@ -79,6 +79,7 @@ namespace Selolaskuri
         public Tuple<int, Vakiot.OttelunTulos_enum> HaeSeuraava()
         {
             index++;
+            // Same code as in HaeEnsimmainen()
             if (index < Lukumaara)
                 return Tuple.Create(tallennetutOttelut[index].vastustajanSelo, tallennetutOttelut[index].ottelunTulos);
             else

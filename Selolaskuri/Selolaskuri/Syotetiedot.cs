@@ -1,16 +1,15 @@
 ﻿//
-// Luokka lomakkeen kentistä saatuja syötetietoja varten
+// Class for the input data from SelolaskuriForm or unit testing
 //
 // Public:
-//      Syotetiedot()           konstruktori lomakkeelle ilman parametreja ja yksikkötestauksessa käytettäväksi parametrein
-//      UudenPelaajanLaskenta   tarkistaa, tarvitaanko pelimäärän mukaan uuden pelaajan laskusääntöä
+//      UudenPelaajanLaskenta()     Checks if the new player's calculation is needed
 //
-// Luotu 5.4.2018 Ismo Suihko
+// 5.4.2018 Ismo Suihko
 //
-// Muutokset:
-// 16.-17.6.2018  pientä järjestelyä, lisätty tarkistus UudenPelaajanLaskenta()
-// 19.6.2018      constructor: poistettu toistoa käyttämällä konstruktorien ketjutusta (constructor chaining)
+// Modifications:
+// 16.-17.6.2018  Small organizing, added UudenPelaajanLaskenta()
 // 21.-22.7.2018  Now uses only the constructor with parameters and setting most of the data is private, only by constructor.
+
 
 namespace Selolaskuri
 {
@@ -32,7 +31,7 @@ namespace Selolaskuri
         // Tarkastuksessa merkkijonot muutettu numeroiksi
         public int AlkuperainenSelo { get; set; }
         public int AlkuperainenPelimaara { get; set; }
-        public int VastustajanSeloYksittainen { get; set; }
+        public int YksiVastustajaTulosnapit { get; set; }
 
         public Ottelulista Ottelut { get; private set; }   // sis. vastustajien selot ja ottelutulokset
 
@@ -42,7 +41,7 @@ namespace Selolaskuri
         //{          
         //}
 
-        // Constructorin käyttö:
+        // Konstruktorin käyttö:
         //  - Lomakkeelta (SelolaskuriForm.cs)
         //     return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
         //  - TESTATTAESSA (UnitTest1.cs)
@@ -57,9 +56,9 @@ namespace Selolaskuri
             OttelunTulos               = tulos;
 
             // Clear these too although not actually needed
-            AlkuperainenSelo            = 0;
-            AlkuperainenPelimaara       = 0;
-            VastustajanSeloYksittainen  = 0;
+            AlkuperainenSelo           = 0;
+            AlkuperainenPelimaara      = 0;
+            YksiVastustajaTulosnapit   = 0;
             
             // Create en empty list for matches (opponent's selo, match result)
             Ottelut = new Ottelulista();

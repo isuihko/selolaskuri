@@ -1,12 +1,12 @@
 ﻿//
-// Luokka shakinpelaajan laskentaa varten
+// Routines to calculate the results
 //
 // Public:
-//      PelaaKaikkiOttelut  (kutsuja SelolaskuriOperations)
+//      PelaaKaikkiOttelut  - go through all the matches and calculate
 //
-// Luotu 7.1.2018 Ismo Suihko
+// 7.1.2018 Ismo Suihko
 //
-// Muokattu
+// Modifications
 //   1.-7.4.2018    Laskennan korjauksia, uuden pelaajan laskenta turnauksen tuloksesta
 //   15.6.2018      Laskennan korjaukset (alkuperäinen pelimäärä vaikutti tulokseen)
 //   15.-19.6.2018  Laskennassa käytettyjen apumuuttujien käytön tarkistusta ja turhiksi jääneiden poistoa,
@@ -23,7 +23,7 @@ namespace Selolaskuri
 {
     // class Selopelaaja 
     //
-    // Käytetty: SelolaskuriOperations
+    // Used in SelolaskuriOperations, SelolaskuriForm and UnitTesting.
     //
     // pelaa shakkiotteluita, joissa on vastustaja (vastustajan selo) ja tulos (tappio, tasapeli tai voitto)
     //
@@ -75,7 +75,7 @@ namespace Selolaskuri
         // Voivat jäädä päälle yhtä ottelua syötettäessä, jos vaihdettu tuloksen syöttötapa -> "1.0 1434" tai "+1434"
         public bool KaytettiinkoTulospainikkeita {
             get {
-                return (alkuperaisetSyotteet.VastustajanSeloYksittainen != 0);
+                return (alkuperaisetSyotteet.YksiVastustajaTulosnapit != 0);
             }
         }
        
@@ -99,9 +99,9 @@ namespace Selolaskuri
         {
         }
 
-        // AlustaLaskenta tallentaa tähän alkuperäiset syötteet, joissa mm.
-        // alkuperäinen vahvuusluku ja pelimäärä sekä ottelulista.
-        // Käytetään tämän luokan rutiineissa suoraan.
+
+        // The initial input data is stored here to be used in calcuations.
+        // Also some data is used when displaying the results in SelolaskuriForm.
         private Syotetiedot alkuperaisetSyotteet;
 
 

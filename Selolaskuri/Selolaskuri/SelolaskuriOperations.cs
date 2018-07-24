@@ -1,38 +1,35 @@
 ﻿//
-// Luokka syötteen tarkistamiseen ja laskennan suorittamiseen
+// Calls the routines in Selopelaaja to check the input fields and calculate results
+// The business logic of Selolaskuri
+//
+// Originally the routines of this class were in SelolaskuriForm.cs
+// Created a separate module so that routines can be called from the unit testing too
 //
 // Public:
-//      HaeViimeksiLasketutTulokset  (käytetty lomakkeesta)
-//      TarkistaSyote
-//      SuoritaLaskenta
+//      HaeViimeksiLasketutTulokset  - get the latest calculated selo and game count
+//      TarkistaSyote                - check the input data like SELO and number of games, opponents and results
+//      SuoritaLaskenta              - calculate the results
 //
-// Tämän luokan rutiinit olivat alunperin lomakkeen moduulissa. Kun nämä nyt erotettiin lomakkeesta,
-// myös yksikkötestaus (Selolaskuri.Tests) on mahdollista ilman että tarvitaan ikkunaa ja lomaketta.
-//
-// Varsinainen laskenta suoritetaan kutsumalla luokan Selopelaaja rutiineja.
-//
-// Luotu 10.6.2018 Ismo Suihko
-// Muutokset:
-//  11.-12.6.2018 Kommentit, muutama vakio
-//  17.-19.6.2018 Järjestelyä, dokumentointia
-//  18.7.2018     SuoritaLaskenta() voi kopioida nyt kaikki tulokset Selopelaaja-luokasta Tulokset-luokkaan.
+// 10.6.2018 Ismo Suihko
+// Modifications:
+//  11.-12.6.2018 Comments, constants
+//  17.-19.6.2018 refactoring, documenting
+//  18.-22.7.2018 SuoritaLaskenta() now returns Selopelaaja. Earlier had separate (unnecessary) class for the results
 //
 
 using System;
 using System.Linq;
-using System.Text.RegularExpressions; // Regex rx, rx.Replace (ylimääräisten välilyöntien poisto)
+using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
 
 namespace Selolaskuri
 {
     // SelolaskuriOperations must be public to be used in Selolaskuri.Tests
-
-    // This has business logic of Selolaskuri
     // Called from
     //    -SelolaskuriForms button handling
     //    -Unit Tests
     public class SelolaskuriOperations
     {
-        Selopelaaja selopelaaja;
+        Selopelaaja selopelaaja;   // store and return the results, calculations
 
         // Initialize calculation, clear selopelaaja etc
         public SelolaskuriOperations()
@@ -40,7 +37,7 @@ namespace Selolaskuri
             selopelaaja = new Selopelaaja();
         }
 
-        // Käytetään Tuple:n aiempaa versiota, koska Visual Studio Community 2015:ssa ei ole käytössä C# 7.0:aa
+        // Use old Tuple, because Visual Studio Community 2015 has older C#
         public Tuple<int, int> HaeViimeksiLasketutTulokset()
         {
             int selo      = selopelaaja.UusiSelo;
@@ -107,7 +104,7 @@ namespace Selolaskuri
                     break;
 
                 // tässä siis voi olla vahvuusluku tai 0
-                syotteet.VastustajanSeloYksittainen = tulos;
+                syotteet.YksiVastustajaTulosnapit = tulos;
 
                 // vain jos otteluita ei jo ole listalla (ja TarkistaVastustajanSelo palautti kelvollisen vahvuusluvun),
                 // niin tarkista ottelutuloksen valintanapit -> TarkistaOttelunTulos()
@@ -125,7 +122,7 @@ namespace Selolaskuri
                     // ne on helppo hakea laskennassa.
                     // Myös vastustajanSeloYksittainen jää alustetuksi, koska siitä nähdään että vahvuusluku oli
                     // annettu erikseen, jolloin myös ottelun tuloksen on oltava annettuna valintapainikkeilla.
-                    syotteet.Ottelut.LisaaOttelunTulos(syotteet.VastustajanSeloYksittainen, syotteet.OttelunTulos);
+                    syotteet.Ottelut.LisaaOttelunTulos(syotteet.YksiVastustajaTulosnapit, syotteet.OttelunTulos);
                 }
 
                 tulos = Vakiot.SYOTE_STATUS_OK; // syötekentät OK, jos päästy tänne asti ja ottelu/ottelut ovat listassa
@@ -145,6 +142,7 @@ namespace Selolaskuri
         {
             return aika;   // Ei tarkistusta, koska ei voi olla virhetilanteita
         }
+
 
         // ************ TARKISTA NYKYINEN SELO ************
         //
@@ -168,6 +166,7 @@ namespace Selolaskuri
             }
             return tulos;
         }
+
 
         // tarkista pelimäärä
         // Saa olla tyhjä, mutta jos annettu, oltava numero, joka on 0-9999.

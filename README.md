@@ -10,6 +10,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 19-23.7.2018 : More code refactoring. Some data was defined twice similary, now uses one definition. The 'kerroin' which is shown in form, is now calculated from the initial 'selo'. Executable and window captures of version 2.0.0.4, 19.7.2018. More data hiding.
 
+25.7.2018 : Form fields were reorganized and kerroin (factor) is not displayed any more. Version now 2.0.0.5, 25.7.2018.
+
 --
 
 There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version. Will be updated as soon as this is ready.
@@ -79,7 +81,6 @@ Tulostiedot:
 - turnauksen tulos, joka voi olla esim. yhden ottelun tapauksessa  0,5 / 1  ja muutoin vaikkapa 2 / 5
 - piste-ero, kun laskettu yhden ottelun tuloksella (a)
 - odotustulos, kun laskettu yhden ottelun tulos (a) tai odotustuloksien summa (b ja c) paitsi jos laskettiin uuden pelaajan vahvuuslukua, jolloin summaa ei näytetä
-- kerroin, jota käytetään normaalissa laskennassa (eli ei uusi pelaaja) ja selvitään pelaajan omasta alkuperäisestä selosta
 
 Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä kolmella tavalla:
 - a) annetaan vahvuusluku numerona, esim. 1720 ja valitaan tulos valintapainikkeista 0, 1/2 ja 1.
@@ -99,3 +100,4 @@ TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea (harjoituksen vuoksi)
 - Java-versioon samat koodin järjestämiset/refaktoroinnit/yksikkötestaukset/dokumentoinnit
+- Ohjelmasta myös HTML/JavaScript-versio

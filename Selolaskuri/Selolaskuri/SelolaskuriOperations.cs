@@ -45,7 +45,7 @@ namespace Selolaskuri
 
             // Jos ei vielä ollut laskentaa, palautetaan uuden pelaajan alkuselo
             if (selo == 0 && pelimaara == 0)
-                selo = Vakiot.UUDEN_PELAAJAN_ALKUSELO;  // tiedetty vakio 1525
+                selo = Vakiot.UUDEN_PELAAJAN_ALKUSELO;  // tiedetty vakio 1525, pelimäärä 0
 
             return Tuple.Create(selo, pelimaara);
         }

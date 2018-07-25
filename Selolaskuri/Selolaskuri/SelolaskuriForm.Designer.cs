@@ -41,8 +41,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.odotustulos_out = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.kerroin_out = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.uusiPelimaara_out = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -113,9 +111,9 @@
             this.VastustajanVahvuusluku_teksti.AutoSize = true;
             this.VastustajanVahvuusluku_teksti.Location = new System.Drawing.Point(11, 148);
             this.VastustajanVahvuusluku_teksti.Name = "VastustajanVahvuusluku_teksti";
-            this.VastustajanVahvuusluku_teksti.Size = new System.Drawing.Size(349, 13);
+            this.VastustajanVahvuusluku_teksti.Size = new System.Drawing.Size(334, 13);
             this.VastustajanVahvuusluku_teksti.TabIndex = 54;
-            this.VastustajanVahvuusluku_teksti.Text = "Vastustajan SELO. Tai monta tuloksineen: +1725 -1810 =1612 (tai 1612)";
+            this.VastustajanVahvuusluku_teksti.Text = "Ottelut: SELO / SELOt tuloksineen / turnauksen pistemäärä ja SELOt";
             // 
             // label3
             // 
@@ -141,7 +139,7 @@
             // 
             this.UusiSELO_teksti.AutoSize = true;
             this.UusiSELO_teksti.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UusiSELO_teksti.Location = new System.Drawing.Point(10, 363);
+            this.UusiSELO_teksti.Location = new System.Drawing.Point(11, 363);
             this.UusiSELO_teksti.Name = "UusiSELO_teksti";
             this.UusiSELO_teksti.Size = new System.Drawing.Size(102, 24);
             this.UusiSELO_teksti.TabIndex = 60;
@@ -185,7 +183,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 19.7.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 25.7.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -198,30 +196,12 @@
             // 
             // odotustulos_out
             // 
-            this.odotustulos_out.Location = new System.Drawing.Point(308, 422);
+            this.odotustulos_out.Location = new System.Drawing.Point(301, 424);
             this.odotustulos_out.Name = "odotustulos_out";
             this.odotustulos_out.ReadOnly = true;
             this.odotustulos_out.Size = new System.Drawing.Size(46, 20);
             this.odotustulos_out.TabIndex = 17;
             this.odotustulos_out.TabStop = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(232, 443);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(40, 13);
-            this.label8.TabIndex = 59;
-            this.label8.Text = "Kerroin";
-            // 
-            // kerroin_out
-            // 
-            this.kerroin_out.Location = new System.Drawing.Point(308, 441);
-            this.kerroin_out.Name = "kerroin_out";
-            this.kerroin_out.ReadOnly = true;
-            this.kerroin_out.Size = new System.Drawing.Size(46, 20);
-            this.kerroin_out.TabIndex = 19;
-            this.kerroin_out.TabStop = false;
             // 
             // label9
             // 
@@ -244,7 +224,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(232, 405);
+            this.label10.Location = new System.Drawing.Point(232, 444);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 13);
             this.label10.TabIndex = 57;
@@ -252,7 +232,7 @@
             // 
             // pisteEro_out
             // 
-            this.pisteEro_out.Location = new System.Drawing.Point(308, 403);
+            this.pisteEro_out.Location = new System.Drawing.Point(301, 444);
             this.pisteEro_out.Name = "pisteEro_out";
             this.pisteEro_out.ReadOnly = true;
             this.pisteEro_out.Size = new System.Drawing.Size(46, 20);
@@ -262,7 +242,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(10, 424);
+            this.label11.Location = new System.Drawing.Point(11, 444);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(133, 13);
             this.label11.TabIndex = 62;
@@ -271,7 +251,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(10, 441);
+            this.label12.Location = new System.Drawing.Point(11, 424);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(124, 13);
             this.label12.TabIndex = 63;
@@ -279,7 +259,7 @@
             // 
             // keskivahvuus_out
             // 
-            this.keskivahvuus_out.Location = new System.Drawing.Point(163, 424);
+            this.keskivahvuus_out.Location = new System.Drawing.Point(163, 444);
             this.keskivahvuus_out.Name = "keskivahvuus_out";
             this.keskivahvuus_out.ReadOnly = true;
             this.keskivahvuus_out.Size = new System.Drawing.Size(56, 20);
@@ -288,7 +268,7 @@
             // 
             // turnauksenTulos_out
             // 
-            this.turnauksenTulos_out.Location = new System.Drawing.Point(163, 441);
+            this.turnauksenTulos_out.Location = new System.Drawing.Point(163, 424);
             this.turnauksenTulos_out.Name = "turnauksenTulos_out";
             this.turnauksenTulos_out.ReadOnly = true;
             this.turnauksenTulos_out.Size = new System.Drawing.Size(56, 20);
@@ -300,9 +280,10 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(11, 187);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(353, 13);
+            this.label13.Size = new System.Drawing.Size(374, 13);
             this.label13.TabIndex = 55;
-            this.label13.Text = "Montaa vahvuuslukua syötettäessä voitto +,   tasapeli = tai tyhjä,  tappio -";
+            this.label13.Text = "Esim. +1725 -1810 =1612 (tai 1612), jossa + voitto, = tai tyhjä tasapeli, - tappi" +
+    "o";
             // 
             // selomuutos_out
             // 
@@ -471,33 +452,33 @@
             // ohjeitaKäyttöönkeskenToolStripMenuItem
             // 
             this.ohjeitaKäyttöönkeskenToolStripMenuItem.Name = "ohjeitaKäyttöönkeskenToolStripMenuItem";
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ohjeitaKäyttöönkeskenToolStripMenuItem.Text = "Ohjeita";
             this.ohjeitaKäyttöönkeskenToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
             // 
             // laskentakaavatToolStripMenuItem
             // 
             this.laskentakaavatToolStripMenuItem.Name = "laskentakaavatToolStripMenuItem";
-            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
             this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.laskentakaavatToolStripMenuItem_Click);
             // 
             // tietojaOhjelmastaToolStripMenuItem
             // 
             this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
-            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
             this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // suljeToolStripMenuItem
             // 
             this.suljeToolStripMenuItem.Name = "suljeToolStripMenuItem";
-            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
             this.suljeToolStripMenuItem.Click += new System.EventHandler(this.suljeToolStripMenuItem_Click);
             // 
@@ -524,8 +505,6 @@
             this.Controls.Add(this.label10);
             this.Controls.Add(this.uusiPelimaara_out);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.kerroin_out);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.odotustulos_out);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -545,7 +524,7 @@
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.0.0.4";
+            this.Text = "Selolaskuri v. 2.0.0.5";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -572,8 +551,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox odotustulos_out;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox kerroin_out;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox uusiPelimaara_out;
         private System.Windows.Forms.Label label10;

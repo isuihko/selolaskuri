@@ -39,13 +39,13 @@ namespace Selolaskuri
     {
         private struct Ottelu
         {
-            public int vastustajanSelo { get; }
-            public Vakiot.OttelunTulos_enum ottelunTulos { get; }
+            public int VastustajanSelo { get; }
+            public Vakiot.OttelunTulos_enum OttelunTulos { get; }
 
             public Ottelu(int selo, Vakiot.OttelunTulos_enum tulos)  // tallentaa
             {
-                vastustajanSelo = selo;
-                ottelunTulos = tulos;
+                VastustajanSelo = selo;
+                OttelunTulos = tulos;
             }
         }
 
@@ -61,29 +61,29 @@ namespace Selolaskuri
             tallennetutOttelut.Add(ottelu);
         }
 
-        private int index;
+        private int _index;
+
+        private Tuple<int, Vakiot.OttelunTulos_enum> HaeOttelu(int index)
+        {
+            if (index < Lukumaara)
+                return Tuple.Create(tallennetutOttelut[index].VastustajanSelo, tallennetutOttelut[index].OttelunTulos);
+            else
+                return Tuple.Create(0, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+        }
 
         // Returns the first match  HaeEnsimmainen()
         // Returns the next match   HaeSeuraava()
         // If no more matchess left, returns TULOS_MAARITTELEMATON
         public Tuple<int, Vakiot.OttelunTulos_enum> HaeEnsimmainen()
         {
-            index = 0;
-            // Same code as in HaeSeuraava()
-            if (index < Lukumaara)
-                return Tuple.Create(tallennetutOttelut[index].vastustajanSelo, tallennetutOttelut[index].ottelunTulos);
-            else
-                return Tuple.Create(0, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            _index = 0;
+            return HaeOttelu(_index);
         }
 
         public Tuple<int, Vakiot.OttelunTulos_enum> HaeSeuraava()
         {
-            index++;
-            // Same code as in HaeEnsimmainen()
-            if (index < Lukumaara)
-                return Tuple.Create(tallennetutOttelut[index].vastustajanSelo, tallennetutOttelut[index].ottelunTulos);
-            else
-                return Tuple.Create(0, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            _index++;
+            return HaeOttelu(_index);
         }
 
         public int Lukumaara {
@@ -94,7 +94,7 @@ namespace Selolaskuri
 
         public int Keskivahvuus {
             get {
-                return (int)System.Math.Round(tallennetutOttelut.Average(x => x.vastustajanSelo)); // Linq
+                return (int)System.Math.Round(tallennetutOttelut.Average(x => x.VastustajanSelo)); // Linq
             }
         }
 

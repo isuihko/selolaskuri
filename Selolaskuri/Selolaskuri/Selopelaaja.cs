@@ -36,36 +36,36 @@ namespace Selolaskuri
         //// ks. SeloLaskuriOperations.SuoritaLaskenta sekä struct Tulokset
         //// --------------------------------------------------------------------------------
 
-        public int UusiSelo { get; private set; }
-        public int UusiPelimaara { get; private set; }
+        public int UusiSelo { get; private set; }       // Calculated new chess rating
+        public int UusiPelimaara { get; private set; }  // new number of played games
 
         // Selon vaihteluväli mahdollinen selvittää, jos ottelut formaatissa: +1622 -1880 =1633
-        public int MinSelo { get; private set; }
-        public int MaxSelo { get; private set; }
+        public int MinSelo { get; private set; }        // minumum rating during calculation
+        public int MaxSelo { get; private set; }        // maximum rating during calculation
 
         // laskennan aputiedot
-        public int Odotustulos { get; private set; }
-        public int Kerroin { get; private set; }
+        public int Odotustulos { get; private set; }    // expected score
+        public int Kerroin { get; private set; }        // factor used in calculations
 
         // Turnauksen tulos
         //
         // Syötteistä laskettu tulos
         // Selvitetään tulos, jos ottelut formaatissa "+1525 =1600 -1611 +1558", josta esim. saadaan
         // tulokseksi 2,5 (2 voittoa ja 1 tasapeli). Tallennetaan kokonaislukuna tuplana (int)(2*2,5) eli 5.
-        public int TurnauksenTulos { get; private set; }
+        public int TurnauksenTulos { get; private set; }    // result from all the matches/tournament
 
-        public int VastustajienLkm { get; private set; }
-        public int TurnauksenKeskivahvuus { get; private set; }
+        public int VastustajienLkm { get; private set; }    // number of the opponents/matches
+        public int TurnauksenKeskivahvuus { get; private set; } // average opponent strength
 
         // Tuloksien näyttämisessä tarvitaan alkuperäistä seloa -> muutos, sekä ero keskivahvuuteen
-        public int AlkuperainenSelo {
+        public int AlkuperainenSelo {                       // original chess rating
             get {
                 return alkuperaisetSyotteet.AlkuperainenSelo;
             }
         }
 
         // Tuloksien näyttämisessä tarvitaan tieto, koska odotustulosta ei näytetä uudelle pelaajalle
-        public bool UudenPelaajanLaskenta {
+        public bool UudenPelaajanLaskenta {                 // use the new player's calculation?
             get {
                 return alkuperaisetSyotteet.UudenPelaajanLaskenta();
             }
@@ -73,7 +73,7 @@ namespace Selolaskuri
 
         // Tuloksien näyttämisessä tarvitaan tieto, koska tulospainikkeet tyhjennetään varalta, jos niitä ei käytetty
         // Voivat jäädä päälle yhtä ottelua syötettäessä, jos vaihdettu tuloksen syöttötapa -> "1.0 1434" tai "+1434"
-        public bool KaytettiinkoTulospainikkeita {
+        public bool KaytettiinkoTulospainikkeita {          // one match, were the result buttons used?
             get {
                 return (alkuperaisetSyotteet.YksiVastustajaTulosnapit != 0);
             }
@@ -87,10 +87,10 @@ namespace Selolaskuri
         //
         // Huom! Jos tulos on annettu virheellisesti esim. 0,9 tai 2,4, niin pyöristys alas
         // em. syötteistä saadaan 0,5 tai 2,0 (tallennus 1 tai 4)
-        private int annettuTurnauksenTulos;
+        private int annettuTurnauksenTulos;                 // possible given tournament result
 
         // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
-        public void SetAnnettuTurnauksenTulos(float f) // Käytetty SelolaskuriOperations.cs
+        public void SetAnnettuTurnauksenTulos(float f)      // set the tournament result
         {
             annettuTurnauksenTulos = (int)(2 * f + 0.01F); // pyöristys
         }
@@ -102,7 +102,7 @@ namespace Selolaskuri
 
         // The initial input data is stored here to be used in calcuations.
         // Also some data is used when displaying the results in SelolaskuriForm.
-        private Syotetiedot alkuperaisetSyotteet;
+        private Syotetiedot alkuperaisetSyotteet;           // store the initial input data with matches
 
 
         // --------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace Selolaskuri
         //
         private void AlustaLaskenta(Syotetiedot syotteet)
         {
-            alkuperaisetSyotteet = syotteet;  // selo, pelimaara, miettimisaika
+            alkuperaisetSyotteet = syotteet;  // selo, pelimaara, miettimisaika, lomakkeelle mm. seloero
 
             // laskettavat tiedot, selon ja pelimaaran laskenta aloitetaan syötetyistä arvoista
             UusiSelo         = syotteet.AlkuperainenSelo;
@@ -141,7 +141,7 @@ namespace Selolaskuri
 
 
 
-        // Pelaa kaikki listalta (syotteet.ottelut) löytyvät ottelut!
+        // Pelaa kaikki listalta (syotteet.Ottelut) löytyvät ottelut!
         //
         // Tapaukset: 
         // 1) Uuden pelaajan laskenta, jossa tulokset formaatissa "1.5 1622 1880 1683"
@@ -165,7 +165,7 @@ namespace Selolaskuri
             // jossa tulokset on ilmoitettu formaatissa "1.5 1622 1880 1683"
             //
 
-            if (annettuTurnauksenTulos >= 0 && alkuperaisetSyotteet.UudenPelaajanLaskenta()) {
+            if (annettuTurnauksenTulos >= 0 && UudenPelaajanLaskenta) {
                 //  selo += pistemäärä - ottelut/2 * 200
                 // 1 ottelu:
                 //    1525 + 0.5 1525 -> tulos 1525    
@@ -214,7 +214,7 @@ namespace Selolaskuri
             //
             // HUOM! Seuraava ei toimisi uudella pelaajalla, mutta se erikoistapaus onkin käsitelty aiemmin
             //
-            if (annettuTurnauksenTulos >= 0 /* && !alkuperaisetSyotteet.UudenPelaajanLaskenta()*/) {
+            if (annettuTurnauksenTulos >= 0) {
                 //
                 // Aiemmasta laskennasta tarvitaan Odotustulos
                 // apumuuttuja selo, koska sitä tarvitaan kaavassa usein
@@ -259,7 +259,7 @@ namespace Selolaskuri
         }
 
 
-        // pelaaja pelaa shakkiottelun
+        // pelatusta shakkiottelusta lasketaan vahvuusluku
         //
         // IN: vastustajan_selo 1000-2999
         // IN: ottelun tulos: 0 = tappio, 1 = tasapeli, 2 = voitto (oikeasti 0, 1/2 ja 1)

@@ -27,6 +27,11 @@
 //
 // 20.-24.7.2018    Muutoksia mm. luokassa Selopelaaja ja yksikkötestauksessa, koodia selkeytetty ym.
 //
+// 25.7.2018        Tulostietoja järjestetty lomakkeella -> vastaavat tiedot ovat samalla rivillä.
+//                  Laskennassa käytetty kerroin poistettu näytöltä.
+//
+// Publish --> Versio 2.0.0.5, myös github
+//
 
 using System;
 using System.Drawing;
@@ -36,7 +41,7 @@ namespace Selolaskuri
 {
     public partial class SelolaskuriForm : Form
     {
-        SelolaskuriOperations so = new SelolaskuriOperations();   //  Syötteen tarkastus ja laskennan kutsuminen. Esim. so.TarkistaSyote
+        SelolaskuriOperations so = new SelolaskuriOperations();   //  Check the input data, calculate the results
 
         public SelolaskuriForm()
         {
@@ -270,7 +275,7 @@ namespace Selolaskuri
                 odotustulos_out.Text = (tulokset.Odotustulos / 100F).ToString("0.00");
 
             // kerroin on laskettu alkuperäisestä omasta selosta (laskennan aputieto)
-            kerroin_out.Text = tulokset.Kerroin.ToString();
+            //XXX: Poistettu lomakkeelta kerroin_out.Text = tulokset.Kerroin.ToString();
 
             // Jos ei käytetty tulospainikkeita, niin tuloksen valintanapit varmuuden vuoksi pois päältä
             // Tulospainikkeita käytettäessä yksi vastustajan selo, eikä tulosta annettu muodossa "1.0 1434" tai "+1434"

@@ -10,7 +10,7 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 19-23.7.2018 : More code refactoring. Some data was defined twice similary, now uses one definition. The 'kerroin' which is shown in form, is now calculated from the initial 'selo'. Executable and window captures of version 2.0.0.4, 19.7.2018. More data hiding.
 
-25.7.2018 : Form fields were reorganized and kerroin (factor) is not displayed any more. Version now 2.0.0.5, 25.7.2018.
+25.-26.7.2018 : Form fields were reorganized and kerroin (factor) is not displayed any more. Also shows text when new player's calculation was used. Version now 2.0.0.7, 26.7.2018.
 
 --
 

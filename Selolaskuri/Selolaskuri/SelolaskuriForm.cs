@@ -32,6 +32,11 @@
 //
 // Publish --> Versio 2.0.0.5, myös github
 //
+// 26.7.2018        Lomakkeen kenttiä järjestelty vielä: ottelun tulospainikkeiden järjestys muutettu.
+//                  Pelimäärän viereen tulostuu ilmoitusteksti uuden pelaajan laskennan käyttämisestä.
+//
+// Publish --> Versio 2.0.0.7, myös github
+//
 
 using System;
 using System.Drawing;
@@ -130,13 +135,14 @@ namespace Selolaskuri
             vastustajanSelo_comboBox.Select();
         }
 
+
         // Näyttää virheen mukaisen ilmoituksen sekä siirtää kursorin kenttään, jossa virhe
         // Virheellisen kentän arvo näytetään punaisella kunnes ilmoitusikkuna kuitataan
-        private void NaytaVirheilmoitus(int tulos)
+        private void NaytaVirheilmoitus(int virhestatus)
         {
             string message;
 
-            switch (tulos) {
+            switch (virhestatus) {
                 case Vakiot.SYOTE_STATUS_OK:
                     break;
                 case Vakiot.SYOTE_VIRHE_OMA_SELO:
@@ -180,7 +186,7 @@ namespace Selolaskuri
                 // tulos puuttuu painonapeista, siirry ensimmäiseen valintanapeista
                 case Vakiot.SYOTE_VIRHE_BUTTON_TULOS:  
                     MessageBox.Show("Ottelun tulosta ei valittu!");
-                    tulosTappio_btn.Select();
+                    tulosVoitto_btn.Select();  // ensimmäinen tulos-painikkeista
                     break;
 
                 case Vakiot.SYOTE_VIRHE_YKSITTAINEN_TULOS:
@@ -269,10 +275,15 @@ namespace Selolaskuri
                 vaihteluvali_out.Text = "";
 
             // Odotustulosta tai sen summaa ei näytetä uudelle pelaajalle, koska vahvuusluku on vielä provisional
-            if (tulokset.UudenPelaajanLaskenta)
+            // Uuden pelaajan laskennasta annetaan ilmoitusteksti
+            if (tulokset.UudenPelaajanLaskenta) {
                 odotustulos_out.Text = "";
-            else
+                UudenPelaajanLaskenta_txt.Visible = true;
+            } else {
                 odotustulos_out.Text = (tulokset.Odotustulos / 100F).ToString("0.00");
+                UudenPelaajanLaskenta_txt.Visible = false;
+            }
+
 
             // kerroin on laskettu alkuperäisestä omasta selosta (laskennan aputieto)
             //XXX: Poistettu lomakkeelta kerroin_out.Text = tulokset.Kerroin.ToString();

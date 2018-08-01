@@ -16,7 +16,7 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 --
 
-There is also a Java version of this application but it is now too much behind of development of this C#/.NET/WinForms version. Will be updated as soon as this is ready.
+There is also a Java version of this application in https://github.com/isuihko/jSelolaskuri (major updates in July 31-Aug 1, 2018)
 
 --
 

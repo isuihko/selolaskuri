@@ -12,11 +12,7 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 25.-26.7.2018 : Form fields were reorganized and kerroin (factor) is not displayed any more. Also shows text when new player's calculation was used. Version now 2.0.0.7, 26.7.2018.
 
-1.8.2018 : More code organizing while creation Java version (with NetBeans and now there is updated jSelolaskuri). Mostly internal changes. If there are extra spaces in form's input fields, they are now removed and fields are updated. Version now 2.0.0.8, 1.8.2018.
-
---
-
-There is also a Java version of this application in https://github.com/isuihko/jSelolaskuri (major updates in July 31-Aug 1, 2018)
+1.8.2018 : More code organizing while creating Java version with NetBeans and now there is updated https://github.com/isuihko/jSelolaskuri. Mostly internal changes and adding comments. If there are extra spaces in form's input fields (like "   +1612   =1772  "), they are now removed and fields are updated (-> "+1612 =1772"). Version now 2.0.0.8, 1.8.2018.
 
 --
 

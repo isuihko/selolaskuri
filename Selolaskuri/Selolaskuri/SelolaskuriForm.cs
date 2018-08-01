@@ -37,10 +37,17 @@
 //
 // Publish --> Versio 2.0.0.7, myös github
 //
+// 31.7.-1.8.2018   Koodin järjestelyä, jota tehty samalla kun tein tästä Java-versiota. Rutiinit samaan järjestykseen.
+//                  HaeSyotteetLomakkeelta(): Syötekentistä poistetaan mahdolliset ylimääräiset välilyönnit ja kentät päivitetään näytölle.
+//                  Vähennetty Tuple:n käyttöä, koska Javassakaan sitä ei ole (vielä Ottelulista ja UnitTest1).
+//
+// Publish --> Versio 2.0.0.8, myös github
+//
 
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
 
 namespace Selolaskuri
 {
@@ -61,6 +68,17 @@ namespace Selolaskuri
         // Myös ottelun tulos voi/saa olla antamatta, joten silloin se on määrittelemätön
         private Syotetiedot HaeSyotteetLomakkeelta()
         {
+            // Remove all leading and trailing white spaces from the form
+            selo_in.Text = selo_in.Text.Trim();
+            pelimaara_in.Text = pelimaara_in.Text.Trim();
+            vastustajanSelo_comboBox.Text = vastustajanSelo_comboBox.Text.Trim();
+
+            // poista sanojen väleistä ylimääräiset välilyönnit
+            string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
+            string replacement = " ";   // tilalle vain yksi välilyönti
+            Regex rx = new Regex(pattern);
+            vastustajanSelo_comboBox.Text = rx.Replace(vastustajanSelo_comboBox.Text, replacement);
+
             return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
         }
 
@@ -87,12 +105,12 @@ namespace Selolaskuri
         {
             Vakiot.OttelunTulos_enum valinta;
 
-            if (tulosTappio_btn.Checked)
-                valinta = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
+            if (tulosVoitto_btn.Checked)
+                valinta = Vakiot.OttelunTulos_enum.TULOS_VOITTO;          
             else if (tulosTasapeli_btn.Checked)
                 valinta = Vakiot.OttelunTulos_enum.TULOS_TASAPELI;
-            else if (tulosVoitto_btn.Checked)
-                valinta = Vakiot.OttelunTulos_enum.TULOS_VOITTO;
+            else if (tulosTappio_btn.Checked)
+                valinta = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
             else
                 valinta = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
 
@@ -111,6 +129,7 @@ namespace Selolaskuri
         {
             if (LaskeOttelunTulosLomakkeelta()) { 
                 // Annettu teksti talteen (jos ei ennestään ollut) -> Drop-down Combo box
+                // Tallennus kun klikattu Laske SELO tai painettu enter vastustajan selo-kentässä
                 if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                     vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
             }
@@ -124,13 +143,14 @@ namespace Selolaskuri
         // saadaan pelaajaa luodessa käytetyt alkuarvot SELO 1525 ja pelimääärä 0.
         private void KaytaTulosta_btn_Click(object sender, EventArgs e)
         {
-            var lasketutTulokset = so.HaeViimeksiLasketutTulokset();  // -> selo ja pelimaara
+            int selo1 = so.HaeViimeksiLaskettuSelo();
+            int pelimaara1 = so.HaeViimeksiLaskettuPelimaara();
 
-            selo_in.Text = lasketutTulokset.Item1.ToString();
+            selo_in.Text = selo1.ToString();
 
             // vain, jos pelimaara oli annettu (muutoin on jo valmiiksi tyhjä)
-            if (lasketutTulokset.Item2 != (int)Vakiot.PELIMAARA_TYHJA)
-                pelimaara_in.Text = lasketutTulokset.Item2.ToString();
+            if (pelimaara1 != (int)Vakiot.PELIMAARA_TYHJA)
+                pelimaara_in.Text = pelimaara1.ToString();
 
             vastustajanSelo_comboBox.Select();
         }
@@ -200,7 +220,7 @@ namespace Selolaskuri
 
                 case Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS:
                     message =
-                        String.Format("VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä).");
+                        String.Format("VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä.");
                     vastustajanSelo_comboBox.ForeColor = Color.Red;
                     MessageBox.Show(message);
                     vastustajanSelo_comboBox.ForeColor = Color.Black;
@@ -208,6 +228,7 @@ namespace Selolaskuri
                     break;
             }
         }
+
 
         // --------------------------------------------------------------------------------
         // Lomakkeen tietojen käsittely, laskenta ja tuloksien näyttäminen
@@ -291,120 +312,11 @@ namespace Selolaskuri
             // Jos ei käytetty tulospainikkeita, niin tuloksen valintanapit varmuuden vuoksi pois päältä
             // Tulospainikkeita käytettäessä yksi vastustajan selo, eikä tulosta annettu muodossa "1.0 1434" tai "+1434"
             if (!tulokset.KaytettiinkoTulospainikkeita) {
-                tulosTappio_btn.Checked   = false;
+                tulosVoitto_btn.Checked = false;
                 tulosTasapeli_btn.Checked = false;
-                tulosVoitto_btn.Checked   = false;
+                tulosTappio_btn.Checked = false;
             }
         }
-
-
-        // --------------------------------------------------------------------------------
-        // Ottelun tulos-buttonit
-        // --------------------------------------------------------------------------------
-        // Suorita laskenta aina kun siirrytään tulos-painikkeeseen.
-        // Ennen laskentaa asetetaan nykyinen painike valituksi, koska sitä ei
-        // muutoin vielä oltu valittu kenttään siirryttäessä.
-        //
-        // Jos tässä vaiheessa ei ole vielä annettu SELOja, niin tulee virheilmoitus
-        // sekä siirrytään SELO-kenttään.
-        // 
-        private void tulosTappio_Button_Enter(object sender, EventArgs e)
-        {
-            tulosTappio_btn.Checked = true;
-            LaskeOttelunTulosLomakkeelta();
-        }
-
-        private void tulosTasapeli_Button_Enter(object sender, EventArgs e)
-        {
-            tulosTasapeli_btn.Checked = true;
-            LaskeOttelunTulosLomakkeelta();
-        }
-
-        private void tulosVoitto_Button_Enter(object sender, EventArgs e)
-        {
-            tulosVoitto_btn.Checked = true;
-            LaskeOttelunTulosLomakkeelta();
-        }
-
-        // --------------------------------------------------------------------------------
-        // Kun painettu Enter vastustajan SELO-kentässä, suoritetaan laskenta
-        // --------------------------------------------------------------------------------
-        private void vastustajanSelo_combobox_KeyDown(object sender, KeyEventArgs e)
-        {
-            // Enter painettu vastustajan selojen tai useammankin syöttämisen jälkeen?
-            if (e.KeyCode == Keys.Enter) {
-                // Kun painettu Enter, niin lasketaan
-                // siirrytäänkö myös kentän loppuun? Nyt jäädään samaan paikkaan, mikä myös OK.
-                if (LaskeOttelunTulosLomakkeelta()) {
-
-                    // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syötä -> Drop-down combobox
-                    if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
-                        vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
-                }
-            }
-        }
-
-        // --------------------------------------------------------------------------------
-        // Menu
-        // --------------------------------------------------------------------------------
-        //    Ohjeita
-        //    Laskentakaavat
-        //    Tietoa ohjelmasta
-        //    Sulje ohjelma
-        //
-        // Ohjeikkunassa ym. on MessageBox.Show:ssa oletuksena oleva OK-painike
-        // Jos tarvitaan muokattua tekstiä, voitaisiin luoda uusi lomake ohjeikkunaa varten
-        private void ohjeitaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Shakin vahvuusluvun laskenta SELO ja PELO"
-                + "\r\n"
-                + "\r\n" + "Annettavat tiedot:"
-                + "\r\n"
-                + "\r\n" + "-Miettimisaika. Pitkä peli (väh. 90 minuuttia) on oletuksena. Jos valitset enint. 10 minuuttia, lasketaan pikashakin vahvuuslukua (PELO)"
-                + "\r\n" + "-Oma vahvuusluku"
-                + "\r\n" + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
-                + "\r\n" + "-Vastustajien vahvuusluvut ja tulokset jollakin kolmesta tavasta:"
-                + "\r\n" + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 0/0,5/1 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
-                + "\r\n" + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
-                + "\r\n" + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
-                + "\r\n"
-                + "\r\n" + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
-                + "\r\n"
-                + "\r\n" + "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä uutta SELOa jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
-
-                "Ohjeita");
-        }
-
-        private void laskentakaavatToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
-                + "\r\n" +"Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo",
-                "Laskentakaavat");
-        }
-
-        private void tietojaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET/WinForms"
-                + "\r\n" + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri",
-                "Tietoa Selolaskurista");
-        }
-
-        private void suljeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Application.Exit() kutsuu ikkunan FormClosing() -rutiinia, jossa varmistus ja voidaan perua poistuminen.
-            System.Windows.Forms.Application.Exit();
-        }
-
-        // Lopetuksen varmistaminen
-        //      Suljettu ikkuna
-        //      Valittu Menu->Sulje ohjelma (-> Application.Exit())
-        private void SelolaskuriForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DialogResult vastaus = MessageBox.Show("Haluatko poistua ohjelmasta?", "Exit/Close window", MessageBoxButtons.YesNo);
-            if (vastaus == DialogResult.No) { 
-                e.Cancel = true;    // Ei poistutakaan
-            }
-        }      
 
         // --------------------------------------------------------------------------------
         // Miettimisajan valinnan mukaan tekstit: SELO (pidempi peli) vai PELO (pikashakki)
@@ -413,11 +325,14 @@ namespace Selolaskuri
         {
             string alkup, uusi;
 
-            if (suunta == Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI) {
+            if (suunta == Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI)
+            {
                 alkup = "PELO";
                 uusi = "SELO";
                 TuloksetPistemaaranKanssa_teksti.Font = new Font(TuloksetPistemaaranKanssa_teksti.Font, FontStyle.Regular);
-            } else {
+            }
+            else
+            {
                 alkup = "SELO";
                 uusi = "PELO";
                 // korosta PELO-ohje
@@ -452,6 +367,121 @@ namespace Selolaskuri
         private void miettimisaika_enint10_Button_CheckedChanged(object sender, EventArgs e)
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
+        }
+
+
+        // --------------------------------------------------------------------------------
+        // Ottelun tulos-buttonit
+        // --------------------------------------------------------------------------------
+        // Suorita laskenta aina kun siirrytään tulos-painikkeeseen.
+        // Ennen laskentaa asetetaan nykyinen painike valituksi, koska sitä ei
+        // muutoin vielä oltu valittu kenttään siirryttäessä.
+        //
+        // Jos tässä vaiheessa ei ole vielä annettu SELOja, tulee virheilmoitus
+        // sekä siirrytään SELO-kenttään.
+        // 
+        private void tulosVoitto_Button_Enter(object sender, EventArgs e)
+        {
+            tulosVoitto_btn.Checked = true;
+            LaskeOttelunTulosLomakkeelta();
+        }
+
+        private void tulosTasapeli_Button_Enter(object sender, EventArgs e)
+        {
+            tulosTasapeli_btn.Checked = true;
+            LaskeOttelunTulosLomakkeelta();
+        }
+
+        private void tulosTappio_Button_Enter(object sender, EventArgs e)
+        {
+            tulosTappio_btn.Checked = true;
+            LaskeOttelunTulosLomakkeelta();
+        }
+
+        // --------------------------------------------------------------------------------
+        // Kun painettu Enter vastustajan SELO-kentässä, suoritetaan laskenta
+        // --------------------------------------------------------------------------------
+        private void vastustajanSelo_combobox_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Enter painettu vastustajan selojen tai useammankin syöttämisen jälkeen?
+            if (e.KeyCode == Keys.Enter) {
+                // Kun painettu Enter, niin lasketaan
+                // siirrytäänkö myös kentän loppuun? Nyt jäädään samaan paikkaan, mikä myös OK.
+                if (LaskeOttelunTulosLomakkeelta()) {
+
+                    // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syötä -> Drop-down combobox
+                    // Tallennus kun klikattu Laske SELO tai painettu enter vastustajan selo-kentässä
+                    if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
+                        vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
+                }
+            }
+        }
+
+
+        // --------------------------------------------------------------------------------
+        // Menu
+        // --------------------------------------------------------------------------------
+        //    Ohjeita
+        //    Laskentakaavat
+        //    Tietoa ohjelmasta
+        //    Sulje ohjelma
+        //
+        // Ohjeikkunassa ym. on MessageBox.Show:ssa oletuksena oleva OK-painike
+        // Jos tarvitaan muokattua tekstiä, voitaisiin luoda uusi lomake ohjeikkunaa varten
+        private void ohjeitaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Shakin vahvuusluvun laskenta SELO ja PELO"
+                + "\r\n"
+                + "\r\n" + "Annettavat tiedot:"
+                + "\r\n"
+                + "\r\n" + "-Miettimisaika. Pitkä peli (väh. 90 minuuttia) on oletuksena. Jos valitset enint. 10 minuuttia, lasketaan pikashakin vahvuuslukua (PELO)"
+                + "\r\n" + "-Oma vahvuusluku"
+                + "\r\n" + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
+                + "\r\n" + "-Vastustajien vahvuusluvut ja tulokset jollakin kolmesta tavasta:"
+                + "\r\n" + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/0,5/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
+                + "\r\n" + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
+                + "\r\n" + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
+                + "\r\n"
+                + "\r\n" + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
+                + "\r\n"
+                + "\r\n" + "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä uutta SELOa jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
+
+                "Ohjeita");
+        }
+
+        // MenuItem: Sulje ohjelma
+        private void laskentakaavatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
+                + "\r\n" + "Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo",
+                "Laskentakaavat");
+        }
+
+
+        private void tietojaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET/WinForms"
+                + "\r\n" + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri",
+                "Tietoa Selolaskurista");
+        }
+
+        // Lopetuksen varmistaminen
+        //      Valittu Menu->Sulje ohjelma
+        private void suljeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Application.Exit() kutsuu ikkunan FormClosing() -rutiinia, jossa varmistus ja voidaan perua poistuminen.
+            System.Windows.Forms.Application.Exit();
+        }
+
+        // Lopetuksen varmistaminen
+        //      Suljettu ikkuna
+        private void SelolaskuriForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult vastaus = MessageBox.Show("Haluatko poistua ohjelmasta?", "Exit/Close window", MessageBoxButtons.YesNo);
+            if (vastaus == DialogResult.No)
+            {
+                e.Cancel = true;    // Ei poistutakaan
+            }
         }
     }
 }

@@ -17,9 +17,7 @@
 //  18.-22.7.2018 SuoritaLaskenta() now returns Selopelaaja. Earlier had separate (unnecessary) class for the results
 //
 
-using System;
 using System.Linq;
-using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
 
 namespace Selolaskuri
 {
@@ -37,19 +35,20 @@ namespace Selolaskuri
             selopelaaja = new Selopelaaja();
         }
 
-        // Use old Tuple, because Visual Studio Community 2015 has older C#
-        public Tuple<int, int> HaeViimeksiLasketutTulokset()
+        // Palautetaan laskennasta saadut arvot, selo ja pelimäärä
+        public int HaeViimeksiLaskettuSelo()
         {
-            int selo      = selopelaaja.UusiSelo;
-            int pelimaara = selopelaaja.UusiPelimaara;
-
-            // Jos ei vielä ollut laskentaa, palautetaan uuden pelaajan alkuselo
-            if (selo == 0 && pelimaara == 0)
-                selo = Vakiot.UUDEN_PELAAJAN_ALKUSELO;  // tiedetty vakio 1525, pelimäärä 0
-
-            return Tuple.Create(selo, pelimaara);
+            int i = selopelaaja.UusiSelo;
+            if (i == 0)
+                i = Vakiot.UUDEN_PELAAJAN_ALKUSELO;
+            return i;
         }
 
+        public int HaeViimeksiLaskettuPelimaara()
+        {
+            int i = selopelaaja.UusiPelimaara;
+            return i;
+        }
 
         // TarkistaSyote
         //
@@ -84,8 +83,7 @@ namespace Selolaskuri
             // ************ TARKISTA SYÖTE ************
 
             // ENSIN TARKISTA MIETTIMISAIKA.
-            // Jo haettu lomakkeelta eikä tässä voi olla virhettä, joten ei tehdä virhetarkastusta
-            // syotteet.miettimisaika = TarkistaMiettimisaika(syotteet.miettimisaika);
+            // Miettimisaika on jo haettu lomakkeelta eikä siinä voi olla virhettä, joten OK
 
             do {
                 // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
@@ -96,7 +94,6 @@ namespace Selolaskuri
                 if ((tulos = TarkistaPelimaara(syotteet.AlkuperainenPelimaara_str)) == Vakiot.SYOTE_VIRHE_PELIMAARA)
                     break;
                 syotteet.AlkuperainenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
-
 
                 //    JOS YKSI OTTELU,   saadaan sen yhden vastustajan vahvuusluku, eikä otteluja ole listassa
                 //    JOS MONTA OTTELUA, palautuu 0 ja ottelut on tallennettu tuloksineen listaan
@@ -138,10 +135,7 @@ namespace Selolaskuri
         //
         // Nämä miettimisajan valintapainikkeet ovat omana ryhmänään paneelissa
         // Aina on joku valittuna, joten ei voi olla virhetilannetta.
-        private Vakiot.Miettimisaika_enum TarkistaMiettimisaika(Vakiot.Miettimisaika_enum aika)
-        {
-            return aika;   // Ei tarkistusta, koska ei voi olla virhetilanteita
-        }
+        //  .... ei koodia ...
 
 
         // ************ TARKISTA NYKYINEN SELO ************
@@ -152,8 +146,6 @@ namespace Selolaskuri
         {
             bool status = true;
             int tulos;
-
-            syote = syote.Trim();  // remove leading and trailing white spaces
 
             // onko numero ja jos on, niin onko sallittu numero
             if (int.TryParse(syote, out tulos) == false)
@@ -168,7 +160,8 @@ namespace Selolaskuri
         }
 
 
-        // tarkista pelimäärä
+        // ************ TARKISTA PELIMÄÄRÄ ************
+        //
         // Saa olla tyhjä, mutta jos annettu, oltava numero, joka on 0-9999.
         // Jos pelimäärä on 0-10, tullaan käyttämään uuden pelaajan laskentakaavaa.
         // Paluuarvo joko kelvollinen pelimäärä, PELIMAARA_TYHJA tai VIRHE_PELIMAARA.
@@ -176,8 +169,6 @@ namespace Selolaskuri
         {
             bool status = true;
             int tulos;
-
-            syote = syote.Trim();  // remove leading and trailing white spaces
 
             if (string.IsNullOrWhiteSpace(syote)) {
                 tulos = Vakiot.PELIMAARA_TYHJA; // Tyhjä kenttä on OK, kun ei ole uusi pelaaja
@@ -196,7 +187,8 @@ namespace Selolaskuri
         }
 
 
-        // Tarkista Vastustajan SELO -kenttä
+        // ************ TARKISTA VASTUSTAJAN SELO-KENTTÄ ************
+        //
         // Ottelut (selot ja tulokset) tallennetaan listaan
         //
         // Syöte voi olla annettu kolmella eri formaatilla:
@@ -227,10 +219,8 @@ namespace Selolaskuri
             bool onko_turnauksen_tulos = false;  // oliko tulos ensimmäisenä?
             float syotetty_tulos = 0F;           // tähän sitten sen tulos desimaalilukuna (esim. 2,5)
 
-            syote = syote.Trim();  // remove leading and trailing white spaces
-
             // kentässä voidaan antaa alussa turnauksen tulos, esim. 0.5, 2.0, 2.5, 7.5 eli saadut pisteet
-            selopelaaja.SetAnnettuTurnauksenTulos(-1.0F);  // oletus: ei annettu turnauksen tulosta
+            selopelaaja.setAnnettuTurnauksenTulos(-1.0F);  // oletus: ei annettu turnauksen tulosta
 
             // Ensin helpot tarkistukset:
             // 1) Kenttä ei saa olla tyhjä
@@ -255,12 +245,6 @@ namespace Selolaskuri
                 // 4) turnauksen tulos+vahvuusluvut, esim. 2,5 1624 1700 1685 1400
                 // 5) vahvuusluvut, joissa kussakin tulos  +1624 -1700 =1685 +1400
 
-                // poista sanojen väleistä ylimääräiset välilyönnit
-                string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
-                string replacement = " ";   // tilalle vain yksi välilyönti
-                Regex rx = new Regex(pattern);
-                syote = rx.Replace(syote, replacement);
-
                 // Apumuuttujat
                 int selo1 = Vakiot.MIN_SELO;
                 bool ensimmainen = true;  // ensimmäinen syötekentän numero tai merkkijono
@@ -283,7 +267,7 @@ namespace Selolaskuri
                                 // HUOM! Jos tuloksessa on desimaalit väärin, esim. 2.37 tai 0,9,
                                 //       niin ylimääräiset desimaalit "pyöristyvät" alas -> 2,0 tai 0,5.
                                 onko_turnauksen_tulos = true;
-                                selopelaaja.SetAnnettuTurnauksenTulos(syotetty_tulos);
+                                selopelaaja.setAnnettuTurnauksenTulos(syotetty_tulos);
 
                                 // alussa oli annettu turnauksen lopputulos, jatka SELOjen tarkistamista
                                 // Nyt selojen on oltava ilman tulosmerkintää!
@@ -316,7 +300,7 @@ namespace Selolaskuri
                     } else if (onko_turnauksen_tulos == false && vastustaja.Length == Vakiot.MAX_PITUUS) {
                         // 5)
                         // Erillisten tulosten antaminen hyväksytään vain, jos turnauksen
-                        // lopputulosta ei oltu jo annettu (turnauksen_tulos false)
+                        // lopputulosta ei oltu jo annettu (onko_turnauksen_tulos false)
 
                         Vakiot.OttelunTulos_enum tulos1 = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
 
@@ -385,7 +369,7 @@ namespace Selolaskuri
                     // Vertailu kokonaislukuina, esim. syötetty tulos 3.5 ja pelaajia 4, vertailu 7 > 8.
                     if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.Lukumaara) {
                         virhekoodi = Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS;  // tästä oma virheilmoitus
-                        status = false;
+                        //status = false; // no need to clear status any more
                     }
                 }
             }

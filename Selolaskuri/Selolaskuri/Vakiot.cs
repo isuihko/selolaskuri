@@ -17,7 +17,8 @@ namespace Selolaskuri {
         public const int MAX_PELIMAARA  = 9999;
 
         // Vahvuuslukuarvon maksimipituus
-        public const int MAX_PITUUS  = 5; // Sisältää ottelun tuloksen kertovan +, - tai =
+        // Pituus 5  Sisältää ottelun tuloksen kertovan +, - tai =
+        public const int MAX_PITUUS  = 5; 
         public const int SELO_PITUUS = 4;
 
         // Kun ottelumäärä on 0-10, käytetään uuden pelaajan laskentakaavaa
@@ -27,13 +28,13 @@ namespace Selolaskuri {
         // syötteen tarkastuksessa käytetyt virhestatukset eivät ole syötteiden arvoarvoalueella
         public const int SYOTE_STATUS_OK                = 0;
         public const int SYOTE_VIRHE_OMA_SELO           = -1;
-        public const int SYOTE_VIRHE_VASTUSTAJAN_SELO          = -2;
+        public const int SYOTE_VIRHE_VASTUSTAJAN_SELO   = -2;
         public const int SYOTE_VIRHE_PELIMAARA          = -3;
         public const int SYOTE_VIRHE_BUTTON_TULOS       = -4;
         public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -5;
         public const int SYOTE_VIRHE_TURNAUKSEN_TULOS   = -6;
 
-        public const int PELIMAARA_TYHJA = -1;  // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
+        public const int PELIMAARA_TYHJA = -1; // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
 
         // Tallenna tulokset kokonaislukuina. Laskennassa käytetään 0, 1/2 ja 1.
         public enum OttelunTulos_enum

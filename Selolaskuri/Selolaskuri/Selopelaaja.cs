@@ -90,7 +90,7 @@ namespace Selolaskuri
         private int annettuTurnauksenTulos;                 // possible given tournament result
 
         // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
-        public void SetAnnettuTurnauksenTulos(float f)      // set the tournament result
+        public void setAnnettuTurnauksenTulos(float f)      // set the tournament result
         {
             annettuTurnauksenTulos = (int)(2 * f + 0.01F); // pyöristys
         }
@@ -249,7 +249,7 @@ namespace Selolaskuri
                     float lisakerroin = MaaritaLisakerroin(vanha, alkuperaisetSyotteet.Miettimisaika);
                     // Lisätään vielä pelattujen pelien lkm * 0.1
                     UusiSelo =
-                        (int)((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2F - Odotustulos / 100F)) + (ottelulista.Lukumaara * 0.1F) + 0.5F);
+                        (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2F - Odotustulos / 100F)) + (ottelulista.Lukumaara * 0.1F));
                 }
 
                 // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa

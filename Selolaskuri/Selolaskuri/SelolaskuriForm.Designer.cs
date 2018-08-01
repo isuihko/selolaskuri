@@ -96,9 +96,9 @@
             this.Pelimäärä.AutoSize = true;
             this.Pelimäärä.Location = new System.Drawing.Point(145, 102);
             this.Pelimäärä.Name = "Pelimäärä";
-            this.Pelimäärä.Size = new System.Drawing.Size(224, 13);
+            this.Pelimäärä.Size = new System.Drawing.Size(260, 13);
             this.Pelimäärä.TabIndex = 53;
-            this.Pelimäärä.Text = "Oma pelimäärä (tyhjä tai jos uusi pelaaja: 0-10)";
+            this.Pelimäärä.Text = "Oma pelimäärä (tyhjä, numero, uudella pelaajalla 0-10)";
             // 
             // pelimaara_in
             // 
@@ -182,9 +182,9 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F);
             this.label6.Location = new System.Drawing.Point(200, 500);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(211, 12);
+            this.label6.Size = new System.Drawing.Size(206, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 26.7.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 1.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -536,7 +536,7 @@
             this.MaximumSize = new System.Drawing.Size(425, 550);
             this.MinimumSize = new System.Drawing.Size(425, 550);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.0.0.7";
+            this.Text = "Selolaskuri v. 2.0.0.8";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

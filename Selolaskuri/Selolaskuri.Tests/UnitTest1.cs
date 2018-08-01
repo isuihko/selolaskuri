@@ -347,7 +347,7 @@ namespace Selolaskuri.Tests
         private Tuple<int, Selopelaaja> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
             SelolaskuriOperations so = new SelolaskuriOperations();
-            Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos);
+            Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos, /*trim input strings*/true);
             int status;
             Selopelaaja tulokset = null;
 

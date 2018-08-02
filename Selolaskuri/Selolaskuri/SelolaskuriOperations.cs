@@ -226,6 +226,7 @@ namespace Selolaskuri
             // 1) Kenttä ei saa olla tyhjä
             if (string.IsNullOrWhiteSpace(syote)) {
                 status = false;
+                virhekoodi = Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO;
             } else if (syote.Length == Vakiot.SELO_PITUUS) {
                 if (int.TryParse(syote, out vastustajanSelo) == false) {
                     // 2) Jos on annettu neljä merkkiä (esim. 1728), niin sen on oltava numero

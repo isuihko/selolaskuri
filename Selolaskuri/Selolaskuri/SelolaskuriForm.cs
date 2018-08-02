@@ -43,6 +43,10 @@
 //
 // Publish --> Versio 2.0.0.8, myös github
 //
+// 2.8.2018         TarkistaVastustajanSelo() ei antanut virhestatusta, jos kenttä oli tyhjä.
+//
+// Publish --> Versio 2.0.0.9, myös github
+//
 
 using System;
 using System.Drawing;

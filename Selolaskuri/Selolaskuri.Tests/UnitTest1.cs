@@ -34,6 +34,7 @@
 //   23.7.2018  Muutettu Testaa()-rutiinin paluuarvo: <syötteen tarkistuksen status, tulokset>
 //              Tällöin ylemmällä tasolla voidaan viitata suoraan tulostietorakenteen kenttiin
 //              Nyt voidaan tarkistaa myös MinSelo ja MaxSelo
+//  2.8.2018    Kaksi testiä virhetilanteiden varalta: oma tai vastustajien selo-kenttä on tyhjä. Nyt 24 testiä.
 //
 
 using System;
@@ -270,6 +271,13 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_OMA_SELO);
         }
 
+        [TestMethod]
+        public void VirheellinenSyoteOmaSELOtyhja()
+        {
+            var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "", "0", "1525", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_OMA_SELO);
+        }
+
         // Testataan virheellinen syöte, tässä virheellinen vastustajan vahvuusluku
         [TestMethod]
         public void VirheellinenSyoteVastustajanSELO()
@@ -277,6 +285,14 @@ namespace Selolaskuri.Tests
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "c5sdffew25", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
             Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
+
+        [TestMethod]
+        public void VirheellinenSyoteVastustajanSELOTyhja()
+        {
+            var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "1525", "0", "", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
+        }
+
 
         // Pelimäärä virheellinen, annettu liian suureksi
         [TestMethod]

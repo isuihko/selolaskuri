@@ -14,6 +14,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 1.8.2018 : More code organizing while creating Java version with NetBeans and now there is updated https://github.com/isuihko/jSelolaskuri. Mostly internal changes and adding comments. If there are extra spaces in form's input fields (like "   +1612   =1772  "), they are now removed and fields are updated (-> "+1612 =1772"). Version now 2.0.0.8, 1.8.2018.
 
+2.8.2018 : Add two new unit tests to check for empty own selo or opponent selo fields. Add error checking for empty opponent selo field. Version now 2.0.0.9, 2.8.2018.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.

@@ -92,7 +92,8 @@ Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
 - c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
-Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä.
+Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja suorita setup.exe publish-hakemistossa. Tai käännä projekti uudestaan Visual Studiossa.
+Ladata voi myös komennolla (kunhan git on asennettu): git clone https://github.com/isuihko/selolaskuri
 
 TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttöä

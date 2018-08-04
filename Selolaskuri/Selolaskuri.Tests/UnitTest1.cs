@@ -35,9 +35,12 @@
 //              Tällöin ylemmällä tasolla voidaan viitata suoraan tulostietorakenteen kenttiin
 //              Nyt voidaan tarkistaa myös MinSelo ja MaxSelo
 //  2.8.2018    Kaksi testiä virhetilanteiden varalta: oma tai vastustajien selo-kenttä on tyhjä. Nyt 24 testiä.
+//  4.8.2018    Lisätty testejä CSV-formaattia varten. Nyt 28 testiä.
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Selolaskuri.Tests
@@ -45,6 +48,7 @@ namespace Selolaskuri.Tests
     [TestClass]
     public class UnitTest1
     {
+        SelolaskuriOperations so = new SelolaskuriOperations();
 
         // --------------------------------------------------------------------------------
         // Testataan vahvuusluvun ym. laskentaa
@@ -320,7 +324,7 @@ namespace Selolaskuri.Tests
 
         // Annettu isompi pistemäärä (20) kuin mitä on otteluita (12 kpl)
         [TestMethod]
-        public void VirheellinenSyoteTurnauksenTulos1()  
+        public void VirheellinenSyoteTurnauksenTulos1()
         {
             var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "20 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS);
@@ -354,6 +358,64 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item1, Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO);
         }
 
+        [TestMethod]
+        public void CSV_UudenPelaajanOttelutYksittain1()
+        {
+            var t = Testaa("90,1525,0,1525,1");
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1725);                // uusi vahvuusluku
+            Assert.AreEqual(t.Item2.UusiPelimaara, 1);              // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 1 * 2);        // tulos voitto (tulee kokonaislukuna 2)
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1525);  // keskivahvuus
+            Assert.AreEqual(t.Item2.VastustajienLkm, 1);            // yksi vastustaja
+            Assert.AreEqual(t.Item2.Odotustulos, 50);               // 0,50*100  odotustulos palautuu 100-kertaisena
+            Assert.AreEqual(t.Item2.MinSelo, t.Item2.UusiSelo);     // yksi ottelu, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.MaxSelo, t.Item2.UusiSelo);     // yksi ottelu, sama kuin UusiSelo           
+        }
+
+        [TestMethod]
+        public void CSV_UudenPelaajanOttelutKerralla1()
+        {
+            var t = Testaa("90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966");
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1695);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 7);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
+            Assert.AreEqual(t.Item2.VastustajienLkm, 7);
+            Assert.AreEqual(t.Item2.Odotustulos, 199);          // odotustulos 1,99*100
+            Assert.AreEqual(t.Item2.MinSelo, 1683);             // laskennan aikainen minimi
+            Assert.AreEqual(t.Item2.MaxSelo, 1764);             // laskennan aikainen maksimi
+        }
+
+        [TestMethod]
+        public void CSV_UudenPelaajanOttelutKerralla2()
+        {
+            var t = Testaa("90,1525,0,3 1525 1441 1973 1718 1784 1660 1966");
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 1695);
+            Assert.AreEqual(t.Item2.UusiPelimaara, 7);
+            Assert.AreEqual(t.Item2.TurnauksenTulos, 3 * 2);
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1724);
+            Assert.AreEqual(t.Item2.MinSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.MaxSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+        [TestMethod]
+        public void CSV_PikashakinVahvuuslukuTurnauksesta()
+        {
+            var t = Testaa("5,1996,,10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
+            Assert.AreEqual(t.Item1, Vakiot.SYOTE_STATUS_OK);
+            Assert.AreEqual(t.Item2.UusiSelo, 2033);
+            Assert.AreEqual(t.Item2.UusiPelimaara, Vakiot.PELIMAARA_TYHJA);  // pelimäärää ei laskettu
+            Assert.AreEqual(t.Item2.TurnauksenTulos, (int)(10.5F * 2));
+            Assert.AreEqual(t.Item2.TurnauksenKeskivahvuus, 1827);  // (1977+2013+1923+1728+1638+1684+1977+2013+1923+1728+1638+1684)/12 = 1827,167
+            Assert.AreEqual(t.Item2.VastustajienLkm, 12);           // 12 vastustajaa eli ottelua
+            Assert.AreEqual(t.Item2.Odotustulos, 840);              // odotustulos 8,40*100
+            Assert.AreEqual(t.Item2.MinSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.MaxSelo, t.Item2.UusiSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
 
         // --------------------------------------------------------------------------------
         // Testauksen apurutiini
@@ -362,12 +424,12 @@ namespace Selolaskuri.Tests
         // Use old Tuple, because Visual Studio Community 2015 has older C#
         private Tuple<int, Selopelaaja> Testaa(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos)
         {
-            SelolaskuriOperations so = new SelolaskuriOperations();
             Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, tulos, /*trim input strings*/true);
             int status;
             Selopelaaja tulokset = null;
 
-            if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK) {
+            if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK)
+            {
 
                 // If the input was OK, continue and calculate
                 // If wasn't, then tulokset is left null and error status will be returned
@@ -376,5 +438,32 @@ namespace Selolaskuri.Tests
 
             return Tuple.Create(status, tulokset);
         }
-    }  
+
+        // Use old Tuple, because Visual Studio Community 2015 has older C#
+        private Tuple<int, Selopelaaja> Testaa(string csv)
+        {
+            List<string> data = csv.Split(',').ToList();
+            if (data.Count == 5)
+            {
+                return Testaa(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], so.SelvitaTulos(data[4]));
+            }
+            else if (data.Count == 4)
+            {
+                return Testaa(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            }
+            else if (data.Count == 3)
+            {
+                return Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            }
+            else if (data.Count == 2)
+            {
+                return Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            }
+            else
+            {
+                Assert.AreEqual(data.Count, 5); // -> Illegal CSV
+                return null;
+            }
+        }
+    }
 }

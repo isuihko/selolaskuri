@@ -82,10 +82,11 @@ namespace Selolaskuri
 
             // ************ TARKISTA SYÖTE ************
 
-            // ENSIN TARKISTA MIETTIMISAIKA.
-            // Miettimisaika on jo haettu lomakkeelta eikä siinä voi olla virhettä, joten OK
-
             do {
+                // ENSIN TARKISTA MIETTIMISAIKA.
+                if ((tulos = TarkistaMiettimisaika(syotteet.Miettimisaika)) == Vakiot.SYOTE_VIRHE_MIETTIMISAIKA)
+                    break;
+
                 // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
                 if ((tulos = TarkistaOmaSelo(syotteet.AlkuperainenSelo_str)) == Vakiot.SYOTE_VIRHE_OMA_SELO)
                     break;
@@ -135,8 +136,13 @@ namespace Selolaskuri
         //
         // Nämä miettimisajan valintapainikkeet ovat omana ryhmänään paneelissa
         // Aina on joku valittuna, joten ei voi olla virhetilannetta.
-        //  .... ei koodia ...
-
+        private int TarkistaMiettimisaika(Vakiot.Miettimisaika_enum aika)
+        {
+            int tulos = Vakiot.SYOTE_STATUS_OK;
+            if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON)
+                tulos = Vakiot.SYOTE_VIRHE_MIETTIMISAIKA;
+            return tulos;
+        }
 
         // ************ TARKISTA NYKYINEN SELO ************
         //
@@ -379,6 +385,36 @@ namespace Selolaskuri
             return virhekoodi < 0 ? virhekoodi : vastustajanSelo;
         }
 
+
+        // Miettimisaika, vain minuutit, esim. "5" tai "90"
+        public Vakiot.Miettimisaika_enum SelvitaMiettimisaika(string s)
+        {
+            Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
+            if (int.TryParse(s, out int temp) == true) {
+                if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
+                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;
+                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
+                else
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
+            }
+            return aika;
+        }
+
+        // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "1", "1.0" tai "1,0"
+        public Vakiot.OttelunTulos_enum SelvitaTulos(string s)
+        {
+            Vakiot.OttelunTulos_enum tulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
+            if (s.Equals("0") || s.Equals("0.0") || s.Equals("0,0"))
+                tulos = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
+            else if (s.Equals("0.5") || s.Equals("0,5") || s.Equals("1/2"))
+                tulos = Vakiot.OttelunTulos_enum.TULOS_TASAPELI;
+            else if (s.Equals("1") || s.Equals("1.0") || s.Equals("1,0"))
+                tulos = Vakiot.OttelunTulos_enum.TULOS_VOITTO;
+            return tulos;
+        }
 
         // Tarkista valitun ottelun tulos -painikkeen kelvollisuus
         // Virhestatus palautetaan, jos oli valittu TULOS_MAARITTELEMATON

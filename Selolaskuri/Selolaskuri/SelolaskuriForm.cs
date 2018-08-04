@@ -47,11 +47,20 @@
 //
 // Publish --> Versio 2.0.0.9, myös github
 //
+// 4.8.2018         - Syöte voidaan antaa CSV(comma-separated values) eli pilkulla erotettuna listana
+//                    vastustajat-kenttään.Listassa 2, 3, 4 tai 5 merkkijonoa, ks.HaeSyotteetLomakkeelta()
+//                  - Myös uusi virheilmoitus, jos CSV-formaatissa liikaa pilkkuja.
+//                  - Muutama yksikkötesti CSV-formaatin testaamiseen
+//
+// Publish --> Versio 2.0.0.10, myös github
+//
 
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Selolaskuri
 {
@@ -75,13 +84,54 @@ namespace Selolaskuri
             // Remove all leading and trailing white spaces from the form
             selo_in.Text = selo_in.Text.Trim();
             pelimaara_in.Text = pelimaara_in.Text.Trim();
+
+            // NOTE! In Java version this comboBox could return also null, so there have to check for null value
             vastustajanSelo_comboBox.Text = vastustajanSelo_comboBox.Text.Trim();
 
-            // poista sanojen väleistä ylimääräiset välilyönnit
-            string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
-            string replacement = " ";   // tilalle vain yksi välilyönti
-            Regex rx = new Regex(pattern);
-            vastustajanSelo_comboBox.Text = rx.Replace(vastustajanSelo_comboBox.Text, replacement);
+            if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text) == false)
+            {
+                // poista sanojen väleistä ylimääräiset välilyönnit
+                string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
+                string replacement = " ";   // tilalle vain yksi välilyönti
+                Regex rx = new Regex(pattern);
+                vastustajanSelo_comboBox.Text = rx.Replace(vastustajanSelo_comboBox.Text, replacement);
+
+
+                // Tarkista, onko csv ja jos on, niin unohda muut syötteet
+                // Paitsi jos on väärässä formaatissa, palautetaan null ja kutsuvalla tasolla virheilmoitus
+                //
+                // CSV example
+                // 90,1525,0,1725,1
+                // "90","1710","5","-1973",""
+                // Normaalisti 5 merkkijonoa
+                // Jos 4: ottelun tulos on antamatta, käytetään TULOS_MAARITTELEMATON
+                // Jos 3: Myös miettimisaika on antamatta, käytetään lomakkeelta valittua miettimisaikaa
+                // Jos 2: Myös pelimäärä on antamatta, käytetään oletuksena tyhjää ""
+                //
+                string csv = vastustajanSelo_comboBox.Text;
+
+                List<string> data = csv.Split(',').ToList();
+                if (data.Count == 5)
+                {
+                    return new Syotetiedot(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], so.SelvitaTulos(data[4]));
+                }
+                else if (data.Count == 4)
+                {
+                    return new Syotetiedot(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+                }
+                else if (data.Count == 3)
+                {
+                    return new Syotetiedot(HaeMiettimisaika(), data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+                }
+                else if (data.Count == 2)
+                {
+                    return new Syotetiedot(HaeMiettimisaika(), data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+                } else if (data.Count > 1)
+                {
+                    // CSV FORMAT ERROR, ILLEGAL DATA
+                    return null;
+                }
+            }
 
             return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
         }
@@ -230,6 +280,15 @@ namespace Selolaskuri
                     vastustajanSelo_comboBox.ForeColor = Color.Black;
                     vastustajanSelo_comboBox.Select();
                     break;
+
+                case Vakiot.SYOTE_VIRHE_CSV_FORMAT:
+                    message =
+                        String.Format("VIRHE: CSV-formaattivirhe");
+                    vastustajanSelo_comboBox.ForeColor = Color.Red;
+                    MessageBox.Show(message);
+                    vastustajanSelo_comboBox.ForeColor = Color.Black;
+                    vastustajanSelo_comboBox.Select();
+                    break;
             }
         }
 
@@ -242,6 +301,9 @@ namespace Selolaskuri
         // Lasketaan uusi vahvuusluku ja ottelumäärä sekä muut tulokset
         // Näytetään tulokset
         //
+        // Virhetarkastus ja laskenta erillisessä luokassa SelolaskuriOperations,
+        // jotta niitä voidaan kutsua myös yksikkötestauksesta
+        //
         private bool LaskeOttelunTulosLomakkeelta()
         {
             bool status = true;
@@ -250,9 +312,11 @@ namespace Selolaskuri
             // hakee syötetyt tekstit ja tehdyt valinnat, ei virhetarkastusta
             Syotetiedot syotteet = HaeSyotteetLomakkeelta();
 
-            // Virhetarkastus ja laskenta erillisessä luokassa SelolaskuriOperations,
-            // jotta niitä voidaan kutsua myös yksikkötestauksesta
-            if ((tulos = so.TarkistaSyote(syotteet)) != Vakiot.SYOTE_STATUS_OK) {
+            if (syotteet == null)
+            {
+                NaytaVirheilmoitus(Vakiot.SYOTE_VIRHE_CSV_FORMAT);
+                status = false;
+            } else if ((tulos = so.TarkistaSyote(syotteet)) != Vakiot.SYOTE_STATUS_OK) {
                 NaytaVirheilmoitus(tulos);
                 status = false;
             } else {
@@ -445,6 +509,13 @@ namespace Selolaskuri
                 + "\r\n" + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/0,5/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
                 + "\r\n" + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
                 + "\r\n" + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
+                + "\r\n" + "   4) CSV eli pilkulla erotettu lista, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5!"
+                + "\r\n" + "           2: oma selo,ottelut   esim. 1712,2.5 1525 1600 1611 1558 tai 1712,+1525"
+                + "\r\n" + "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1525 +1441"
+                + "\r\n" + "           4: minuutit,oma selo,pelimaara,ottelut  esim. 90,1525,0,+1525 +1441"
+                + "\r\n" + "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli 1/2 tai 0.5)"
+                + "\r\n" + "      Jos miettimisaika on antamatta, käytetään ikkunasta valittua"
+                + "\r\n" + "      Jos pelimäärä on antamatta, käytetään tyhjää"
                 + "\r\n"
                 + "\r\n" + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
                 + "\r\n"

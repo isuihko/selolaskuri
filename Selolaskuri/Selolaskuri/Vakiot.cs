@@ -27,12 +27,14 @@ namespace Selolaskuri {
 
         // syötteen tarkastuksessa käytetyt virhestatukset eivät ole syötteiden arvoarvoalueella
         public const int SYOTE_STATUS_OK                = 0;
-        public const int SYOTE_VIRHE_OMA_SELO           = -1;
-        public const int SYOTE_VIRHE_VASTUSTAJAN_SELO   = -2;
-        public const int SYOTE_VIRHE_PELIMAARA          = -3;
-        public const int SYOTE_VIRHE_BUTTON_TULOS       = -4;
-        public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -5;
-        public const int SYOTE_VIRHE_TURNAUKSEN_TULOS   = -6;
+        public const int SYOTE_VIRHE_MIETTIMISAIKA      = -1; // Tälle ei virheilmoitusta, koska toistaiseksi ei mahdollinen
+        public const int SYOTE_VIRHE_OMA_SELO           = -2;
+        public const int SYOTE_VIRHE_VASTUSTAJAN_SELO   = -3;
+        public const int SYOTE_VIRHE_PELIMAARA          = -4;
+        public const int SYOTE_VIRHE_BUTTON_TULOS       = -5;
+        public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -6;
+        public const int SYOTE_VIRHE_TURNAUKSEN_TULOS   = -7;
+        public const int SYOTE_VIRHE_CSV_FORMAT         = -8;
 
         public const int PELIMAARA_TYHJA = -1; // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
 
@@ -47,10 +49,11 @@ namespace Selolaskuri {
 
         // Miettimisajat (miettimisajan pituuden mukaan nousevassa järjestyksessä)
         public enum Miettimisaika_enum {
-            MIETTIMISAIKA_ENINT_10MIN,
-            MIETTIMISAIKA_11_59MIN,
-            MIETTIMISAIKA_60_89MIN,
-            MIETTIMISAIKA_VAH_90MIN
+            MIETTIMISAIKA_MAARITTELEMATON = -1,
+            MIETTIMISAIKA_ENINT_10MIN = 10,
+            MIETTIMISAIKA_11_59MIN = 59,
+            MIETTIMISAIKA_60_89MIN = 89,
+            MIETTIMISAIKA_VAH_90MIN = 90
         };
 
         // Miettimisaikojen vaihdon takia vaihdetaan kenttien tekstejä. SELO on pitkä peli ja PELO on pikashakki.

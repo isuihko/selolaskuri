@@ -15,6 +15,7 @@ C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\bin\Debug\Selolaskuri.exe.man
 C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\bin\Debug\Selolaskuri.application
 C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\bin\Debug\Selolaskuri.exe
 C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\bin\Debug\Selolaskuri.pdb
+C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\obj\Debug\Selolaskuri.csprojAssemblyReference.cache
 C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\obj\Debug\Selolaskuri.Properties.Resources.resources
 C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\obj\Debug\Selolaskuri.SelolaskuriForm.resources
 C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri\obj\Debug\Selolaskuri.csproj.GenerateResource.cache

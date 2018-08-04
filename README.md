@@ -16,6 +16,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 2.8.2018 : Add two new unit tests to check for empty own selo or opponent selo fields. Add error checking for empty opponent selo field. Version now 2.0.0.9, 2.8.2018.
 
+4.8.2018: Added support for CSV format (comma-separated values). NOTE! When inputting results, use point, not comma, e.g. 2.5 or 0.5. Version now 2.0.0.10, 4.8.2018. Also Java version is up-to-date.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.
@@ -40,6 +42,7 @@ Syötekenttiä:
  - a) yhden vastustajan vahvuusluku, esim. 1720
  - b) usean vastustajan (esim. turnauksen kaikki ottelut) vahvuusluvut tuloksineen, esim. +1622 -1880 =1633 tai +1622 -1880 1633, jossa + tarkoittaa voittoa, - tappiota ja = tai tyhjä tasapeliä
  - c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
+ - d) csv-formaatti (comma-separated values), jossa voidaan antaa kaikki syöte pilkulla erotettuna eikä silloin muiden lomakkeen kenttien arvoilla ole merkitystä. Esim. miettimisaika,selo,pelimaara,ottelut: 90,1525,0,+1621 -1812 =1710 tai selo,ottelut: 2191,+1622 -1880 =1633. Huom! Käytä desimaalipistettä, jos tuloksessa on tasapeli mukana, esim. 2.5.
  
 * yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa kun kentissä liikutaan.
 
@@ -82,14 +85,16 @@ Tulostiedot:
 - piste-ero, kun laskettu yhden ottelun tuloksella (a)
 - odotustulos, kun laskettu yhden ottelun tulos (a) tai odotustuloksien summa (b ja c) paitsi jos laskettiin uuden pelaajan vahvuuslukua, jolloin summaa ei näytetä
 
-Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä kolmella tavalla:
+Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä neljällä tavalla:
 - a) annetaan vahvuusluku numerona, esim. 1720 ja valitaan tulos valintapainikkeista 0, 1/2 ja 1.
 - b) Annetaan tulos vahvuusluvun kanssa, esim. +1720, =1720 tai -1720, eikä tuloksen valintapainikkeita ole käytetty.
 - c) Annetaan tulos numerona ennen vahvuuslukua, esim. 1 1720, 0.5 1720 tai 0 1720, eikä valintapainikkeita ole käytetty.
+- d) CSV-formaatissa, jossa oma selo myös mukana, esim. 1521,1 1720 tai 1521,+1720
 
 Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
-- b) Tulokset vahvuuslukujen yhteydessä, esim. +1622 -1880 =1633 +1717
-- c) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
+- a) Tulokset vahvuuslukujen yhteydessä, esim. +1622 -1880 =1633 +1717
+- b) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
+- c) CSV-formaatissa, jossa tulokset tavalla a tai b, esim. jos oma selo on 1521, niin 1521,2.5 1622 1880 1633 1717
 
 Ohjelman asennus:
 Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja suorita setup.exe publish-hakemistossa. Tai käännä projekti uudestaan Visual Studiossa.
@@ -100,5 +105,4 @@ TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
 - järjestä ohjelmaa vielä enemmän objektiläheisemmäksi
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea (harjoituksen vuoksi)
-- Java-versioon samat koodin järjestämiset/refaktoroinnit/yksikkötestaukset/dokumentoinnit
 - Ohjelmasta myös HTML/JavaScript-versio

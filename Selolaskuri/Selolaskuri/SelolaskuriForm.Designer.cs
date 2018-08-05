@@ -185,7 +185,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(206, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 4.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 5.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -548,7 +548,7 @@
             this.MaximumSize = new System.Drawing.Size(445, 580);
             this.MinimumSize = new System.Drawing.Size(445, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.0.0.10";
+            this.Text = "Selolaskuri v. 2.0.0.11";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

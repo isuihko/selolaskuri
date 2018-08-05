@@ -54,6 +54,9 @@
 //
 // Publish --> Versio 2.0.0.10, myös github
 //
+// 5.8.2018         - Poista piippaus, kun painettu enter vastustajanSelo-kentässä
+//                  - CSV:ssä voitu vaihtaa miettimisaika, joten päivitä SELO/PELO-tekstit
+//
 
 using System;
 using System.Drawing;
@@ -100,13 +103,12 @@ namespace Selolaskuri
                 // Tarkista, onko csv ja jos on, niin unohda muut syötteet
                 // Paitsi jos on väärässä formaatissa, palautetaan null ja kutsuvalla tasolla virheilmoitus
                 //
-                // CSV example
+                // CSV 
                 // 90,1525,0,1725,1
-                // "90","1710","5","-1973",""
-                // Normaalisti 5 merkkijonoa
-                // Jos 4: ottelun tulos on antamatta, käytetään TULOS_MAARITTELEMATON
-                // Jos 3: Myös miettimisaika on antamatta, käytetään lomakkeelta valittua miettimisaikaa
-                // Jos 2: Myös pelimäärä on antamatta, käytetään oletuksena tyhjää ""
+                // Jos 5 merkkijonoa:  minuutit,selo,pelimäärä,vastustajat,jos_yksi_selo_niin_tulos
+                // Jos 4: ottelun tulosta ei anneta, käytetään TULOS_MAARITTELEMATON
+                // Jos 3: miettimisaikaa ei anneta, käytetään lomakkeelta valittua miettimisaikaa
+                // Jos 2: pelimäärää ei anneta, käytetään oletuksena tyhjää ""
                 //
                 string csv = vastustajanSelo_comboBox.Text;
 
@@ -283,7 +285,7 @@ namespace Selolaskuri
 
                 case Vakiot.SYOTE_VIRHE_CSV_FORMAT:
                     message =
-                        String.Format("VIRHE: CSV-formaattivirhe");
+                        String.Format("VIRHE: CSV-formaattivirhe, ks. Menu->Ohjeita");
                     vastustajanSelo_comboBox.ForeColor = Color.Red;
                     MessageBox.Show(message);
                     vastustajanSelo_comboBox.ForeColor = Color.Black;
@@ -384,6 +386,19 @@ namespace Selolaskuri
                 tulosTasapeli_btn.Checked = false;
                 tulosTappio_btn.Checked = false;
             }
+
+            // Jos käytetty CSV-formaattia, on voitu antaa eri miettimisaika kuin mitä valittu buttoneilla,
+            // joten varmuuden vuoksi päivitetään SELO- ja PELO-tekstit (vaikka voivat jo olla oikein)
+            // Turhan päivittämisen voisi estää lisäämällä flag syötetietoihin kertomaan, oliko csv:ssä miettimisaika.
+            //
+            // Ei riitä tarkistaa, onko valittu eri kuin näytöllä, koska tekstit on voitu vaihtaa välillä
+            //if (tulokset.Miettimisaika != HaeMiettimisaika()) {
+                if (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                    vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
+                else
+                    vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+            //}
+
         }
 
         // --------------------------------------------------------------------------------
@@ -473,12 +488,17 @@ namespace Selolaskuri
         {
             // Enter painettu vastustajan selojen tai useammankin syöttämisen jälkeen?
             if (e.KeyCode == Keys.Enter) {
+
+                // Prevent beep sound, because Enter is accepted in this form field
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+
                 // Kun painettu Enter, niin lasketaan
                 // siirrytäänkö myös kentän loppuun? Nyt jäädään samaan paikkaan, mikä myös OK.
                 if (LaskeOttelunTulosLomakkeelta()) {
 
-                    // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syötä -> Drop-down combobox
-                    // Tallennus kun klikattu Laske SELO tai painettu enter vastustajan selo-kentässä
+                    // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syöte -> Drop-down combobox
+                    // Tallennus myös, kun klikattu Laske SELO
                     if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                         vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
                 }

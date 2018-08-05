@@ -78,6 +78,14 @@ namespace Selolaskuri
                 return (alkuperaisetSyotteet.YksiVastustajaTulosnapit != 0);
             }
         }
+
+        // Tuloksien näyttämisessä tarkista miettimisaika, jos csv-formaattia käytettäessä vaihdettu
+        // Päivitä näytölle oikeat SELO- tai PELO-tekstit
+        public Vakiot.Miettimisaika_enum Miettimisaika {
+            get {
+                return alkuperaisetSyotteet.Miettimisaika;
+            }
+        }
        
         // Mahdollisesti annettu turnauksen tulos voi olla 0 - vastustajienlkm
         // Tallennetaan kokonaislukuna tuplana: esim. (int)(2*10,5) eli 21

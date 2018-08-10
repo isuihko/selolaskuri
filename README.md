@@ -18,6 +18,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 4.8.2018: Added support for CSV format (comma-separated values). NOTE! When inputting results, use point, not comma, e.g. 2.5 or 0.5. Version now 2.0.0.10, 4.8.2018. Also Java version is up-to-date.
 
+10.8.2018: Added text "Enter=laskenta" into vastustajanSelo field. Also added commands to be executed in vastustajanSelo field: test - add test data which could be used when taking window captures. clear - clear all input and output.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.

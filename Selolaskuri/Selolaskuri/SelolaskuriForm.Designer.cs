@@ -113,9 +113,10 @@
             this.VastustajanVahvuusluku_teksti.AutoSize = true;
             this.VastustajanVahvuusluku_teksti.Location = new System.Drawing.Point(11, 148);
             this.VastustajanVahvuusluku_teksti.Name = "VastustajanVahvuusluku_teksti";
-            this.VastustajanVahvuusluku_teksti.Size = new System.Drawing.Size(387, 13);
+            this.VastustajanVahvuusluku_teksti.Size = new System.Drawing.Size(464, 13);
             this.VastustajanVahvuusluku_teksti.TabIndex = 54;
-            this.VastustajanVahvuusluku_teksti.Text = "Vastustajat: SELO / SELOt tuloksineen / turnauksen pistemäärä ja SELOt / CSV";
+            this.VastustajanVahvuusluku_teksti.Text = "Vastustajat: SELO / SELOt tuloksineen / turnauksen pistemäärä ja SELOt / CSV  Ent" +
+    "er=laskenta";
             // 
             // label3
             // 
@@ -181,11 +182,11 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F);
-            this.label6.Location = new System.Drawing.Point(223, 528);
+            this.label6.Location = new System.Drawing.Point(260, 530);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(206, 12);
+            this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 5.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 10.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -424,7 +425,7 @@
             this.vastustajanSelo_comboBox.FormattingEnabled = true;
             this.vastustajanSelo_comboBox.Location = new System.Drawing.Point(14, 164);
             this.vastustajanSelo_comboBox.Name = "vastustajanSelo_comboBox";
-            this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(410, 21);
+            this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(444, 21);
             this.vastustajanSelo_comboBox.TabIndex = 3;
             this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vastustajanSelo_combobox_KeyDown);
             // 
@@ -434,7 +435,7 @@
             this.ohjeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(429, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(470, 24);
             this.menuStrip1.TabIndex = 67;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -508,7 +509,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(429, 542);
+            this.ClientSize = new System.Drawing.Size(470, 542);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UudenPelaajanLaskenta_txt);
             this.Controls.Add(this.vastustajanSelo_comboBox);
@@ -545,10 +546,10 @@
             this.Controls.Add(this.OmaVahvuusluku_teksti);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximumSize = new System.Drawing.Size(445, 580);
-            this.MinimumSize = new System.Drawing.Size(445, 580);
+            this.MaximumSize = new System.Drawing.Size(486, 580);
+            this.MinimumSize = new System.Drawing.Size(486, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.0.0.11";
+            this.Text = "Selolaskuri v. 2.0.0.12";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

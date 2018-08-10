@@ -57,6 +57,17 @@
 // 5.8.2018         - Poista piippaus, kun painettu enter vastustajanSelo-kentässä
 //                  - CSV:ssä voitu vaihtaa miettimisaika, joten päivitä SELO/PELO-tekstit
 //
+// 10.8.2018        - vastustajanSelo-kentässä voidaan antaa komentoja. Tarkistus enterin painalluksen jälkeen.
+//                      clear - nollaa kaiken syötteen ja tulosteen
+//                      test  - tallentaa vastustajanSelo_comboBox:iin testidataa ikkunakaappauksien ottoa varten
+//                  - lomakkeen teksteihin muutoksia: vastustajanSelo-kenttään ohje Enter=laskenta
+//
+// Publish --> Versio 2.0.0.12, myös github
+//
+//
+//
+// TODO: Voidaan tehdä tarkempaa yksikkötestausta, mm. syötteen tarkistamisen jälkeen voidaan tarkistaa ottelulista
+//
 
 using System;
 using System.Drawing;
@@ -403,6 +414,8 @@ namespace Selolaskuri
 
         // --------------------------------------------------------------------------------
         // Miettimisajan valinnan mukaan tekstit: SELO (pidempi peli) vai PELO (pikashakki)
+        //
+        // XXX: Hm... onko liian monta vaihdettavaa otsikkokenttää? Esim. Laske uusi SELO -> Laske uusi vahvuusluku
         // --------------------------------------------------------------------------------
         private void vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum suunta)
         {
@@ -483,6 +496,8 @@ namespace Selolaskuri
 
         // --------------------------------------------------------------------------------
         // Kun painettu Enter vastustajan SELO-kentässä, suoritetaan laskenta
+        //
+        // Tarkistetaan mahdollisesti annetut komennot
         // --------------------------------------------------------------------------------
         private void vastustajanSelo_combobox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -492,6 +507,64 @@ namespace Selolaskuri
                 // Prevent beep sound, because Enter is accepted in this form field
                 e.Handled = true;
                 e.SuppressKeyPress = true;
+
+                // Tarkista erikoistapaukset eli mahdolliset komennot
+                //   clear  tyhjentää kaikki syötekentät, myös vastustajanSelo_comboBox:n
+                //   test   tyhjentää kaikki syötekentät ja laittaa vastustajanSelo_comboBox:iin testausta varten aineistoa
+                if (vastustajanSelo_comboBox.Text.Equals("clear")) {
+                    // tyhjentää lomakkeen kentät ja tulokset, sekä palauttaa alkuarvot (miettimisaika vähintään 90 min)
+                    // Huom! Jättää muistiin aiemmin lasketut vahvuusluvun ja pelimäärän, jolloin
+                    // Käytä uutta SELOa jatkolaskennassa voi hakea ne (ei palauteta lukuja 1525,0)
+                    selo_in.Text = "";
+                    pelimaara_in.Text = "";
+                    miettimisaika_vah90_btn.Select();
+
+                    tulosVoitto_btn.Checked = false;
+                    tulosTasapeli_btn.Checked = false;
+                    tulosTappio_btn.Checked = false;
+
+                    // this leaves empty lines into comboBox, but they disappear after adding new item
+                    vastustajanSelo_comboBox.Items.Clear();
+                    vastustajanSelo_comboBox.ResetText();
+
+                    // tyhjennä tulokset
+                    uusiSelo_out.Text = "";
+                    selomuutos_out.Text = "";
+                    vaihteluvali_out.Text = "";
+
+                    uusiPelimaara_out.Text = "";
+                    turnauksenTulos_out.Text = "";
+                    odotustulos_out.Text = "";
+                    keskivahvuus_out.Text = "";                   
+                    pisteEro_out.Text = "";
+
+                    // palauta tekstit
+                    vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+                    return;
+
+                } else if (vastustajanSelo_comboBox.Text.Equals("test")) {
+
+                    // Aseta testausta varten listaan vastustajien & otteluiden tietoja, ei nollata muita kenttiä
+                    vastustajanSelo_comboBox.Items.Clear();
+                    vastustajanSelo_comboBox.ResetText();
+
+                    // Add some data (uncomplete and complete) to help running couple of test cases for window captures
+                    // vastustajanSelo_comboBox.Items.Add("");  // No need to add an empty item like in Java
+
+                    vastustajanSelo_comboBox.Items.Add("5,1996,,10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
+                    // Also Miettimisaika enint. 10 min, nykyinen SELO 1996, pelimäärä tyhjä
+                    vastustajanSelo_comboBox.Items.Add("10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
+
+                    vastustajanSelo_comboBox.Items.Add("90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966");
+                    // Also Miettimisaika väh. 90 min, nykyinen SELO 1525, pelimäärä 0
+                    vastustajanSelo_comboBox.Items.Add("+1525 +1441 -1973 +1718 -1784 -1660 -1966");
+
+                    vastustajanSelo_comboBox.Items.Add("90,1683,2,1973,0");
+                    // Also Miettimisaika väh. 90 min, nykyinen SELO 1683, pelimäärä 2, ottelun tulos 0=tappio
+                    vastustajanSelo_comboBox.Items.Add("1973");
+
+                    return;
+                }
 
                 // Kun painettu Enter, niin lasketaan
                 // siirrytäänkö myös kentän loppuun? Nyt jäädään samaan paikkaan, mikä myös OK.

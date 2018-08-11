@@ -387,11 +387,14 @@ namespace Selolaskuri
 
 
         // Miettimisaika, vain minuutit, esim. "5" tai "90"
+        // Oltava vähintään 1 minuutti
         public Vakiot.Miettimisaika_enum SelvitaMiettimisaika(string s)
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
             if (int.TryParse(s, out int temp) == true) {
-                if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                if (temp <= 1) {
+                    // ei voida pelata ilman miettimisaikaa -> MIETTIMISAIKA_MAARITTELEMATON
+                } else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
                 else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;

@@ -70,6 +70,10 @@
             this.tietojaOhjelmastaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.suljeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cutVastustajatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyVastustajatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteVastustajatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UudenPelaajanLaskenta_txt = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -186,7 +190,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 10.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 11.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -432,7 +436,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ohjeToolStripMenuItem});
+            this.ohjeToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(470, 24);
@@ -484,6 +489,37 @@
             this.suljeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
             this.suljeToolStripMenuItem.Click += new System.EventHandler(this.suljeToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cutVastustajatToolStripMenuItem,
+            this.copyVastustajatToolStripMenuItem,
+            this.pasteVastustajatToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // cutVastustajatToolStripMenuItem
+            // 
+            this.cutVastustajatToolStripMenuItem.Name = "cutVastustajatToolStripMenuItem";
+            this.cutVastustajatToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.cutVastustajatToolStripMenuItem.Text = "Cut (tyhjentää Vastustaja-historian)";
+            this.cutVastustajatToolStripMenuItem.Click += new System.EventHandler(this.cutVastustajatToolStripMenuItem_Click);
+            // 
+            // copyVastustajatToolStripMenuItem
+            // 
+            this.copyVastustajatToolStripMenuItem.Name = "copyVastustajatToolStripMenuItem";
+            this.copyVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
+            this.copyVastustajatToolStripMenuItem.Text = "Copy (kopioi Vastustajat-historian leikekirjaan)";
+            this.copyVastustajatToolStripMenuItem.Click += new System.EventHandler(this.copyVastustajatToolStripMenuItem_Click);
+            // 
+            // pasteVastustajatToolStripMenuItem
+            // 
+            this.pasteVastustajatToolStripMenuItem.Name = "pasteVastustajatToolStripMenuItem";
+            this.pasteVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
+            this.pasteVastustajatToolStripMenuItem.Text = "Paste (täyttää Vastustajat-historian, ei tarkistusta)";
+            this.pasteVastustajatToolStripMenuItem.Click += new System.EventHandler(this.pasteVastustajatToolStripMenuItem_Click);
             // 
             // UudenPelaajanLaskenta_txt
             // 
@@ -549,7 +585,7 @@
             this.MaximumSize = new System.Drawing.Size(486, 580);
             this.MinimumSize = new System.Drawing.Size(486, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.0.0.12";
+            this.Text = "Selolaskuri v. 2.1.0.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -607,6 +643,10 @@
         private System.Windows.Forms.ToolStripMenuItem ohjeitaKäyttöönkeskenToolStripMenuItem;
         private System.Windows.Forms.Label UudenPelaajanLaskenta_txt;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cutVastustajatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyVastustajatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteVastustajatToolStripMenuItem;
     }
 }
 

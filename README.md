@@ -20,6 +20,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 10.8.2018: Added text "Enter=laskenta" into vastustajanSelo field. Also added commands to be executed in vastustajanSelo field: test - add test data which could be used when taking window captures. clear - clear all input and output.
 
+11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.. Version now 2.1.0.0, 11.8.2018.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.

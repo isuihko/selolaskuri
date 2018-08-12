@@ -22,6 +22,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.. Version now 2.1.0.0, 11.8.2018.
 
+12.8.2018: CSV format and paste checkings and instructions. Version now 2.1.0.1, 12.8.2018.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.
@@ -48,6 +50,8 @@ Syötekenttiä:
  - c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
  - d) csv-formaatti (comma-separated values), jossa voidaan antaa kaikki syöte pilkulla erotettuna eikä silloin muiden lomakkeen kenttien arvoilla ole merkitystä. Esim. miettimisaika,selo,pelimaara,ottelut: 90,1525,0,+1621 -1812 =1710 tai selo,ottelut: 2191,+1622 -1880 =1633. Huom! Käytä desimaalipistettä, jos tuloksessa on tasapeli mukana, esim. 2.5.
  
+Huom! CSV:ssä annetut arvot ohittavat muut (miettimisaika, vahvuusluku, pelimäärä). Jos joku arvo on antamatta, käytetään lomakkeella olevaa (miettimisaika) tai tyhjää (pelimäärä).
+ 
 * yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa kun kentissä liikutaan.
 
 Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
@@ -63,6 +67,11 @@ Menut:
 * Laskentakaavat
 * Tietoja ohjelmasta
 * Sulje ohjelma
+
+Edit:
+* Cut (kopioi ja tyhjentää Vastustajat-historian)
+* Copy (kopioi Vastustajat-historian)
+* Paste (täyttää Vastustajat-historian, ei tarkistusta)
  
 Laskentaa suoritetaan, kun
 - valitaan painike "Laske uusi SELO" tai pikashakin miettimisajalla "Laske uusi PELO"
@@ -89,16 +98,17 @@ Tulostiedot:
 - piste-ero, kun laskettu yhden ottelun tuloksella (a)
 - odotustulos, kun laskettu yhden ottelun tulos (a) tai odotustuloksien summa (b ja c) paitsi jos laskettiin uuden pelaajan vahvuuslukua, jolloin summaa ei näytetä
 
-Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä neljällä tavalla:
+Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä:
 - a) annetaan vahvuusluku numerona, esim. 1720 ja valitaan tulos valintapainikkeista 0, 1/2 ja 1.
 - b) Annetaan tulos vahvuusluvun kanssa, esim. +1720, =1720 tai -1720, eikä tuloksen valintapainikkeita ole käytetty.
 - c) Annetaan tulos numerona ennen vahvuuslukua, esim. 1 1720, 0.5 1720 tai 0 1720, eikä valintapainikkeita ole käytetty.
 - d) CSV-formaatissa, jossa oma selo myös mukana, esim. 1521,1 1720 tai 1521,+1720
 
-Kahden tai useamman ottelun tulos voidaan antaa kahdella eri tavalla
+Kahden tai useamman ottelun tulos voidaan antaa eri tavoilla
 - a) Tulokset vahvuuslukujen yhteydessä, esim. +1622 -1880 =1633 +1717
 - b) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 - c) CSV-formaatissa, jossa tulokset tavalla a tai b, esim. jos oma selo on 1521, niin 1521,2.5 1622 1880 1633 1717
+
 
 Ohjelman asennus:
 Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja suorita setup.exe publish-hakemistossa. Tai käännä projekti uudestaan Visual Studiossa.

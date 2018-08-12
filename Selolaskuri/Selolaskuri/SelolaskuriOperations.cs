@@ -392,8 +392,9 @@ namespace Selolaskuri
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
             if (int.TryParse(s, out int temp) == true) {
-                if (temp <= 1) {
-                    // ei voida pelata ilman miettimisaikaa -> MIETTIMISAIKA_MAARITTELEMATON
+                if (temp < 1) {
+                    // ei voida pelata ilman miettimisaikaa
+                    // jo asetettu aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
                 } else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
                 else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
@@ -407,6 +408,8 @@ namespace Selolaskuri
         }
 
         // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "1", "1.0" tai "1,0"
+        // Toistaiseksi tuloksissa voi käyttää vain desimaalipistettä, joten ei voida syöttää tuloksia
+        // pilkun kanssa kuten "0,0", "0,5" ja "1,0". Tarkistetaan ne kuitenkin varalta.
         public Vakiot.OttelunTulos_enum SelvitaTulos(string s)
         {
             Vakiot.OttelunTulos_enum tulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;

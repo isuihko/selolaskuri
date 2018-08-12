@@ -51,7 +51,8 @@ namespace Selolaskuri.Tests
         SelolaskuriOperations so = new SelolaskuriOperations();
 
         // --------------------------------------------------------------------------------
-        // Testataan vahvuusluvun ym. laskentaa
+        // Laskennan testauksia erilaisin syöttein(oma selo, vastustajat, ottelutulokset, ...)
+        // Virhestatuksien testauksia erilaisin virhein
         // --------------------------------------------------------------------------------
 
         [TestMethod]

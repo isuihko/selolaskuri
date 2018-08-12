@@ -73,7 +73,18 @@
 //
 // Publish --> Versio 2.1.0.0, myös github
 //
-// TODO: Voidaan tehdä tarkempaa yksikkötestausta, mm. syötteen tarkistamisen jälkeen voidaan tarkistaa ottelulista
+// 12.8.2018        - Pastessa nyt rajoitettu myös rivin maksipituus sekä rivin pitää alkaa sallitulla merkillä (numero tai tulos +-=).
+//                  - Muokattu Paste-toiminnon ilmoitusikkunaa.
+//                  - Vakiot leikekirjan käytön rajoituksille (rivin pituus 1000 ja rivien lkm 100)
+//                  - Edit-menun tekstejä muokattu sekä &Edit (eli Alt-E toimii)
+//
+// Publish --> Versio 2.1.0.1, myös github
+//
+//
+//
+// TODO: Voisi tehdä tarkempaa yksikkötestausta, mm. syötteen tarkistamisen jälkeen voidaan tarkistaa ottelulista
+// TODO: F1 = ohjeikkuna
+// TODO: web-versio
 //
 
 using System;
@@ -244,6 +255,7 @@ namespace Selolaskuri
                     message =
                         String.Format("VIRHE: CSV-formaatissa annettu virheellinen miettimisaika. Annettava minuutit. Ks. Menu->Ohjeita");
                     MessageBox.Show(message);
+                    vastustajanSelo_comboBox.Select();
                     break;
 
                 case Vakiot.SYOTE_VIRHE_OMA_SELO:
@@ -451,7 +463,6 @@ namespace Selolaskuri
 
             OmaVahvuusluku_teksti.Text = OmaVahvuusluku_teksti.Text.Replace(alkup, uusi);
             VastustajanVahvuusluku_teksti.Text = VastustajanVahvuusluku_teksti.Text.Replace(alkup, uusi);
-            TuloksetPistemaaranKanssa_teksti.Text = TuloksetPistemaaranKanssa_teksti.Text.Replace(alkup, uusi);
             UusiSELO_teksti.Text = UusiSELO_teksti.Text.Replace(alkup, uusi);
             Laske_btn.Text = Laske_btn.Text.Replace(alkup, uusi);
             KaytaTulosta_btn.Text = KaytaTulosta_btn.Text.Replace(alkup, uusi);
@@ -523,7 +534,7 @@ namespace Selolaskuri
         // tyhjentää lomakkeen kentät ja palauttaa alkuarvot, miettimisaika vähintään 90 min, ei tulospainikkeita valittuna
         private void TyhjennaSyotteet()
         {
-           selo_in.Text = "";
+            selo_in.Text = "";
             pelimaara_in.Text = "";
             miettimisaika_vah90_btn.Select();
 
@@ -636,17 +647,18 @@ namespace Selolaskuri
                 + Environment.NewLine + "-Miettimisaika. Pitkä peli (väh. 90 minuuttia) on oletuksena. Jos valitset enint. 10 minuuttia, lasketaan pikashakin vahvuuslukua (PELO)"
                 + Environment.NewLine + "-Oma vahvuusluku"
                 + Environment.NewLine + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
-                + Environment.NewLine + "-Vastustajien vahvuusluvut ja tulokset jollakin kolmesta tavasta:"
+                + Environment.NewLine + "-Vastustajien vahvuusluvut ja tulokset jollakin neljästä tavasta:"
                 + Environment.NewLine + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/0,5/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
                 + Environment.NewLine + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
                 + Environment.NewLine + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
-                + Environment.NewLine + "   4) CSV eli pilkulla erotettu lista, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5!"
+                + Environment.NewLine + "   4) CSV eli pilkulla erotetut arvot, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5!"
                 + Environment.NewLine + "           2: oma selo,ottelut   esim. 1712,2.5 1525 1600 1611 1558 tai 1712,+1525"
                 + Environment.NewLine + "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1525 +1441"
                 + Environment.NewLine + "           4: minuutit,oma selo,pelimaara,ottelut  esim. 90,1525,0,+1525 +1441"
                 + Environment.NewLine + "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli 1/2 tai 0.5)"
                 + Environment.NewLine + "      Jos miettimisaika on antamatta, käytetään ikkunasta valittua"
                 + Environment.NewLine + "      Jos pelimäärä on antamatta, käytetään tyhjää"
+                + Environment.NewLine + "   HUOM! CSV-formaatissa annettuja arvoja käytetään, vaikka oma selo, pelimäärä, miettimisaika tai tulos olisi annettu erikseenkin."
                 + Environment.NewLine
                 + Environment.NewLine + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
                 + Environment.NewLine
@@ -664,7 +676,7 @@ namespace Selolaskuri
         }
 
 
-        private void tietojaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tietoaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET/WinForms"
                 + Environment.NewLine + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri",
@@ -699,7 +711,7 @@ namespace Selolaskuri
         //
         // Edit-menu käsittelee vastustajanSelo-kentän listaa eli historiatietoja
 
-        // Tyhjentää (varmistamatta) vastustaja-historiatiedot
+        // Tyhjentää Vastustajat-historiatiedot
         private void cutVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // At first copy into clipboard
@@ -707,7 +719,7 @@ namespace Selolaskuri
             TyhjennaVastustajat();
         }
 
-        // Kopioi leikekirjaan vastustaja-historian
+        // Kopioi leikekirjaan Vastustajat-historian
         private void copyVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string leikekirja = "";
@@ -716,43 +728,59 @@ namespace Selolaskuri
             Clipboard.SetDataObject(leikekirja);
         }
 
-        // Kopioi leikekirjasta tarkistamatta vastustaja-historiaan kaikki tekstirivit
+        // Kopioi leikekirjasta Vastustajat-historiaan tekstirivit
+        //
+        // Ei tarkisteta, että ovatko vastustajat/tulokset oikeassa formaatissa.
         // Vain tarkistukset, että pituus on vähintään seloluvun pituus (eli 4), eikä tule kahta samaa riviä.
-        // Lisätään enintään 100 riviä.
+        // Ei saa olla myöskään liian pitkä rivi eikä liian montaa riviä.
         private void pasteVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {            
             // Haetaan data leikekirjasta
             IDataObject iData = Clipboard.GetDataObject();
             SelolaskuriOperations so = new SelolaskuriOperations();
-            string[] leikekirja;
+            string[] leikekirja = null;
             int lisatytRivit = 0;
 
-            // jos on tekstiä, niin poista aiemmat vastustajat,
+            // jos leikekirjassa on tekstiä, niin poista aiemmat vastustajat,
             // käsittele riveittäin, tarkista ja tallenna vastustajanSelo-kenttään
             if (iData.GetDataPresent(DataFormats.Text)) {
-                TyhjennaVastustajat();
-
-                // tuo lisäisi kaikki rivit: vastustajanSelo_comboBox.Items.AddRange(iData.GetData(DataFormats.Text).ToString().Split('\n'));
-                // Mutta tarkistetaan (edes), ettei ole tyhjä rivi (pitää olla vähintään yksi seloluku) eikä tule kahta samaa
+               
+                // Tämä lisäisi kaikki rivit tarkistamatta: vastustajanSelo_comboBox.Items.AddRange(iData.GetData(DataFormats.Text).ToString().Split('\n'));
+                //
+                // Ei tallenneta liian pitkiä tai lyhyitä rivejä, eikä liian montaa riviä, eikä samaa riviä kahdesti.
+                // Rivin on aloitettava numerolla (eli selo tai miettimisaika) tai ottelutuloksella (+, - tai =)
                 leikekirja = iData.GetData(DataFormats.Text).ToString().Split('\n'); // Ei haittaa, jos on "\r\n", koska poistetaan tarkistuksessa
                 foreach (string rivi in leikekirja) {
                     string rivi2 = rivi.Trim();
-                    if (rivi2.Length >= Vakiot.SELO_PITUUS && !vastustajanSelo_comboBox.Items.Contains(rivi2)) {
+
+                    if (rivi2.Length >= Vakiot.SELO_PITUUS && rivi2.Length <= Vakiot.LEIKEKIRJA_MAX_RIVINPITUUS &&
+                        (rivi2[0] == '+' || rivi2[0] == '-' || rivi2[0] == '=' || (rivi2[0] >= '0' && rivi2[0] <= '9')) &&
+                        !vastustajanSelo_comboBox.Items.Contains(rivi2))
+                    {
+                        if (lisatytRivit == 0)
+                            TyhjennaVastustajat();
+
                         vastustajanSelo_comboBox.Items.Add(rivi2);
-                        if (++lisatytRivit >= 100)
+                        if (++lisatytRivit >= Vakiot.LEIKEKIRJA_MAX_RIVIMAARA)
                             break;
                     }
                 }
+            }
+
+            if (lisatytRivit > 0 && null != leikekirja) {
                 MessageBox.Show(
-                    "Vastustajiin lisätty " + vastustajanSelo_comboBox.Items.Count + (vastustajanSelo_comboBox.Items.Count == 1 ? " rivi. " : " riviä. ")
-                    + "Leikekirjassa oli " + leikekirja.Length + (leikekirja.Length == 1 ? " rivi." : " riviä.")
+                    "Vastustajiin lisätty " + lisatytRivit + (lisatytRivit == 1 ? " rivi." : " riviä.")
+                    + " Leikekirjassa oli " + leikekirja.Length + (leikekirja.Length == 1 ? " rivi." : " riviä.")
+                    + " Lisätään enintään " + Vakiot.LEIKEKIRJA_MAX_RIVIMAARA + " riviä."
                     + Environment.NewLine
-                    + "Huom! Ei tarkistettu, onko kelvollista ottelutietoa. Tarkistettu vain, että "
+                    + "Huom! Ei tarkistettu, onko kelvollista ottelutietoa. Tarkistettu vain, että rivi alkaa"
                     + Environment.NewLine
-                    + "pituus vähintään 4 (seloluvun pituus) eikä tule samoja rivejä!");
+                    + "numerolla tai tuloksella  (+-=), rivin pituus on välillä 4 (seloluvun pituus) - " + Vakiot.LEIKEKIRJA_MAX_RIVINPITUUS
+                    + Environment.NewLine
+                    + "eikä lisätä samoja rivejä.");
             } else {
-                MessageBox.Show("Paste: Leikekirja ei sisällä tekstiä. Ei muutettu vastustajia/ottelutietoja.");
-            }           
+                MessageBox.Show("Paste: Leikekirjan sisältöä ei hyväksytty. Ei muutettu vastustajia/ottelutietoja.");
+            }
         }
     }
 }

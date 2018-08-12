@@ -65,9 +65,9 @@
             this.vastustajanSelo_comboBox = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ohjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ohjeitaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.laskentakaavatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tietojaOhjelmastaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tietoaOhjelmastaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.suljeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +76,7 @@
             this.pasteVastustajatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UudenPelaajanLaskenta_txt = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -190,7 +191,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 11.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 12.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -420,9 +421,9 @@
             this.TuloksetPistemaaranKanssa_teksti.AutoSize = true;
             this.TuloksetPistemaaranKanssa_teksti.Location = new System.Drawing.Point(11, 204);
             this.TuloksetPistemaaranKanssa_teksti.Name = "TuloksetPistemaaranKanssa_teksti";
-            this.TuloksetPistemaaranKanssa_teksti.Size = new System.Drawing.Size(282, 13);
+            this.TuloksetPistemaaranKanssa_teksti.Size = new System.Drawing.Size(315, 13);
             this.TuloksetPistemaaranKanssa_teksti.TabIndex = 66;
-            this.TuloksetPistemaaranKanssa_teksti.Text = "Tai pistemäärä ja vastustajien SELOt: 1.5 1725 1910 1812";
+            this.TuloksetPistemaaranKanssa_teksti.Text = "Tai pistemäärä ja vastustajien vahvuusluvut: 1.5 1725 1910 1812";
             // 
             // vastustajanSelo_comboBox
             // 
@@ -448,21 +449,21 @@
             // 
             this.ohjeToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ohjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem,
+            this.ohjeitaToolStripMenuItem,
             this.laskentakaavatToolStripMenuItem,
-            this.tietojaOhjelmastaToolStripMenuItem,
+            this.tietoaOhjelmastaToolStripMenuItem,
             this.toolStripSeparator1,
             this.suljeToolStripMenuItem});
             this.ohjeToolStripMenuItem.Name = "ohjeToolStripMenuItem";
             this.ohjeToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.ohjeToolStripMenuItem.Text = "&Menu";
             // 
-            // ohjeitaKäyttöönkeskenToolStripMenuItem
+            // ohjeitaToolStripMenuItem
             // 
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Name = "ohjeitaKäyttöönkeskenToolStripMenuItem";
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Text = "Ohjeita";
-            this.ohjeitaKäyttöönkeskenToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
+            this.ohjeitaToolStripMenuItem.Name = "ohjeitaToolStripMenuItem";
+            this.ohjeitaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.ohjeitaToolStripMenuItem.Text = "Ohjeita";
+            this.ohjeitaToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
             // 
             // laskentakaavatToolStripMenuItem
             // 
@@ -471,12 +472,12 @@
             this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
             this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.laskentakaavatToolStripMenuItem_Click);
             // 
-            // tietojaOhjelmastaToolStripMenuItem
+            // tietoaOhjelmastaToolStripMenuItem
             // 
-            this.tietojaOhjelmastaToolStripMenuItem.Name = "tietojaOhjelmastaToolStripMenuItem";
-            this.tietojaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.tietojaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
-            this.tietojaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietojaOhjelmastaToolStripMenuItem_Click);
+            this.tietoaOhjelmastaToolStripMenuItem.Name = "tietoaOhjelmastaToolStripMenuItem";
+            this.tietoaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.tietoaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
+            this.tietoaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietoaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -498,20 +499,20 @@
             this.pasteVastustajatToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Text = "&Edit";
             // 
             // cutVastustajatToolStripMenuItem
             // 
             this.cutVastustajatToolStripMenuItem.Name = "cutVastustajatToolStripMenuItem";
-            this.cutVastustajatToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.cutVastustajatToolStripMenuItem.Text = "Cut (tyhjentää Vastustaja-historian)";
+            this.cutVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
+            this.cutVastustajatToolStripMenuItem.Text = "Cut (kopioi ja tyhjentää Vastustajat-historian)";
             this.cutVastustajatToolStripMenuItem.Click += new System.EventHandler(this.cutVastustajatToolStripMenuItem_Click);
             // 
             // copyVastustajatToolStripMenuItem
             // 
             this.copyVastustajatToolStripMenuItem.Name = "copyVastustajatToolStripMenuItem";
             this.copyVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
-            this.copyVastustajatToolStripMenuItem.Text = "Copy (kopioi Vastustajat-historian leikekirjaan)";
+            this.copyVastustajatToolStripMenuItem.Text = "Copy (kopioi Vastustajat-historian)";
             this.copyVastustajatToolStripMenuItem.Click += new System.EventHandler(this.copyVastustajatToolStripMenuItem_Click);
             // 
             // pasteVastustajatToolStripMenuItem
@@ -541,11 +542,21 @@
             this.label1.Text = "CSV: min,selo,pelim,vastustajat[,tulos] tai selo,vastustajat. Esim. 1650,+1725 -1" +
     "910 1812";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 238);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(397, 13);
+            this.label2.TabIndex = 70;
+            this.label2.Text = "Huom! CSV:ssä annetut arvot ohittavat muut (miettimisaika,vahvuusluku,pelimäärä)";
+            // 
             // SelolaskuriForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(470, 542);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UudenPelaajanLaskenta_txt);
             this.Controls.Add(this.vastustajanSelo_comboBox);
@@ -585,7 +596,7 @@
             this.MaximumSize = new System.Drawing.Size(486, 580);
             this.MinimumSize = new System.Drawing.Size(486, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.1.0.0";
+            this.Text = "Selolaskuri v. 2.1.0.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -636,17 +647,18 @@
         private System.Windows.Forms.ComboBox vastustajanSelo_comboBox;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ohjeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tietojaOhjelmastaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tietoaOhjelmastaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem laskentakaavatToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem suljeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ohjeitaKäyttöönkeskenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ohjeitaToolStripMenuItem;
         private System.Windows.Forms.Label UudenPelaajanLaskenta_txt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cutVastustajatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyVastustajatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteVastustajatToolStripMenuItem;
+        private System.Windows.Forms.Label label2;
     }
 }
 

@@ -38,6 +38,9 @@ namespace Selolaskuri {
 
         public const int PELIMAARA_TYHJA = -1; // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
 
+        public const int LEIKEKIRJA_MAX_RIVINPITUUS     = 1000;
+        public const int LEIKEKIRJA_MAX_RIVIMAARA       = 100;
+
         // Tallenna tulokset kokonaislukuina. Laskennassa käytetään 0, 1/2 ja 1.
         public enum OttelunTulos_enum
         {

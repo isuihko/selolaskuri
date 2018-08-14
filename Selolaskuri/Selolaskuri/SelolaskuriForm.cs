@@ -157,7 +157,7 @@ namespace Selolaskuri
                 else if (data.Count == 2)
                 {
                     return new Syotetiedot(HaeMiettimisaika(), data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-                } else if (data.Count > 1)
+                } else if (data.Count > 5)
                 {
                     // CSV FORMAT ERROR, ILLEGAL DATA
                     return null;

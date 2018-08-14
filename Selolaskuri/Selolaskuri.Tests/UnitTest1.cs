@@ -348,7 +348,7 @@ namespace Selolaskuri.Tests
         [TestMethod]
         public void VirheellinenSyoteTurnauksenTulos1()
         {
-            var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "20 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            var t = Testaa("1996", "20 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS, t.Item1);
         }
 
@@ -356,7 +356,7 @@ namespace Selolaskuri.Tests
         [TestMethod]
         public void VirheellinenSyoteTurnauksenTulos2()
         {
-            var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "99 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            var t = Testaa("1996", "99 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS, t.Item1);
         }
 
@@ -366,7 +366,7 @@ namespace Selolaskuri.Tests
         [TestMethod]
         public void VirheellinenSyoteTurnauksenTulos3()
         {
-            var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "-6 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            var t = Testaa("1996", "-6 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
         }
 
@@ -376,7 +376,7 @@ namespace Selolaskuri.Tests
         [TestMethod]
         public void VirheellinenSyoteTurnauksenTulos4()
         {
-            var t = Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "", "150 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684", Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            var t = Testaa("1996", "150 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
         }
 

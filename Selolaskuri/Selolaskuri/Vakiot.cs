@@ -41,9 +41,20 @@ namespace Selolaskuri {
         public const int LEIKEKIRJA_MAX_RIVINPITUUS     = 1000;
         public const int LEIKEKIRJA_MAX_RIVIMAARA       = 100;
 
-        // Tallenna tulokset kokonaislukuina. Laskennassa käytetään 0, 1/2 ja 1.
+        public const int TURNAUKSEN_TULOS_ANTAMATTA     = -1;
+
+
+        // Tallenna kunkin ottelun tulos kokonaislukuna kahdella kerrottuna lukujen 0, 1/2 ja 1 sijaan.
+        //
+        // TULOS_EI_ANNETTU: kun turnauksen tuloksissa ei ole vahvuusluvun kanssa tulosta +-=
+        //                   Esim. "+1624 -1700 1685 +1400" tai "1.5 1525 1441 1973 1718 1784 1660 1966"
+        //
+        // TULOS_MAARITTELEMATON: Kun tulosta ei ole vielä saatu tietoon. Myös lopetusehto ottelulistaa tutkittaessa.
+        //
         public enum OttelunTulos_enum
         {
+
+            TULOS_EI_ANNETTU = -2,          
             TULOS_MAARITTELEMATON = -1,
             TULOS_TAPPIO = 0,
             TULOS_TASAPELI = 1,

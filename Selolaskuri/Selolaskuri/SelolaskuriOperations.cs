@@ -19,6 +19,7 @@
 //  17.-19.6.2018 refactoring, documenting
 //  18.-22.7.2018 SuoritaLaskenta() now returns Selopelaaja. Earlier had separate (unnecessary) class for the results
 //  15.8.2018     CSV-formaatin tarkistamista
+//                Laskennan ja tallennuksen muutokset yksikkötestauksen helpottamiseksi (=1234 on eri tapaus kuin 1234).
 //
 
 using System.Collections.Generic;
@@ -231,7 +232,7 @@ namespace Selolaskuri
             float syotetty_tulos = 0F;           // tähän sitten sen tulos desimaalilukuna (esim. 2,5)
 
             // kentässä voidaan antaa alussa turnauksen tulos, esim. 0.5, 2.0, 2.5, 7.5 eli saadut pisteet
-            selopelaaja.setAnnettuTurnauksenTulos(-1.0F);  // oletus: ei annettu turnauksen tulosta
+            selopelaaja.SetAnnettuTurnauksenTulos(Vakiot.TURNAUKSEN_TULOS_ANTAMATTA);  // oletus: ei annettu turnauksen tulosta
 
             // Ensin helpot tarkistukset:
             // 1) Kenttä ei saa olla tyhjä
@@ -279,7 +280,7 @@ namespace Selolaskuri
                                 // HUOM! Jos tuloksessa on desimaalit väärin, esim. 2.37 tai 0,9,
                                 //       niin ylimääräiset desimaalit "pyöristyvät" alas -> 2,0 tai 0,5.
                                 onko_turnauksen_tulos = true;
-                                selopelaaja.setAnnettuTurnauksenTulos(syotetty_tulos);
+                                selopelaaja.SetAnnettuTurnauksenTulos(syotetty_tulos);
 
                                 // alussa oli annettu turnauksen lopputulos, jatka SELOjen tarkistamista
                                 // Nyt selojen on oltava ilman tulosmerkintää!
@@ -306,8 +307,24 @@ namespace Selolaskuri
                             break;
                         }
 
-                        // Tallennetaan ottelu tasapelinä, ei ollut +:aa tai -:sta
-                        ottelut.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_TASAPELI);
+                        // Hm... miten tallennus?
+                        //
+                        //if (onko_turnauksen_tulos) {
+                        //    Jos annettu turnauksen tulos, ei merkitystä, koska tehdään uusi laskenta, jossa käytetään turnauksen tulosta
+                        //    ottelut.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_EI_ANNETTU);
+                        //} else {
+                        //    // Tallenna tasapeli, jos tulokset formaatissa +1624 -1700 =1685 +1400, jossa tasapeli
+                        //    // on annettu ilman '='-merkkiä eli vaikkapa "+1624 -1700 1685 +1400"
+                        //    ottelut.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_TASAPELI);
+                        //}
+
+                        // Jos ottelun tulosta ei annettu, niin sitä ei tallenneta
+                        // Laskennassa tämä otetaan kuitenkin huomioon tasapelinä, jolloin "+1624 -1700 1685 +1400" menee oikein
+                        // Ks. Selopelaaja PelaaOttelu()
+                        //
+                        // Näin myös yksikkötestauksessa on helpompi tarkistaa tiedot,
+                        // koska syötteen "=1234" on eri tapaus kuin "1234".
+                        ottelut.LisaaOttelunTulos(selo1, Vakiot.OttelunTulos_enum.TULOS_EI_ANNETTU); // OK
 
                     } else if (onko_turnauksen_tulos == false && vastustaja.Length == Vakiot.MAX_PITUUS) {
                         // 5)
@@ -446,7 +463,15 @@ namespace Selolaskuri
         }
 
         // Tarkista valitun ottelun tulos -painikkeen kelvollisuus
-        // Virhestatus palautetaan, jos oli valittu TULOS_MAARITTELEMATON
+        //
+        // Painikkeesta ei voida saada väärää tulosta. 
+        // Mutta jos tulos oli kerrottu CSV-formaatissa, niin siellä on voinut olla virhe,
+        // ks. SelvitaTulosCSV()
+        //
+        // Virhestatus palautetaan, jos oli TULOS_MAARITTELEMATON
+        //
+        // Tulos TULOS_EI_ANNETTU ei ole virhe, koska se koskee merkkijonossa annettua tulosta,
+        // joka tarkoituksella on jätetty antamatta. TULOS_EI_ANNETTU lasketaan tasapelinä.
         //
         private int TarkistaOttelunTulos(Vakiot.OttelunTulos_enum ottelunTulos)
         {

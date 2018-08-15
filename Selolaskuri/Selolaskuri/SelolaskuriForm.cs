@@ -188,7 +188,7 @@ namespace Selolaskuri
             else if (tulosTappio_btn.Checked)
                 valinta = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
             else
-                valinta = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
+                valinta = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON; // ei mahdollinen
 
             return valinta;
         }

@@ -190,5 +190,24 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);       // selo laskettu kerralla, sama kuin UusiSelo
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);       // selo laskettu kerralla, sama kuin UusiSelo
         }
+
+        // Kuten edellä CSV_PikashakinVahvuuslukuTurnauksesta(), mutta ei anneta miettimisaikaa 5 vaan käytetään oletusta 90 min -> eri tulos
+        // Tässä voidaan jättää myös oma pelimäärä antamatta kokonaan. Edellisessä testitapauksessa annettu tyhjä.
+        [TestMethod]
+        public void CSV_VahvuuslukuTurnauksesta()
+        {
+            var t = u.Testaa("1996,10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
+            Assert.AreNotEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(2050,   t.Item2.UusiSelo);
+            Assert.AreEqual(Vakiot.PELIMAARA_TYHJA, t.Item2.UusiPelimaara);  // pelimäärää ei laskettu
+            Assert.AreEqual((int)(10.5F * 2), t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1827,   t.Item2.TurnauksenKeskivahvuus);  // 
+            Assert.AreEqual(12,     t.Item2.VastustajienLkm);         // 12 vastustajaa eli ottelua
+            Assert.AreEqual(840,    t.Item2.Odotustulos);             // odotustulos 8,40*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);       // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);       // selo laskettu kerralla, sama kuin UusiSelo
+        }
     }
 }
+

@@ -80,9 +80,13 @@
 //
 // Publish --> Versio 2.1.0.1, myös github
 //
+// 15.8.2018        - Yksikkötestausta muutettu, testitapaukset jaettu moduuleihin testattavan asian mukaan
+//                  - CSV-formaatin testaukseen muutos: merkkijonon alkukäsittely tehdään uudella yleisellä rutiinilla,
+//                    joka on SelolaskuriOperations-luokassa ja jota nyt myös käytetään tietoja haettaessa lomakkeelta.
+//                    Nyt merkkijonon jakaminen osiin saadaan testaukseen.
 //
 //
-// TODO: Voisi tehdä tarkempaa yksikkötestausta, mm. syötteen tarkistamisen jälkeen voidaan tarkistaa ottelulista
+//
 // TODO: F1 = ohjeikkuna
 // TODO: web-versio
 //
@@ -111,6 +115,8 @@ namespace Selolaskuri
         // Tietoja ei tarkisteta tässä
         // Miettimisaika on aina kelvollinen, mutta merkkijonot eivät välttämättä
         // Myös ottelun tulos voi/saa olla antamatta, joten silloin se on määrittelemätön
+        //
+        // Jos CSV-formaatti ja on liian monta arvoa, palauttaa null
         private Syotetiedot HaeSyotteetLomakkeelta()
         {
             // Remove all leading and trailing white spaces from the form
@@ -119,6 +125,9 @@ namespace Selolaskuri
 
             // NOTE! In Java version this comboBox could return also null, so there have to check for null value
             vastustajanSelo_comboBox.Text = vastustajanSelo_comboBox.Text.Trim();
+
+
+            // process opponents field and check if CSV format was used
 
             if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text) == false)
             {
@@ -139,28 +148,10 @@ namespace Selolaskuri
                 // Jos 3: miettimisaikaa ei anneta, käytetään lomakkeelta valittua miettimisaikaa
                 // Jos 2: pelimäärää ei anneta, käytetään oletuksena tyhjää ""
                 //
-                string csv = vastustajanSelo_comboBox.Text;
+                if (vastustajanSelo_comboBox.Text.Contains(',')) {
 
-                List<string> data = csv.Split(',').ToList();
-                if (data.Count == 5)
-                {
-                    return new Syotetiedot(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], so.SelvitaTulos(data[4]));
-                }
-                else if (data.Count == 4)
-                {
-                    return new Syotetiedot(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-                }
-                else if (data.Count == 3)
-                {
-                    return new Syotetiedot(HaeMiettimisaika(), data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-                }
-                else if (data.Count == 2)
-                {
-                    return new Syotetiedot(HaeMiettimisaika(), data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-                } else if (data.Count > 5)
-                {
-                    // CSV FORMAT ERROR, ILLEGAL DATA
-                    return null;
+                    // The thinking time might be needed from the form if there are 2 or 3 values in CSV format
+                    return so.SelvitaCSV(HaeMiettimisaika(), vastustajanSelo_comboBox.Text);
                 }
             }
 
@@ -351,8 +342,7 @@ namespace Selolaskuri
             // hakee syötetyt tekstit ja tehdyt valinnat, ei virhetarkastusta
             Syotetiedot syotteet = HaeSyotteetLomakkeelta();
 
-            if (syotteet == null)
-            {
+            if (syotteet == null) {
                 NaytaVirheilmoitus(Vakiot.SYOTE_VIRHE_CSV_FORMAT);
                 status = false;
             } else if ((tulos = so.TarkistaSyote(syotteet)) != Vakiot.SYOTE_STATUS_OK) {
@@ -578,6 +568,8 @@ namespace Selolaskuri
             vastustajanSelo_comboBox.Items.Add("90,1683,2,1973,0");
             // Also Miettimisaika väh. 90 min, nykyinen SELO 1683, pelimäärä 2, ottelun tulos 0=tappio
             vastustajanSelo_comboBox.Items.Add("1973");
+
+            vastustajanSelo_comboBox.Items.Add("90,1713,3,1718,1");
         }
 
         // --------------------------------------------------------------------------------

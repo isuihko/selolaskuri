@@ -8,6 +8,9 @@
 // Public:
 //      HaeViimeksiLasketutTulokset  - get the latest calculated selo and game count
 //      TarkistaSyote                - check the input data like SELO and number of games, opponents and results
+//      SelvitaCSV                   - erota CSV-formaatin merkkijonosta syotetiedot (miettimisaika, oma selo, ...)
+//      SelvitaMiettimisaikaCSV      - muuta CSV-formaatissa annettu merkkijono miettimisajaksi
+//      SelvitaTulosCSV              - muuta CSV-formaatissa annettu merkkijono ottelun tulokseksi
 //      SuoritaLaskenta              - calculate the results
 //
 // 10.6.2018 Ismo Suihko
@@ -15,8 +18,10 @@
 //  11.-12.6.2018 Comments, constants
 //  17.-19.6.2018 refactoring, documenting
 //  18.-22.7.2018 SuoritaLaskenta() now returns Selopelaaja. Earlier had separate (unnecessary) class for the results
+//  15.8.2018     CSV-formaatin tarkistamista
 //
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Selolaskuri
@@ -385,10 +390,28 @@ namespace Selolaskuri
             return virhekoodi < 0 ? virhekoodi : vastustajanSelo;
         }
 
+        //
+        // Used from the form. If there are only 2 or 3 values in CSV format, also thinking time from the form is needed
+        //
+        public Syotetiedot SelvitaCSV(Vakiot.Miettimisaika_enum aika, string csv)
+        {
+            List<string> data = csv.Split(',').ToList();
+            if (data.Count == 5) {
+                return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], this.SelvitaTulosCSV(data[4]));
+            } else if (data.Count == 4) {
+                return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            } else if (data.Count == 3) {
+                return new Syotetiedot(aika, data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            } else if (data.Count == 2) {
+                return new Syotetiedot(aika, data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
+            } else {
+                return null; // CSV FORMAT ERROR, ILLEGAL DATA
+            }
+        }
 
         // Miettimisaika, vain minuutit, esim. "5" tai "90"
         // Oltava vähintään 1 minuutti
-        public Vakiot.Miettimisaika_enum SelvitaMiettimisaika(string s)
+        public Vakiot.Miettimisaika_enum SelvitaMiettimisaikaCSV(string s)
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
             if (int.TryParse(s, out int temp) == true) {
@@ -410,7 +433,7 @@ namespace Selolaskuri
         // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "1", "1.0" tai "1,0"
         // Toistaiseksi tuloksissa voi käyttää vain desimaalipistettä, joten ei voida syöttää tuloksia
         // pilkun kanssa kuten "0,0", "0,5" ja "1,0". Tarkistetaan ne kuitenkin varalta.
-        public Vakiot.OttelunTulos_enum SelvitaTulos(string s)
+        public Vakiot.OttelunTulos_enum SelvitaTulosCSV(string s)
         {
             Vakiot.OttelunTulos_enum tulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
             if (s.Equals("0") || s.Equals("0.0") || s.Equals("0,0"))

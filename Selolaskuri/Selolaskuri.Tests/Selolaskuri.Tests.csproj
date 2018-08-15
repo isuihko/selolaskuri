@@ -50,8 +50,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="UnitTest4_LaskentaCSV.cs" />
+    <Compile Include="UnitTest3_Laskenta.cs" />
+    <Compile Include="UnitTest2_SyotteenTarkastus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest1_SyotteenKasittely.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selolaskuri\Selolaskuri.csproj">

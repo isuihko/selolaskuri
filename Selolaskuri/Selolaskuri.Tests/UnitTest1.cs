@@ -56,6 +56,10 @@
 //
 //              Additional tests for CSV format errors. Now there are 36 unit tests.
 //
+//              More tests for CSV format.
+//              Also two test cases to check that the matches are stored in to the match list correctly (UnitTest1_SyotteenKasittely.cs).
+//              Now there are 43 tests.
+//
 
 using System;
 using System.Collections.Generic;

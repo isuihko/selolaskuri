@@ -12,6 +12,10 @@ namespace Selolaskuri.Tests
 
         // --------------------------------------------------------------------------------
         // Laskennan testauksia erilaisin syöttein CSV-formaatista (comma separated values)
+        //
+        // Tässä testataan virhetilanteet (liian monta arvoa, arvot puuttuvat) ja 
+        // sitten muutamalla tapauksella laskentaa, että saadaanko oikea syöte erotettua merkkijonosta.
+        // Sen jälkeen laskenta menee tavalliseksi laskennaksi, vrt. UnitTest3.cs
         // --------------------------------------------------------------------------------
 
         [TestMethod]
@@ -71,20 +75,72 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
         }
 
+        // Jos on neljä pilkkua, niin pitää olla myös miettimisaika
+        [TestMethod]
+        public void CSV_ArvotPuuttuvatMiettimisaika()
+        {
+            var t = u.Testaa(",1525,0,1525,1");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA, t.Item1);
+        }
+
+        // Kolme pilkkua, neljä arvoa ja pitää olla miettimisaika ensimmäisenä
+        [TestMethod]
+        public void CSV_ArvotPuuttuvatMiettimisaika2()
+        {
+            var t = u.Testaa(",0,1525,1");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA, t.Item1);
+        }
+
+        // Neljä pilkkua ja viisi arvoa, mutta oma selo tyhjä
+        [TestMethod]
+        public void CSV_ArvotPuuttuvatOmaSelo()
+        {
+            var t = u.Testaa("90,,0,1525,1");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_OMA_SELO, t.Item1);
+        }
+
+        [TestMethod]
+        public void CSV_ArvotPuuttuvatVastustajat()
+        {
+            var t = u.Testaa("90,1525,0,,1");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
+        }
+
+        // Yksittäisen ottelun tulos tarvitaan, jos on yksi vastustaja eikä tulosta ole kerrottu esim. "+1425"
+        [TestMethod]
+        public void CSV_ArvotPuuttuvatYksittainenTulos()
+        {
+            var t = u.Testaa("90,1525,0,1525");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_BUTTON_TULOS, t.Item1);
+        }
+
         [TestMethod]
         public void CSV_UudenPelaajanOttelutYksittain1()
         {
             var t = u.Testaa("90,1525,0,1525,1");
             Assert.AreNotEqual(null, t);
             Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
-            Assert.AreEqual(1725,   t.Item2.UusiSelo);                // uusi vahvuusluku
-            Assert.AreEqual(1,      t.Item2.UusiPelimaara);              // uusi pelimäärä 0+1 = 1
-            Assert.AreEqual(1 * 2,  t.Item2.TurnauksenTulos);        // tulos voitto 
-            Assert.AreEqual(1525,   t.Item2.TurnauksenKeskivahvuus);  // keskivahvuus
+            Assert.AreEqual(1725,   t.Item2.UusiSelo);                  // uusi vahvuusluku
+            Assert.AreEqual(1,      t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(1 * 2,  t.Item2.TurnauksenTulos);           // tulos voitto kaksinkertaisena
+            Assert.AreEqual(1525,   t.Item2.TurnauksenKeskivahvuus);    // keskivahvuus
             Assert.AreEqual(1,      t.Item2.VastustajienLkm);            // yksi vastustaja
             Assert.AreEqual(50,     t.Item2.Odotustulos);               // 0,50*100  odotustulos palautuu 100-kertaisena
-            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // yksi ottelu, sama kuin UusiSelo
-            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // yksi ottelu, sama kuin UusiSelo           
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);         // yksi ottelu, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);         // yksi ottelu, sama kuin UusiSelo           
+        }
+
+        [TestMethod]
+        public void CSV_UudenPelaajanOttelutYksittain2()
+        {
+            var t = u.Testaa("90,1725,1,1441,1");
+            Assert.AreNotEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1683,   t.Item2.UusiSelo);
+            Assert.AreEqual(2,      t.Item2.UusiPelimaara);             // uusi pelimäärä 1+1 = 2
+            Assert.AreEqual(1 * 2,  t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1441,   t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(84,     t.Item2.Odotustulos);               // 0,84*100
         }
 
         [TestMethod]
@@ -129,10 +185,10 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(Vakiot.PELIMAARA_TYHJA, t.Item2.UusiPelimaara);  // pelimäärää ei laskettu
             Assert.AreEqual((int)(10.5F * 2), t.Item2.TurnauksenTulos);
             Assert.AreEqual(1827,   t.Item2.TurnauksenKeskivahvuus);  // 
-            Assert.AreEqual(12,     t.Item2.VastustajienLkm);           // 12 vastustajaa eli ottelua
-            Assert.AreEqual(840,    t.Item2.Odotustulos);              // odotustulos 8,40*100
-            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
-            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(12,     t.Item2.VastustajienLkm);         // 12 vastustajaa eli ottelua
+            Assert.AreEqual(840,    t.Item2.Odotustulos);             // odotustulos 8,40*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);       // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);       // selo laskettu kerralla, sama kuin UusiSelo
         }
     }
 }

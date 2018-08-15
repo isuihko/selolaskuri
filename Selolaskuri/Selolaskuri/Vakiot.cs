@@ -5,6 +5,10 @@
 //
 // Modifications:
 //   17.6.2018      Added UUDEN_PELAAJAN_ALKUSELO
+//   4.8.2018       Added SYOTE_VIRHE_CSV_FORMAT
+//                  defined initial values for MIETTIMISAIKA constants according to minutes they represent
+//   12.8.2018      Added clipboard handling related constants LEIKEKIRJA_*
+//   15.8.2018      Added TULOS_EI_ANNETTU and TURNAUKSEN_TULOS_ANTAMATTA
 //    
 
 namespace Selolaskuri {
@@ -53,7 +57,6 @@ namespace Selolaskuri {
         //
         public enum OttelunTulos_enum
         {
-
             TULOS_EI_ANNETTU = -2,          
             TULOS_MAARITTELEMATON = -1,
             TULOS_TAPPIO = 0,

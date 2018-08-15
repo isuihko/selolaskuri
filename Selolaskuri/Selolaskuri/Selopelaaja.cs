@@ -15,6 +15,8 @@
 //   18.7.2018      Nyt Selopelaaja-luokka käyttää Tulokset-luokkaa pohjana eikä esittele samoja kenttiä uudestaan laskentaa varten.
 //                  Lisäksi selvitetään vastustajienLkm ja turnauksenKeskivahvuus, joita tarvitaan laskennassa.
 //   19.-20.7.2018  Luokan Ottelulista sisältö piilotettu, joten käytetään mm. Lukumaara, HaeEnsimmainen() ym.
+//   15.8.2018      Laskennassa erikoiskäsittely TULOS_EI_ANNETTU, joka tarkoittaa sitä että vastustajat-kentässä ei selon
+//                  yhteydessä ollut merkkiä +,- tai =. Tuo käsitellään tasapelinä laskennassa.
 //
 
 using System;
@@ -95,18 +97,20 @@ namespace Selolaskuri
         //
         // Huom! Jos tulos on annettu virheellisesti esim. 0,9 tai 2,4, niin pyöristys alas
         // em. syötteistä saadaan 0,5 tai 2,0 (tallennus 1 tai 4)
-        // Jos ei annettu, arvo on TURNAUKSEN_TULOS_ANTAMATTA (siis -1)
+        // Jos ei annettu, arvo on TURNAUKSEN_TULOS_ANTAMATTA (eli negatiivinen luku)
         private int annettuTurnauksenTulos;                 // possible given tournament result (-1 if not given)
 
         // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
         public void SetAnnettuTurnauksenTulos(float f)      // set the tournament result
         {
-            annettuTurnauksenTulos = (int)(2 * f + 0.01F); // pyöristys
+            annettuTurnauksenTulos = (int)Math.Round(2.0F * f);
         }
 
         private bool OnkoAnnettuTurnauksenTulos {
-            get {
-                return annettuTurnauksenTulos != Vakiot.TURNAUKSEN_TULOS_ANTAMATTA;
+            get { 
+                // riittää tarkistaa, että on suurempi kuin asetettu vakio
+                // Tuohan oli vieläpä tallennettu 2.0:lla kerrottuna eli oli -2
+                return annettuTurnauksenTulos > Vakiot.TURNAUKSEN_TULOS_ANTAMATTA;
             }
         }
 

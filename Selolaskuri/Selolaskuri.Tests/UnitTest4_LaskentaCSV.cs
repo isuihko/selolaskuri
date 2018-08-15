@@ -18,14 +18,14 @@ namespace Selolaskuri.Tests
         public void CSV_LiianMontaArvoa1()
         {
             var t = u.Testaa("90,1525,0,1525,1,123");
-            Assert.AreEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
         }
 
         [TestMethod]
         public void CSV_LiianMontaArvoa2()
         {
             var t = u.Testaa(",,,,,,");
-            Assert.AreEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
         }
 
         [TestMethod]
@@ -62,6 +62,13 @@ namespace Selolaskuri.Tests
             Assert.AreNotEqual(null, t);
             // one comma expected format: own selo,opponents
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_OMA_SELO, t.Item1);
+        }
+
+        [TestMethod]
+        public void CSV_ArvotPuuttuvatKaikki5()
+        {
+            var t = u.Testaa("");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
         }
 
         [TestMethod]

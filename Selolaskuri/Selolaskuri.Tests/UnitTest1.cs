@@ -54,6 +54,8 @@
 //              3. calculation from the separately given thinking time, own selo, game count, opponents/matches, possible single match result
 //              4. checking and calculation of CSV format, all match data in one string (opponents/matches field)
 //
+//              Additional tests for CSV format errors. Now there are 36 unit tests.
+//
 
 using System;
 using System.Collections.Generic;
@@ -127,18 +129,23 @@ namespace Selolaskuri.Tests
         // Use old Tuple, because Visual Studio Community 2015 has older C#
         public Tuple<int, Selopelaaja> Testaa(string csv)
         {
-            List<string> data = csv.Split(',').ToList();
-            if (data.Count == 5) {
-                return Testaa(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], so.SelvitaTulos(data[4]));
-            } else if (data.Count == 4) {
-                return Testaa(so.SelvitaMiettimisaika(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            } else if (data.Count == 3) {
-                return Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            } else if (data.Count == 2) {
-                return Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            } else {
-                return null; // -> Illegal CSV
+            Syotetiedot syotetiedot;
+            int status;
+            Selopelaaja tulokset = null;
+
+            // This will store input in text format or numbers into class Syotetiedot. Does not check numbers.
+            // Note! In unit test the default thinking time is 90 minutes because it can't be taken from the form
+            syotetiedot = so.SelvitaCSV(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, csv);
+
+            if (syotetiedot == null) {
+                status = Vakiot.SYOTE_VIRHE_CSV_FORMAT;
+            } else if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK) {
+
+                // If the input was OK, continue and calculate
+                // If wasn't, then tulokset is left null and error status will be returned
+                tulokset = so.SuoritaLaskenta(syotetiedot);
             }
+            return Tuple.Create(status, tulokset);
         }
     }
 }

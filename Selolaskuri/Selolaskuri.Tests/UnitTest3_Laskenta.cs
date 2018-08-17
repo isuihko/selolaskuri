@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Selolaskuri.Tests
@@ -232,6 +230,7 @@ namespace Selolaskuri.Tests
         }
 
         // Testataan, että sallittu minimiselo (1000) käy syötteessä
+        // Testataan, että tulos 0 on OK turnauksen tuloksena (pienin sallittu tulos).
         // Testataan, entä jos tulos menee alle minimiselon. Ei ongelmaa.
         [TestMethod]
         public void LaskettuVahvuuslukuAlleMinimin1()

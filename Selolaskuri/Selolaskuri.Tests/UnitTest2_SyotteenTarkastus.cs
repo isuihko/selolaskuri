@@ -1,9 +1,4 @@
 ﻿
-//
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Selolaskuri.Tests
@@ -128,7 +123,7 @@ namespace Selolaskuri.Tests
         }
 
         // Annettu isompi pistemäärä (199.5) kuin mitä on otteluita (12 kpl).
-        // 199.5 (Vakiot.TURNAUKSEN_TULOS_MAX) on maksi, joka hyväksytään turnauksen tulokseksi.
+        // 199.5 (Vakiot.TURNAUKSEN_TULOS_MAX) on maksi, joka käsitellään turnauksen tuloksena.
         // Isommat tuloksena annetut luvut, jos ovat alle 1000, käsitellään vastustajan selon virheenä
         [TestMethod]
         public void VirheellinenSyoteTurnauksenTulos2()
@@ -137,11 +132,9 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS, t.Item1);
         }
 
-        // Annettu isompi pistemäärä (100) kuin mitä on otteluita (12 kpl)
+        // Annettu turnauksen tulos 200, joka on suurempi kuin Vakiot.TURNAUKSEN_TULOS_MAX.
         // Palautuu ilmoituksena virheellisestä vastustajan selosta, kun ensimmäinen 
         // luku käsitellään numerona eikä tarkistuksessa voida tietää, kumpaa on tarkoitettu.
-        // Jos luku on <= 99, niin se käsitellään turnauksen tuloksena ja silloin tarkistetaan,
-        // onko tulos suurempi kuin vastustajien lkm.
         [TestMethod]
         public void VirheellinenSyoteTurnauksenTulos3()
         {

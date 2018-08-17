@@ -46,6 +46,9 @@ namespace Selolaskuri {
         public const int LEIKEKIRJA_MAX_RIVIMAARA       = 100;
 
         public const int TURNAUKSEN_TULOS_ANTAMATTA     = -1;
+        // käytännössä maksimi on pelaajien lkm, koska ei voida saada enempää pisteitä kuin on otteluita
+        // Jos on pelattu kahdesti samaa pelaajaa vastaan, niin ne annetaan erillisinä otteluina
+        public const float TURNAUKSEN_TULOS_MAX         = 199.5F;  
 
 
         // Tallenna kunkin ottelun tulos kokonaislukuna kahdella kerrottuna lukujen 0, 1/2 ja 1 sijaan.

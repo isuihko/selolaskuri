@@ -272,11 +272,13 @@ namespace Selolaskuri
                         ensimmainen = false;
 
                         // Laita molemmat 1.5 ja 1,5 toimimaan, InvariantCulture
+                        // Huom! Pilkkua ei voidakaan käyttää, jos halutaan
+                        // että CSV-formaatti toimii - pilkulla erotetut arvot
                         if (tempString.Contains(','))  // korvaa pilkku pisteellä...
                             tempString = tempString.Replace(',', '.');
                         if (float.TryParse(tempString, System.Globalization.NumberStyles.AllowDecimalPoint,
                             System.Globalization.CultureInfo.InvariantCulture, out syotetty_tulos) == true) {
-                            if (syotetty_tulos >= 0.0F && syotetty_tulos <= 99.5F) {
+                            if (syotetty_tulos >= 0.0F && syotetty_tulos <= Vakiot.TURNAUKSEN_TULOS_MAX) {
                                 // HUOM! Jos tuloksessa on desimaalit väärin, esim. 2.37 tai 0,9,
                                 //       niin ylimääräiset desimaalit "pyöristyvät" alas -> 2,0 tai 0,5.
                                 onko_turnauksen_tulos = true;

@@ -60,10 +60,13 @@
 //              Also two test cases to check that the matches are stored in to the match list correctly (UnitTest1_SyotteenKasittely.cs).
 //              Now there are 43 tests.
 //
+// 17.8.2018    New tests: test tournament result with allowed and too big value (SELO out of 1000-2999).
+//              Checkin go result. Verify that if the value bigger than Vakiot.TURNAUKSEN_TULOS_MAX (199.5),
+//              program checkes if it is allowed opponent's SELO.
+//              Check if the calculation result gets below or above allowed SELO ranges (1000-2999).
+//
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Selolaskuri.Tests
 {

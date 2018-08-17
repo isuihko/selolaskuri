@@ -230,5 +230,49 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(2050,   t.Item2.UusiSelo);
             Assert.AreEqual(162,    t.Item2.UusiPelimaara);        // 150 + 12 ottelua  = 162
         }
+
+        // Testataan, että sallittu minimiselo (1000) käy syötteessä
+        // Testataan, entä jos tulos menee alle minimiselon. Ei ongelmaa.
+        [TestMethod]
+        public void LaskettuVahvuuslukuAlleMinimin1()
+        {
+            var t = u.Testaa("1000", "0 1100");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(984, t.Item2.UusiSelo);
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+        
+        [TestMethod]
+        public void LaskettuVahvuuslukuAlleMinimin2()
+        {
+            var t = u.Testaa("1000", "-1100 +1005 -1002");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(985, t.Item2.UusiSelo);
+            Assert.AreEqual(984, t.Item2.MinSelo);      // laskennan aikainen minimi
+            Assert.AreEqual(1007, t.Item2.MaxSelo);     // laskennan aikainen maksimi
+        }
+
+        // Testataan, että sallittu maksimiselo (2999) käy syötteessä
+        // Testataan, entä jos tulos menee yli maksimiselon. Ei ongelmaa.
+        [TestMethod]
+        public void LaskettuVahvuuslukuYliMaksimin1()
+        {
+            var t = u.Testaa("2999", "1 2700");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(3002, t.Item2.UusiSelo);
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+        
+        [TestMethod]
+        public void LaskettuVahvuuslukuYliMaksimin2()
+        {
+            var t = u.Testaa("2999", "+2700 -2991 +2988");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(3002, t.Item2.UusiSelo);
+            Assert.AreEqual(2992, t.Item2.MinSelo);      // laskennan aikainen minimi
+            Assert.AreEqual(3002, t.Item2.MaxSelo);     // laskennan aikainen maksimi
+        }
     }
 }

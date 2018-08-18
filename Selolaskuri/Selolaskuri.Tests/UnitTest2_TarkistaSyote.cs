@@ -4,9 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Selolaskuri.Tests
 {
     [TestClass]
-    public class UnitTest2_SyotteenTarkastus
+    public class UnitTest2_TarkistaSyote
     {
-        private UnitTest1 u = new UnitTest1();
+        private UnitTest u = new UnitTest();
 
         // --------------------------------------------------------------------------------
         // Testataan virheellisiä syötteitä, joista pitää saada virheen mukainen virhestatus

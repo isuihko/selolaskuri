@@ -102,7 +102,8 @@ namespace Selolaskuri
                     break;
                 syotteet.AlkuperainenPelimaara = tulos;  // Voi olla PELIMAARA_TYHJA tai numero >= 0
 
-                //    JOS YKSI OTTELU,   saadaan sen yhden vastustajan vahvuusluku, eikä otteluja ole listassa
+                //    JOS YKSI OTTELU,   saadaan sen yhden vastustajan vahvuusluku, eikä otteluja ole listassa.
+                //      ottelumäärän tarkistamisen jälkeen tässä tehdään yhden ottelun lista
                 //    JOS MONTA OTTELUA, palautuu 0 ja ottelut on tallennettu tuloksineen listaan
                 if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
@@ -410,11 +411,14 @@ namespace Selolaskuri
         }
 
         //
-        // Used from the form. If there are only 2 or 3 values in CSV format, also thinking time from the form is needed
+        // Used from the form. If there are only 2 or 3 values in CSV format, also thinking time from the form is needed.
+        //
+        // Used from the unit tests for CSV. If there are only 2 or 3 values in CSV format, default thinking time in parameter aika is set to 90 minutes.
         //
         public Syotetiedot SelvitaCSV(Vakiot.Miettimisaika_enum aika, string csv)
         {
             List<string> data = csv.Split(',').ToList();
+
             if (data.Count == 5) {
                 return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], this.SelvitaTulosCSV(data[4]));
             } else if (data.Count == 4) {
@@ -429,7 +433,7 @@ namespace Selolaskuri
         }
 
         // Miettimisaika, vain minuutit, esim. "5" tai "90"
-        // Oltava vähintään 1 minuutti
+        // Oltava kokonaisluku ja vähintään 1 minuutti
         public Vakiot.Miettimisaika_enum SelvitaMiettimisaikaCSV(string s)
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
@@ -450,8 +454,8 @@ namespace Selolaskuri
         }
 
         // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "1", "1.0" tai "1,0"
-        // Toistaiseksi tuloksissa voi käyttää vain desimaalipistettä, joten ei voida syöttää tuloksia
-        // pilkun kanssa kuten "0,0", "0,5" ja "1,0". Tarkistetaan ne kuitenkin varalta.
+        // Toistaiseksi CSV-formaatin tuloksissa voi käyttää vain desimaalipistettä, joten ei voida syöttää 
+        // tuloksia pilkun kanssa kuten "0,0", "0,5" ja "1,0". Tarkistetaan ne kuitenkin varalta.
         public Vakiot.OttelunTulos_enum SelvitaTulosCSV(string s)
         {
             Vakiot.OttelunTulos_enum tulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;

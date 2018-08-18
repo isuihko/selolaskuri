@@ -70,7 +70,7 @@ using System;
 
 namespace Selolaskuri.Tests
 {
-    public class UnitTest1
+    public class UnitTest
     {
         private SelolaskuriOperations so = new SelolaskuriOperations();
 
@@ -145,6 +145,9 @@ namespace Selolaskuri.Tests
             syotetiedot = so.SelvitaCSV(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, csv);
 
             if (syotetiedot == null) {
+                // Possible errors:
+                //   too many commas, e.g. 
+                //   one comma which tells the tournamet result or single match result, so it can't be CSV format
                 status = Vakiot.SYOTE_VIRHE_CSV_FORMAT;
             } else if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK) {
 

@@ -137,6 +137,8 @@ namespace Selolaskuri
                 Regex rx = new Regex(pattern);
                 vastustajanSelo_comboBox.Text = rx.Replace(vastustajanSelo_comboBox.Text, replacement);
 
+                // XXX: Poista pilkun jälkeen olevat välilyönnit?  Esim. "5, 1525, 0, 1600, ..."
+
 
                 // Tarkista, onko csv ja jos on, niin unohda muut syötteet
                 // Paitsi jos on väärässä formaatissa, palautetaan null ja kutsuvalla tasolla virheilmoitus
@@ -148,10 +150,22 @@ namespace Selolaskuri
                 // Jos 3: miettimisaikaa ei anneta, käytetään lomakkeelta valittua miettimisaikaa
                 // Jos 2: pelimäärää ei anneta, käytetään oletuksena tyhjää ""
                 //
-                if (vastustajanSelo_comboBox.Text.Contains(',')) {
+                //
+                // Note that string in the following format is not CSV:
+                //    "tournamentResult selo1 selo2 ..." e.g. "2,5 1505 1600 1611 1558" or "100,5 1505 1600 1611 1558 ... "
+                // But that checking should not affect CSV format "thinking time,selo,..." e.g. "5,1525,0,1505 1600 ..."
+                //      or "own selo,opponent selo with result" e.g. "1525,+1505"
+                //      or "own selo,opponent selo,single match result" e.g. "1525,1505,0.5" <- Here must use decimal point!!!
+                //
+                // So check that if there is just one comma, so two values, the length of the first value must be at least 4 (length of selo)
 
-                    // The thinking time might be needed from the form if there are 2 or 3 values in CSV format
-                    return so.SelvitaCSV(HaeMiettimisaika(), vastustajanSelo_comboBox.Text);
+                if (vastustajanSelo_comboBox.Text.Contains(',')) {
+                    List<string> tmp = vastustajanSelo_comboBox.Text.Split(',').ToList();
+
+                    if (tmp.Count != 2 || (tmp.Count == 2 && tmp[0].Length >= 4)) {
+                        // The thinking time might be needed from the form if there are 2 or 3 values in CSV format
+                        return so.SelvitaCSV(HaeMiettimisaika(), vastustajanSelo_comboBox.Text);
+                    }
                 }
             }
 
@@ -641,16 +655,17 @@ namespace Selolaskuri
                 + Environment.NewLine + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
                 + Environment.NewLine + "-Vastustajien vahvuusluvut ja tulokset jollakin neljästä tavasta:"
                 + Environment.NewLine + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/0,5/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
-                + Environment.NewLine + "   2) Vahvuusluvut tuloksineen, esim. +1525 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
-                + Environment.NewLine + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1525 1600 1611 1558"
+                + Environment.NewLine + "   2) Vahvuusluvut tuloksineen, esim. +1505 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
+                + Environment.NewLine + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1505 1600 1611 1558, voi käyttää myös desimaalipilkkua 1,5 1505 1600 1611 1558"
                 + Environment.NewLine + "   4) CSV eli pilkulla erotetut arvot, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5!"
-                + Environment.NewLine + "           2: oma selo,ottelut   esim. 1712,2.5 1525 1600 1611 1558 tai 1712,+1525"
-                + Environment.NewLine + "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1525 +1441"
+                + Environment.NewLine + "           2: oma selo,ottelut   esim. 1712,2.5 1505 1600 1611 1558 tai 1712,+1505  HUOM! Desimaalipiste!"
+                + Environment.NewLine + "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1505 +1441"
                 + Environment.NewLine + "           4: minuutit,oma selo,pelimaara,ottelut  esim. 90,1525,0,+1525 +1441"
                 + Environment.NewLine + "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli 1/2 tai 0.5)"
                 + Environment.NewLine + "      Jos miettimisaika on antamatta, käytetään ikkunasta valittua"
                 + Environment.NewLine + "      Jos pelimäärä on antamatta, käytetään tyhjää"
-                + Environment.NewLine + "   HUOM! CSV-formaatissa annettuja arvoja käytetään, vaikka oma selo, pelimäärä, miettimisaika tai tulos olisi annettu erikseenkin."
+                + Environment.NewLine
+                + Environment.NewLine + "   HUOM! CSV-formaatissa annettu ottelu on etusijalla ja lomakkeesta käytetään korkeintaan miettimisaikaa (vain jos se puuttui CSV:stä)."
                 + Environment.NewLine
                 + Environment.NewLine + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
                 + Environment.NewLine

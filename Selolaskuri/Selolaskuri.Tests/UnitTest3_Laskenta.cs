@@ -6,7 +6,7 @@ namespace Selolaskuri.Tests
     [TestClass]
     public class UnitTest3_Laskenta
     {
-        private UnitTest1 u = new UnitTest1();
+        private UnitTest u = new UnitTest();
 
         // --------------------------------------------------------------------------------
         // Laskennan testauksia erilaisin syöttein(oma selo, vastustajat, ottelutulokset, ...)
@@ -159,13 +159,42 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(36,     t.Item2.Odotustulos);   // odotustulos 0,36*100
         }
 
+        // Seuraavan kahden laskennan tarkistus: http://shakki.kivij.info/performance_calculator.shtml
         [TestMethod]
-        public void TulosNumeronaEnnenSeloa()
+        public void TulosNumeronaEnnenSeloaDesimPiste()
         {
             var t = u.Testaa("1800", "1.0 1900");
             Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
             Assert.AreEqual(1823,   t.Item2.UusiSelo);
             Assert.AreEqual(36,     t.Item2.Odotustulos);   // odotustulos 0,36*100
+        }
+
+        [TestMethod]
+        public void TulosNumeronaEnnenSeloaPilkku()
+        {
+            var t = u.Testaa("1800", "1,0 1900");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1823, t.Item2.UusiSelo);
+            Assert.AreEqual(36, t.Item2.Odotustulos);   // odotustulos 0,36*100
+        }
+
+        // Seuraavan kahden laskennan tarkistus: http://shakki.kivij.info/performance_calculator.shtml
+        [TestMethod]
+        public void TulosNumeronaEnnenSeloaDesimPiste2()
+        {
+            var t = u.Testaa("1800", "0.5 1900");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1805, t.Item2.UusiSelo);
+            Assert.AreEqual(36, t.Item2.Odotustulos);   // odotustulos 0,36*100
+        }
+
+        [TestMethod]
+        public void TulosNumeronaEnnenSeloaPilkku2()
+        {
+            var t = u.Testaa("1800", "0,5 1900");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1805, t.Item2.UusiSelo);
+            Assert.AreEqual(36, t.Item2.Odotustulos);   // odotustulos 0,36*100
         }
 
         // Merkkijonoissa ylimääräisiä välilyöntejä
@@ -181,7 +210,7 @@ namespace Selolaskuri.Tests
         }
 
         [TestMethod]
-        public void PikashakinVahvuuslukuTurnauksesta()
+        public void PikashakinVahvuuslukuTurnauksestaDesimPiste()
         {
             var t = u.Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
@@ -194,6 +223,79 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
         }
+
+        [TestMethod]
+        public void PikashakinVahvuuslukuTurnauksestaPilkku()
+        {
+            var t = u.Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1996", "10,5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(2033, t.Item2.UusiSelo);
+            Assert.AreEqual(Vakiot.PELIMAARA_TYHJA, t.Item2.UusiPelimaara);  // pelimäärää ei laskettu
+            Assert.AreEqual((int)(10.5F * 2), t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1827, t.Item2.TurnauksenKeskivahvuus);  // 
+            Assert.AreEqual(12, t.Item2.VastustajienLkm);           // 12 vastustajaa eli ottelua
+            Assert.AreEqual(840, t.Item2.Odotustulos);              // odotustulos 8,40*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+
+
+        // Esimerkki Joukkuepikashakin SM 2018 alkukilpailut, alkukilpailuryhmä C  4.8.2018, LauttSSK 1 pöytä 1
+        // Kilpailuryhmä C: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+        // Kaikki täsmää
+        [TestMethod]
+        public void PikashakinVahvuuslukuTurnauksesta2()
+        {
+            var t = u.Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "2180", "2054", "14.5 1914 2020 1869 2003 2019 1979 2131 2161 2179 2392 1590 1656 1732 1944 1767 1903 1984 2038 2083 2594 2324 1466 1758");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(2148, t.Item2.UusiSelo);       // Saadaan sama tulos kuin shakkiliiton sivulla
+            Assert.AreEqual(2077, t.Item2.UusiPelimaara);  // pelimäärä
+            Assert.AreEqual((int)(14.5F * 2), t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1979, t.Item2.TurnauksenKeskivahvuus);  // Summa 45506 / 23 = 1978,521739 pyöristys 1979
+            Assert.AreEqual(23, t.Item2.VastustajienLkm);           // 23 vastustajaa eli ottelua
+            Assert.AreEqual(1624, t.Item2.Odotustulos);              // odotustulos 16,24*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+        // Esimerkki Joukkuepikashakin SM 2018 alkukilpailut, alkukilpailuryhmä C  4.8.2018, LauttSSK 1 pöytä 4
+        // Kilpailuryhmä C: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+        // Kaikki muu täsmää paitsi vahvuusluvun laskennassa yhden pisteen ero viralliseen tulokseen
+        [TestMethod]
+        public void PikashakinVahvuuslukuTurnauksesta3()
+        {
+            var t = u.Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "2045", "1225", "19.5 1548 1560 1699 1737 1735 1880 1856 2019 2102 2177 1539 1531 1672 1592 1775 1842 1847 1905 1970 2308 1988 1454 1481");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(2082, t.Item2.UusiSelo);       // Oikea tulos 2083, tässä laskettu tulos 2082
+            Assert.AreEqual(1248, t.Item2.UusiPelimaara);  // pelimäärä
+            Assert.AreEqual((int)(19.5F * 2), t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1792, t.Item2.TurnauksenKeskivahvuus);  // Summa 41217 / 23 = 1792.043
+            Assert.AreEqual(23, t.Item2.VastustajienLkm);           // 23 vastustajaa eli ottelua
+            Assert.AreEqual(1740, t.Item2.Odotustulos);              // odotustulos 17,40*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+        // Esimerkki Joukkuepikashakin SM 2018 sijoituskilpailut 5.8.2018, sijoitusryhmä C, LauttSSK 4 pöytä 4
+        // Sijoitusryhmä 5: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+        // Kaikki muu täsmää paitsi vahvuusluvun laskennassa yhden pisteen ero viralliseen tulokseen
+        [TestMethod]
+        public void PikashakinVahvuuslukuTurnauksesta4()
+        {
+            var t = u.Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1262", "11 1623 1591 1318 1560 1493 1417 1343 1493 1524 1227 1716 1490 1454 1479 1329 1429 1444 1289 1576 1445 1280");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1344, t.Item2.UusiSelo);       // Oikea tulos 1345, tässä laskettu tulos 1344
+            Assert.AreEqual(Vakiot.PELIMAARA_TYHJA, t.Item2.UusiPelimaara);  // pelimäärä
+            Assert.AreEqual((int)(11F * 2), t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1453, t.Item2.TurnauksenKeskivahvuus);  // Summa 30520 / 21 = 1453.333
+            Assert.AreEqual(21, t.Item2.VastustajienLkm);           // 21 vastustajaa eli ottelua
+            Assert.AreEqual(564, t.Item2.Odotustulos);              // odotustulos 5,64*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+
 
         // Testataan eri pelimäärillä, ettei tulos riipu pelimäärästä silloin kun ei ole uuden pelaajan laskenta
         [TestMethod]

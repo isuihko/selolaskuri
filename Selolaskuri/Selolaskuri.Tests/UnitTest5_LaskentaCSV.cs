@@ -49,7 +49,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
             Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
             Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
-            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(1569, t.Item2.TurnauksenKeskivahvuus);  // 1568,5 -> Round 1569
             Assert.AreEqual(4, t.Item2.VastustajienLkm);
             Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
         }
@@ -64,7 +64,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
             Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
             Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
-            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(1569, t.Item2.TurnauksenKeskivahvuus);
             Assert.AreEqual(4, t.Item2.VastustajienLkm);
             Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
         }
@@ -78,7 +78,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
             Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
             Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
-            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(1569, t.Item2.TurnauksenKeskivahvuus);
             Assert.AreEqual(4, t.Item2.VastustajienLkm);
             Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
         }
@@ -92,7 +92,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
             Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
             Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
-            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(1569, t.Item2.TurnauksenKeskivahvuus);
             Assert.AreEqual(4, t.Item2.VastustajienLkm);
             Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
         }

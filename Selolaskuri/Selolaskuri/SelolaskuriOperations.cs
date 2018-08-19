@@ -8,6 +8,7 @@
 // Public:
 //      HaeViimeksiLasketutTulokset  - get the latest calculated selo and game count
 //      TarkistaSyote                - check the input data like SELO and number of games, opponents and results
+//      SiistiVastustajatKentta      - poistaa ylimääräiset välilyönnit Vastustajat-kentästä
 //      SelvitaCSV                   - erota CSV-formaatin merkkijonosta syotetiedot (miettimisaika, oma selo, ...)
 //      SelvitaMiettimisaikaCSV      - muuta CSV-formaatissa annettu merkkijono miettimisajaksi
 //      SelvitaTulosCSV              - muuta CSV-formaatissa annettu merkkijono ottelun tulokseksi
@@ -24,6 +25,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
 
 namespace Selolaskuri
 {
@@ -410,6 +412,26 @@ namespace Selolaskuri
             return virhekoodi < 0 ? virhekoodi : vastustajanSelo;
         }
 
+        // Vastustajat-kentän siistiminen
+        //
+        // Jo tehty .Trim() eli poistettu alusta ja lopusta välilyönnit
+        // Poista ylimääräiset välilyönnit, korvaa yhdellä  "     " -> " "
+        // Poista myös mahdolliset välilyönnit pilkkujen molemmilta puolilta: " , " ja ", " -> ","
+        public string SiistiVastustajatKentta(string syote)
+        {
+            string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
+            string replacement = " ";   // tilalle vain yksi välilyönti
+            Regex rx = new Regex(pattern);
+            string uusi = rx.Replace(syote, replacement);
+
+            // There could still be extra spaces which would not be OK with CSV format
+            // E.g. "5 ,1525, 0 , 1.5 1600 1712" -> "5,1525,0,1.5 1600 1712"
+            pattern = "\\s?,\\s?";      // " , "  tai ", " tai " ,"
+            replacement = ",";       // tilalle pilkku ilman välilyöntejä eli ","
+            rx = new Regex(pattern);
+            return rx.Replace(uusi, replacement);
+        }
+
         //
         // Used from the form. If there are only 2 or 3 values in CSV format, also thinking time from the form is needed.
         //
@@ -417,6 +439,9 @@ namespace Selolaskuri
         //
         public Syotetiedot SelvitaCSV(Vakiot.Miettimisaika_enum aika, string csv)
         {
+            // poista ylimääräiset välilyönnit, korvaa yhdellä
+            // poista myös mahdolliset välilyönnit pilkkujen molemmilta puolilta
+            csv = SiistiVastustajatKentta(csv.Trim());
             List<string> data = csv.Split(',').ToList();
 
             if (data.Count == 5) {

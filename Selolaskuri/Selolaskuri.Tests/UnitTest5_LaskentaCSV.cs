@@ -24,6 +24,9 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);         // yksi ottelu, sama kuin UusiSelo           
         }
 
+
+        
+
         [TestMethod]
         public void CSV_UudenPelaajanOttelutYksittain2()
         {
@@ -35,6 +38,63 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(1 * 2, t.Item2.TurnauksenTulos);
             Assert.AreEqual(1441, t.Item2.TurnauksenKeskivahvuus);
             Assert.AreEqual(84, t.Item2.Odotustulos);               // 0,84*100
+        }
+
+        [TestMethod]
+        public void CSV_TurnauksenLaskenta()
+        {
+            var t = u.Testaa("90,1525,20,2.5 1505 1600 1611 1558");
+            Assert.AreNotEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
+            Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
+            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(4, t.Item2.VastustajienLkm);
+            Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
+        }
+
+
+        [TestMethod]
+        public void CSV_TurnauksenLaskentaValilyonnit1()
+        {
+            var t = u.Testaa("    90   ,   1525,    20,    2.5    1505    1600 1611 1558   ");
+            Assert.AreNotEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
+            Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
+            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(4, t.Item2.VastustajienLkm);
+            Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
+        }
+
+        [TestMethod]
+        public void CSV_TurnauksenLaskentaValilyonnit2()
+        {
+            var t = u.Testaa("90 , 1525 ,  20  ,   2.5 1505 1600 1611 1558");
+            Assert.AreNotEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
+            Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
+            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(4, t.Item2.VastustajienLkm);
+            Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
+        }
+
+        [TestMethod]
+        public void CSV_TurnauksenLaskentaValilyonnit3()
+        {
+            var t = u.Testaa("  90   ,1525    ,20       ,2.5 1505 1600    1611    1558  ");
+            Assert.AreNotEqual(null, t);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1559, t.Item2.UusiSelo);                // uusi vahvuusluku
+            Assert.AreEqual(24, t.Item2.UusiPelimaara);             // uusi pelimäärä 0+1 = 1
+            Assert.AreEqual(2.5F * 2, t.Item2.TurnauksenTulos);     // tulos voitto kaksinkertaisena
+            Assert.AreEqual(1568, t.Item2.TurnauksenKeskivahvuus);
+            Assert.AreEqual(4, t.Item2.VastustajienLkm);
+            Assert.AreEqual(176, t.Item2.Odotustulos);              // 1,76*100  odotustulos palautuu 100-kertaisena
         }
 
         [TestMethod]

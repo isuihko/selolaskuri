@@ -85,6 +85,21 @@
 //                    joka on SelolaskuriOperations-luokassa ja jota nyt myös käytetään tietoja haettaessa lomakkeelta.
 //                    Nyt merkkijonon jakaminen osiin saadaan testaukseen.
 //
+// 19.8.2018        - CSV-formaatin testit jaettu kahteen moduuliin:
+//                       UnitTest4_TarkistaCSV:  virheellinen data
+//                       UnitTest5_Laskenta:     kelvollinen data, josta lasketaan
+//                  - CSV-formaatin tarkistuksia lisätty. Poistetaan ylimääräiset välilyönnit alusta ja lopusta, sekä pilkkujen ympäriltä:
+//                        "   90 , 1525 ,  20  ,    2.5 1505 1600    1611 1558   "  -> "90,1525,20,2.5 1505 1600 1611 1558"
+//                    Siistitty versio tallennetaan vastustajat-historiaan. Tällöin samasisältöinen, mutta eri määrät välilyöntejä, ei tallennu
+//                    historiaan kuin kerran.
+//                    Aiemmin laskenta epäonnistui, jos formaatissa oli vastustajia edeltävän pilkun jälkeen välilyönti.
+//                  - Välilyöntien poisto (using Regex) luokassa SelolaskuriOperation (aiemmin oli lomake ja unit test)
+//                  - Paste: Tehdään ylimääräisten välilyöntien poisto ennen tallennusta.
+//                  - Lisätty testitapauksia laskentaan em. korjauksien varmistamiseen ja
+//                    nyt yhteensä 65 testiä.
+//
+// Publish --> Versio 2.1.0.2, myös github
+//
 //
 //
 // TODO: F1 = ohjeikkuna
@@ -94,7 +109,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
 using System.Collections.Generic;
 using System.Linq;
 
@@ -126,19 +140,13 @@ namespace Selolaskuri
             // NOTE! In Java version this comboBox could return also null, so there have to check for null value
             vastustajanSelo_comboBox.Text = vastustajanSelo_comboBox.Text.Trim();
 
-
             // process opponents field and check if CSV format was used
-
+            //
             if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text) == false)
             {
-                // poista sanojen väleistä ylimääräiset välilyönnit
-                string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
-                string replacement = " ";   // tilalle vain yksi välilyönti
-                Regex rx = new Regex(pattern);
-                vastustajanSelo_comboBox.Text = rx.Replace(vastustajanSelo_comboBox.Text, replacement);
-
-                // XXX: Poista pilkun jälkeen olevat välilyönnit?  Esim. "5, 1525, 0, 1600, ..."
-
+                // poista ylimääräiset välilyönnit, korvaa yhdellä
+                // poista myös välilyönnit pilkun molemmilta puolilta, jos on CSV-formaatti
+                vastustajanSelo_comboBox.Text = so.SiistiVastustajatKentta(vastustajanSelo_comboBox.Text); // .Trim jo tehty
 
                 // Tarkista, onko csv ja jos on, niin unohda muut syötteet
                 // Paitsi jos on väärässä formaatissa, palautetaan null ja kutsuvalla tasolla virheilmoitus
@@ -151,8 +159,9 @@ namespace Selolaskuri
                 // Jos 2: pelimäärää ei anneta, käytetään oletuksena tyhjää ""
                 //
                 //
-                // Note that string in the following format is not CSV:
+                // Note that string in the following format is not CSV (comma can be used in tournament result)
                 //    "tournamentResult selo1 selo2 ..." e.g. "2,5 1505 1600 1611 1558" or "100,5 1505 1600 1611 1558 ... "
+                //
                 // But that checking should not affect CSV format "thinking time,selo,..." e.g. "5,1525,0,1505 1600 ..."
                 //      or "own selo,opponent selo with result" e.g. "1525,+1505"
                 //      or "own selo,opponent selo,single match result" e.g. "1525,1505,0.5" <- Here must use decimal point!!!
@@ -162,7 +171,7 @@ namespace Selolaskuri
                 if (vastustajanSelo_comboBox.Text.Contains(',')) {
                     List<string> tmp = vastustajanSelo_comboBox.Text.Split(',').ToList();
 
-                    if (tmp.Count != 2 || (tmp.Count == 2 && tmp[0].Length >= 4)) {
+                    if (tmp.Count != 2 || (tmp.Count == 2 && tmp[0].Trim().Length >= 4)) {
                         // The thinking time might be needed from the form if there are 2 or 3 values in CSV format
                         return so.SelvitaCSV(HaeMiettimisaika(), vastustajanSelo_comboBox.Text);
                     }
@@ -220,6 +229,8 @@ namespace Selolaskuri
             if (LaskeOttelunTulosLomakkeelta()) { 
                 // Annettu teksti talteen (jos ei ennestään ollut) -> Drop-down Combo box
                 // Tallennus kun klikattu Laske SELO tai painettu enter vastustajan selo-kentässä
+                //
+                // Tekstistä on poistettu ylimääräiset välilyönnit ennen tallennusta
                 if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                     vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
             }
@@ -740,6 +751,11 @@ namespace Selolaskuri
         // Ei tarkisteta, että ovatko vastustajat/tulokset oikeassa formaatissa.
         // Vain tarkistukset, että pituus on vähintään seloluvun pituus (eli 4), eikä tule kahta samaa riviä.
         // Ei saa olla myöskään liian pitkä rivi eikä liian montaa riviä.
+        //
+        // Osa syötteestä on tarkoitus ajaa CSV-formaatissa (silloin täydellinen tai vain miettimisaika otetaan lomakkeelta)
+        // Ja osa on tarkoitettu käytettäväksi erillisesti annetun miettimisajan, oman vahvuusluvun ja pelimäärän kanssa.
+        //
+        // Tekstistä poistetaan ylimääräiset välilyönnit.
         private void pasteVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {            
             // Haetaan data leikekirjasta
@@ -758,15 +774,18 @@ namespace Selolaskuri
                 // Rivin on aloitettava numerolla (eli selo tai miettimisaika) tai ottelutuloksella (+, - tai =)
                 leikekirja = iData.GetData(DataFormats.Text).ToString().Split('\n'); // Ei haittaa, jos on "\r\n", koska poistetaan tarkistuksessa
                 foreach (string rivi in leikekirja) {
-                    string rivi2 = rivi.Trim();
+                    // poista ylimääräiset välilyönnit ennen tarkistusta ja mahdollista tallennusta
+                    string rivi2 = so.SiistiVastustajatKentta(rivi.Trim());
 
                     if (rivi2.Length >= Vakiot.SELO_PITUUS && rivi2.Length <= Vakiot.LEIKEKIRJA_MAX_RIVINPITUUS &&
                         (rivi2[0] == '+' || rivi2[0] == '-' || rivi2[0] == '=' || (rivi2[0] >= '0' && rivi2[0] <= '9')) &&
                         !vastustajanSelo_comboBox.Items.Contains(rivi2))
                     {
+                        // vanhat tiedot poistetaan vain, jos on kelvollista lisättävää
                         if (lisatytRivit == 0)
                             TyhjennaVastustajat();
 
+                        // poistaa ylimääräiset välilyönnit ennen tallennusta
                         vastustajanSelo_comboBox.Items.Add(rivi2);
                         if (++lisatytRivit >= Vakiot.LEIKEKIRJA_MAX_RIVIMAARA)
                             break;

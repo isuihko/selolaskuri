@@ -12,8 +12,6 @@
 // 1.8.2018       New constructor with new parameter doTrim. If true, extra white space are removed from character strings.
 //
 
-using System.Text.RegularExpressions;
-
 namespace Selolaskuri
 {
     // Luokka/tietorakenne syötetiedoille
@@ -66,13 +64,8 @@ namespace Selolaskuri
             AlkuperainenSelo_str = doTrim ? selo.Trim() : selo;
             AlkuperainenPelimaara_str = doTrim ? pelimaara.Trim() : pelimaara;
             if (doTrim) {
-                vastustajat = vastustajat.Trim();
-                // poista sanojen väleistä ylimääräiset välilyönnit
-                string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions
-                string replacement = " ";   // tilalle vain yksi välilyönti
-                Regex rx = new Regex(pattern);
-                vastustajat = rx.Replace(vastustajat, replacement);
-
+                SelolaskuriOperations so = new SelolaskuriOperations();
+                vastustajat = so.SiistiVastustajatKentta(vastustajat.Trim());
             }
             VastustajienSelot_str = vastustajat;
             OttelunTulos = tulos;

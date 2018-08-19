@@ -24,6 +24,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 12.8.2018: CSV format and paste checkings and instructions. Version now 2.1.0.1, 12.8.2018.
 
+19.8.2018: More CSV format checkings, e.g. remove extra spaces. And new unit tests (total 65 tests) and code refactoring.  Version now 2.1.0.2, 19.8.2018.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.
@@ -111,12 +113,12 @@ Kahden tai useamman ottelun tulos voidaan antaa eri tavoilla
 
 
 Ohjelman asennus:
-Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja suorita setup.exe publish-hakemistossa. Tai käännä projekti uudestaan Visual Studiossa.
-Ladata voi myös komennolla (kunhan git on asennettu): git clone https://github.com/isuihko/selolaskuri
+Windows 7/10: Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja suorita setup.exe publish-hakemistossa. Tai käännä projekti uudestaan Visual Studiossa.
+Koko projektin voi ladata komennolla (kunhan git on asennettu): git clone https://github.com/isuihko/selolaskuri
 
 TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttöä
 - järjestä ohjelmaa vielä enemmän objektiläheisemmäksi
 - tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea (harjoituksen vuoksi)
-- Ohjelmasta myös HTML/JavaScript-versio
+- Tee myös web-versio (ASP.NET Core?)

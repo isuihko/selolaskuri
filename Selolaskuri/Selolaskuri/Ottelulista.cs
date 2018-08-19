@@ -94,7 +94,11 @@ namespace Selolaskuri
 
         public int Keskivahvuus {
             get {
-                return (int)System.Math.Round(tallennetutOttelut.Average(x => x.VastustajanSelo)); // Linq
+                // Found out that Math.Round(1568.5) was 1568 but should had been 1569 like in Java.
+                // ...so adding 0.01F to get correct result...
+                // https://stackoverflow.com/questions/977796/why-does-math-round2-5-return-2-instead-of-3
+                // XXX: Need to check also other Math.Round() usages?
+                return (int)Math.Round(tallennetutOttelut.Average(x => x.VastustajanSelo) + 0.01F); // Linq
             }
         }
 

@@ -785,7 +785,7 @@ namespace Selolaskuri
                         if (lisatytRivit == 0)
                             TyhjennaVastustajat();
 
-                        // poistaa ylimääräiset välilyönnit ennen tallennusta
+                        // on poistanut ylimääräiset välilyönnit ennen tallennusta
                         vastustajanSelo_comboBox.Items.Add(rivi2);
                         if (++lisatytRivit >= Vakiot.LEIKEKIRJA_MAX_RIVIMAARA)
                             break;

@@ -26,6 +26,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 19.8.2018: More CSV format checkings, e.g. remove extra spaces. And new unit tests (total 65 tests) and code refactoring.  Version now 2.1.0.2, 19.8.2018.
 
+20.8.2018: Adds usage of half character "1/2" in chess results and new unit tests for that.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.

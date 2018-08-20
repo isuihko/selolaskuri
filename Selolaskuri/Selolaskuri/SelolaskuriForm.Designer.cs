@@ -191,7 +191,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 19.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 20.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -388,10 +388,10 @@
             this.tulosTasapeli_btn.AutoSize = true;
             this.tulosTasapeli_btn.Location = new System.Drawing.Point(27, 296);
             this.tulosTasapeli_btn.Name = "tulosTasapeli_btn";
-            this.tulosTasapeli_btn.Size = new System.Drawing.Size(90, 17);
+            this.tulosTasapeli_btn.Size = new System.Drawing.Size(81, 17);
             this.tulosTasapeli_btn.TabIndex = 5;
             this.tulosTasapeli_btn.TabStop = true;
-            this.tulosTasapeli_btn.Text = "1/2 = tasapeli";
+            this.tulosTasapeli_btn.Text = "½ = tasapeli";
             this.tulosTasapeli_btn.UseVisualStyleBackColor = true;
             this.tulosTasapeli_btn.Enter += new System.EventHandler(this.tulosTasapeli_Button_Enter);
             // 
@@ -596,7 +596,7 @@
             this.MaximumSize = new System.Drawing.Size(486, 580);
             this.MinimumSize = new System.Drawing.Size(486, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.1.0.2";
+            this.Text = "Selolaskuri v. 2.1.0.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

@@ -151,5 +151,30 @@ namespace Selolaskuri.Tests
             var t = u.Testaa("1996", "-6 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
         }
+
+        // Turnauksen tulos 2½ syötetty ½2, jolloin se tarkastuksessa tulkitaan vastustajan seloksi
+        [TestMethod]
+        public void VirheellinenSyoteTurnauksenTulos5()
+        {
+            var t = u.Testaa("1525", "0", "½2 1505 1600 1611 1558");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
+        }
+
+        // Turnauksen tulos 2½ syötetty 2 ½, jolloin 2 on turnauksen tulos ja "½" tulkitaan vastustajan seloksi
+        [TestMethod]
+        public void VirheellinenSyoteTurnauksenTulos6()
+        {
+            var t = u.Testaa("1525", "0", "2 ½ 1505 1600 1611 1558");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
+        }
+
+        // Turnauksen tulos 2½ syötetty 2.½, jolloin "2.½" tulkitaan vastustajan seloksi
+        [TestMethod]
+        public void VirheellinenSyoteTurnauksenTulos7()
+        {
+            var t = u.Testaa("1525", "0", "2.½ 1505 1600 1611 1558");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
+        }
     }
 }
+

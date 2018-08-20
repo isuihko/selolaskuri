@@ -100,6 +100,15 @@
 //
 // Publish --> Versio 2.1.0.2, myös github
 //
+// 20.8.2018        - Pikashakin laskentaan Math.Round, jolloin saadaan täsmälleen samat tulokset kuin kolmessa
+//                    Joukkupikashakin SM-kisoista otetusta esimerkistä. Pyöristyksissä myös +0.001, koska muutoin
+//                    esim. Math.Round(2.5) olisi 2. Nyt Math.Round(2.5+0.001) on oikein 3.
+//                  - ½ (alt - numeerisesta näppäimistöstä 171) on sallittu yksittäisen ottelun tuloksessa CSV-formaatissa
+//                  - Myös turnauksen tuloksessa voidaan käyttää puolikasta, esim. 10½
+//                  - Lomakkeeseen vaihdettu tasapelibuttonin teksti 1/2 = tasapeli  ->  ½ = tasapeli
+//                  - Lisää testausta, mm. ½:n käyttö. Nyt 76 testiä.
+//
+// Publish --> Versio 2.1.0.3, myös github
 //
 //
 // TODO: F1 = ohjeikkuna
@@ -583,6 +592,7 @@ namespace Selolaskuri
             // vastustajanSelo_comboBox.Items.Add("");  // No need to add an empty item like in Java
 
             vastustajanSelo_comboBox.Items.Add("5,1996,,10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
+            vastustajanSelo_comboBox.Items.Add("5,1996,,10½ 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
             // Also Miettimisaika enint. 10 min, nykyinen SELO 1996, pelimäärä tyhjä
             vastustajanSelo_comboBox.Items.Add("10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684");
 
@@ -595,6 +605,8 @@ namespace Selolaskuri
             vastustajanSelo_comboBox.Items.Add("1973");
 
             vastustajanSelo_comboBox.Items.Add("90,1713,3,1718,1");
+
+            vastustajanSelo_comboBox.Items.Add("90,1713,3,1718,½");
         }
 
         // --------------------------------------------------------------------------------
@@ -665,14 +677,14 @@ namespace Selolaskuri
                 + Environment.NewLine + "-Oma vahvuusluku"
                 + Environment.NewLine + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
                 + Environment.NewLine + "-Vastustajien vahvuusluvut ja tulokset jollakin neljästä tavasta:"
-                + Environment.NewLine + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/0,5/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
+                + Environment.NewLine + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/½/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
                 + Environment.NewLine + "   2) Vahvuusluvut tuloksineen, esim. +1505 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
-                + Environment.NewLine + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 2.5 1505 1600 1611 1558, voi käyttää myös desimaalipilkkua 1,5 1505 1600 1611 1558"
-                + Environment.NewLine + "   4) CSV eli pilkulla erotetut arvot, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5!"
+                + Environment.NewLine + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 1.5 1505 1600 1611 1558, voi käyttää myös desimaalipilkkua 1,5 1505 1600 1611 1558 sekä puolikasta esim. 1½ 1505 1600 1611 1558"
+                + Environment.NewLine + "   4) CSV eli pilkulla erotetut arvot, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5, tai puolikasta eli ½ tai 10½"
                 + Environment.NewLine + "           2: oma selo,ottelut   esim. 1712,2.5 1505 1600 1611 1558 tai 1712,+1505  HUOM! Desimaalipiste!"
                 + Environment.NewLine + "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1505 +1441"
                 + Environment.NewLine + "           4: minuutit,oma selo,pelimaara,ottelut  esim. 90,1525,0,+1525 +1441"
-                + Environment.NewLine + "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli 1/2 tai 0.5)"
+                + Environment.NewLine + "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli voidaan antaa 1/2, ½ tai 0.5)"
                 + Environment.NewLine + "      Jos miettimisaika on antamatta, käytetään ikkunasta valittua"
                 + Environment.NewLine + "      Jos pelimäärä on antamatta, käytetään tyhjää"
                 + Environment.NewLine

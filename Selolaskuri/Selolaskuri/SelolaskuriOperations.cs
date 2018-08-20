@@ -279,6 +279,16 @@ namespace Selolaskuri
                         // että CSV-formaatti toimii - pilkulla erotetut arvot
                         if (tempString.Contains(','))  // korvaa pilkku pisteellä...
                             tempString = tempString.Replace(',', '.');
+
+                        // Jos ottelutulon lopussa on puolikas, niin muuta se ".5":ksi, esim. 10½ -> 10.5
+                        // Jos ottelutulos on ½, niin tässä se muutetaan "0.5":ksi
+                        if (tempString.IndexOf('½') == tempString.Length - 1) {
+                            if (tempString.Length > 1)
+                                tempString = tempString.Replace("½", ".5");
+                            else
+                                tempString = "0.5";  // muutetaan suoraan, koska oli pelkästään "½"
+                        }
+
                         if (float.TryParse(tempString, System.Globalization.NumberStyles.AllowDecimalPoint,
                             System.Globalization.CultureInfo.InvariantCulture, out syotetty_tulos) == true) {
                             if (syotetty_tulos >= 0.0F && syotetty_tulos <= Vakiot.TURNAUKSEN_TULOS_MAX) {
@@ -478,7 +488,7 @@ namespace Selolaskuri
             return aika;
         }
 
-        // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "1", "1.0" tai "1,0"
+        // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "½" (alt-171), "1", "1.0" tai "1,0"
         // Toistaiseksi CSV-formaatin tuloksissa voi käyttää vain desimaalipistettä, joten ei voida syöttää 
         // tuloksia pilkun kanssa kuten "0,0", "0,5" ja "1,0". Tarkistetaan ne kuitenkin varalta.
         public Vakiot.OttelunTulos_enum SelvitaTulosCSV(string s)
@@ -486,7 +496,7 @@ namespace Selolaskuri
             Vakiot.OttelunTulos_enum tulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
             if (s.Equals("0") || s.Equals("0.0") || s.Equals("0,0"))
                 tulos = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
-            else if (s.Equals("0.5") || s.Equals("0,5") || s.Equals("1/2"))
+            else if (s.Equals("0.5") || s.Equals("0,5") || s.Equals("1/2") || s.Equals("½"))
                 tulos = Vakiot.OttelunTulos_enum.TULOS_TASAPELI;
             else if (s.Equals("1") || s.Equals("1.0") || s.Equals("1,0"))
                 tulos = Vakiot.OttelunTulos_enum.TULOS_VOITTO;

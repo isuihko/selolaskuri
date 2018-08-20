@@ -103,7 +103,7 @@ namespace Selolaskuri
         // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
         public void SetAnnettuTurnauksenTulos(float f)      // set the tournament result
         {
-            annettuTurnauksenTulos = (int)Math.Round(2.0F * f);
+            annettuTurnauksenTulos = (int)Math.Round(2.0F * f + 0.01);
         }
 
         private bool OnkoAnnettuTurnauksenTulos {
@@ -256,12 +256,14 @@ namespace Selolaskuri
                     //
                     // turnauksen tulos on kokonaislukuna, pitää jakaa 2:lla
                     // Odotustulos on kokonaisluku ja pitää jakaa 100:lla
-                    if ((annettuTurnauksenTulos / 2F) > (Odotustulos / 100F)) {
+                    //
+                    // Laskentakaavaan lisätty pyöristys Math.Round, jonka jälkeen kaikista Joukkuepikashakin laskennoista saadaan samat tulokset
+                    if ((annettuTurnauksenTulos / 2.0) > (Odotustulos / 100.0)) {
                         UusiSelo =
-                            (int)(vanha + 200 - 200 * Math.Pow(Math.E, (Odotustulos / 100F - annettuTurnauksenTulos / 2F) / 10F));
+                            (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos / 2.0) / 10.0) + 0.01);
                     } else {
                         UusiSelo =
-                            (int)(vanha - 200 + 200 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2F - Odotustulos / 100F) / 10F));
+                            (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0) / 10.0) + 0.01);
                     }
                 } else {
                     //
@@ -270,7 +272,7 @@ namespace Selolaskuri
                     float lisakerroin = MaaritaLisakerroin(vanha, alkuperaisetSyotteet.Miettimisaika);
                     // Lisätään vielä pelattujen pelien lkm * 0.1
                     UusiSelo =
-                        (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2F - Odotustulos / 100F)) + (ottelulista.Lukumaara * 0.1F));
+                        (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.01);
                 }
 
                 // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
@@ -317,7 +319,7 @@ namespace Selolaskuri
                 // XXX: Laskennan edetessä niitä päivitetään
 
                 // Jos pelimäärä on 0, niin omalla selolla (selo-kenttä) ei ole merkitystä (UusiSelo * 0 on nolla)
-                selo = (int)Math.Round((UusiSelo * UusiPelimaara + (vastustajanSelo + selomuutos[(int)tulos])) / (UusiPelimaara + 1F));
+                selo = (int)Math.Round((UusiSelo * UusiPelimaara + (vastustajanSelo + selomuutos[(int)tulos])) / (UusiPelimaara + 1F) + 0.01);
 
             } else {
 
@@ -328,7 +330,7 @@ namespace Selolaskuri
                 float lisakerroin = MaaritaLisakerroin(UusiSelo, alkuperaisetSyotteet.Miettimisaika);
 
                 // vanhan pelaajan SELO, kun pelimäärä jätetty tyhjäksi tai on yli 10.
-                selo = (int)Math.Round((UusiSelo + kerroin1 * lisakerroin * (((int)tulos / 2F) - (odotustulos1 / 100F)) + 0.1F));
+                selo = (int)Math.Round((UusiSelo + kerroin1 * lisakerroin * (((int)tulos / 2F) - (odotustulos1 / 100F)) + 0.1F) + 0.01);
             }
 
             // tallenna vaihteluväli (jos yksi ottelu, niin jäävät samoiksi)

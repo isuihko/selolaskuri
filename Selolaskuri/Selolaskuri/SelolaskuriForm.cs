@@ -110,6 +110,14 @@
 //
 // Publish --> Versio 2.1.0.3, myös github
 //
+//  21.8.2018       Muutoksia tehty WPF-versiota tehdessä, ks. GitHub SelolaskuriWPF
+//                  - Painikkeen teksti "Käytä uutta SELOa jatkolaskennassa" -> "Käytä tulosta jatkolaskennassa"
+//                  - Päivetty myös ohjeikkunaan sekä poistettu "SELO" - "PELO"-muutos tekstikentältä
+//
+//  22.8.2018       - Pientä järjestelyä, muutoksia kommentteihin
+//
+// Publish --> Versio 2.1.0.4, myös github
+//
 //
 // TODO: F1 = ohjeikkuna
 // TODO: web-versio
@@ -125,7 +133,7 @@ namespace Selolaskuri
 {
     public partial class SelolaskuriForm : Form
     {
-        SelolaskuriOperations so = new SelolaskuriOperations();   //  Check the input data, calculate the results
+        private SelolaskuriOperations so = new SelolaskuriOperations();   //  Check the input data, calculate the results
 
         public SelolaskuriForm()
         {
@@ -453,13 +461,10 @@ namespace Selolaskuri
             // Turhan päivittämisen voisi estää lisäämällä flag syötetietoihin kertomaan, oliko csv:ssä miettimisaika.
             //
             // Ei riitä tarkistaa, onko valittu eri kuin näytöllä, koska tekstit on voitu vaihtaa välillä
-            //if (tulokset.Miettimisaika != HaeMiettimisaika()) {
-                if (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
-                    vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
-                else
-                    vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
-            //}
-
+            if (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
+            else
+                vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
         // --------------------------------------------------------------------------------
@@ -471,25 +476,17 @@ namespace Selolaskuri
         {
             string alkup, uusi;
 
-            if (suunta == Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI)
-            {
+            if (suunta == Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI) {
                 alkup = "PELO";
                 uusi = "SELO";
-                // poista PELO-ohjeen korostus
-                //TuloksetPistemaaranKanssa_teksti.Font = new Font(TuloksetPistemaaranKanssa_teksti.Font, FontStyle.Regular);
-            } else
-            {
+            } else {
                 alkup = "SELO";
                 uusi = "PELO";
-                // korosta PELO-ohje
-                //TuloksetPistemaaranKanssa_teksti.Font = new Font(TuloksetPistemaaranKanssa_teksti.Font, FontStyle.Bold);
             }
 
             OmaVahvuusluku_teksti.Text = OmaVahvuusluku_teksti.Text.Replace(alkup, uusi);
             VastustajanVahvuusluku_teksti.Text = VastustajanVahvuusluku_teksti.Text.Replace(alkup, uusi);
             UusiSELO_teksti.Text = UusiSELO_teksti.Text.Replace(alkup, uusi);
-            Laske_btn.Text = Laske_btn.Text.Replace(alkup, uusi);
-            KaytaTulosta_btn.Text = KaytaTulosta_btn.Text.Replace(alkup, uusi);
         }
 
         // Miettimisajan valinta ei tee laskentaa uusiksi automaattisesti. Vaihtaa vain tekstit SELO <-> PELO.
@@ -692,12 +689,12 @@ namespace Selolaskuri
                 + Environment.NewLine
                 + Environment.NewLine + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
                 + Environment.NewLine
-                + Environment.NewLine + "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä uutta SELOa jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
+                + Environment.NewLine + "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä tulosta jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
 
                 "Ohjeita");
         }
-
-        // MenuItem: Sulje ohjelma
+        
+        //
         private void laskentakaavatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
@@ -705,7 +702,7 @@ namespace Selolaskuri
                 "Laskentakaavat");
         }
 
-
+        //
         private void tietoaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET/WinForms"

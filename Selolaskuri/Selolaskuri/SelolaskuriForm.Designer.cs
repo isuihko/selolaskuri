@@ -139,7 +139,7 @@
             this.Laske_btn.Name = "Laske_btn";
             this.Laske_btn.Size = new System.Drawing.Size(193, 25);
             this.Laske_btn.TabIndex = 7;
-            this.Laske_btn.Text = "Laske uusi SELO";
+            this.Laske_btn.Text = "Laske vahvuusluku";
             this.Laske_btn.UseVisualStyleBackColor = true;
             this.Laske_btn.Click += new System.EventHandler(this.Laske_btn_Click);
             // 
@@ -169,7 +169,7 @@
             this.KaytaTulosta_btn.Name = "KaytaTulosta_btn";
             this.KaytaTulosta_btn.Size = new System.Drawing.Size(193, 25);
             this.KaytaTulosta_btn.TabIndex = 8;
-            this.KaytaTulosta_btn.Text = "Käytä uutta SELOa jatkolaskennassa";
+            this.KaytaTulosta_btn.Text = "Käytä tulosta jatkolaskennassa";
             this.KaytaTulosta_btn.UseVisualStyleBackColor = true;
             this.KaytaTulosta_btn.Click += new System.EventHandler(this.KaytaTulosta_btn_Click);
             // 
@@ -191,7 +191,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 20.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 22.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -537,10 +537,10 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(11, 221);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(422, 13);
+            this.label1.Size = new System.Drawing.Size(418, 13);
             this.label1.TabIndex = 69;
-            this.label1.Text = "CSV: min,selo,pelim,vastustajat[,tulos] tai selo,vastustajat. Esim. 1650,+1725 -1" +
-    "910 1812";
+            this.label1.Text = "CSV: aika,selo,lkm,vastustajat[,tulos] tai selo,vastustajat. Esim. 1650,+1725 -19" +
+    "10 1812";
             // 
             // label2
             // 
@@ -596,7 +596,7 @@
             this.MaximumSize = new System.Drawing.Size(486, 580);
             this.MinimumSize = new System.Drawing.Size(486, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.1.0.3";
+            this.Text = "Selolaskuri v. 2.1.0.4";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

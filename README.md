@@ -28,6 +28,8 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 
 20.8.2018: Adds usage of half character "1/2" in chess results and new unit tests for that.
 
+22.8.2018: Small changes to texts, e.g. "Laske uusi SELO" -> "Laske vahvuusluku" so that there is less "SELO"-"PELO" text changing when thinking time is changes.
+
 --
 
 The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.

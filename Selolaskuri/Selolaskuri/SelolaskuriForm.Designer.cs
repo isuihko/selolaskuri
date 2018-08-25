@@ -187,11 +187,11 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F);
-            this.label6.Location = new System.Drawing.Point(260, 530);
+            this.label6.Location = new System.Drawing.Point(285, 530);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 22.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 25.8.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -322,7 +322,7 @@
             this.miettimisaika_vah90_btn.TabStop = true;
             this.miettimisaika_vah90_btn.Text = "väh. 90 min";
             this.miettimisaika_vah90_btn.UseVisualStyleBackColor = true;
-            this.miettimisaika_vah90_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_vah90_Button_CheckedChanged);
+            this.miettimisaika_vah90_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_vah90_btn_CheckedChanged);
             // 
             // miettimisaika_60_89_btn
             // 
@@ -334,7 +334,7 @@
             this.miettimisaika_60_89_btn.TabStop = true;
             this.miettimisaika_60_89_btn.Text = "60-89 min";
             this.miettimisaika_60_89_btn.UseVisualStyleBackColor = true;
-            this.miettimisaika_60_89_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_60_89_Button_CheckedChanged);
+            this.miettimisaika_60_89_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_60_89_btn_CheckedChanged);
             // 
             // miettimisaika_11_59_btn
             // 
@@ -346,7 +346,7 @@
             this.miettimisaika_11_59_btn.TabStop = true;
             this.miettimisaika_11_59_btn.Text = "11-59 min";
             this.miettimisaika_11_59_btn.UseVisualStyleBackColor = true;
-            this.miettimisaika_11_59_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_11_59_Button_CheckedChanged);
+            this.miettimisaika_11_59_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_11_59_btn_CheckedChanged);
             // 
             // miettimisaika_enint10_Button
             // 
@@ -358,7 +358,7 @@
             this.miettimisaika_enint10_Button.TabStop = true;
             this.miettimisaika_enint10_Button.Text = "enint. 10 min";
             this.miettimisaika_enint10_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_enint10_Button.CheckedChanged += new System.EventHandler(this.miettimisaika_enint10_Button_CheckedChanged);
+            this.miettimisaika_enint10_Button.Click += new System.EventHandler(this.miettimisaika_enint10_btn_CheckedChanged);
             // 
             // panel1
             // 
@@ -381,7 +381,7 @@
             this.tulosVoitto_btn.TabStop = true;
             this.tulosVoitto_btn.Text = "1 = voitto";
             this.tulosVoitto_btn.UseVisualStyleBackColor = true;
-            this.tulosVoitto_btn.Enter += new System.EventHandler(this.tulosVoitto_Button_Enter);
+            this.tulosVoitto_btn.CheckedChanged += new System.EventHandler(this.tulosVoitto_btn_CheckedChanged);
             // 
             // tulosTasapeli_btn
             // 
@@ -393,7 +393,7 @@
             this.tulosTasapeli_btn.TabStop = true;
             this.tulosTasapeli_btn.Text = "½ = tasapeli";
             this.tulosTasapeli_btn.UseVisualStyleBackColor = true;
-            this.tulosTasapeli_btn.Enter += new System.EventHandler(this.tulosTasapeli_Button_Enter);
+            this.tulosTasapeli_btn.CheckedChanged += new System.EventHandler(this.tulosTasapeli_btn_CheckedChanged);
             // 
             // tulosTappio_btn
             // 
@@ -405,7 +405,7 @@
             this.tulosTappio_btn.TabStop = true;
             this.tulosTappio_btn.Text = "0 = tappio";
             this.tulosTappio_btn.UseVisualStyleBackColor = true;
-            this.tulosTappio_btn.Enter += new System.EventHandler(this.tulosTappio_Button_Enter);
+            this.tulosTappio_btn.CheckedChanged += new System.EventHandler(this.tulosTappio_btn_CheckedChanged);
             // 
             // vaihteluvali_out
             // 
@@ -430,7 +430,7 @@
             this.vastustajanSelo_comboBox.FormattingEnabled = true;
             this.vastustajanSelo_comboBox.Location = new System.Drawing.Point(14, 164);
             this.vastustajanSelo_comboBox.Name = "vastustajanSelo_comboBox";
-            this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(444, 21);
+            this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(475, 21);
             this.vastustajanSelo_comboBox.TabIndex = 3;
             this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vastustajanSelo_combobox_KeyDown);
             // 
@@ -441,7 +441,7 @@
             this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(470, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(494, 24);
             this.menuStrip1.TabIndex = 67;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -555,7 +555,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(470, 542);
+            this.ClientSize = new System.Drawing.Size(494, 542);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UudenPelaajanLaskenta_txt);
@@ -593,10 +593,10 @@
             this.Controls.Add(this.OmaVahvuusluku_teksti);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximumSize = new System.Drawing.Size(486, 580);
-            this.MinimumSize = new System.Drawing.Size(486, 580);
+            this.MaximumSize = new System.Drawing.Size(510, 580);
+            this.MinimumSize = new System.Drawing.Size(510, 580);
             this.Name = "SelolaskuriForm";
-            this.Text = "Selolaskuri v. 2.1.0.4";
+            this.Text = "Selolaskuri";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelolaskuriForm_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

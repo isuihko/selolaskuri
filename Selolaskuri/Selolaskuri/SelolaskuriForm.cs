@@ -118,6 +118,12 @@
 //
 // Publish --> Versio 2.1.0.4, myös github
 //
+// 25.8.2018        - Lomakkeen tulos-buttonien käsittely, käytä CheckedChanged
+//                  - vähän leveämpi ikkuna, versionumero (v2.1.0.4) poistettu otsikosta, versiopvm riittää
+//                  - "test"-komennolla lisätään kolme esimerkkiä Joukkuepikashakin SM-kisoista vastustajat-historiaan
+//                  - kommentteja
+//
+// Publish --> Versio 2.1.0.5, myös github
 //
 // TODO: F1 = ohjeikkuna
 // TODO: web-versio
@@ -489,24 +495,24 @@ namespace Selolaskuri
             UusiSELO_teksti.Text = UusiSELO_teksti.Text.Replace(alkup, uusi);
         }
 
-        // Miettimisajan valinta ei tee laskentaa uusiksi automaattisesti. Vaihtaa vain tekstit SELO <-> PELO.
-        // Jos miettimisaika valitaan alussa, eikä kaikkia tietoja ei ole syötetty, niin saataisiin virheilmoitus.
-        private void miettimisaika_vah90_Button_CheckedChanged(object sender, EventArgs e)
+        // Miettimisajan valinta (Checked) ei tee laskentaa uusiksi automaattisesti. Vaihtaa vain tekstit SELO <-> PELO.
+        // Jos miettimisaika valitaan, eikä kaikkia tietoja ei ole syötetty, saataisiin puuttuvista tiedoista (selo ym.) virheilmoitus.
+        private void miettimisaika_vah90_btn_CheckedChanged(object sender, EventArgs e)
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
-        private void miettimisaika_60_89_Button_CheckedChanged(object sender, EventArgs e)
+        private void miettimisaika_60_89_btn_CheckedChanged(object sender, EventArgs e)
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
-        private void miettimisaika_11_59_Button_CheckedChanged(object sender, EventArgs e)
+        private void miettimisaika_11_59_btn_CheckedChanged(object sender, EventArgs e)
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
-        private void miettimisaika_enint10_Button_CheckedChanged(object sender, EventArgs e)
+        private void miettimisaika_enint10_btn_CheckedChanged(object sender, EventArgs e)
         {
             vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
         }
@@ -522,24 +528,25 @@ namespace Selolaskuri
         // Jos tässä vaiheessa ei ole vielä annettu SELOja, tulee virheilmoitus
         // sekä siirrytään SELO-kenttään.
         // 
-        private void tulosVoitto_Button_Enter(object sender, EventArgs e)
+        private void tulosVoitto_btn_CheckedChanged(object sender, EventArgs e)
         {
-            tulosVoitto_btn.Checked = true;
+            //tulosVoitto_btn.Checked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
-        private void tulosTasapeli_Button_Enter(object sender, EventArgs e)
+        private void tulosTasapeli_btn_CheckedChanged(object sender, EventArgs e)
         {
-            tulosTasapeli_btn.Checked = true;
+            //tulosTasapeli_btn.Checked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
-        private void tulosTappio_Button_Enter(object sender, EventArgs e)
+        private void tulosTappio_btn_CheckedChanged(object sender, EventArgs e)
         {
-            tulosTappio_btn.Checked = true;
+            //tulosTappio_btn.Checked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
+        // Tyhjennä talteen otetut vastustajien/otteluiden tiedot
         private void TyhjennaVastustajat()
         {
             // This still leaves empty lines into comboBox...
@@ -550,9 +557,8 @@ namespace Selolaskuri
             vastustajanSelo_comboBox.Items.Clear();
         }
 
-        // vastustajanSelo-kentässä clear ja Enter, niin tyhjennetään syötteet ja tuloskentät
-        //
-        // tyhjentää lomakkeen kentät ja palauttaa alkuarvot, miettimisaika vähintään 90 min, ei tulospainikkeita valittuna
+        // Tyhjentää lomakkeen syötteet ja tuloskentät ja palauttaa alkuarvot, miettimisaika vähintään 90 min, ei tulospainikkeita valittuna
+        // Suoritetaan kun kirjoitetaan sana "clear" (ilman lainausmerkkejä) vastustajien kenttään ja painetaan Enter
         private void TyhjennaSyotteet()
         {
             selo_in.Text = "";
@@ -581,6 +587,7 @@ namespace Selolaskuri
         }
 
         // Tallenna testausta varten listaan vastustajien & otteluiden tietoja, ei nollata muita kenttiä
+        // Suoritetaan kun kirjoitetaan sana "test" (ilman lainausmerkkejä) vastustajien kenttään ja painetaan Enter
         private void TallennaTestaustaVartenVastustajia()
         {
             TyhjennaVastustajat();
@@ -604,6 +611,17 @@ namespace Selolaskuri
             vastustajanSelo_comboBox.Items.Add("90,1713,3,1718,1");
 
             vastustajanSelo_comboBox.Items.Add("90,1713,3,1718,½");
+
+            // Lisää Joukkuepikashakin SM-kisoista otteluita
+            // Esimerkki Joukkuepikashakin SM 2018 alkukilpailut, alkukilpailuryhmä C  4.8.2018, LauttSSK 1 pöytä 1
+            // Kilpailuryhmä C: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+            vastustajanSelo_comboBox.Items.Add("5,2180,2054,14.5 1914 2020 1869 2003 2019 1979 2131 2161 2179 2392 1590 1656 1732 1944 1767 1903 1984 2038 2083 2594 2324 1466 1758");
+            // Esimerkki Joukkuepikashakin SM 2018 alkukilpailut, alkukilpailuryhmä C  4.8.2018, LauttSSK 1 pöytä 4
+            // Kilpailuryhmä C: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+            vastustajanSelo_comboBox.Items.Add("5,2045,1225,19.5 1548 1560 1699 1737 1735 1880 1856 2019 2102 2177 1539 1531 1672 1592 1775 1842 1847 1905 1970 2308 1988 1454 1481");
+            // Esimerkki Joukkuepikashakin SM 2018 sijoituskilpailut 5.8.2018, sijoitusryhmä C, LauttSSK 4 pöytä 4
+            // Sijoitusryhmä 5: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+            vastustajanSelo_comboBox.Items.Add("5,1262,,11 1623 1591 1318 1560 1493 1417 1343 1493 1524 1227 1716 1490 1454 1479 1329 1429 1444 1289 1576 1445 1280");
         }
 
         // --------------------------------------------------------------------------------
@@ -706,7 +724,9 @@ namespace Selolaskuri
         private void tietoaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET/WinForms"
-                + Environment.NewLine + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri",
+                + Environment.NewLine + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri"
+                + Environment.NewLine + "Myös WPF/XAML-versio https://github.com/isuihko/SelolaskuriWPF"
+                + Environment.NewLine + "sekä Java-versio https://github.com/isuihko/jSelolaskuri",
                 "Tietoa Selolaskurista");
         }
 

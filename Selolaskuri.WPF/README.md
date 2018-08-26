@@ -1,8 +1,8 @@
 ### Selolaskuri.WPF
 
 Version history:
-- 21.-22.8.2018 Created a WPF/XAML version of Selolaskuri desktop application which I had created earlier using WinForms
-- 26.8.2018 Moved Selolaskuri.WPF source code here under solution Selolaskuri https://github.com/isuihko/selolaskuri where all Selolaskuri's versions use the same *SelolaskuriLibrary* for input checking and calculation. Also there is common project *Selolaskuri.Tests* (76 tests), which are unit tests for SelolaskuriLibrary routines. User interfaces are similar but created differently.
+- 21.-22.8.2018 Created a WPF/XAML version of Selolaskuri desktop application which I had created earlier using WinForms. User interfaces between WinForms and WPF/XAML versions are similar but they are created differently.
+- 26.8.2018 Moved Selolaskuri.WPF source code here under solution Selolaskuri https://github.com/isuihko/selolaskuri where all Selolaskuri's versions use the same *SelolaskuriLibrary* for input checking and calculation. Also there is common project *Selolaskuri.Tests* (76 tests), which are unit tests for SelolaskuriLibrary routines.
 
 What and why
 - Because WPF is newer, more flexible and more used nowadays: https://www.wpf-tutorial.com/about-wpf/wpf-vs-winforms/
@@ -16,7 +16,7 @@ You find the window captures of this new version from .png files:
 - uusi pelaaja,turnaus = new player, calculation from a tournament of seven matches
 - PELO-laskenta,turnaus,CSV = blitz calculation from a tournament of 12 matches, entered in CSV format (comma separated values)
 
-Source code is under https://github.com/isuihko/selolaskuri see Selolaskuri.WPF. To run this program in Visual Studio, go to Solution Explorer, right click Selolaskuri.WPF and choose Set as StartUp Project and then click Start.
+To run this program in Visual Studio, load the whole project (git clone https://github.com/isuihko/selolaskuri), go to Solution Explorer, right click Selolaskuri.WPF and choose Set as StartUp Project and then click Start.
 
 TODO:
 - Use more WPF/XAML features

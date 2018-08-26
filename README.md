@@ -7,37 +7,18 @@ Visual Studio Community 2017 (also 2015), C# and .NET/WinForms, Windows 7 and Wi
 New refactored version of Selolaskuri! Now all Selolaskuri's versions are under same Visual Studio's solution:
 - Selolaskuri which is WinForms version and desktop application
 - Selolaskuri.WPF, user interface created with WPF/XAML and is a desktop application. More in https://github.com/isuihko/SelolaskuriWPF
-- Selolaskuri.XBAP, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io
+- Selolaskuri.XBAP, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable.
 
-<font size="10">
-10.-19.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
+To choose, which of the applications to run in Visual Studio, go to Solution Explorer, right click Project's name, Set as StartUp Project and then click Start
 
-19-23.7.2018 : More code refactoring. Some data was defined twice similary, now uses one definition. The 'kerroin' which is shown in form, is now calculated from the initial 'selo'. Executable and window captures of version 2.0.0.4, 19.7.2018. More data hiding.
-
-25.-26.7.2018 : Form fields were reorganized and kerroin (factor) is not displayed any more. Also shows text when new player's calculation was used. Version now 2.0.0.7, 26.7.2018.
-
-1.8.2018 : More code organizing while creating Java version with NetBeans and now there is updated https://github.com/isuihko/jSelolaskuri. Mostly internal changes and adding comments. If there are extra spaces in form's input fields (like "   +1612   =1772  "), they are now removed and fields are updated (-> "+1612 =1772"). Version now 2.0.0.8, 1.8.2018.
-
-2.8.2018 : Add two new unit tests to check for empty own selo or opponent selo fields. Add error checking for empty opponent selo field. Version now 2.0.0.9, 2.8.2018.
-
-4.8.2018: Added support for CSV format (comma-separated values). NOTE! When inputting results, use point, not comma, e.g. 2.5 or 0.5. Version now 2.0.0.10, 4.8.2018. Also Java version is up-to-date.
-
-10.8.2018: Added text "Enter=laskenta" into vastustajanSelo field. Also added commands to be executed in vastustajanSelo field: test - add test data which could be used when taking window captures. clear - clear all input and output.
-
-11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.. Version now 2.1.0.0, 11.8.2018.
-
-12.8.2018: CSV format and paste checkings and instructions. Version now 2.1.0.1, 12.8.2018.
-
-19.8.2018: More CSV format checkings, e.g. remove extra spaces. And new unit tests (total 65 tests) and code refactoring.  Version now 2.1.0.2, 19.8.2018.
-
-20.8.2018: Adds usage of half character "1/2" in chess results and new unit tests for that.
-
-22.8.2018: Small changes to texts, e.g. "Laske uusi SELO" -> "Laske vahvuusluku" so that there is less "SELO"-"PELO" text changing when thinking time is changes.
-
-26.8.2018: Moved moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same solution. To choose run this program in Visual Studio, go to Solution Explorer, right click Selolaskuri.WPF and choose Set as StartUp Project and then click Start.
+Version history hightlights:
+- 10.-19.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
+- 4.8.2018: Added support for CSV format (comma-separated values). Also Java version is up-to-date.
+- 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.
+- 20.8.2018: Adds usage of half character "1/2" in chess results. Added new unit tests for that.
+- 26.8.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution.
 
 All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 76 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
-</font>
 
 --
 

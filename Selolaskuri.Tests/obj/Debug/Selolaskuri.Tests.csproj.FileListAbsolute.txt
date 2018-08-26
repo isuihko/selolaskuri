@@ -6,14 +6,3 @@ C:\Users\Ismo\documents\visual studio 2015\Projects\Selolaskuri\Selolaskuri.Test
 C:\Users\Ismo\documents\visual studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.csprojResolveAssemblyReference.cache
 C:\Users\Ismo\documents\visual studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.dll
 C:\Users\Ismo\documents\visual studio 2015\Projects\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.pdb
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.Tests.dll
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.Tests.pdb
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.exe
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.pdb
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\bin\Debug\Selolaskuri.exe.config
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.csprojAssemblyReference.cache
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.csproj.CoreCompileInputs.cache
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.csproj.CopyComplete
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.dll
-C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.Tests\obj\Debug\Selolaskuri.Tests.pdb

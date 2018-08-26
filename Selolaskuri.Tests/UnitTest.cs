@@ -66,6 +66,7 @@
 //              Check if the calculation result gets below or above allowed SELO ranges (1000-2999).
 //
 
+using SelolaskuriLibrary;
 using System;
 
 namespace Selolaskuri.Tests

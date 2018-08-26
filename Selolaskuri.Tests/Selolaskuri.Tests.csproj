@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Selolaskuri.Tests</RootNamespace>
     <AssemblyName>Selolaskuri.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,9 +60,9 @@
     <Compile Include="UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Selolaskuri\Selolaskuri.csproj">
-      <Project>{cc8b2f04-6767-4e5c-b537-7d6be6766537}</Project>
-      <Name>Selolaskuri</Name>
+    <ProjectReference Include="..\SelolaskuriLibrary\SelolaskuriLibrary.csproj">
+      <Project>{86a9e853-8418-4145-87e4-ca5145d259e1}</Project>
+      <Name>SelolaskuriLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -6,12 +6,12 @@ Visual Studio Community 2017 (also 2015), C# and .NET/WinForms, Windows 7 and Wi
 
 New refactored version of Selolaskuri! Now all Selolaskuri's versions are under same Visual Studio's solution:
 - Selolaskuri which is WinForms version and desktop application
-- Selolaskuri.WPF, user interface created with WPF/XAML and is a desktop application. More in https://github.com/isuihko/SelolaskuriWPF
+- Selolaskuri.WPF, user interface created with WPF/XAML (WPF is newer than WinForms) and is a desktop application. More in https://github.com/isuihko/SelolaskuriWPF
 - Selolaskuri.XBAP, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable.
 
-To choose, which of the applications to run in Visual Studio, go to Solution Explorer, right click Project's name, Set as StartUp Project and then click Start
+To choose, which of the application to run in Visual Studio, go to Solution Explorer, right click Project's name, Set as StartUp Project and then click Start.
 
-Version history hightlights:
+Version history highlights:
 - 10.-19.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
 - 4.8.2018: Added support for CSV format (comma-separated values). Also Java version is up-to-date.
 - 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.
@@ -28,7 +28,7 @@ Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
 - PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on enintään 10 minuuttia. Eri miettimisajoille on omat laskentakaavansa.
 
-Laskettu tulos on alustava ja voi poiketa virallisesta laskennasta hieman, ehkä pisteellä pyöristyksistä johtuen.
+Laskettu tulos voi poiketa virallisesta laskennasta hieman, ehkä pisteellä pyöristyksistä johtuen.
 Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
 
 Selolaskentaa netissä: 
@@ -46,17 +46,17 @@ Syötekenttiä:
  - c) oma esim. turnauksessa saatu kokonaispistemäärä ja vastustajien vahvuusluvut ilman tuloksia, esim. 1.5 1622 1880 1683
  - d) csv-formaatti (comma-separated values), jossa voidaan antaa kaikki syöte pilkulla erotettuna eikä silloin muiden lomakkeen kenttien arvoilla ole merkitystä. Esim. miettimisaika,selo,pelimaara,ottelut: 90,1525,0,+1621 -1812 =1710 tai selo,ottelut: 2191,+1622 -1880 =1633. Huom! Käytä desimaalipistettä, jos tuloksessa on tasapeli mukana, esim. 2.5.
  
-Huom! CSV:ssä annetut arvot ohittavat muut (miettimisaika, vahvuusluku, pelimäärä). Jos joku arvo on antamatta, käytetään lomakkeella olevaa (miettimisaika) tai tyhjää (pelimäärä).
+Huom! CSV:ssä annetut arvot ohittavat muut (miettimisaika, vahvuusluku, pelimäärä). Jos miettimisaika on antamatta, käytetään lomakkeelta valittua ja pelimäärän puuttuessa käytetään tyhjää.
  
 * yhden ottelun tulos, käytettävissä vain vaihtoehdossa a. Tulos valitaan valintapainikkeista: 0 = tappio, 1/2 = tasapeli ja 1 = voitto ja laskelmat päivittyvät sitä mukaa kun kentissä liikutaan.
 
-Pikashakin tulokset on paras syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
+Pikashakin tulokset on helpointa syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
 
-Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske uusi SELO/PELO -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot, jonka jälkeen niitä voidaan tarvittaessa muokata ennen uutta laskentaa.
+Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske uusi SELO/PELO -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot, jonka jälkeen niitä voidaan tarvittaessa muokata ennen uutta laskentaa. Kentässä voi myös käyttää komentoja test ja clear. Komento test lisää testimateriaalia Vastustajat-listaan ja clear nollaa kaiken syötteen ja näytön kentät.
 
 Painonapit:
-* "Laske uusi SELO" tai "Laske uusi PELO" eli vahvuusluvun laskenta
-* "Käytä uutta SELOa jatkolaskennassa" tai "Käytä uutta PELOa jatkolaskennassa", joka kopioi lasketun vahvuusluvun ja pelimäärän syötekenttiin uutta laskentaa varten tai jos vielä ei ollut laskettu, niin kopioi uuden pelaajan tiedot laskentaa varten: vahvuusluku 1525 ja pelimäärä 0.
+* "Laske uusi SELO" tai "Laske vahvuusluku" eli vahvuusluvun laskenta
+* "Käytä tulosta jatkolaskennassa" kopioi lasketun vahvuusluvun ja pelimäärän syötekenttiin uutta laskentaa varten tai jos vielä ei ollut laskettu, niin kopioi uuden pelaajan tiedot laskentaa varten: vahvuusluku 1525 ja pelimäärä 0.
 
 Menut:
 * Ohjeita
@@ -70,8 +70,8 @@ Edit:
 * Paste (täyttää Vastustajat-historian, ei tarkistusta)
  
 Laskentaa suoritetaan, kun
-- valitaan painike "Laske uusi SELO" tai pikashakin miettimisajalla "Laske uusi PELO"
-- liikutaan yhtä ottelua syötettäessä tuloksen valintapainikkeissa
+- valitaan painike "Laske vahvuusluku"
+- yhtä ottelua syötettäessä klikataan jotain tuloksen valintapainiketta (0, 1/2 tai 1)
 - painetaan Enter vastustajien vahvuuslukujen syöttökentässä
 
 Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ottelun tulosta varten varattuja valintapainikkeita ei kuitenkaan käytetä silloin kun, syötetään useamman matsin tulos kerralla.

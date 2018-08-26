@@ -74,7 +74,7 @@ Laskentaa suoritetaan, kun
 - yhtä ottelua syötettäessä klikataan jotain tuloksen valintapainiketta (0, 1/2 tai 1)
 - painetaan Enter vastustajien vahvuuslukujen syöttökentässä
 
-Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ottelun tulosta varten varattuja valintapainikkeita ei kuitenkaan käytetä silloin kun, syötetään useamman matsin tulos kerralla.
+Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ottelun tulosta varten varattuja valintapainikkeita ei kuitenkaan käytetä silloin kun syötetään useamman matsin tulos kerralla.
 
 Virhetarkastukset:
 - SELO-lukujen oltava välillä kokonaisluku 1000-2999
@@ -83,6 +83,7 @@ Virhetarkastukset:
 - (b) onko annettu muita merkkejä kuin +, - ja = tuloksia syötettäessä
 - (c) turnauksen pistemäärän oltava vähintään nolla ja enintään annettujen vastustajien lukumäärä
 - (c) annetuissa vahvuusluvuissa ei saa antaa tulosta, koska pistemäärä oli jo annettu
+- (d) CSV-formaatissa ei saa olla liikaa pilkkuja ja vaadittavat tiedot on annettava (vähintään oma selo ja vastustajat tuloksineen)
 
 Tulostiedot:
 - uusi vahvuusluku
@@ -104,7 +105,6 @@ Kahden tai useamman ottelun tulos voidaan antaa eri tavoilla
 - a) Tulokset vahvuuslukujen yhteydessä, esim. +1622 -1880 =1633 +1717
 - b) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 - c) CSV-formaatissa, jossa tulokset tavalla a tai b, esim. jos oma selo on 1521, niin 1521,2.5 1622 1880 1633 1717
-
 
 Ohjelman asennus:
 Windows 7/10: Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä projekti uudestaan Visual Studiossa.

@@ -52,10 +52,10 @@ Huom! CSV:ssä annetut arvot ohittavat muut (miettimisaika, vahvuusluku, pelimä
 
 Pikashakin tulokset on helpointa syöttää formaatissa c eli pistemäärä pelo pelo pelo pelo ... jolloin laskenta tehdään yhdellä kertaa kaikkien otteluiden odotustuloksien summaa käyttäen.
 
-Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske uusi SELO/PELO -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot, jonka jälkeen niitä voidaan tarvittaessa muokata ennen uutta laskentaa. Kentässä voi myös käyttää komentoja test ja clear. Komento test lisää testimateriaalia Vastustajat-listaan ja clear nollaa kaiken syötteen ja näytön kentät.
+Vastustajan SELO-kenttä muistaa laskennassa käytetyt syötteet, jos siinä kentässä on painettu Enter tai on klikattu Laske vahvuusluku -painiketta. Listasta on helppo valita uudestaan aiemmin käytetyt tiedot, jonka jälkeen niitä voidaan tarvittaessa muokata ennen uutta laskentaa. Kentässä voi myös käyttää komentoja test ja clear. Komento test lisää testimateriaalia Vastustajat-listaan ja clear nollaa kaiken syötteen ja näytön kentät.
 
 Painonapit:
-* "Laske uusi SELO" tai "Laske vahvuusluku" eli vahvuusluvun laskenta
+* "Laske vahvuusluku" eli vahvuusluvun laskenta
 * "Käytä tulosta jatkolaskennassa" kopioi lasketun vahvuusluvun ja pelimäärän syötekenttiin uutta laskentaa varten tai jos vielä ei ollut laskettu, niin kopioi uuden pelaajan tiedot laskentaa varten: vahvuusluku 1525 ja pelimäärä 0.
 
 Menut:
@@ -107,12 +107,11 @@ Kahden tai useamman ottelun tulos voidaan antaa eri tavoilla
 
 
 Ohjelman asennus:
-Windows 7/10: Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja suorita setup.exe publish-hakemistossa. Tai käännä projekti uudestaan Visual Studiossa.
-Koko projektin voi ladata komennolla (kunhan git on asennettu): git clone https://github.com/isuihko/selolaskuri
+Windows 7/10: Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä projekti uudestaan Visual Studiossa.
+Koko projektin voi ladata komennolla: git clone https://github.com/isuihko/selolaskuri
 
 TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttöä
 - järjestä ohjelmaa vielä enemmän objektiläheisemmäksi
-- tee myös uusi versio käyttäen WPF:ää ja XAML:ia
 - käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea (harjoituksen vuoksi)
-- Tee myös web-versio (ASP.NET Core?)
+- Tee myös oikea web-versio (ASP.NET Core?)

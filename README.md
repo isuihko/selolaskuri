@@ -6,7 +6,7 @@ Visual Studio Community 2017 (also 2015), C# and .NET/WinForms, Windows 7 and Wi
 
 New refactored version of Selolaskuri! Now all Selolaskuri's versions are under same Visual Studio's solution:
 - Selolaskuri which is WinForms version and desktop application
-- Selolaskuri.WPF, user interface created with WPF/XAML (WPF is newer than WinForms) and is a desktop application. More in https://github.com/isuihko/SelolaskuriWPF
+- Selolaskuri.WPF, user interface created with WPF/XAML (WPF is newer than WinForms) and is a desktop application. More in folder Selolaskuri.WPF
 - Selolaskuri.XBAP, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable.
 
 To choose, which of the application to run in Visual Studio, go to Solution Explorer, right click Project's name, Set as StartUp Project and then click Start.
@@ -22,7 +22,7 @@ All Selolaskuri versions use the same SelolaskuriLibrary for input checking and 
 
 --
 
-The following text is only in Finnish. There is about the usage of the Finland's SELO calculation application.
+The following text is only in Finnish. There is about the usage of this SELO calculation application.
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo

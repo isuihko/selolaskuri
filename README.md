@@ -4,8 +4,12 @@ Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess rating
 
 Visual Studio Community 2017 (also 2015), C# and .NET/WinForms, Windows 7 and Windows 10
 
-New refactored version of Selolaskuri! Even more modifications coming to make this more object-oriented.
+New refactored version of Selolaskuri! Now all Selolaskuri's versions are under same Visual Studio's solution:
+- Selolaskuri which is WinForms version and desktop application
+- Selolaskuri.WPF, user interface created with WPF/XAML and is a desktop application. More in https://github.com/isuihko/SelolaskuriWPF
+- Selolaskuri.XBAP, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io
 
+<font size="10">
 10.-19.6.2018 -> Version 2.0.0.3. A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
 
 19-23.7.2018 : More code refactoring. Some data was defined twice similary, now uses one definition. The 'kerroin' which is shown in form, is now calculated from the initial 'selo'. Executable and window captures of version 2.0.0.4, 19.7.2018. More data hiding.
@@ -29,6 +33,11 @@ New refactored version of Selolaskuri! Even more modifications coming to make th
 20.8.2018: Adds usage of half character "1/2" in chess results and new unit tests for that.
 
 22.8.2018: Small changes to texts, e.g. "Laske uusi SELO" -> "Laske vahvuusluku" so that there is less "SELO"-"PELO" text changing when thinking time is changes.
+
+26.8.2018: Moved moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same solution. To choose run this program in Visual Studio, go to Solution Explorer, right click Selolaskuri.WPF and choose Set as StartUp Project and then click Start.
+
+All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 76 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
+</font>
 
 --
 

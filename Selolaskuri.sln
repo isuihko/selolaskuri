@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selolaskuri.Tests", "Selola
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelolaskuriLibrary", "SelolaskuriLibrary\SelolaskuriLibrary.csproj", "{86A9E853-8418-4145-87E4-CA5145D259E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selolaskuri.WPF", "Selolaskuri.WPF\Selolaskuri.WPF.csproj", "{1190088A-8141-4B0C-A233-06A9DB113D74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selolaskuri.XBAP", "Selolaskuri.XBAP\Selolaskuri.XBAP.csproj", "{6AA3F5DB-1593-464A-BB44-10675EDF8E1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{86A9E853-8418-4145-87E4-CA5145D259E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A9E853-8418-4145-87E4-CA5145D259E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A9E853-8418-4145-87E4-CA5145D259E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1190088A-8141-4B0C-A233-06A9DB113D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1190088A-8141-4B0C-A233-06A9DB113D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1190088A-8141-4B0C-A233-06A9DB113D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1190088A-8141-4B0C-A233-06A9DB113D74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AA3F5DB-1593-464A-BB44-10675EDF8E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AA3F5DB-1593-464A-BB44-10675EDF8E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AA3F5DB-1593-464A-BB44-10675EDF8E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AA3F5DB-1593-464A-BB44-10675EDF8E1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -74,7 +74,7 @@ Laskentaa suoritetaan, kun
 - yhtä ottelua syötettäessä klikataan jotain tuloksen valintapainiketta (0, 1/2 tai 1)
 - painetaan Enter vastustajien vahvuuslukujen syöttökentässä
 
-Kaikki tarvittava tieto on annettava ennen kuin voidaan laskea. Yksittäisen ottelun tulosta varten varattuja valintapainikkeita ei kuitenkaan käytetä silloin kun syötetään useamman matsin tulos kerralla.
+Kaikki tarvittava tieto on annettava laskentaa. Yksittäisen ottelun tulosta varten varattuja valintapainikkeita ei käytetä silloin kun syötetään useamman matsin tulos kerralla.
 
 Virhetarkastukset:
 - SELO-lukujen oltava välillä kokonaisluku 1000-2999
@@ -82,7 +82,7 @@ Virhetarkastukset:
 - (a) jos on annettu yksi SELO eli on vain yksi vastustaja, niin ottelun tulos on annettava valintapainikkeilla 0, 1/2 ja 1
 - (b) onko annettu muita merkkejä kuin +, - ja = tuloksia syötettäessä
 - (c) turnauksen pistemäärän oltava vähintään nolla ja enintään annettujen vastustajien lukumäärä
-- (c) annetuissa vahvuusluvuissa ei saa antaa tulosta, koska pistemäärä oli jo annettu
+- (c) annetuissa vahvuusluvuissa ei saa antaa tulosta, jos turnauksen pistemäärä oli annettu
 - (d) CSV-formaatissa ei saa olla liikaa pilkkuja ja vaadittavat tiedot on annettava (vähintään oma selo ja vastustajat tuloksineen)
 
 Tulostiedot:
@@ -92,7 +92,7 @@ Tulostiedot:
 - vahvuusluvun vaihteluväli, kun tulokset syötetty tavalla b
 - vastustajien keskivahvuus
 - turnauksen tulos, joka voi olla esim. yhden ottelun tapauksessa  0,5 / 1  ja muutoin vaikkapa 2 / 5
-- piste-ero, kun laskettu yhden ottelun tuloksella (a)
+- piste-ero, kun laskettu yhden ottelun tuloksella (a) tai piste-ero turnauksen keskivahvuuteen
 - odotustulos, kun laskettu yhden ottelun tulos (a) tai odotustuloksien summa (b ja c) paitsi jos laskettiin uuden pelaajan vahvuuslukua, jolloin summaa ei näytetä
 
 Jos syötetään yhden ottelun tulosta, niin se voidaan tehdä:
@@ -112,6 +112,6 @@ Koko projektin voi ladata komennolla: git clone https://github.com/isuihko/selol
 
 TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
 - vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttöä
-- järjestä ohjelmaa vielä enemmän objektiläheisemmäksi
-- käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentoja niin, että niitä voi hakea (harjoituksen vuoksi)
+- siirrä merkkijonovakioita kirjastoon SelolaskuriLibrary, esim. ohjeikkunan tekstit, jotka ovat samat kaikissa versioissa
+- käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentaa niin, että niitä voi hakea (harjoituksen vuoksi)
 - Tee myös oikea web-versio (ASP.NET Core?)

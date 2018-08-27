@@ -13,9 +13,9 @@ If you've downloaded all source codes, you can choose, which of the application 
 
 ------
 
-The following text about the usage of applications is only in Finnish.
+The following text about the usage of application is only in Finnish.
 
-# OHJEET
+## OHJEET
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo

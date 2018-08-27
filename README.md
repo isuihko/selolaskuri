@@ -116,7 +116,8 @@ All Selolaskuri versions use the same SelolaskuriLibrary for input checking and 
 
 TODO
 - create a real web version with ASP.NET Core (current xbap version has limitations, requires IE)
-- move constant strings into SelolaskuriLibrary (e.g. instruction window)
 - more calculations (suorituslukulaskenta)
 - use SQL database as an exercise e.g. to store calculations
+- create constant strings into SelolaskuriLibrary (e.g. instruction window)
+- fix "Tietoa ohjelmasta" window texts, which has wrong link (repository "SelolaskuriWPF" does not exist anymore) and you can now find source codes of XBAP/web version
 

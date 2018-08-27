@@ -244,8 +244,8 @@ namespace Selolaskuri
         // --------------------------------------------------------------------------------
         // Painikkeiden toiminta
         // --------------------------------------------------------------------------------
-        //    Laske uusi SELO  (pikashakissa Laske uusi PELO)
-        //    Käytä uutta SELOa jatkolaskennassa
+        //    Laske vahvuusluku
+        //    Käytä tulosta jatkolaskennassa
 
         // Suoritetaan laskenta -button
         private void Laske_btn_Click(object sender, EventArgs e)
@@ -476,8 +476,6 @@ namespace Selolaskuri
 
         // --------------------------------------------------------------------------------
         // Miettimisajan valinnan mukaan tekstit: SELO (pidempi peli) vai PELO (pikashakki)
-        //
-        // XXX: Hm... onko liian monta vaihdettavaa otsikkokenttää? Esim. Laske uusi SELO -> Laske uusi vahvuusluku
         // --------------------------------------------------------------------------------
         private void vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum suunta)
         {
@@ -644,7 +642,7 @@ namespace Selolaskuri
                 //   test   tyhjentää kaikki syötekentät ja laittaa vastustajanSelo_comboBox:iin testausta varten aineistoa
                 if (vastustajanSelo_comboBox.Text.Equals("clear")) {
                     // Huom! Jättää muistiin aiemmin lasketut vahvuusluvun ja pelimäärän, jolloin
-                    // painike Käytä uutta SELOa jatkolaskennassa voi hakea ne (ei siis palauta 1525,0)
+                    // painike Käytä tulosta jatkolaskennassa voi hakea ne (ei siis palauta 1525,0)
                     TyhjennaSyotteet();
                     TyhjennaTuloskentat();
 

@@ -2,27 +2,20 @@
 
 Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess ratings - My hobby project (I'm also chess player)
 
-Visual Studio Community 2017 (also 2015), C# and .NET/WinForms, Windows 7 and Windows 10
+Visual Studio Community 2017 (also 2015), C# and .NET, Windows 7 and Windows 10
 
-New refactored version of Selolaskuri! Now all Selolaskuri's versions are under same Visual Studio's solution:
-- Selolaskuri which is WinForms version and desktop application
-- Selolaskuri.WPF, user interface created with WPF/XAML (WPF is newer than WinForms) and is a desktop application. More in folder Selolaskuri.WPF
-- Selolaskuri.XBAP, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable.
+Now all Selolaskuri's versions are under same Visual Studio's solution:
+- **Selolaskuri** which is WinForms version and desktop application, can be installed into Windows computer.
+- **Selolaskuri.WPF**, user interface created with WPF/XAML (WPF is newer than WinForms) and is also a desktop application, can be installed into Windows computer. More in folder Selolaskuri.WPF.
+- **Selolaskuri.XBAP**, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable which can be run with IE.
 
-To choose, which of the application to run in Visual Studio, go to Solution Explorer, right click Project's name, Set as StartUp Project and then click Start.
+If you've downloaded all source codes, you can choose, which of the application to run in Visual Studio: in Solution Explorer right click Project's name, choose Set as StartUp Project and then click Start.
 
-Version history highlights:
-- 10.-19.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
-- 4.8.2018: Added support for CSV format (comma-separated values). Also Java version is up-to-date.
-- 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.
-- 20.8.2018: Adds usage of half character "1/2" in chess results. Added new unit tests for that.
-- 26.8.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution.
+------
 
-All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 76 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
+The following text about the usage of applications is only in Finnish.
 
---
-
-The following text is only in Finnish. There is about the usage of this SELO calculation application.
+# OHJEET
 
 Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki.net/cgi-bin/selo
 - SELO on Suomen kansallinen shakin vahvuusluku, esim. https://fi.wikipedia.org/wiki/Elo-luku#Suomen_Elo
@@ -110,8 +103,20 @@ Ohjelman asennus:
 Windows 7/10: Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä projekti uudestaan Visual Studiossa.
 Koko projektin voi ladata komennolla: git clone https://github.com/isuihko/selolaskuri
 
-TODO: (listalla pitkään ollut automaattinen testaus on toteutettu 10.6.2018)
-- vielä hieman lisälaskentaa (suorituslukulaskenta) sekä tarkista laskennan apumuuttujien käyttöä
-- siirrä merkkijonovakioita kirjastoon SelolaskuriLibrary, esim. ohjeikkunan tekstit, jotka ovat samat kaikissa versioissa
-- käytä SQL-tietokantaa jollain tavalla, vaikka tallentamaan laskentaa niin, että niitä voi hakea (harjoituksen vuoksi)
-- Tee myös oikea web-versio (ASP.NET Core?)
+------
+
+Version history highlights:
+- 10.-19.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
+- 4.8.2018: Added support for CSV format (comma-separated values). Also Java version is up-to-date.
+- 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.
+- 20.8.2018: Adds usage of half character "1/2" in chess results. Added new unit tests for that.
+- 26.8.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution.
+
+All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 76 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
+
+TODO
+- create a real web version with ASP.NET Core (current xbap version has limitations, requires IE)
+- move constant strings into SelolaskuriLibrary (e.g. instruction window)
+- more calculations (suorituslukulaskenta)
+- use SQL database as an exercise e.g. to store calculations
+

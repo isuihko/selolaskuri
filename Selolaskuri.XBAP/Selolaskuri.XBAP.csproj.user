@@ -4,4 +4,14 @@
     <StartURL>C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.XBAP\bin\Debug\Selolaskuri.xbap</StartURL>
     <StartArguments>-debug  "C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.XBAP\bin\Debug\Selolaskuri.xbap"</StartArguments>
   </PropertyGroup>
+  <PropertyGroup>
+    <PublishUrlHistory />
+    <InstallUrlHistory />
+    <SupportUrlHistory />
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
 </Project>

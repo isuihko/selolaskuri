@@ -12,6 +12,14 @@ namespace Selolaskuri.XBAP {
 
             // Set default here. If set in MainWindow.xaml, would call Checked routine too early, before the window is ready.
             miettimisaika_vah90_btn.IsChecked = true;
+
+            // Clipboard can't be used in XBAP/web version or can it?
+            cutVastustajatToolStripMenuItem.IsEnabled = false;
+            copyVastustajatToolStripMenuItem.IsEnabled = false;
+            pasteVastustajatToolStripMenuItem.IsEnabled = false;
+
+            // Can't exit the web version, but you can close the window
+            suljeToolStripMenuItem.IsEnabled = false;
         }
     }
 }

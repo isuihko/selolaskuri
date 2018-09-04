@@ -11,6 +11,39 @@ using System.Windows.Forms;
 
 namespace SelolaskuriLibrary {
     public class FormOperations {
+
+        public string[] TestaustaVartenVastustajia = {
+            // Add some data (uncomplete and complete) to help running couple of test cases for window captures
+            "5,1996,,10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684",
+            "5,1996,,10½ 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684",
+
+            // Also Miettimisaika enint. 10 min, nykyinen SELO 1996, pelimäärä tyhjä
+            "10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684",
+
+            "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966",
+            // Also Miettimisaika väh. 90 min, nykyinen SELO 1525, pelimäärä 0
+            "+1525 +1441 -1973 +1718 -1784 -1660 -1966",
+
+            "90,1683,2,1973,0",
+            // Also Miettimisaika väh. 90 min, nykyinen SELO 1683, pelimäärä 2, ottelun tulos 0=tappio
+            "1973",
+
+            "90,1713,3,1718,1",
+
+            "90,1713,3,1718,½",
+
+            // Lisää Joukkuepikashakin SM-kisoista otteluita
+            // Esimerkki Joukkuepikashakin SM 2018 alkukilpailut, alkukilpailuryhmä C  4.8.2018, LauttSSK 1 pöytä 1
+            // Kilpailuryhmä C: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+            "5,2180,2054,14.5 1914 2020 1869 2003 2019 1979 2131 2161 2179 2392 1590 1656 1732 1944 1767 1903 1984 2038 2083 2594 2324 1466 1758",
+            // Esimerkki Joukkuepikashakin SM 2018 alkukilpailut, alkukilpailuryhmä C  4.8.2018, LauttSSK 1 pöytä 4
+            // Kilpailuryhmä C: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+            "5,2045,1225,19.5 1548 1560 1699 1737 1735 1880 1856 2019 2102 2177 1539 1531 1672 1592 1775 1842 1847 1905 1970 2308 1988 1454 1481",
+            // Esimerkki Joukkuepikashakin SM 2018 sijoituskilpailut 5.8.2018, sijoitusryhmä C, LauttSSK 4 pöytä 4
+            // Sijoitusryhmä 5: http://www.shakki.net/cgi-bin/selo?do=turnaus&turnaus_id=5068
+            "5,1262,,11 1623 1591 1318 1560 1493 1417 1343 1493 1524 1227 1716 1490 1454 1479 1329 1429 1444 1289 1576 1445 1280"
+        };
+
         public void NaytaOhjeita()
         {
             MessageBox.Show("Shakin vahvuusluvun laskenta SELO ja PELO"

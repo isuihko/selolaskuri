@@ -111,6 +111,7 @@ Version history highlights:
 - 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.
 - 20.8.2018: Adds usage of half character "1/2" in chess results. Added new unit tests for that.
 - 26.8.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution.
+- 4.9.2018: Moved common information/instruction windows into SelolaskuriLibrary FormOperations.cs
 
 All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 76 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
 
@@ -118,6 +119,4 @@ TODO
 - create a real web version with ASP.NET Core (current xbap version has limitations, requires IE)
 - more calculations (suorituslukulaskenta)
 - use SQL database as an exercise e.g. to store calculations
-- create constant strings into SelolaskuriLibrary (e.g. instruction window)
-- fix "Tietoa ohjelmasta" window texts, which has wrong link (repository "SelolaskuriWPF" does not exist anymore) and you can now find source codes of XBAP/web version
-
+- check what else could be moved into SelolaskuriLibrary

@@ -9,11 +9,19 @@
 //                  defined initial values for MIETTIMISAIKA constants according to minutes they represent
 //   12.8.2018      Added clipboard handling related constants LEIKEKIRJA_*
 //   15.8.2018      Added TULOS_EI_ANNETTU and TURNAUKSEN_TULOS_ANTAMATTA
+//   4.9.2018       enum Selolaskuri Winforms, WPF_XAML and XBAP. Needed in FormOperations.
 //    
 
 namespace SelolaskuriLibrary {
 
     public class Vakiot {
+
+        public enum Selolaskuri_enum {
+            WinForms,
+            WPF_XAML,
+            XBAP                
+        }
+
         // YLEISET VAKIOT, joilla määrätään syötteen rajat
         public const int MIN_SELO       = 1000;
         public const int MAX_SELO       = 2999;

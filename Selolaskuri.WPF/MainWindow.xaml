@@ -52,10 +52,10 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="5" Margin="5">
             <TextBlock Margin="5" Text="Miettimisaika:" />
-            <RadioButton Name="miettimisaika_vah90_btn" Margin="5" Checked="miettimisaika_vah90_btn_Checked" Content="väh. 90 min" />
-            <RadioButton Name="miettimisaika_60_89_btn" Margin="5" Checked="miettimisaika_60_89_btn_Checked" Content="60-89 min" />
-            <RadioButton Name="miettimisaika_11_59_btn" Margin="5" Checked="miettimisaika_11_59_btn_Checked" Content="11-59 min" />
-            <RadioButton Name="miettimisaika_enint10_btn" Margin="5" Checked="miettimisaika_enint10_btn_Checked" Content="enint. 10 min" />
+            <RadioButton Name="miettimisaika_vah90_btn" Margin="5" Checked="Miettimisaika_vah90_btn_Checked" Content="väh. 90 min" />
+            <RadioButton Name="miettimisaika_60_89_btn" Margin="5" Checked="Miettimisaika_60_89_btn_Checked" Content="60-89 min" />
+            <RadioButton Name="miettimisaika_11_59_btn" Margin="5" Checked="Miettimisaika_11_59_btn_Checked" Content="11-59 min" />
+            <RadioButton Name="miettimisaika_enint10_btn" Margin="5" Checked="Miettimisaika_enint10_btn_Checked" Content="enint. 10 min" />
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" Margin="10,5,5,5">
@@ -69,7 +69,7 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Margin="5">
             <TextBlock Name="VastustajanVahvuusluku_teksti" Margin="5,0,0,0" Text="Vastustajat: SELO / SELOt tuloksineen / turnauksen pistemäärä ja SELOt / CSV  Enter=laskenta" />
-            <ComboBox Name="vastustajanSelo_comboBox" Margin="10,5,5,5" KeyDown="vastustajanSelo_comboBox_KeyDown" IsEditable="True" />
+            <ComboBox Name="vastustajanSelo_comboBox" Margin="10,5,5,5" KeyDown="VastustajanSelo_comboBox_KeyDown" IsEditable="True" />
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" Margin="10,0,0,0">
@@ -86,9 +86,9 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="5" Grid.ColumnSpan="5" Margin="5">
             <TextBlock Margin="5" Text="Jos annettu yksi vahvuusluku numerona (esim. 1720), niin tuloksen valinta:" />
-            <RadioButton Name="tulosVoitto_btn" Margin="25,1,5,1" Checked="tulosVoitto_btn_Checked" Content="1 = voitto" />
-            <RadioButton Name="tulosTasapeli_btn" Margin="25,1,5,1" Checked="tulosTasapeli_btn_Checked" Content="½ = tasapeli" />
-            <RadioButton Name="tulosTappio_btn" Margin="25,1,5,1" Checked="tulosTappio_btn_Checked" Content="0 = tappio" />
+            <RadioButton Name="tulosVoitto_btn" Margin="25,1,5,1" Checked="TulosVoitto_btn_Checked" Content="1 = voitto" />
+            <RadioButton Name="tulosTasapeli_btn" Margin="25,1,5,1" Checked="TulosTasapeli_btn_Checked" Content="½ = tasapeli" />
+            <RadioButton Name="tulosTappio_btn" Margin="25,1,5,1" Checked="TulosTappio_btn_Checked" Content="0 = tappio" />
         </StackPanel>
 
         <Button Name="Laske_btn" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="8" FontSize="16" Click="Laske_btn_Click" Content="Laske vahvuusluku" />
@@ -116,22 +116,22 @@
 
         <Button Name="KaytaTulosta_btn" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Margin="8" FontSize="12" Click="KaytaTulosta_btn_Click" Content="Käytä tulosta jatkolaskennassa" />
 
-        <TextBlock Grid.Row="12" Grid.Column="3" HorizontalAlignment="Right" Grid.ColumnSpan="2" FontSize="10" Width="273" Text="C#/.NET/WPF 26.8.2018 github.com/isuihko/Selolaskuri" />
+        <TextBlock Grid.Row="12" Grid.Column="3" HorizontalAlignment="Right" Grid.ColumnSpan="2" FontSize="10" Width="273" Text="C#/.NET/WPF 4.9.2018 github.com/isuihko/Selolaskuri" />
 
 
         <StackPanel Grid.ColumnSpan="2">
             <Menu>
                 <MenuItem Header="_Menu">
-                    <MenuItem Name="ohjeitaToolStripMenuItem" Header="Ohjeita" Click="ohjeitaToolStripMenuItem_Click" />
-                    <MenuItem Name="laskentakaavatToolStripMenuItem" Header="Laskentakaavat" Click="laskentakaavatToolStripMenuItem_Click" />
-                    <MenuItem Name="tietoaOhjelmastaToolStripMenuItem" Header="Tietoa ohjelmasta" Click="tietoaOhjelmastaToolStripMenuItem_Click" />
+                    <MenuItem Name="ohjeitaToolStripMenuItem" Header="Ohjeita" Click="OhjeitaToolStripMenuItem_Click" />
+                    <MenuItem Name="laskentakaavatToolStripMenuItem" Header="Laskentakaavat" Click="LaskentakaavatToolStripMenuItem_Click" />
+                    <MenuItem Name="tietoaOhjelmastaToolStripMenuItem" Header="Tietoa ohjelmasta" Click="TietoaOhjelmastaToolStripMenuItem_Click" />
                     <Separator />
-                    <MenuItem Name="suljeToolStripMenuItem" Header="Sulje ohjelma" Click="suljeToolStripMenuItem_Click"/>
+                    <MenuItem Name="suljeToolStripMenuItem" Header="Sulje ohjelma" Click="SuljeToolStripMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Name="cutVastustajatToolStripMenuItem" Header="Cut (kopioi ja tyhjentää Vastustajat-historian)" Click="cutVastustajatToolStripMenuItem_Click" />
-                    <MenuItem Name="copyVastustajatToolStripMenuItem" Header="Copy (kopioi Vastustajat-historian)" Click="copyVastustajatToolStripMenuItem_Click" />
-                    <MenuItem Name="pasteVastustajatToolStripMenuItem" Header="Paste (täyttää Vastustajat-historian, ei tarkistusta)" Click="pasteVastustajatToolStripMenuItem_Click"/>
+                    <MenuItem Name="cutVastustajatToolStripMenuItem" Header="Cut (kopioi ja tyhjentää Vastustajat-historian)" Click="CutVastustajatToolStripMenuItem_Click" />
+                    <MenuItem Name="copyVastustajatToolStripMenuItem" Header="Copy (kopioi Vastustajat-historian)" Click="CopyVastustajatToolStripMenuItem_Click" />
+                    <MenuItem Name="pasteVastustajatToolStripMenuItem" Header="Paste (täyttää Vastustajat-historian, ei tarkistusta)" Click="PasteVastustajatToolStripMenuItem_Click"/>
                 </MenuItem>
             </Menu>
         </StackPanel>

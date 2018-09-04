@@ -335,9 +335,9 @@ namespace Selolaskuri.WPF {
             //
             // Ei riitä tarkistaa, onko valittu eri kuin näytöllä, koska tekstit on voitu vaihtaa välillä
             if (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
-                vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
+                VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
             else
-                vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+                VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
         // --------------------------------------------------------------------------------
@@ -345,7 +345,7 @@ namespace Selolaskuri.WPF {
         //
         // XXX: Hm... onko liian monta vaihdettavaa otsikkokenttää? Esim. Laske uusi SELO -> Laske uusi vahvuusluku
         // --------------------------------------------------------------------------------
-        private void vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum suunta)
+        private void VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum suunta)
         {
             string alkup, uusi;
 
@@ -364,24 +364,24 @@ namespace Selolaskuri.WPF {
 
         // Miettimisajan valinta (Checked) ei tee laskentaa uusiksi automaattisesti. Vaihtaa vain tekstit SELO <-> PELO.
         // Jos mentäisiin laskentaan, eikä kaikkia tietoja olisi syötetty, saataisiin puuttuvista tiedoista (selo ym.) virheilmoitus.
-        private void miettimisaika_vah90_btn_Checked(object sender, RoutedEventArgs e)
+        private void Miettimisaika_vah90_btn_Checked(object sender, RoutedEventArgs e)
         {
-            vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
-        private void miettimisaika_60_89_btn_Checked(object sender, RoutedEventArgs e)
+        private void Miettimisaika_60_89_btn_Checked(object sender, RoutedEventArgs e)
         {
-            vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
-        private void miettimisaika_11_59_btn_Checked(object sender, RoutedEventArgs e)
+        private void Miettimisaika_11_59_btn_Checked(object sender, RoutedEventArgs e)
         {
-            vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
         }
 
-        private void miettimisaika_enint10_btn_Checked(object sender, RoutedEventArgs e)
+        private void Miettimisaika_enint10_btn_Checked(object sender, RoutedEventArgs e)
         {
-            vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
         }
 
 
@@ -402,19 +402,19 @@ namespace Selolaskuri.WPF {
         // Jos tässä vaiheessa ei ole vielä annettu SELOja, tulee virheilmoitus
         // sekä siirrytään SELO-kenttään.
         // 
-        private void tulosVoitto_btn_Checked(object sender, RoutedEventArgs e)
+        private void TulosVoitto_btn_Checked(object sender, RoutedEventArgs e)
         {
             //tulosVoitto_btn.IsChecked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
-        private void tulosTasapeli_btn_Checked(object sender, RoutedEventArgs e)
+        private void TulosTasapeli_btn_Checked(object sender, RoutedEventArgs e)
         {
             //tulosTasapeli_btn.IsChecked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
-        private void tulosTappio_btn_Checked(object sender, RoutedEventArgs e)
+        private void TulosTappio_btn_Checked(object sender, RoutedEventArgs e)
         {
             //tulosTappio_btn.IsChecked = true;
             LaskeOttelunTulosLomakkeelta();
@@ -505,7 +505,7 @@ namespace Selolaskuri.WPF {
         //
         // Tarkistetaan mahdollisesti annetut komennot: clear, test
         // --------------------------------------------------------------------------------
-        private void vastustajanSelo_comboBox_KeyDown(object sender, KeyEventArgs e)
+        private void VastustajanSelo_comboBox_KeyDown(object sender, KeyEventArgs e)
         {
             // Enter painettu vastustajan selojen tai useammankin syöttämisen jälkeen?
             if (e.Key == Key.Enter) {
@@ -556,57 +556,29 @@ namespace Selolaskuri.WPF {
         // Jos tarvitaan muokattua tekstiä, voitaisiin luoda uusi lomake ohjeikkunaa varten
         // Rivinvaihto: Environment.NewLine (sama kuin "\r\n")
         //
-        private void ohjeitaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        private void OhjeitaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Shakin vahvuusluvun laskenta SELO ja PELO"
-                + Environment.NewLine
-                + Environment.NewLine + "Annettavat tiedot:"
-                + Environment.NewLine
-                + Environment.NewLine + "-Miettimisaika. Pitkä peli (väh. 90 minuuttia) on oletuksena. Jos valitset enint. 10 minuuttia, lasketaan pikashakin vahvuuslukua (PELO)"
-                + Environment.NewLine + "-Oma vahvuusluku"
-                + Environment.NewLine + "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa."
-                + Environment.NewLine + "-Vastustajien vahvuusluvut ja tulokset jollakin neljästä tavasta:"
-                + Environment.NewLine + "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/½/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan."
-                + Environment.NewLine + "   2) Vahvuusluvut tuloksineen, esim. +1505 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio"
-                + Environment.NewLine + "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 1.5 1505 1600 1611 1558, voi käyttää myös desimaalipilkkua 1,5 1505 1600 1611 1558 sekä puolikasta esim. 1½ 1505 1600 1611 1558"
-                + Environment.NewLine + "   4) CSV eli pilkulla erotetut arvot, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5, tai puolikasta eli ½ tai 10½"
-                + Environment.NewLine + "           2: oma selo,ottelut   esim. 1712,2.5 1505 1600 1611 1558 tai 1712,+1505  HUOM! Desimaalipiste!"
-                + Environment.NewLine + "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1505 +1441"
-                + Environment.NewLine + "           4: minuutit,oma selo,pelimaara,ottelut  esim. 90,1525,0,+1525 +1441"
-                + Environment.NewLine + "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli voidaan antaa 1/2, ½ tai 0.5)"
-                + Environment.NewLine + "      Jos miettimisaika on antamatta, käytetään ikkunasta valittua"
-                + Environment.NewLine + "      Jos pelimäärä on antamatta, käytetään tyhjää"
-                + Environment.NewLine
-                + Environment.NewLine + "   HUOM! CSV-formaatissa annettu ottelu on etusijalla ja lomakkeesta käytetään korkeintaan miettimisaikaa (vain jos se puuttui CSV:stä)."
-                + Environment.NewLine
-                + Environment.NewLine + "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla."
-                + Environment.NewLine
-                + Environment.NewLine + "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä uutta SELOa jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
-
-                "Ohjeita");
+            FormOperations fo = new FormOperations();
+            fo.NaytaOhjeita();
         }
 
         //
-        private void laskentakaavatToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        private void LaskentakaavatToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html"
-                + Environment.NewLine + "Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo",
-                "Laskentakaavat");
+            FormOperations fo = new FormOperations();
+            fo.NaytaLaskentakaavat();
         }
 
         //
-        private void tietoaOhjelmastaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        private void TietoaOhjelmastaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Shakin vahvuusluvun laskenta, ohjelmointikieli C#/.NET, käyttöliittymä WPF/XAML"
-                + Environment.NewLine + "Lähdekoodit ja asennusohjelma https://github.com/isuihko/SelolaskuriWPF"
-                + Environment.NewLine + "Myös C#/WinForms-versio https://github.com/isuihko/Selolaskuri"
-                + Environment.NewLine + "sekä Java-versio https://github.com/isuihko/jSelolaskuri",
-                "Tietoa Selolaskurista");
+            FormOperations fo = new FormOperations();
+            fo.NaytaTietoaOhjelmasta(Vakiot.Selolaskuri_enum.WPF_XAML);
         }
 
         // Lopetuksen varmistaminen
         //      Valittu Menu->Sulje ohjelma
-        private void suljeToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        private void SuljeToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             // App.xaml :  ShutdownMode="OnExplicitShutdown"
             // calls Window_Closing(), where exiting is confirmed and can be cancelled
@@ -635,15 +607,15 @@ namespace Selolaskuri.WPF {
         // Edit-menu käsittelee vastustajanSelo-kentän listaa eli historiatietoja
 
         // Tyhjentää Vastustajat-historiatiedot
-        private void cutVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CutVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // At first copy into clipboard
-            copyVastustajatToolStripMenuItem_Click(sender, e);
+            CopyVastustajatToolStripMenuItem_Click(sender, e);
             TyhjennaVastustajat();
         }
 
         // Kopioi leikekirjaan Vastustajat-historian
-        private void copyVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string leikekirja = "";
             foreach (var item in vastustajanSelo_comboBox.Items)
@@ -661,7 +633,7 @@ namespace Selolaskuri.WPF {
         // Ja osa on tarkoitettu käytettäväksi erillisesti annetun miettimisajan, oman vahvuusluvun ja pelimäärän kanssa.
         //
         // Tekstistä poistetaan ylimääräiset välilyönnit.
-        private void pasteVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PasteVastustajatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Haetaan data leikekirjasta
             IDataObject iData = Clipboard.GetDataObject();

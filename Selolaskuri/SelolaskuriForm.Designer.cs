@@ -189,9 +189,9 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F);
             this.label6.Location = new System.Drawing.Point(285, 530);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(211, 12);
+            this.label6.Size = new System.Drawing.Size(206, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 26.8.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 4.9.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -322,7 +322,7 @@
             this.miettimisaika_vah90_btn.TabStop = true;
             this.miettimisaika_vah90_btn.Text = "väh. 90 min";
             this.miettimisaika_vah90_btn.UseVisualStyleBackColor = true;
-            this.miettimisaika_vah90_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_vah90_btn_CheckedChanged);
+            this.miettimisaika_vah90_btn.CheckedChanged += new System.EventHandler(this.Miettimisaika_vah90_btn_CheckedChanged);
             // 
             // miettimisaika_60_89_btn
             // 
@@ -334,7 +334,7 @@
             this.miettimisaika_60_89_btn.TabStop = true;
             this.miettimisaika_60_89_btn.Text = "60-89 min";
             this.miettimisaika_60_89_btn.UseVisualStyleBackColor = true;
-            this.miettimisaika_60_89_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_60_89_btn_CheckedChanged);
+            this.miettimisaika_60_89_btn.CheckedChanged += new System.EventHandler(this.Miettimisaika_60_89_btn_CheckedChanged);
             // 
             // miettimisaika_11_59_btn
             // 
@@ -346,7 +346,7 @@
             this.miettimisaika_11_59_btn.TabStop = true;
             this.miettimisaika_11_59_btn.Text = "11-59 min";
             this.miettimisaika_11_59_btn.UseVisualStyleBackColor = true;
-            this.miettimisaika_11_59_btn.CheckedChanged += new System.EventHandler(this.miettimisaika_11_59_btn_CheckedChanged);
+            this.miettimisaika_11_59_btn.CheckedChanged += new System.EventHandler(this.Miettimisaika_11_59_btn_CheckedChanged);
             // 
             // miettimisaika_enint10_Button
             // 
@@ -358,7 +358,7 @@
             this.miettimisaika_enint10_Button.TabStop = true;
             this.miettimisaika_enint10_Button.Text = "enint. 10 min";
             this.miettimisaika_enint10_Button.UseVisualStyleBackColor = true;
-            this.miettimisaika_enint10_Button.Click += new System.EventHandler(this.miettimisaika_enint10_btn_CheckedChanged);
+            this.miettimisaika_enint10_Button.Click += new System.EventHandler(this.Miettimisaika_enint10_btn_CheckedChanged);
             // 
             // panel1
             // 
@@ -381,7 +381,7 @@
             this.tulosVoitto_btn.TabStop = true;
             this.tulosVoitto_btn.Text = "1 = voitto";
             this.tulosVoitto_btn.UseVisualStyleBackColor = true;
-            this.tulosVoitto_btn.CheckedChanged += new System.EventHandler(this.tulosVoitto_btn_CheckedChanged);
+            this.tulosVoitto_btn.CheckedChanged += new System.EventHandler(this.TulosVoitto_btn_CheckedChanged);
             // 
             // tulosTasapeli_btn
             // 
@@ -393,7 +393,7 @@
             this.tulosTasapeli_btn.TabStop = true;
             this.tulosTasapeli_btn.Text = "½ = tasapeli";
             this.tulosTasapeli_btn.UseVisualStyleBackColor = true;
-            this.tulosTasapeli_btn.CheckedChanged += new System.EventHandler(this.tulosTasapeli_btn_CheckedChanged);
+            this.tulosTasapeli_btn.CheckedChanged += new System.EventHandler(this.TulosTasapeli_btn_CheckedChanged);
             // 
             // tulosTappio_btn
             // 
@@ -405,7 +405,7 @@
             this.tulosTappio_btn.TabStop = true;
             this.tulosTappio_btn.Text = "0 = tappio";
             this.tulosTappio_btn.UseVisualStyleBackColor = true;
-            this.tulosTappio_btn.CheckedChanged += new System.EventHandler(this.tulosTappio_btn_CheckedChanged);
+            this.tulosTappio_btn.CheckedChanged += new System.EventHandler(this.TulosTappio_btn_CheckedChanged);
             // 
             // vaihteluvali_out
             // 
@@ -432,7 +432,7 @@
             this.vastustajanSelo_comboBox.Name = "vastustajanSelo_comboBox";
             this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(475, 21);
             this.vastustajanSelo_comboBox.TabIndex = 3;
-            this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vastustajanSelo_combobox_KeyDown);
+            this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VastustajanSelo_combobox_KeyDown);
             // 
             // menuStrip1
             // 
@@ -463,21 +463,21 @@
             this.ohjeitaToolStripMenuItem.Name = "ohjeitaToolStripMenuItem";
             this.ohjeitaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.ohjeitaToolStripMenuItem.Text = "Ohjeita";
-            this.ohjeitaToolStripMenuItem.Click += new System.EventHandler(this.ohjeitaToolStripMenuItem_Click);
+            this.ohjeitaToolStripMenuItem.Click += new System.EventHandler(this.OhjeitaToolStripMenuItem_Click);
             // 
             // laskentakaavatToolStripMenuItem
             // 
             this.laskentakaavatToolStripMenuItem.Name = "laskentakaavatToolStripMenuItem";
             this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
-            this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.laskentakaavatToolStripMenuItem_Click);
+            this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.LaskentakaavatToolStripMenuItem_Click);
             // 
             // tietoaOhjelmastaToolStripMenuItem
             // 
             this.tietoaOhjelmastaToolStripMenuItem.Name = "tietoaOhjelmastaToolStripMenuItem";
             this.tietoaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.tietoaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
-            this.tietoaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.tietoaOhjelmastaToolStripMenuItem_Click);
+            this.tietoaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.TietoaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -489,7 +489,7 @@
             this.suljeToolStripMenuItem.Name = "suljeToolStripMenuItem";
             this.suljeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
-            this.suljeToolStripMenuItem.Click += new System.EventHandler(this.suljeToolStripMenuItem_Click);
+            this.suljeToolStripMenuItem.Click += new System.EventHandler(this.SuljeToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -506,21 +506,21 @@
             this.cutVastustajatToolStripMenuItem.Name = "cutVastustajatToolStripMenuItem";
             this.cutVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
             this.cutVastustajatToolStripMenuItem.Text = "Cut (kopioi ja tyhjentää Vastustajat-historian)";
-            this.cutVastustajatToolStripMenuItem.Click += new System.EventHandler(this.cutVastustajatToolStripMenuItem_Click);
+            this.cutVastustajatToolStripMenuItem.Click += new System.EventHandler(this.CutVastustajatToolStripMenuItem_Click);
             // 
             // copyVastustajatToolStripMenuItem
             // 
             this.copyVastustajatToolStripMenuItem.Name = "copyVastustajatToolStripMenuItem";
             this.copyVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
             this.copyVastustajatToolStripMenuItem.Text = "Copy (kopioi Vastustajat-historian)";
-            this.copyVastustajatToolStripMenuItem.Click += new System.EventHandler(this.copyVastustajatToolStripMenuItem_Click);
+            this.copyVastustajatToolStripMenuItem.Click += new System.EventHandler(this.CopyVastustajatToolStripMenuItem_Click);
             // 
             // pasteVastustajatToolStripMenuItem
             // 
             this.pasteVastustajatToolStripMenuItem.Name = "pasteVastustajatToolStripMenuItem";
             this.pasteVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
             this.pasteVastustajatToolStripMenuItem.Text = "Paste (täyttää Vastustajat-historian, ei tarkistusta)";
-            this.pasteVastustajatToolStripMenuItem.Click += new System.EventHandler(this.pasteVastustajatToolStripMenuItem_Click);
+            this.pasteVastustajatToolStripMenuItem.Click += new System.EventHandler(this.PasteVastustajatToolStripMenuItem_Click);
             // 
             // UudenPelaajanLaskenta_txt
             // 

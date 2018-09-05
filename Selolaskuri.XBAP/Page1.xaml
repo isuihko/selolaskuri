@@ -115,7 +115,7 @@
 
         <Button Name="KaytaTulosta_btn" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Margin="8" FontSize="12" Click="KaytaTulosta_btn_Click" Content="Käytä tulosta jatkolaskennassa" />
 
-        <TextBlock Grid.Row="12" Grid.Column="3" HorizontalAlignment="Right" Grid.ColumnSpan="2" FontSize="10" Width="250" Text="C#/.NET/WPF/XBAP 4.9.2018 https://isuihko.github.io/" />
+        <TextBlock Name="Versio" Grid.Row="12" Grid.Column="3" HorizontalAlignment="Right" Grid.ColumnSpan="2" FontSize="10" Text="(add version string in .cs file)"/>
 
 
         <StackPanel Grid.ColumnSpan="2">

@@ -13,7 +13,8 @@ using System.Windows.Input;
 namespace Selolaskuri.WPF {
     public partial class MainWindow : Window {
 
-        private SelolaskuriOperations so = new SelolaskuriOperations();   //  Check the input data, calculate the results
+        private SelolaskuriOperations so = new SelolaskuriOperations();                   //  Check the input data, calculate the results
+        private FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.WPF_XAML); // information and instruction windows etc.
 
         // --------------------------------------------------------------------------------
         // LOMAKKEEN KENTTIEN ARVOJEN HAKEMINEN
@@ -466,8 +467,6 @@ namespace Selolaskuri.WPF {
         // Suoritetaan kun kirjoitetaan sana "test" (ilman lainausmerkkejä) vastustajien kenttään ja painetaan Enter
         private void TallennaTestaustaVartenVastustajia()
         {
-            FormOperations fo = new FormOperations();
-
             TyhjennaVastustajat();
 
             // Tietoa testiaineistosta: SelolaskuriLibrary FormOperations.cs
@@ -533,22 +532,19 @@ namespace Selolaskuri.WPF {
         //
         private void OhjeitaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            FormOperations fo = new FormOperations();
             fo.NaytaOhjeita();
         }
 
         //
         private void LaskentakaavatToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            FormOperations fo = new FormOperations();
             fo.NaytaLaskentakaavat();
         }
 
         //
         private void TietoaOhjelmastaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            FormOperations fo = new FormOperations();
-            fo.NaytaTietoaOhjelmasta(Vakiot.Selolaskuri_enum.WPF_XAML);
+            fo.NaytaTietoaOhjelmasta();
         }
 
         // Lopetuksen varmistaminen

@@ -17,9 +17,9 @@ namespace SelolaskuriLibrary {
     public class Vakiot {
 
         public enum Selolaskuri_enum {
-            WinForms,
+            WINFORMS,
             WPF_XAML,
-            XBAP                
+            XBAP_WEB             
         }
 
         // YLEISET VAKIOT, joilla määrätään syötteen rajat

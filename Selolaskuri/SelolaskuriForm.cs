@@ -132,6 +132,8 @@
 // 4.9.2018         - Siirretty ohje- ja tietoikkunat kirjastoon SelolaskuriLibrary.
 //                  - Siirretty myös Vastustajat-kenttään testausta varten laitettavat merkkijonot kirjastoon
 //
+// 5.9.2018         - FormOperations.cs: Ohje- ja tietoikkunoiden tekstit taulukoissa, joista niitä on helpompi muokata
+//
 //
 //
 // TODO: F1 = ohjeikkuna
@@ -149,7 +151,8 @@ namespace Selolaskuri
 {
     public partial class SelolaskuriForm : Form
     {
-        private SelolaskuriOperations so = new SelolaskuriOperations();   //  Check the input data, calculate the results
+        private SelolaskuriOperations so = new SelolaskuriOperations();                   //  Check the input data, calculate the results
+        private FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.WINFORMS); // information and instruction windows etc.
 
         public SelolaskuriForm()
         {
@@ -598,8 +601,6 @@ namespace Selolaskuri
         // Suoritetaan kun kirjoitetaan sana "test" (ilman lainausmerkkejä) vastustajien kenttään ja painetaan Enter
         private void TallennaTestaustaVartenVastustajia()
         {
-            FormOperations fo = new FormOperations();
-
             TyhjennaVastustajat();
 
             // Tietoa testiaineistosta: SelolaskuriLibrary FormOperations.cs
@@ -667,22 +668,19 @@ namespace Selolaskuri
         //
         private void OhjeitaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormOperations fo = new FormOperations();
             fo.NaytaOhjeita();
         }
         
         //
         private void LaskentakaavatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormOperations fo = new FormOperations();
             fo.NaytaLaskentakaavat();
         }
 
         //
         private void TietoaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormOperations fo = new FormOperations();
-            fo.NaytaTietoaOhjelmasta(Vakiot.Selolaskuri_enum.WinForms);
+            fo.NaytaTietoaOhjelmasta();
         }
 
         // Lopetuksen varmistaminen

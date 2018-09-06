@@ -12,7 +12,7 @@ namespace Selolaskuri.WPF {
             // Set default here. If set in MainWindow.xaml, would call Checked routine too early, before the window is ready.
             miettimisaika_vah90_btn.IsChecked = true;
 
-            Versio.Text = "C#/.NET/WPF 5.9.2018 github.com/isuihko/selolaskuri";
+            Versio.Text = "C#/.NET/WPF 6.9.2018 github.com/isuihko/selolaskuri";
         }
     }
 }

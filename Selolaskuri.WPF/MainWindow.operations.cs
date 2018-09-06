@@ -1,12 +1,9 @@
-﻿using SelolaskuriLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-
+using SelolaskuriLibrary;
 
 // This defines same operations than in C#/.NET/WinForms SelolaskuriForm.cs
 
@@ -112,15 +109,15 @@ namespace Selolaskuri.WPF {
         // --------------------------------------------------------------------------------
         // Painikkeiden toiminta
         // --------------------------------------------------------------------------------
-        //    Laske uusi SELO  (pikashakissa Laske uusi PELO)
-        //    Käytä uutta SELOa jatkolaskennassa
+        //    Laske vahvuusluku
+        //    Käytä tulosta jatkolaskennassa
 
-        // Suoritetaan laskenta -button
+        // Laske vahvuusluku -button
         private void Laske_btn_Click(object sender, RoutedEventArgs e)
         {
             if (LaskeOttelunTulosLomakkeelta()) {
                 // Annettu teksti talteen (jos ei ennestään ollut) -> Drop-down Combo box
-                // Tallennus kun klikattu Laske SELO tai painettu enter vastustajan selo-kentässä
+                // Tallennus kun klikattu Laske vahvuusluku tai painettu enter vastustajan selo-kentässä
                 //
                 // Tekstistä on poistettu ylimääräiset välilyönnit ennen tallennusta
                 if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
@@ -343,8 +340,6 @@ namespace Selolaskuri.WPF {
 
         // --------------------------------------------------------------------------------
         // Miettimisajan valinnan mukaan tekstit: SELO (pidempi peli) vai PELO (pikashakki)
-        //
-        // XXX: Hm... onko liian monta vaihdettavaa otsikkokenttää? Esim. Laske uusi SELO -> Laske uusi vahvuusluku
         // --------------------------------------------------------------------------------
         private void VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum suunta)
         {
@@ -389,35 +384,23 @@ namespace Selolaskuri.WPF {
         // --------------------------------------------------------------------------------
         // Ottelun tulos-buttonit
         // --------------------------------------------------------------------------------
+        // Suorita laskenta aina kun tulos-painike on valittu.
         //
-        // XXX: Lasketaanko, kun button on valittu (Checked="tulosVoitto_btn_Checked")
-        // XXX: vai kun siihen siirrytään (GotFocus="tulosVoitto_btn_GotFocus")?
-        //
-        // XXX: Lasketaan vasta kun kenttä valitaan!
-        // XXX: Aiemmin laskettiin jo siirryttäessä ja laitettiin erikseen painike aktiiviseksi.
-        //
-        // Jos olisi GotFocus:
-        //     Ennen laskentaa aseta nykyinen painike valituksi, koska sitä ei
-        //     muutoin vielä oltu valittu kenttään siirryttäessä.
-        //
-        // Jos tässä vaiheessa ei ole vielä annettu SELOja, tulee virheilmoitus
-        // sekä siirrytään SELO-kenttään.
+        // Jos tässä vaiheessa ei ole vielä annettu SELOja (oma ja yksi vastustaja),
+        // tulee virheilmoitus sekä siirrytään kenttään, josta puuttuu tieto.
         // 
         private void TulosVoitto_btn_Checked(object sender, RoutedEventArgs e)
         {
-            //tulosVoitto_btn.IsChecked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
         private void TulosTasapeli_btn_Checked(object sender, RoutedEventArgs e)
         {
-            //tulosTasapeli_btn.IsChecked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
         private void TulosTappio_btn_Checked(object sender, RoutedEventArgs e)
         {
-            //tulosTappio_btn.IsChecked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
@@ -492,12 +475,12 @@ namespace Selolaskuri.WPF {
                 //   test   tyhjentää kaikki syötekentät ja laittaa vastustajanSelo_comboBox:iin testausta varten aineistoa
                 if (vastustajanSelo_comboBox.Text.Equals("clear")) {
                     // Huom! Jättää muistiin aiemmin lasketut vahvuusluvun ja pelimäärän, jolloin
-                    // painike Käytä uutta SELOa jatkolaskennassa voi hakea ne (ei siis palauta 1525,0)
+                    // painike Käytä tulosta jatkolaskennassa voi hakea ne (ei siis palauta 1525,0)
                     TyhjennaSyotteet();
                     TyhjennaTuloskentat();
 
                     // palauta tekstit
-                    //vaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+                    VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
                     return;
 
                 } else if (vastustajanSelo_comboBox.Text.Equals("test")) {
@@ -511,7 +494,7 @@ namespace Selolaskuri.WPF {
                 if (LaskeOttelunTulosLomakkeelta()) {
 
                     // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syöte -> Drop-down combobox
-                    // Tallennus myös, kun klikattu Laske SELO
+                    // Tallennus myös, kun klikattu Laske vahvuusluku
                     if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                         vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
                 }
@@ -627,7 +610,8 @@ namespace Selolaskuri.WPF {
 
                     if (rivi2.Length >= Vakiot.SELO_PITUUS && rivi2.Length <= Vakiot.LEIKEKIRJA_MAX_RIVINPITUUS &&
                         (rivi2[0] == '+' || rivi2[0] == '-' || rivi2[0] == '=' || (rivi2[0] >= '0' && rivi2[0] <= '9')) &&
-                        !vastustajanSelo_comboBox.Items.Contains(rivi2)) {
+                        !vastustajanSelo_comboBox.Items.Contains(rivi2))
+                    {
                         // vanhat tiedot poistetaan vain, jos on kelvollista lisättävää
                         if (lisatytRivit == 0)
                             TyhjennaVastustajat();

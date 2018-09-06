@@ -178,8 +178,7 @@ namespace Selolaskuri
 
             // process opponents field and check if CSV format was used
             //
-            if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text) == false)
-            {
+            if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text) == false) {
                 // poista ylimääräiset välilyönnit, korvaa yhdellä
                 // poista myös välilyönnit pilkun molemmilta puolilta, jos on CSV-formaatti
                 vastustajanSelo_comboBox.Text = so.SiistiVastustajatKentta(vastustajanSelo_comboBox.Text); // .Trim jo tehty
@@ -264,7 +263,7 @@ namespace Selolaskuri
         {
             if (LaskeOttelunTulosLomakkeelta()) { 
                 // Annettu teksti talteen (jos ei ennestään ollut) -> Drop-down Combo box
-                // Tallennus kun klikattu Laske SELO tai painettu enter vastustajan selo-kentässä
+                // Tallennus kun klikattu Laske vahvuusluku tai painettu enter vastustajan selo-kentässä
                 //
                 // Tekstistä on poistettu ylimääräiset välilyönnit ennen tallennusta
                 if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
@@ -291,7 +290,6 @@ namespace Selolaskuri
 
             vastustajanSelo_comboBox.Select();
         }
-
 
         // Näyttää virheen mukaisen ilmoituksen sekä siirtää kursorin kenttään, jossa virhe
         // Virheellisen kentän arvo näytetään punaisella kunnes ilmoitusikkuna kuitataan
@@ -507,7 +505,7 @@ namespace Selolaskuri
         }
 
         // Miettimisajan valinta (Checked) ei tee laskentaa uusiksi automaattisesti. Vaihtaa vain tekstit SELO <-> PELO.
-        // Jos miettimisaika valitaan, eikä kaikkia tietoja ei ole syötetty, saataisiin puuttuvista tiedoista (selo ym.) virheilmoitus.
+        // Jos mentäisiin laskentaan, eikä kaikkia tietoja olisi syötetty, saataisiin puuttuvista tiedoista (selo ym.) virheilmoitus.
         private void Miettimisaika_vah90_btn_CheckedChanged(object sender, EventArgs e)
         {
             VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
@@ -532,28 +530,23 @@ namespace Selolaskuri
         // --------------------------------------------------------------------------------
         // Ottelun tulos-buttonit
         // --------------------------------------------------------------------------------
-        // Suorita laskenta aina kun siirrytään tulos-painikkeeseen.
-        // Ennen laskentaa asetetaan nykyinen painike valituksi, koska sitä ei
-        // muutoin vielä oltu valittu kenttään siirryttäessä.
+        // Suorita laskenta aina kun tulos-painike on valittu.
         //
-        // Jos tässä vaiheessa ei ole vielä annettu SELOja, tulee virheilmoitus
-        // sekä siirrytään SELO-kenttään.
+        // Jos tässä vaiheessa ei ole vielä annettu SELOja (oma ja yksi vastustaja),
+        // tulee virheilmoitus sekä siirrytään kenttään, josta puuttuu tieto.
         // 
         private void TulosVoitto_btn_CheckedChanged(object sender, EventArgs e)
         {
-            //tulosVoitto_btn.Checked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
         private void TulosTasapeli_btn_CheckedChanged(object sender, EventArgs e)
         {
-            //tulosTasapeli_btn.Checked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
         private void TulosTappio_btn_CheckedChanged(object sender, EventArgs e)
         {
-            //tulosTappio_btn.Checked = true;
             LaskeOttelunTulosLomakkeelta();
         }
 
@@ -613,14 +606,13 @@ namespace Selolaskuri
         //
         // Tarkistetaan mahdollisesti annetut komennot: clear, test
         // --------------------------------------------------------------------------------
-        private void VastustajanSelo_combobox_KeyDown(object sender, KeyEventArgs e)
+        private void VastustajanSelo_comboBox_KeyDown(object sender, KeyEventArgs e)
         {
             // Enter painettu vastustajan selojen tai useammankin syöttämisen jälkeen?
             if (e.KeyCode == Keys.Enter) {
 
                 // Prevent beep sound, because Enter is accepted in this form field
                 e.Handled = true;
-                e.SuppressKeyPress = true;
 
                 // Tarkista erikoistapaukset eli mahdolliset komennot
                 //   clear  tyhjentää kaikki syötekentät, myös vastustajanSelo_comboBox:n
@@ -646,13 +638,12 @@ namespace Selolaskuri
                 if (LaskeOttelunTulosLomakkeelta()) {
 
                     // Jos syöte (ja siten laskenta) OK, niin tallenna kentän syöte -> Drop-down combobox
-                    // Tallennus myös, kun klikattu Laske SELO
+                    // Tallennus myös, kun klikattu Laske vahvuusluku
                     if (!vastustajanSelo_comboBox.Items.Contains(vastustajanSelo_comboBox.Text))
                         vastustajanSelo_comboBox.Items.Add(vastustajanSelo_comboBox.Text);
                 }
             }
         }
-
 
         // --------------------------------------------------------------------------------
         // Menu

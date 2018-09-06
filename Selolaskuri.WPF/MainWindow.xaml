@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Selolaskuri.WPF"
         mc:Ignorable="d"
-        Title="Selolaskuri" Height="670" Width="550"
-        MinHeight="670" MinWidth="550"
-        MaxHeight="670" MaxWidth="850"
+        Title="Selolaskuri"
+        Height="670" MinHeight="670" MaxHeight="670"
+        Width="550" MinWidth="550" MaxWidth="850"
         FocusManager.FocusedElement="{Binding ElementName=selo_in}"
         Closing="Window_Closing">
     <Grid>

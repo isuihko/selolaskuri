@@ -21,7 +21,9 @@ namespace Selolaskuri.XBAP {
             // Can't exit the web version, but you can close the window
             suljeToolStripMenuItem.IsEnabled = false;
 
-            Versio.Text = "C#/.NET/WPF/XBAP 5.9.2018 https://isuihko.github.io/";
+            vastustajanSelo_comboBox.Width = 725;
+
+            Versio.Text = "C#/.NET/WPF/XBAP 6.9.2018 https://isuihko.github.io/";
         }
     }
 }

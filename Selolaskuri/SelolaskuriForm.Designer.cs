@@ -191,7 +191,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(206, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 5.9.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 6.9.2018 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -432,7 +432,7 @@
             this.vastustajanSelo_comboBox.Name = "vastustajanSelo_comboBox";
             this.vastustajanSelo_comboBox.Size = new System.Drawing.Size(475, 21);
             this.vastustajanSelo_comboBox.TabIndex = 3;
-            this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VastustajanSelo_combobox_KeyDown);
+            this.vastustajanSelo_comboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VastustajanSelo_comboBox_KeyDown);
             // 
             // menuStrip1
             // 

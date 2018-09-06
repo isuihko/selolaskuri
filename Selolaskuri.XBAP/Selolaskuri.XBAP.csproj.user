@@ -5,7 +5,7 @@
     <StartArguments>-debug  "C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.XBAP\bin\Debug\Selolaskuri.xbap"</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
-    <PublishUrlHistory />
+    <PublishUrlHistory>publish\</PublishUrlHistory>
     <InstallUrlHistory />
     <SupportUrlHistory />
     <UpdateUrlHistory />

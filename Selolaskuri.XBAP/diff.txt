@@ -1,0 +1,83 @@
+$ diff Selolaskuri.WPF/MainWindow.xaml Selolaskuri.XBAP/Page1.xaml
+1c1
+< ﻿<Window x:Class="Selolaskuri.WPF.MainWindow"
+---
+> ﻿<Page x:Class="Selolaskuri.XBAP.Page1"
+6c6
+<         xmlns:local="clr-namespace:Selolaskuri.WPF"
+---
+>         xmlns:local="clr-namespace:Selolaskuri.XBAP"
+10c10
+<         Width="550" MinWidth="550" MaxWidth="850"
+---
+>         Width="750" MinWidth="750" MaxWidth="850"
+12c12
+<         Closing="Window_Closing">
+---
+>         >
+139c139
+< </Window>
+---
+> </Page>
+
+---------------
+
+$ diff Selolaskuri.WPF/MainWindow.xaml.cs Selolaskuri.XBAP/Page1.xaml.cs
+1c1,2
+< ﻿using System.Windows;
+---
+> ﻿
+> using System.Windows.Controls;
+3c4
+< namespace Selolaskuri.WPF {
+---
+> namespace Selolaskuri.XBAP {
+5c6
+<     /// Interaction logic for MainWindow.xaml
+---
+>     /// Interaction logic for Page1.xaml
+7,8c8,9
+<     public partial class MainWindow : Window {
+<         public MainWindow()
+---
+>     public partial class Page1 : Page {
+>         public Page1()
+15c16,26
+<             Versio.Text = "C#/.NET/WPF 6.9.2018 github.com/isuihko/selolaskuri";
+---
+>             // Clipboard can't be used in XBAP/web version or can it?
+>             cutVastustajatToolStripMenuItem.IsEnabled = false;
+>             copyVastustajatToolStripMenuItem.IsEnabled = false;
+>             pasteVastustajatToolStripMenuItem.IsEnabled = false;
+>
+>             // Can't exit the web version, but you can close the window
+>             suljeToolStripMenuItem.IsEnabled = false;
+>
+>             vastustajanSelo_comboBox.Width = 725;
+>
+>             Versio.Text = "C#/.NET/WPF/XBAP 6.9.2018 https://isuihko.github.io/";
+
+---------------
+
+$ diff Selolaskuri.WPF/MainWindow.operations.cs Selolaskuri.XBAP/Page1.operations.cs
+4a5
+> using System.Windows.Controls;
+10,11c11,12
+< namespace Selolaskuri.WPF {
+<     public partial class MainWindow : Window {
+---
+> namespace Selolaskuri.XBAP {
+>     public partial class Page1 : Page {
+14c15
+<         private FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.WPF_XAML); // information and instruction windows etc.
+---
+>         private FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.XBAP_WEB); // information and instruction windows etc.
+539c540
+<             this.Close();
+---
+>             //this.Close();  // XBAP: Close does not exist and can't be called
+542c543
+<         // Lopetuksen varmistaminen
+---
+>         // Lopetuksen varmistaminen  // XBAP: Can't define Closing="Window_Closing", so this is not called
+

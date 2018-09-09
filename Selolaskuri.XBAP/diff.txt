@@ -1,8 +1,8 @@
 $ diff Selolaskuri.WPF/MainWindow.xaml Selolaskuri.XBAP/Page1.xaml
 1c1
-< ﻿<Window x:Class="Selolaskuri.WPF.MainWindow"
+< ?<Window x:Class="Selolaskuri.WPF.MainWindow"
 ---
-> ﻿<Page x:Class="Selolaskuri.XBAP.Page1"
+> ?<Page x:Class="Selolaskuri.XBAP.Page1"
 6c6
 <         xmlns:local="clr-namespace:Selolaskuri.WPF"
 ---
@@ -20,31 +20,29 @@ $ diff Selolaskuri.WPF/MainWindow.xaml Selolaskuri.XBAP/Page1.xaml
 ---
 > </Page>
 
---------------
+
+--------
 
 $ diff Selolaskuri.WPF/MainWindow.xaml.cs Selolaskuri.XBAP/Page1.xaml.cs
-1c1,2
-< ﻿using System.Windows;
+2c2
+< using System.Windows;
 ---
-> ﻿
 > using System.Windows.Controls;
-3c4
+4c4
 < namespace Selolaskuri.WPF {
 ---
 > namespace Selolaskuri.XBAP {
-5c6
+6c6
 <     /// Interaction logic for MainWindow.xaml
 ---
 >     /// Interaction logic for Page1.xaml
-7,8c8,9
+8,9c8,9
 <     public partial class MainWindow : Window {
 <         public MainWindow()
 ---
 >     public partial class Page1 : Page {
 >         public Page1()
-15c16,26
-<             Versio.Text = "C#/.NET/WPF 6.9.2018 github.com/isuihko/selolaskuri";
----
+15a16,27
 >             // Clipboard can't be used in XBAP/web version or can it?
 >             cutVastustajatToolStripMenuItem.IsEnabled = false;
 >             copyVastustajatToolStripMenuItem.IsEnabled = false;
@@ -53,11 +51,17 @@ $ diff Selolaskuri.WPF/MainWindow.xaml.cs Selolaskuri.XBAP/Page1.xaml.cs
 >             // Can't exit the web version, but you can close the window
 >             suljeToolStripMenuItem.IsEnabled = false;
 >
+>             // You can't resize the form field here in XBAP version like in normal WPF/XAML version,
+>             // so set it wider already in startup
 >             vastustajanSelo_comboBox.Width = 725;
 >
->             Versio.Text = "C#/.NET/WPF/XBAP 6.9.2018 https://isuihko.github.io/";
+17c29
+<             Versio.Text = "C#/.NET/WPF 9.9.2018 github.com/isuihko/selolaskuri";
+---
+>             Versio.Text = "C#/.NET/WPF/XBAP 9.9.2018 https://isuihko.github.io/";
 
---------------
+
+--------
 
 $ diff Selolaskuri.WPF/MainWindow.operations.cs Selolaskuri.XBAP/Page1.operations.cs
 4a5
@@ -80,4 +84,3 @@ $ diff Selolaskuri.WPF/MainWindow.operations.cs Selolaskuri.XBAP/Page1.operation
 <         // Lopetuksen varmistaminen
 ---
 >         // Lopetuksen varmistaminen  // XBAP: Can't define Closing="Window_Closing", so this is not called
-

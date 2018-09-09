@@ -671,7 +671,7 @@ namespace Selolaskuri
         //
         private void TietoaOhjelmastaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fo.NaytaTietoaOhjelmasta();
+            fo.NaytaTietoaOhjelmasta(Program.GetPublishVersion());
         }
 
         // Lopetuksen varmistaminen

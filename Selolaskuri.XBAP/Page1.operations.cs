@@ -528,7 +528,7 @@ namespace Selolaskuri.XBAP {
         //
         private void TietoaOhjelmastaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            fo.NaytaTietoaOhjelmasta();
+            fo.NaytaTietoaOhjelmasta(GetPublishVersion());
         }
 
         // Lopetuksen varmistaminen

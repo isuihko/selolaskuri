@@ -527,7 +527,7 @@ namespace Selolaskuri.WPF {
         //
         private void TietoaOhjelmastaToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            fo.NaytaTietoaOhjelmasta();
+            fo.NaytaTietoaOhjelmasta(GetPublishVersion());
         }
 
         // Lopetuksen varmistaminen

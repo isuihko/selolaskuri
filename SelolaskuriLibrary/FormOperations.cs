@@ -110,9 +110,9 @@ namespace SelolaskuriLibrary {
             MessageBox.Show(tekstit, "Laskentakaavat");
         }
 
-        public void NaytaTietoaOhjelmasta()
+        // Parameter PublishVersion: information needs to be fetched in main program level
+        public void NaytaTietoaOhjelmasta(string PublishVersion)
         {
-            string versionumero = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(); // OK?
             string kayttoliittyma = "";
 
             switch (this.selolaskurisovellus) {  // set by constructor
@@ -130,8 +130,7 @@ namespace SelolaskuriLibrary {
             string tekstit = "";
             for (int i = 0; i < tietoaOhjelmasta.Length; i++)
                 tekstit += tietoaOhjelmasta[i] + Environment.NewLine;
-
-            MessageBox.Show(tekstit, "Selolaskuri C#/.NET" + kayttoliittyma + " v." + versionumero);
+            MessageBox.Show(tekstit, "Selolaskuri C#/.NET" + kayttoliittyma + (PublishVersion != null ? " v. " + PublishVersion : " (not published/installed)"));
         }
     }
 }

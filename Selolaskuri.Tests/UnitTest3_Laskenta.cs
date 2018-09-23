@@ -76,6 +76,13 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(7,      t.Item2.UusiPelimaara);
             Assert.AreEqual(0,      t.Item2.TurnauksenTulos);
             Assert.AreEqual(1966,   t.Item2.TurnauksenKeskivahvuus);
+
+            t = u.Testaa(t.Item2.UusiSelo.ToString(), t.Item2.UusiPelimaara.ToString(), "1321", Vakiot.OttelunTulos_enum.TULOS_VOITTO);
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1673, t.Item2.UusiSelo);
+            Assert.AreEqual(8, t.Item2.UusiPelimaara);
+            Assert.AreEqual(1 * 2, t.Item2.TurnauksenTulos);   // voitto (1 piste) mutta kaksinkertaisena
+            Assert.AreEqual(1321, t.Item2.TurnauksenKeskivahvuus);
         }
 
         // Calculation from the format ""+1525 +1441 -1973 +1718..." takes more time than from "3 1525 1441 1973 1718..."
@@ -97,6 +104,26 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(1764,   t.Item2.MaxSelo);             // laskennan aikainen maksimi
         }
 
+        // Calculation from the format ""+1525 +1441 -1973 +1718..." takes more time than from "3 1525 1441 1973 1718..."
+        [TestMethod]
+        public void UudenPelaajanOttelutKerralla1b()
+        {
+            var t = u.Testaa("1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321");
+            // Jos pitkä peli ja tulos määrittelematon, niin jatkossa käytetään lyhyempää muotoa, jossa 
+            // var t = u.Testaa("1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966");
+            // jossa miettimisaika on oletuksena MIETTIMISAIKA_VAH_90MIN ja tulos TULOS_MAARITTELEMATON
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1673, t.Item2.UusiSelo);
+            Assert.AreEqual(8, t.Item2.UusiPelimaara);
+            Assert.AreEqual(4 * 2, t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1674, t.Item2.TurnauksenKeskivahvuus);  // oikeasti 1673,5
+            Assert.AreEqual(8, t.Item2.VastustajienLkm);
+            Assert.AreEqual(275, t.Item2.Odotustulos);          // odotustulos 2,75*100
+            Assert.AreEqual(1673, t.Item2.MinSelo);             // laskennan aikainen minimi
+            Assert.AreEqual(1764, t.Item2.MaxSelo);             // laskennan aikainen maksimi
+        }
+
+
         [TestMethod]
         public void UudenPelaajanOttelutKerralla2()
         {
@@ -107,6 +134,20 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(3 * 2,  t.Item2.TurnauksenTulos);
             Assert.AreEqual(1724,   t.Item2.TurnauksenKeskivahvuus);
             Assert.AreEqual(7,      t.Item2.VastustajienLkm);
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+        [TestMethod]
+        public void UudenPelaajanOttelutKerralla2b()
+        {
+            var t = u.Testaa("1525", "0", "4 1525 1441 1973 1718 1784 1660 1966 1321");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1674, t.Item2.UusiSelo);  // XXX: Virallisessa laskennassa on 1673 mutta tällä kaavalla tulos on 1673,5 -> 1674
+            Assert.AreEqual(8, t.Item2.UusiPelimaara);
+            Assert.AreEqual(4 * 2, t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1674, t.Item2.TurnauksenKeskivahvuus);  // oikeasti 1673,5
+            Assert.AreEqual(8, t.Item2.VastustajienLkm);
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
         }

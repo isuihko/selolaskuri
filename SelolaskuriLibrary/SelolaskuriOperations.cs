@@ -471,7 +471,8 @@ namespace SelolaskuriLibrary {
         public Vakiot.Miettimisaika_enum SelvitaMiettimisaikaCSV(string s)
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
-            if (int.TryParse(s, out int temp) == true) {
+            int temp; // define here to be compatible with Visual Studio 2015
+            if (int.TryParse(s, out temp) == true) {
                 if (temp < 1) {
                     // ei voida pelata ilman miettimisaikaa
                     // jo asetettu aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;

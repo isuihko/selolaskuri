@@ -259,10 +259,10 @@ namespace SelolaskuriLibrary {
                     // Laskentakaavaan lisätty pyöristys Math.Round, jonka jälkeen kaikista Joukkuepikashakin laskennoista saadaan samat tulokset
                     if ((annettuTurnauksenTulos / 2.0) > (Odotustulos / 100.0)) {
                         UusiSelo =
-                            (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos / 2.0) / 10.0) + 0.01);
+                            (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos / 2.0) / 10.0) + 0.0001);
                     } else {
                         UusiSelo =
-                            (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0) / 10.0) + 0.01);
+                            (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0) / 10.0) + 0.0001);
                     }
                 } else {
                     //
@@ -271,7 +271,7 @@ namespace SelolaskuriLibrary {
                     float lisakerroin = MaaritaLisakerroin(vanha, alkuperaisetSyotteet.Miettimisaika);
                     // Lisätään vielä pelattujen pelien lkm * 0.1
                     UusiSelo =
-                        (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.01);
+                        (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.0001);
                 }
 
                 // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa

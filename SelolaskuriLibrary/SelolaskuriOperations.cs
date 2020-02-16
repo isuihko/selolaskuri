@@ -106,8 +106,25 @@ namespace SelolaskuriLibrary {
                 //    JOS YKSI OTTELU,   saadaan sen yhden vastustajan vahvuusluku, eikä otteluja ole listassa.
                 //      ottelumäärän tarkistamisen jälkeen tässä tehdään yhden ottelun lista
                 //    JOS MONTA OTTELUA, palautuu 0 ja ottelut on tallennettu tuloksineen listaan
+                //
+                //    JOS MONTA OTTELUA ja VÄLISSÄ '/'-merkki, NIIN SYÖTETTY ENSIN UUDEN PELAAJAN LASKENTA JA SITTEN NORMAALI LASKENTA
+                //    Tällöin syotteet,.AlkuperainenPelimaara oltava enintään 10
                 if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
+
+                if (selopelaaja.UudenPelaajanPelitLKM > 0) {
+                    if (syotteet.AlkuperainenPelimaara > 10) {
+                        // ei voinut olla uuden pelaajan laskenta, jos alkuperäinen pelimäärä oli yli 10
+                        tulos = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT;
+                        break;
+                    }
+                    if (selopelaaja.UudenPelaajanPelitLKM + syotteet.AlkuperainenPelimaara < 11) {
+                        // jos alkuperäinen pelimäärä + nyt uuden pelaajan laskentaan saatu pelimäärä eivät ole vähintään 11
+                        tulos = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2;
+                        break;
+                    }
+                    syotteet.UudenPelaajanPelitEnsinLKM = selopelaaja.UudenPelaajanPelitLKM;
+                }
 
                 // tässä siis voi olla vahvuusluku tai 0
                 syotteet.YksiVastustajaTulosnapit = tulos;
@@ -224,6 +241,9 @@ namespace SelolaskuriLibrary {
         //       niin ylimääräiset desimaalit "pyöristyvät" alas -> 2,0 tai 0,5.
         //
         // Paluuarvo joko kelvollinen seloluku (vain yksi vastustaja annettu), nolla (jos ottelut ovat listassa) tai virhestatus.
+        //
+        // Jos syote sisältää '/' -merkin, on laskettava sitä edeltävät tulokset uuden pelaajan kaavalla
+        // ja sen jälkeen normaalilla laskentakaavalla
         private int TarkistaVastustajanSelo(Ottelulista ottelut, string syote)
         {
             bool status = true;
@@ -259,6 +279,7 @@ namespace SelolaskuriLibrary {
                 // Jäljellä vielä hankalammat tapaukset:
                 // 4) turnauksen tulos+vahvuusluvut, esim. 2,5 1624 1700 1685 1400
                 // 5) vahvuusluvut, joissa kussakin tulos  +1624 -1700 =1685 +1400
+                // 6) vahvuusluvut tuloksineen ja välissä '/'-merkki +1624 -1700 / =1685 +1400
 
                 // Apumuuttujat
                 int selo1 = Vakiot.MIN_SELO;
@@ -266,6 +287,7 @@ namespace SelolaskuriLibrary {
 
                 // Tutki vastustajanSelo_comboBox-kenttä välilyönnein erotettu merkkijono kerrallaan
                 foreach (string vastustaja in syote.Split(' ').ToList()) {
+
                     if (ensimmainen) {
                         // need to use temporary variable because can't modify foreach iteration variable
                         string tempString = vastustaja;
@@ -303,6 +325,20 @@ namespace SelolaskuriLibrary {
                             // Jos ei saatu kelvollista lukua, joka käy tuloksena, niin jatketaan
                             // ja katsotaan, saadaanko vahvuusluku sen sijaan (jossa voi olla +/=/-)
                         }
+                    } else if (vastustaja.Equals("/")) {
+                        // '/' ei voi olla ensimmäisenä
+                        // '/' ei saa olla, jos oli annettu turnauksen tulos
+                        // täytyy olla ainakin yksi ottelutulos ja sen jälkeen pitäisi olla (ei pakko) lisää otteluita
+                        //
+                        // Jos alkuperäinen pelimäärä oli 0, niin on laskettava ainakin 11 peliä uuden kaavalla
+                        // tarkistus kutsuvalla tasolla
+                        if (onko_turnauksen_tulos || ottelut.Lukumaara < 1) {
+                            virhekoodi = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT;
+                            status = false;
+                            break;
+                        }
+                        selopelaaja.UudenPelaajanPelitLKM = ottelut.Lukumaara;
+                        continue;
                     }
 
                     // Tarkista yksittäiset vastustajien vahvuusluvut
@@ -456,6 +492,9 @@ namespace SelolaskuriLibrary {
             if (data.Count == 5) {
                 return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], this.SelvitaTulosCSV(data[4]));
             } else if (data.Count == 4) {
+                // viimeinen osa voi sisältää vastustajat tuloksineen tai jos alkuperäinen pelimäärä on enintään 10, 
+                // niin ensin lasketaan uuden pelaajan kaavalla ja loput "/"-merkin jälkeen menevät normaalilaskentaan
+                //  "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944 / -1995 +1695 -1930 1901",
                 return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
             } else if (data.Count == 3) {
                 return new Syotetiedot(aika, data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);

@@ -14,7 +14,7 @@ namespace Selolaskuri.WPF {
             miettimisaika_vah90_btn.IsChecked = true;
 
             // Version text to be shown in window bottom right corner
-            Versio.Text = "C#/.NET/WPF 9.9.2018 github.com/isuihko/selolaskuri";
+            Versio.Text = "C#/.NET/WPF 16.2.2020 github.com/isuihko/selolaskuri";
         }
 
         // Publish version needs to be checked in main program class. Shown in Menu->Tietoa ohjelmasta

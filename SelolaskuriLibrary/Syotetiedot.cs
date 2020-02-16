@@ -31,6 +31,7 @@ namespace SelolaskuriLibrary {
         // Tarkastuksessa merkkijonot muutettu numeroiksi
         public int AlkuperainenSelo { get; set; }
         public int AlkuperainenPelimaara { get; set; }
+        public int UudenPelaajanPelitEnsinLKM { get; set; }
         public int YksiVastustajaTulosnapit { get; set; }
 
         public Ottelulista Ottelut { get; private set; }   // sis. vastustajien selot ja ottelutulokset
@@ -72,6 +73,7 @@ namespace SelolaskuriLibrary {
             // Clear these too although not actually needed
             AlkuperainenSelo = 0;
             AlkuperainenPelimaara = 0;
+            UudenPelaajanPelitEnsinLKM = 0;
             YksiVastustajaTulosnapit = 0;
 
             // Create en empty list for matches (opponent's selo, match result)
@@ -81,8 +83,8 @@ namespace SelolaskuriLibrary {
         // Uuden pelaajan laskennassa ja tulostuksissa joitain erikoistapauksia
         //
         // Tarkistetaan alkuperäisestä pelimäärästä, sillä turnauksen laskenta tehdään
-        // uuden pelaajan kaavalla vaikka pelimäärä laskennan aikana ylittäisikin rajan
-        public bool UudenPelaajanLaskenta()
+        // uuden pelaajan kaavalla vaikka pelimäärä turnauksen laskennan aikana ylittäisikin rajan.
+        public bool UudenPelaajanLaskenta_alkup()
         {
             return (AlkuperainenPelimaara >= Vakiot.MIN_PELIMAARA &&
                     AlkuperainenPelimaara <= Vakiot.MAX_PELIMAARA_UUSI_PELAAJA);

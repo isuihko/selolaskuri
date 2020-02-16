@@ -191,7 +191,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(206, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 9.9.2018 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 16.2.2020 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -461,33 +461,33 @@
             // ohjeitaToolStripMenuItem
             // 
             this.ohjeitaToolStripMenuItem.Name = "ohjeitaToolStripMenuItem";
-            this.ohjeitaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.ohjeitaToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.ohjeitaToolStripMenuItem.Text = "Ohjeita";
             this.ohjeitaToolStripMenuItem.Click += new System.EventHandler(this.OhjeitaToolStripMenuItem_Click);
             // 
             // laskentakaavatToolStripMenuItem
             // 
             this.laskentakaavatToolStripMenuItem.Name = "laskentakaavatToolStripMenuItem";
-            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.laskentakaavatToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.laskentakaavatToolStripMenuItem.Text = "&Laskentakaavat";
             this.laskentakaavatToolStripMenuItem.Click += new System.EventHandler(this.LaskentakaavatToolStripMenuItem_Click);
             // 
             // tietoaOhjelmastaToolStripMenuItem
             // 
             this.tietoaOhjelmastaToolStripMenuItem.Name = "tietoaOhjelmastaToolStripMenuItem";
-            this.tietoaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.tietoaOhjelmastaToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.tietoaOhjelmastaToolStripMenuItem.Text = "&Tietoa ohjelmasta";
             this.tietoaOhjelmastaToolStripMenuItem.Click += new System.EventHandler(this.TietoaOhjelmastaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(164, 6);
             // 
             // suljeToolStripMenuItem
             // 
             this.suljeToolStripMenuItem.Name = "suljeToolStripMenuItem";
-            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.suljeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.suljeToolStripMenuItem.Text = "&Sulje ohjelma";
             this.suljeToolStripMenuItem.Click += new System.EventHandler(this.SuljeToolStripMenuItem_Click);
             // 
@@ -504,21 +504,21 @@
             // cutVastustajatToolStripMenuItem
             // 
             this.cutVastustajatToolStripMenuItem.Name = "cutVastustajatToolStripMenuItem";
-            this.cutVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
+            this.cutVastustajatToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
             this.cutVastustajatToolStripMenuItem.Text = "Cut (kopioi ja tyhjentää Vastustajat-historian)";
             this.cutVastustajatToolStripMenuItem.Click += new System.EventHandler(this.CutVastustajatToolStripMenuItem_Click);
             // 
             // copyVastustajatToolStripMenuItem
             // 
             this.copyVastustajatToolStripMenuItem.Name = "copyVastustajatToolStripMenuItem";
-            this.copyVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
+            this.copyVastustajatToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
             this.copyVastustajatToolStripMenuItem.Text = "Copy (kopioi Vastustajat-historian)";
             this.copyVastustajatToolStripMenuItem.Click += new System.EventHandler(this.CopyVastustajatToolStripMenuItem_Click);
             // 
             // pasteVastustajatToolStripMenuItem
             // 
             this.pasteVastustajatToolStripMenuItem.Name = "pasteVastustajatToolStripMenuItem";
-            this.pasteVastustajatToolStripMenuItem.Size = new System.Drawing.Size(332, 22);
+            this.pasteVastustajatToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
             this.pasteVastustajatToolStripMenuItem.Text = "Paste (täyttää Vastustajat-historian, ei tarkistusta)";
             this.pasteVastustajatToolStripMenuItem.Click += new System.EventHandler(this.PasteVastustajatToolStripMenuItem_Click);
             // 
@@ -555,7 +555,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 542);
+            this.ClientSize = new System.Drawing.Size(494, 541);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UudenPelaajanLaskenta_txt);

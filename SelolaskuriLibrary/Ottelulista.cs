@@ -101,6 +101,13 @@ namespace SelolaskuriLibrary {
             }
         }
 
+
+        public int KeskivahvuusDesim {
+            get {
+                return (int)Math.Round(tallennetutOttelut.Average(x => 10 * x.VastustajanSelo) + 0.01); // Linq
+            }
+        }
+
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable)tallennetutOttelut).GetEnumerator();

@@ -56,7 +56,9 @@ namespace SelolaskuriLibrary {
         public int TurnauksenTulos { get; private set; }    // result from all the matches/tournament
 
         public int VastustajienLkm { get; private set; }    // number of the opponents/matches
+        public int UudenPelaajanPelitLKM {get ; set; }  // number of games to calculate as a new player
         public int TurnauksenKeskivahvuus { get; private set; } // average opponent strength
+        public int TurnauksenKeskivahvuusDesim { get; private set; } // average opponent strength
 
         // Tuloksien näyttämisessä tarvitaan alkuperäistä seloa -> muutos, sekä ero keskivahvuuteen
         public int AlkuperainenSelo {                       // original chess rating
@@ -66,9 +68,12 @@ namespace SelolaskuriLibrary {
         }
 
         // Tuloksien näyttämisessä tarvitaan tieto, koska odotustulosta ei näytetä uudelle pelaajalle
-        public bool UudenPelaajanLaskenta {                 // use the new player's calculation?
+        public bool UudenPelaajanLaskenta {                 // use the new player's calculation?           
             get {
-                return alkuperaisetSyotteet.UudenPelaajanLaskenta();
+                // Jos oli uuden pelaajan laskenta ja oli annettu uuden vastustajien selot tuloksineen / normaali laskennan tulokset
+                if (UudenPelaajanPelitLKM > 0 && UusiPelimaara - alkuperaisetSyotteet.AlkuperainenPelimaara > UudenPelaajanPelitLKM)
+                    return false;
+                return alkuperaisetSyotteet.UudenPelaajanLaskenta_alkup();
             }
         }
 
@@ -154,7 +159,9 @@ namespace SelolaskuriLibrary {
             //   - vastustajien eli otteluiden lkm
             //   - turnauksen eli vastustajien keskivahvuus
             VastustajienLkm        = syotteet.Ottelut.Lukumaara;
-            TurnauksenKeskivahvuus = syotteet.Ottelut.Keskivahvuus; 
+            UudenPelaajanPelitLKM  = 0;
+            TurnauksenKeskivahvuus = syotteet.Ottelut.Keskivahvuus;
+            TurnauksenKeskivahvuusDesim = syotteet.Ottelut.KeskivahvuusDesim;
         }
 
 
@@ -214,17 +221,20 @@ namespace SelolaskuriLibrary {
             // "+1525 =1600 -1611 +1558". Tällöin myös MinSelo ja MaxSelo voidaan selvittää.
             //
             var ottelu = ottelulista.HaeEnsimmainen(); // vastustajanSelo, ottelunTulos
+            int pelattuLKM = 0;
 
             // Kun lista on tyhjä, saadaan ottelun tulos TULOS_MAARITTELEMATON
             while (ottelu.Item2 != Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON) {
                 
                 // päivitä seloa ja tilastoja jokaisen ottelun laskennassa, myös laske Odotustulos
-                UusiSelo = PelaaOttelu(ottelu.Item1, ottelu.Item2);
+                UusiSelo = PelaaOttelu(ottelu.Item1, ottelu.Item2,
+                    (syotteet.UudenPelaajanPelitEnsinLKM > 0 && pelattuLKM >= syotteet.UudenPelaajanPelitEnsinLKM));
 
                 // päivitä pelimäärää vain jos oli annettu
-                if (UusiPelimaara != Vakiot.PELIMAARA_TYHJA)
+                if (UusiPelimaara != Vakiot.PELIMAARA_TYHJA) {
                     UusiPelimaara++;
-
+                    pelattuLKM++;
+                }
                 ottelu = ottelulista.HaeSeuraava();
             }
 
@@ -291,7 +301,7 @@ namespace SelolaskuriLibrary {
 
         // Palauttaa: uusi vahvuusluku
         //
-        private int PelaaOttelu(int vastustajanSelo, Vakiot.OttelunTulos_enum tulos)
+        private int PelaaOttelu(int vastustajanSelo, Vakiot.OttelunTulos_enum tulos, bool vaihdaVanhaksiPelaajaksi)
         {
             int odotustulos1;  // yhden ottelun Odotustulos, lisätään turnauksen odotustulokseen
             int selo;
@@ -302,12 +312,15 @@ namespace SelolaskuriLibrary {
 
             // Vanhan pelaajan SELOn laskennassa käytetään odotustulosta ja kerrointa
             //
-            odotustulos1    = MaaritaOdotustulos(alkuperaisetSyotteet.AlkuperainenSelo, vastustajanSelo);
+            if (vaihdaVanhaksiPelaajaksi)
+                odotustulos1    = MaaritaOdotustulos(UusiSelo, vastustajanSelo);
+            else
+                odotustulos1    = MaaritaOdotustulos(alkuperaisetSyotteet.AlkuperainenSelo, vastustajanSelo);
 
             Odotustulos     += odotustulos1;  // monta ottelua, niin summa kunkin ottelun odotustuloksista
             TurnauksenTulos += (int)tulos;
 
-            if (alkuperaisetSyotteet.UudenPelaajanLaskenta()) {
+            if (!vaihdaVanhaksiPelaajaksi && alkuperaisetSyotteet.UudenPelaajanLaskenta_alkup()) {
                 //
                 // Uuden pelaajan laskennassa käytetään vastustajan seloa tuloksen mukaan -200 / +0 / +200
 

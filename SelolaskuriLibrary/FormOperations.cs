@@ -28,6 +28,16 @@ namespace SelolaskuriLibrary {
 
             "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966",
             "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321",
+
+            // 11 peliä, uuden pelaajan laskenta, tästä tulos 1660 eli oikein!
+            "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944",
+            // lisäksi neljä peliä, joissa normaali laskenta, aloitetaan vahvuusluvusta 1660, tulos 1682, virallinen 1683
+            "90,1660,11,-1995 +1695 -1930 1901",
+
+            // UUSI formaatti, jossa ensin uuden pelaajan selon laskenta ja sitten merkin '/' jälkeen normaali laskenta
+            // Ottelujen tulokset on annettava vastustajan selon kanssa, tulos 1683 on oikein
+            "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944 / -1995 +1695 -1930 1901",
+
             // Also Miettimisaika väh. 90 min, nykyinen SELO 1525, pelimäärä 0
             "+1525 +1441 -1973 +1718 -1784 -1660 -1966",
             "+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321",

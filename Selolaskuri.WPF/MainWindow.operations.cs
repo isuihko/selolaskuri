@@ -232,6 +232,25 @@ namespace Selolaskuri.WPF {
                     //vastustajanSelo_comboBox.ForeColor = Color.Black;
                     vastustajanSelo_comboBox.Focus();
                     break;
+
+                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT:
+                    message =
+                        String.Format("VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärän voi olla enintään 10, ks. Menu->Ohjeita");
+                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
+                    MessageBox.Show(message);
+                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
+                    vastustajanSelo_comboBox.Focus();
+                    break;
+
+
+                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2:
+                    message =
+                        String.Format("VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi pelejä ks. Menu->Ohjeita");
+                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
+                    MessageBox.Show(message);
+                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
+                    vastustajanSelo_comboBox.Focus();
+                    break;
             }
         }
 
@@ -292,7 +311,8 @@ namespace Selolaskuri.WPF {
             pisteEro_out.Text = Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
 
             // Vastustajien vahvuuslukujen keskiarvo
-            keskivahvuus_out.Text = tulokset.TurnauksenKeskivahvuus.ToString();
+            //keskivahvuus_out.Text = tulokset.TurnauksenKeskivahvuus.ToString();
+            keskivahvuus_out.Text = (tulokset.TurnauksenKeskivahvuusDesim / 10F).ToString("0.0");
 
             // Turnauksen loppupisteet yhdellä desimaalilla / ottelujen lkm, esim.  2.5 / 6 tai 2.0 / 6
             turnauksenTulos_out.Text =

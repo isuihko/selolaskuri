@@ -47,6 +47,8 @@ namespace SelolaskuriLibrary {
         public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -6;
         public const int SYOTE_VIRHE_TURNAUKSEN_TULOS   = -7;
         public const int SYOTE_VIRHE_CSV_FORMAT         = -8;
+        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT = -9;
+        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2 = -10;
 
         public const int PELIMAARA_TYHJA = -1; // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
 

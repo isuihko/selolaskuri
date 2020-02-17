@@ -37,7 +37,7 @@ namespace Selolaskuri.Tests
             var t = u.Testaa(",,,,");
             Assert.AreNotEqual(null, t);
             // four commas expected format: thinking time,own selo,own game count,opponents,single match result
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV, t.Item1);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace Selolaskuri.Tests
             var t = u.Testaa(",,,");
             Assert.AreNotEqual(null, t);
             // three commas expected format: thinking time,own selo,own game count,opponents
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV, t.Item1);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Selolaskuri.Tests
         public void CSV_ArvotPuuttuvatMiettimisaika()
         {
             var t = u.Testaa(",1525,0,1525,1");
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV, t.Item1);
         }
 
         // Kolme pilkkua, neljä arvoa ja pitää olla miettimisaika ensimmäisenä
@@ -87,7 +87,7 @@ namespace Selolaskuri.Tests
         public void CSV_ArvotPuuttuvatMiettimisaika2()
         {
             var t = u.Testaa(",0,1525,1");
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV, t.Item1);
         }
 
         // Neljä pilkkua ja viisi arvoa, mutta oma selo tyhjä

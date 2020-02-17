@@ -134,10 +134,13 @@
 //
 // 5.9.2018         - FormOperations.cs: Ohje- ja tietoikkunoiden tekstit taulukoissa, joista niitä on helpompi muokata
 //
-//
+// 16.-17.2.2020    - vastustajien keskivahvuus näytetään yhdellä desimaalilla, aiemmin kokonaisluku
+//                  - virheilmoitukset uuden pelaajan laskentaan, jossa jatketaan normaalilla vanhan pelaajan laskennalla
+//                  - virheilmoituksien tekstit nyt Vakiot.cs:ssä, joten niitä on helpompi ylläpitää
 //
 // TODO: F1 = ohjeikkuna
 // TODO: web-versio
+// TODO: Menujen käsittelyrutiinit ovat samat kaikissa versioissa, saakohan kirjastoon?
 //
 
 using System;
@@ -151,8 +154,8 @@ namespace Selolaskuri
 {
     public partial class SelolaskuriForm : Form
     {
-        private SelolaskuriOperations so = new SelolaskuriOperations();                   //  Check the input data, calculate the results
-        private FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.WINFORMS); // information and instruction windows etc.
+        private readonly SelolaskuriOperations so = new SelolaskuriOperations();                   //  Check the input data, calculate the results
+        private readonly FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.WINFORMS); // information and instruction windows etc.
 
         public SelolaskuriForm()
         {
@@ -295,23 +298,16 @@ namespace Selolaskuri
         // Virheellisen kentän arvo näytetään punaisella kunnes ilmoitusikkuna kuitataan
         private void NaytaVirheilmoitus(int virhestatus)
         {
-            string message;
+            string message = "VIRHETEKSTI ALUSTAMATTA";
+            if (virhestatus <= Vakiot.SYOTE_STATUS_OK && virhestatus >= Vakiot.SYOTE_VIRHE_MAX)
+                message = Vakiot.SYOTE_VIRHEET_text[Math.Abs(virhestatus)];
+            //MessageBox.Show(message);
 
+            // Erikoiskäsittely muutamalla virheelle, siirrytään tiettyyn kenttään
+            // Tai kentän värjääminen punaiseksi virheilmoituksen ajaksi
+            // Näytetään virheilmoitus
             switch (virhestatus) {
-                case Vakiot.SYOTE_STATUS_OK:
-                    break;
-
-                case Vakiot.SYOTE_VIRHE_MIETTIMISAIKA:
-                    message =
-                        String.Format("VIRHE: CSV-formaatissa annettu virheellinen miettimisaika. Annettava minuutit. Ks. Menu->Ohjeita");
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.Select();
-                    break;
-
                 case Vakiot.SYOTE_VIRHE_OMA_SELO:
-                    message =
-                        String.Format("VIRHE: Nykyisen SELOn oltava numero {0}-{1}.",
-                                Vakiot.MIN_SELO, Vakiot.MAX_SELO);
                     selo_in.ForeColor = Color.Red;
                     MessageBox.Show(message);
                     selo_in.ForeColor = Color.Black;
@@ -322,20 +318,7 @@ namespace Selolaskuri
                     selo_in.Select();
                     break;
 
-                case Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO:
-                    message =
-                        String.Format("VIRHE: Vastustajan vahvuusluvun on oltava numero {0}-{1}.",
-                                Vakiot.MIN_SELO, Vakiot.MAX_SELO);
-                    vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Select();
-                    break;
-
                 case Vakiot.SYOTE_VIRHE_PELIMAARA:
-                    message =
-                        String.Format("VIRHE: pelimäärän voi olla numero väliltä {0}-{1} tai tyhjä.",
-                                Vakiot.MIN_PELIMAARA, Vakiot.MAX_PELIMAARA);
                     pelimaara_in.ForeColor = Color.Red;
                     MessageBox.Show(message);
                     pelimaara_in.ForeColor = Color.Black;
@@ -347,51 +330,18 @@ namespace Selolaskuri
                     break;
 
                 // tulos puuttuu painonapeista, siirry ensimmäiseen valintanapeista
-                case Vakiot.SYOTE_VIRHE_BUTTON_TULOS:  
-                    MessageBox.Show("Ottelun tulosta ei valittu!");
+                case Vakiot.SYOTE_VIRHE_BUTTON_TULOS:
+                    MessageBox.Show(message);
                     tulosVoitto_btn.Select();  // ensimmäinen tulos-painikkeista
                     break;
 
+                case Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV:
+                case Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO:
                 case Vakiot.SYOTE_VIRHE_YKSITTAINEN_TULOS:
-                    message =
-                        String.Format("VIRHE: Yksittäisen ottelun tulos voidaan antaa merkeillä +(voitto), =(tasapeli) tai -(tappio), esim. +1720. Tasapeli voidaan antaa muodossa =1720 ja 1720.");
-                    vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Select();
-                    break;
-
                 case Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS:
-                    message =
-                        String.Format("VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä.");
-                    vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Select();
-                    break;
-
                 case Vakiot.SYOTE_VIRHE_CSV_FORMAT:
-                    message =
-                        String.Format("VIRHE: CSV-formaattivirhe, ks. Menu->Ohjeita");
-                    vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Select();
-                    break;
-
-                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT:
-                    message =
-                        String.Format("VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärän voi olla enintään 10, ks. Menu->Ohjeita");
-                    vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
-                    break;
-
-
-                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2:
-                    message =
-                        String.Format("VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi pelejä ks. Menu->Ohjeita");
+                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10:
+                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11:
                     vastustajanSelo_comboBox.ForeColor = Color.Red;
                     MessageBox.Show(message);
                     vastustajanSelo_comboBox.ForeColor = Color.Black;

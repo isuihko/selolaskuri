@@ -21,6 +21,7 @@
 //  18.-22.7.2018 SuoritaLaskenta() now returns Selopelaaja. Earlier had separate (unnecessary) class for the results
 //  15.8.2018     CSV-formaatin tarkistamista
 //                Laskennan ja tallennuksen muutokset yksikkötestauksen helpottamiseksi (=1234 on eri tapaus kuin 1234).
+//  16.-17.2.2020 Calculation for new player so that after certain defined point can continue with normal old player calculations
 //
 
 using System.Collections.Generic;
@@ -82,7 +83,7 @@ namespace SelolaskuriLibrary {
         //
         public int TarkistaSyote(Syotetiedot syotteet)
         {
-            int tulos = Vakiot.SYOTE_STATUS_OK;
+            int tulos; // = Vakiot.SYOTE_STATUS_OK;
 
             // tyhjennä ottelulista, johon tallennetaan vastustajat tuloksineen
             //syotteet.ottelut.Tyhjenna();  Ei tarvitse, kun aiempi new Syotetiedot() tyhjentää
@@ -91,7 +92,7 @@ namespace SelolaskuriLibrary {
 
             do {
                 // ENSIN TARKISTA MIETTIMISAIKA.
-                if ((tulos = TarkistaMiettimisaika(syotteet.Miettimisaika)) == Vakiot.SYOTE_VIRHE_MIETTIMISAIKA)
+                if ((tulos = TarkistaMiettimisaika(syotteet.Miettimisaika)) == Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV)
                     break;
 
                 // Hae ensin oma nykyinen vahvuusluku ja pelimäärä
@@ -109,18 +110,21 @@ namespace SelolaskuriLibrary {
                 //
                 //    JOS MONTA OTTELUA ja VÄLISSÄ '/'-merkki, NIIN SYÖTETTY ENSIN UUDEN PELAAJAN LASKENTA JA SITTEN NORMAALI LASKENTA
                 //    Tällöin syotteet,.AlkuperainenPelimaara oltava enintään 10
+
+                selopelaaja.UudenPelaajanPelitLKM = 0; // XXX: oletus, ei kahta eri laskentaa
+
                 if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
 
                 if (selopelaaja.UudenPelaajanPelitLKM > 0) {
                     if (syotteet.AlkuperainenPelimaara > 10) {
                         // ei voinut olla uuden pelaajan laskenta, jos alkuperäinen pelimäärä oli yli 10
-                        tulos = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT;
+                        tulos = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10;
                         break;
                     }
                     if (selopelaaja.UudenPelaajanPelitLKM + syotteet.AlkuperainenPelimaara < 11) {
                         // jos alkuperäinen pelimäärä + nyt uuden pelaajan laskentaan saatu pelimäärä eivät ole vähintään 11
-                        tulos = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2;
+                        tulos = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11;
                         break;
                     }
                     syotteet.UudenPelaajanPelitEnsinLKM = selopelaaja.UudenPelaajanPelitLKM;
@@ -165,7 +169,7 @@ namespace SelolaskuriLibrary {
         {
             int tulos = Vakiot.SYOTE_STATUS_OK;
             if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON)
-                tulos = Vakiot.SYOTE_VIRHE_MIETTIMISAIKA;
+                tulos = Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV;
             return tulos;
         }
 
@@ -176,10 +180,10 @@ namespace SelolaskuriLibrary {
         private int TarkistaOmaSelo(string syote)
         {
             bool status = true;
-            int tulos;
+            //int tulos;
 
             // onko numero ja jos on, niin onko sallittu numero
-            if (int.TryParse(syote, out tulos) == false)
+            if (int.TryParse(syote, out int tulos) == false)
                 status = false;
             else if (tulos < Vakiot.MIN_SELO || tulos > Vakiot.MAX_SELO)
                 status = false;
@@ -282,7 +286,7 @@ namespace SelolaskuriLibrary {
                 // 6) vahvuusluvut tuloksineen ja välissä '/'-merkki +1624 -1700 / =1685 +1400
 
                 // Apumuuttujat
-                int selo1 = Vakiot.MIN_SELO;
+                int selo1; // = Vakiot.MIN_SELO;
                 bool ensimmainen = true;  // ensimmäinen syötekentän numero tai merkkijono
 
                 // Tutki vastustajanSelo_comboBox-kenttä välilyönnein erotettu merkkijono kerrallaan
@@ -326,6 +330,13 @@ namespace SelolaskuriLibrary {
                             // ja katsotaan, saadaanko vahvuusluku sen sijaan (jossa voi olla +/=/-)
                         }
                     } else if (vastustaja.Equals("/")) {
+                        if (selopelaaja.UudenPelaajanPelitLKM > 0)
+                        {
+                            // joko oli kauttamerkki? Ei saa olla kahta!
+                            virhekoodi = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_KAKSI_KAUTTAMERKKIA;
+                            status = false;
+                            break;
+                        }
                         // '/' ei voi olla ensimmäisenä
                         // '/' ei saa olla, jos oli annettu turnauksen tulos
                         // täytyy olla ainakin yksi ottelutulos ja sen jälkeen pitäisi olla (ei pakko) lisää otteluita
@@ -333,7 +344,7 @@ namespace SelolaskuriLibrary {
                         // Jos alkuperäinen pelimäärä oli 0, niin on laskettava ainakin 11 peliä uuden kaavalla
                         // tarkistus kutsuvalla tasolla
                         if (onko_turnauksen_tulos || ottelut.Lukumaara < 1) {
-                            virhekoodi = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT;
+                            virhekoodi = Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10;
                             status = false;
                             break;
                         }
@@ -510,12 +521,15 @@ namespace SelolaskuriLibrary {
         public Vakiot.Miettimisaika_enum SelvitaMiettimisaikaCSV(string s)
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
-            int temp; // define here to be compatible with Visual Studio 2015
-            if (int.TryParse(s, out temp) == true) {
-                if (temp < 1) {
+            // define here to be compatible with Visual Studio 2015
+            if (int.TryParse(s, out int temp) == true)
+            {
+                if (temp < 1)
+                {
                     // ei voida pelata ilman miettimisaikaa
                     // jo asetettu aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
-                } else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                }
+                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
                 else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;

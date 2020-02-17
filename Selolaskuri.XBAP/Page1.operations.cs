@@ -11,8 +11,8 @@ using SelolaskuriLibrary;
 namespace Selolaskuri.XBAP {
     public partial class Page1 : Page {
 
-        private SelolaskuriOperations so = new SelolaskuriOperations();                   //  Check the input data, calculate the results
-        private FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.XBAP_WEB); // information and instruction windows etc.
+        private readonly SelolaskuriOperations so = new SelolaskuriOperations();                   //  Check the input data, calculate the results
+        private readonly FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.XBAP_WEB); // information and instruction windows etc.
 
         // --------------------------------------------------------------------------------
         // LOMAKKEEN KENTTIEN ARVOJEN HAKEMINEN
@@ -150,107 +150,41 @@ namespace Selolaskuri.XBAP {
         // Virheellisen kentän arvo näytetään punaisella kunnes ilmoitusikkuna kuitataan
         private void NaytaVirheilmoitus(int virhestatus)
         {
-            string message;
+            string message = "VIRHETEKSTI ALUSTAMATTA";
+            if (virhestatus <= Vakiot.SYOTE_STATUS_OK && virhestatus >= Vakiot.SYOTE_VIRHE_MAX)
+                message = Vakiot.SYOTE_VIRHEET_text[Math.Abs(virhestatus)];
+            MessageBox.Show(message);
 
-            switch (virhestatus) {
-                case Vakiot.SYOTE_STATUS_OK:
-                    break;
-
-                case Vakiot.SYOTE_VIRHE_MIETTIMISAIKA:
-                    message =
-                        String.Format("VIRHE: CSV-formaatissa annettu virheellinen miettimisaika. Annettava minuutit. Ks. Menu->Ohjeita");
-                    MessageBox.Show(message);
-                    vastustajanSelo_comboBox.Focus();  // WInForms: .Select();
-                    break;
-
+            // Erikoiskäsittely muutamalla virheelle, siirrytään tiettyyn kenttään
+            switch (virhestatus)
+            {
                 case Vakiot.SYOTE_VIRHE_OMA_SELO:
-                    message =
-                        String.Format("VIRHE: Nykyisen SELOn oltava numero {0}-{1}.",
-                                Vakiot.MIN_SELO, Vakiot.MAX_SELO);
-                    //selo_in.ForeColor = Color.Red;      // WinForms: selo_in.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //selo_in.ForeColor = Color.Black;
-
-                    // Tyhjennä liian täysi kenttä? Tyhjennä
+                    // Tyhjennä liian täysi kenttä?
                     if (selo_in.Text.Length > Vakiot.MAX_PITUUS)
                         selo_in.Text = "";
-                    selo_in.Focus();
-                    break;
-
-                case Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO:
-                    message =
-                        String.Format("VIRHE: Vastustajan vahvuusluvun on oltava numero {0}-{1}.",
-                                Vakiot.MIN_SELO, Vakiot.MAX_SELO);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
+                    selo_in.Focus();  // oman alkuselon syöttäminen
                     break;
 
                 case Vakiot.SYOTE_VIRHE_PELIMAARA:
-                    message =
-                        String.Format("VIRHE: pelimäärän voi olla numero väliltä {0}-{1} tai tyhjä.",
-                                Vakiot.MIN_PELIMAARA, Vakiot.MAX_PELIMAARA);
-                    //pelimaara_in.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //pelimaara_in.ForeColor = Color.Black;
-
-                    // Tyhjennä liian täysi kenttä? Tyhjennä
+                    // Tyhjennä liian täysi kenttä?
                     if (pelimaara_in.Text.Length > Vakiot.MAX_PITUUS)
                         pelimaara_in.Text = "";
-                    pelimaara_in.Focus();
+                    pelimaara_in.Focus(); // oman pelimäärän syöttäminen
                     break;
 
                 // tulos puuttuu painonapeista, siirry ensimmäiseen valintanapeista
                 case Vakiot.SYOTE_VIRHE_BUTTON_TULOS:
-                    MessageBox.Show("Ottelun tulosta ei valittu!");
-                    tulosVoitto_btn.Focus();  // ensimmäinen tulos-painikkeista
+                    tulosVoitto_btn.Focus();  // ensimmäinen tulos-painikkeista (siirtyykö?)
                     break;
 
+                case Vakiot.SYOTE_VIRHE_MIETTIMISAIKA_CSV:
+                case Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO:
                 case Vakiot.SYOTE_VIRHE_YKSITTAINEN_TULOS:
-                    message =
-                        String.Format("VIRHE: Yksittäisen ottelun tulos voidaan antaa merkeillä +(voitto), =(tasapeli) tai -(tappio), esim. +1720. Tasapeli voidaan antaa muodossa =1720 ja 1720.");
-                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
-                    break;
-
                 case Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS:
-                    message =
-                        String.Format("VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä.");
-                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
-                    break;
-
                 case Vakiot.SYOTE_VIRHE_CSV_FORMAT:
-                    message =
-                        String.Format("VIRHE: CSV-formaattivirhe, ks. Menu->Ohjeita");
-                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
-                    break;
-
-                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT:
-                    message =
-                        String.Format("VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärän voi olla enintään 10, ks. Menu->Ohjeita");
-                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
-                    break;
-
-
-                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2:
-                    message =
-                        String.Format("VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi pelejä ks. Menu->Ohjeita");
-                    //vastustajanSelo_comboBox.ForeColor = Color.Red;
-                    MessageBox.Show(message);
-                    //vastustajanSelo_comboBox.ForeColor = Color.Black;
-                    vastustajanSelo_comboBox.Focus();
+                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10:
+                case Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11:
+                    vastustajanSelo_comboBox.Focus(); // vastustajan selo/ottelut/tulokset
                     break;
             }
         }
@@ -401,15 +335,48 @@ namespace Selolaskuri.XBAP {
             VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
         }
 
+        // Event: GotFocus - siirrytty kenttään nuolinäppäimellä
+        private void Miettimisaika_vah90_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (miettimisaika_vah90_btn.IsChecked == false)
+                miettimisaika_vah90_btn.IsChecked = true;
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+        }
+
+        private void Miettimisaika_60_89_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (miettimisaika_60_89_btn.IsChecked == false)
+                miettimisaika_60_89_btn.IsChecked = true;
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+        }
+
+        private void Miettimisaika_11_59_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (miettimisaika_11_59_btn.IsChecked == false)
+                miettimisaika_11_59_btn.IsChecked = true;
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+        }
+
+        private void Miettimisaika_enint10_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (miettimisaika_enint10_btn.IsChecked == false)
+                miettimisaika_enint10_btn.IsChecked = true;
+            VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
+        }
 
         // --------------------------------------------------------------------------------
         // Ottelun tulos-buttonit
         // --------------------------------------------------------------------------------
-        // Suorita laskenta aina kun tulos-painike on valittu.
+        // Suorita laskenta aina kun tulos-painike on valittu, tai siirrytty kenttään.
         //
         // Jos tässä vaiheessa ei ole vielä annettu SELOja (oma ja yksi vastustaja),
         // tulee virheilmoitus sekä siirrytään kenttään, josta puuttuu tieto.
         // 
+        // Event: Checked
         private void TulosVoitto_btn_Checked(object sender, RoutedEventArgs e)
         {
             LaskeOttelunTulosLomakkeelta();
@@ -424,6 +391,32 @@ namespace Selolaskuri.XBAP {
         {
             LaskeOttelunTulosLomakkeelta();
         }
+
+        // Event: GotFocus - siirrytty kenttään nuolinäppäimellä
+        private void TulosVoitto_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (tulosVoitto_btn.IsChecked == false)
+                tulosVoitto_btn.IsChecked = true;
+            LaskeOttelunTulosLomakkeelta();
+        }
+
+        private void TulosTasapeli_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (tulosTasapeli_btn.IsChecked == false)
+                tulosTasapeli_btn.IsChecked = true;
+            LaskeOttelunTulosLomakkeelta();
+        }
+
+        private void TulosTappio_btn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // set manually? clears others
+            if (tulosTappio_btn.IsChecked == false)
+                tulosTappio_btn.IsChecked = true;
+            LaskeOttelunTulosLomakkeelta();
+        }
+
 
         // Tyhjennä talteen otetut vastustajien/otteluiden tiedot
         private void TyhjennaVastustajat()

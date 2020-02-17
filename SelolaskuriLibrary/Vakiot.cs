@@ -10,6 +10,8 @@
 //   12.8.2018      Added clipboard handling related constants LEIKEKIRJA_*
 //   15.8.2018      Added TULOS_EI_ANNETTU and TURNAUKSEN_TULOS_ANTAMATTA
 //   4.9.2018       enum Selolaskuri Winforms, WPF_XAML and XBAP. Needed in FormOperations.
+//   16.-17.2.2020  added new error status for new + old player calculation in one go format,
+//                  error messages defined as constants -> same for each version
 //    
 
 namespace SelolaskuriLibrary {
@@ -39,7 +41,7 @@ namespace SelolaskuriLibrary {
 
         // syötteen tarkastuksessa käytetyt virhestatukset eivät ole syötteiden arvoarvoalueella
         public const int SYOTE_STATUS_OK                = 0;
-        public const int SYOTE_VIRHE_MIETTIMISAIKA      = -1; // Tälle ei virheilmoitusta, koska toistaiseksi ei mahdollinen
+        public const int SYOTE_VIRHE_MIETTIMISAIKA_CSV  = -1;
         public const int SYOTE_VIRHE_OMA_SELO           = -2;
         public const int SYOTE_VIRHE_VASTUSTAJAN_SELO   = -3;
         public const int SYOTE_VIRHE_PELIMAARA          = -4;
@@ -47,8 +49,29 @@ namespace SelolaskuriLibrary {
         public const int SYOTE_VIRHE_YKSITTAINEN_TULOS  = -6;
         public const int SYOTE_VIRHE_TURNAUKSEN_TULOS   = -7;
         public const int SYOTE_VIRHE_CSV_FORMAT         = -8;
-        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT = -9;
-        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT2 = -10;
+        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10 = -9;
+        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11 = -10;
+        public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_KAKSI_KAUTTAMERKKIA = -11;
+
+        // Edellä oleville negatiivisille virhestatuksille virheilmoitustekstit
+        // HUOM! Oltava samassa numerojärjestyksessä kuin yllä
+        public static string[] SYOTE_VIRHEET_text = new string[] 
+        {
+            "OK", // ensin indeksi 0
+            "VIRHE: CSV-formaatissa annettu virheellinen miettimisaika. Annettava minuutit. Ks. Menu->Ohjeita",
+            $"VIRHE: Nykyisen SELOn oltava numero {Vakiot.MIN_SELO}-{Vakiot.MAX_SELO}.",
+            $"VIRHE: Vastustajan vahvuusluvun on oltava numero {Vakiot.MIN_SELO}-{Vakiot.MAX_SELO}.",
+            $"VIRHE: pelimäärän voi olla numero väliltä {Vakiot.MIN_PELIMAARA}-{Vakiot.MAX_PELIMAARA} tai tyhjä.",
+            "Ottelun tulosta ei valittu!",
+            "VIRHE: Yksittäisen ottelun tulos voidaan antaa merkeillä +(voitto), =(tasapeli) tai -(tappio), esim. +1720. Tasapeli voidaan antaa muodossa =1720 ja 1720.",
+            "VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä.",
+            "VIRHE: CSV-formaattivirhe, ks. Menu->Ohjeita",
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärä voi olla enintään 10, ks. Menu->Ohjeita",
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi uuden pelaajan pelejä, ks. Menu->Ohjeita",
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, voi olla vain yksi '/', ks. Menu->Ohjeita"
+        };
+        public static int SYOTE_VIRHE_MAX = -1 * SYOTE_VIRHEET_text.Length; // ei voinut olla const
+
 
         public const int PELIMAARA_TYHJA = -1; // OK, muilla kuin uusilla pelaajilla voi olla tyhjä
 

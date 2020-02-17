@@ -138,6 +138,9 @@ namespace SelolaskuriLibrary {
         //
         private void AlustaLaskenta(Syotetiedot syotteet)
         {
+            //
+            // Alustetaan Selopelaajan paikalliset muuttujat
+            //
             alkuperaisetSyotteet = syotteet;  // selo, pelimaara, miettimisaika, lomakkeelle mm. seloero
 
             // laskettavat tiedot, selon ja pelimaaran laskenta aloitetaan syötetyistä arvoista

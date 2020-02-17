@@ -189,9 +189,9 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F);
             this.label6.Location = new System.Drawing.Point(285, 530);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(206, 12);
+            this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 16.2.2020 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 17.2.2020 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 

@@ -18,6 +18,7 @@ namespace SelolaskuriLibrary {
             this.selolaskurisovellus = sovellus;  // WinForms, WPF_XAML, XBAP_WEB
         }
 
+        // Anna Vastustajat-kenttään komento test 
         public readonly string[] TestaustaVartenVastustajia = {
             // Add some data (uncomplete and complete) to help running couple of test cases for window captures
             "5,1996,,10.5 1977 2013 1923 1728 1638 1684 1977 2013 1923 1728 1638 1684",
@@ -66,35 +67,73 @@ namespace SelolaskuriLibrary {
         // Instruction and information window texts
         //
         private static readonly string[] ohjeita = {
-            "Shakin vahvuusluvun laskenta, SELO ja PELO",
+            "Shakin vahvuusluvun laskenta SELO/PELO",
+            "myös uuden pelaajan vahvuusluku",
             "",
             "Annettavat tiedot:",
+            "1) Miettimisaika",
+            "2) Oma vahvuusluku",
+            "3) Oma pelimäärä (0-10 jos uusi pelaaja tai tyhjä)", 
+            "4) Vastustajan/vastustajien vahvuusluvut (tuloksineen)",
+            "5) Ottelun tulos, jos vain yksi vastustaja",
             "",
-            "-Miettimisaika. Pitkä peli (väh. 90 minuuttia) on oletuksena. Jos valitset enint. 10 minuuttia, lasketaan pikashakin vahvuuslukua (PELO)",
-            "-Oma vahvuusluku",
-            "-Oma pelimäärä, joka tarvitaan vain jos olet pelannut enintään 10 peliä. Tällöin käytetään uuden pelaajan laskentakaavaa.",
-            "-Vastustajien vahvuusluvut ja tulokset jollakin neljästä tavasta:",
-            "   1) Yhden vastustajan vahvuusluku (esim. 1922) ja lisäksi ottelun tulos 1/½/0 nuolinäppäimillä tai hiirellä. Laskennan tulos päivittyy valinnan mukaan.",
-            "   2) Vahvuusluvut tuloksineen, esim. +1505 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio",
-            "   3) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 1.5 1505 1600 1611 1558, voi käyttää myös desimaalipilkkua 1,5 1505 1600 1611 1558 sekä puolikasta esim. 1½ 1505 1600 1611 1558",
-            "   4) CSV eli pilkulla erotetut arvot, jossa 2, 3, 4 tai 5 kenttää: HUOM! Käytä tuloksissa desimaalipistettä, esim. 0.5 tai 10.5, tai puolikasta eli ½ tai 10½",
-            "           2: oma selo,ottelut   esim. 1712,2.5 1505 1600 1611 1558 tai 1712,+1505  HUOM! Desimaalipiste!",
-            "           3: oma selo,pelimaara,ottelut esim. 1525,0,+1505 +1441",
-            "           4: minuutit,oma selo,pelimaara,ottelut  esim. 90,1525,0,+1525 +1441",
-            "           5: minuutit,oma selo,pelimaara,ottelu,tulos esim. 90,1683,2,1973,0 (jossa tasapeli voidaan antaa 1/2, ½ tai 0.5)",
-            "      Jos miettimisaika on antamatta, käytetään ikkunasta valittua",
-            "      Jos pelimäärä on antamatta, käytetään tyhjää",
+            "Tarkemmin:",
+            "1) Miettimisaika määrää käytettävän laskentakaavan. Jos 10 minuuttia, niin PELO-laskenta.",
+            "2) Oma SELO, paitsi jos ei ole yhtään peliä pelattuna, on laitettava 1525",
+            "3) Oma pelimäärä vaikuttaa vain, jos on enintään 10, jolloin käytetään uuden pelaajan laskentakaavaa.",
+
             "",
-            "   HUOM! CSV-formaatissa annettu ottelu on etusijalla ja lomakkeesta käytetään korkeintaan miettimisaikaa (vain jos se puuttui CSV:stä).",
-            "",    
-            "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä sekä (jos yksi vastustaja) tuloksen valinta -painikkeilla.",
-            "",    
-            "Jos haluat jatkaa laskentaa uudella vahvuusluvulla, klikkaa Käytä tulosta jatkolaskennassa. Jos ei ole vielä ollut laskentaa, saadaan uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0."
+            "Laskennan vaihtoehdot:",
+            "- Yksi vastustaja ja yksi tulos:",
+            "  Annetaan vastustajan vahvuusluku (4) ja valitaan tulos 1, ½ tai 0 radiobuttoneista (5)",
+            "",
+            "- Monta vastustajaa (esim. turnaus) ja tulokset eri tavalla:",
+            "  Vastustajat-kenttä:",
+            "   1) Vahvuusluvut tuloksineen, esim. +1505 =1600 -1611 +1558, jossa + voitto, = tasan ja - tappio (myös 1600 tasapeli)",
+            "   2) Turnauksen pistemäärä ja vastustajien vahvuusluvut, esim. 1,5 1505 1600 1611 1558",
+            "",
+            "Tämän lisäksi voidaan käyttää CSV-formaattia (pilkulla erotettu arvot)",
+            "   Arvojen lkm 2, 3, 4 tai 5. Tuloksissa käytetään desimaalipistettä esim. 2.5",
+            "     2: oma selo,ottelut",
+            "     3: oma selo,pelimaara,ottelut",
+            "     4: minuutit,oma selo,pelimaara,ottelut",
+            "     5: minuutit,oma selo,pelimaara,ottelu,tulos",
+            " Näistä esimerkit:",
+            "     2: 1712,2.5 1505 1600 1611 1558 tai 1712,+1505 1600 -1611 +1558",
+            "     3: 1525,0,+1505 +1441",
+            "     4: 90,1525,0,+1525 +1441 tai 90,1525,,2.5 1505 1600 1611 1558",
+            "     5: 90,1683,2,1973,0 (tasapeli voidaan antaa 1/2, ½ tai 0.5)",
+            "",
+            "   Jos miettimisaika on antamatta, käytetään ikkunasta valittua",
+            "   Jos pelimäärä on antamatta, käytetään tyhjää",
+            "",
+            "HUOM! CSV-formaatissa annetut tiedot ovat etusijalla, jolloin lomakkeen tiedoilla ei merkitystä.",
+            "",
+            "Laskenta suoritetaan klikkaamalla laskenta-painiketta tai painamalla Enter vastustajan SELO-kentässä tai (jos yksi vastustaja) tuloksen valinta -radiobuttoneilla.",
+            "",
+            "Käytä tulosta jatkolaskennassa -painike:",
+            "  Jos haluat jatkaa laskentaa lasketulla vahvuusluvulla, klikkaa Käytä tulosta jatkolaskennassa.",
+            "  Jos ei ole vielä ollut laskentaa, saadaan tällä uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
+            "",
+            "Laskenta voidaan aloittaa uuden pelaajan laskennalla ja jatkaa normaalilla laskennalla.",
+            "Erota Vastustajat-kentässä vahvuusluvut oikeassa kohdassa '/' -merkillä.", 
+            "Alkuperäisen pelimäärän on oltava enintään 10 ja pelimäärän pitää vaihdossa olla vähintään 11.",
+            "Vastustajat-kentän extrat: komento test lisää valintalistaan laskentaa. Komento clear nollaa valintalistan.",
+            "Kunkin ottelun tulos on annettava vahvuusluvun yhteydessä,",
+            "Esim. jos alkup. pelimäärä on enintään 10, niin tässä 3 peliä lisää esim. turnauksesta, ja sitten vaihtuu laskenta",
+            "     1512 +1505 1600 / -1611 +1558"
         };
 
         private static readonly string[] laskentakaavat = {
-            "Shakin vahvuusluvun laskentakaavat: http://skore.users.paivola.fi/selo.html",
-            "Lisätietoa: http://www.shakkiliitto.fi/ ja http://www.shakki.net/cgi-bin/selo"
+            // TÄTÄ EI OLE ENÄÄ?
+            "Shakin vahvuusluvun laskentakaavat (ei löydy enää?)",
+            "            http://skore.users.paivola.fi/selo.html",           
+            
+            "Lisätietoa: http://www.shakkiliitto.fi/",
+            "            http://www.shakki.net/cgi-bin/selo",
+            "            http://www.shakki.net/pelaaminen/vahvuus",
+            "ELO-luku (lisätään vielä tähän ohjelmaan)",
+            "            https://fi.wikipedia.org/wiki/Elo-luku"
         };
 
         private static readonly string[] tietoaOhjelmasta = {

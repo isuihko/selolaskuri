@@ -52,10 +52,10 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="5" Margin="5">
             <TextBlock Margin="5" Text="Miettimisaika:" />
-            <RadioButton Name="miettimisaika_vah90_btn" Margin="5" Checked="Miettimisaika_vah90_btn_Checked" Content="väh. 90 min" />
-            <RadioButton Name="miettimisaika_60_89_btn" Margin="5" Checked="Miettimisaika_60_89_btn_Checked" Content="60-89 min" />
-            <RadioButton Name="miettimisaika_11_59_btn" Margin="5" Checked="Miettimisaika_11_59_btn_Checked" Content="11-59 min" />
-            <RadioButton Name="miettimisaika_enint10_btn" Margin="5" Checked="Miettimisaika_enint10_btn_Checked" Content="enint. 10 min" />
+            <RadioButton Name="miettimisaika_vah90_btn" Margin="5" Checked="Miettimisaika_vah90_btn_Checked" Content="väh. 90 min" GotFocus="Miettimisaika_vah90_btn_GotFocus" />
+            <RadioButton Name="miettimisaika_60_89_btn" Margin="5" Checked="Miettimisaika_60_89_btn_Checked" Content="60-89 min" GotFocus="Miettimisaika_60_89_btn_GotFocus" />
+            <RadioButton Name="miettimisaika_11_59_btn" Margin="5" Checked="Miettimisaika_11_59_btn_Checked" Content="11-59 min" GotFocus="Miettimisaika_11_59_btn_GotFocus" />
+            <RadioButton Name="miettimisaika_enint10_btn" Margin="5" Checked="Miettimisaika_enint10_btn_Checked" Content="enint. 10 min" GotFocus="Miettimisaika_enint10_btn_GotFocus" />
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0" Margin="10,5,5,5">
@@ -86,9 +86,9 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="5" Grid.ColumnSpan="5" Margin="5">
             <TextBlock Margin="5" Text="Jos annettu yksi vahvuusluku numerona (esim. 1720), niin tuloksen valinta:" />
-            <RadioButton Name="tulosVoitto_btn" Margin="25,1,5,1" Checked="TulosVoitto_btn_Checked" Content="1 = voitto" />
-            <RadioButton Name="tulosTasapeli_btn" Margin="25,1,5,1" Checked="TulosTasapeli_btn_Checked" Content="½ = tasapeli" />
-            <RadioButton Name="tulosTappio_btn" Margin="25,1,5,1" Checked="TulosTappio_btn_Checked" Content="0 = tappio" />
+            <RadioButton Name="tulosVoitto_btn" Margin="25,1,5,1" Checked="TulosVoitto_btn_Checked" Content="1 = voitto" GotFocus="TulosVoitto_btn_GotFocus" />
+            <RadioButton Name="tulosTasapeli_btn" Margin="25,1,5,1" Checked="TulosTasapeli_btn_Checked" Content="½ = tasapeli" GotFocus="TulosTasapeli_btn_GotFocus" />
+            <RadioButton Name="tulosTappio_btn" Margin="25,1,5,1" Checked="TulosTappio_btn_Checked" Content="0 = tappio" GotFocus="TulosTappio_btn_GotFocus" />
         </StackPanel>
 
         <Button Name="Laske_btn" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="8" FontSize="16" Click="Laske_btn_Click" Content="Laske vahvuusluku" />

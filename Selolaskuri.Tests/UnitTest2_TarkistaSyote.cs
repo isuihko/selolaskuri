@@ -176,6 +176,41 @@ namespace Selolaskuri.Tests
             var t = u.Testaa("1525", "0", "2.½ 1505 1600 1611 1558");
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO, t.Item1);
         }
+
+        // Uuden pelaajan pelimäärän on oltava vähintään 11 ennen kuin voidaan jatkaa normaalilla laskennalla
+        // tässä on vain 10
+        [TestMethod]
+        public void VirheellinenSyoteUudenPelaajaNormaaliLaskenta1()
+        {
+            var t = u.Testaa("1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 / -1995 +1695 -1930 1901");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11, t.Item1);
+        }
+
+        // Uuden pelaajan pelimäärän on oltava vähintään 11 ennen kuin voidaan jatkaa normaalilla laskennalla
+        // tässä 5 + 3 = 8
+        [TestMethod]
+        public void VirheellinenSyoteUudenPelaajaNormaaliLaskenta2()
+        {
+            var t = u.Testaa("1525", "5", "+1525 +1441 -1973 / -1995 +1695 -1930 1901");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11, t.Item1);
+        }
+
+        // Uuden pelaajan pelimäärän on oltava enintään 10.
+        // Tässä on 11, joten ei voi olla uuden pelaajan laskentaa '/'-merkkiä
+        [TestMethod]
+        public void VirheellinenSyoteUudenPelaajaNormaaliLaskenta3()
+        {
+            var t = u.Testaa("1525", "11", "+1525 +1441 -1973 / -1995 +1695 -1930 1901");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10, t.Item1);
+        }
+
+        // Ei saa olla kahdesti '/'
+        [TestMethod]
+        public void VirheellinenSyoteUudenPelaajaNormaaliLaskenta4()
+        {
+            var t = u.Testaa("1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 / -1995 +1695 -1930 / 1901");
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_KAKSI_KAUTTAMERKKIA, t.Item1);
+        }
     }
 }
 

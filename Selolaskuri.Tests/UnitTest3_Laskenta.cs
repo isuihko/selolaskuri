@@ -152,6 +152,75 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
         }
 
+
+        // SEURAAVAT NELJÄ TESTIÄ (17.2.2020) 
+        // - ensimmäinen laskee uuden pelaajan vahvuusluvun
+        // - toinen jatkaa laskentaa normaalilla kaavalla edellisen tuloksesta, tulokset vahvuusluvuissa +-=
+        // - kolmas laskee saman kuin toinen, mutta tulos on ensin ja sitten vahvuusluvut, eikä anneta pelimäärää
+        // - neljäs (=uusi ominaisuus) laskee ensin uuden pelaajan kaavalla ja jatkaa normaalilla kaavalla
+        // Lisäksi moduulissa UnitTest1_SyotteenKasittely.cs on testattu virhetilanteet
+        [TestMethod]
+        public void UudenPelaajanOttelutKerralla3()
+        {
+            var t = u.Testaa("1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1660, t.Item2.UusiSelo); 
+            Assert.AreEqual(11, t.Item2.UusiPelimaara);
+            Assert.AreEqual(4 * 2, t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1716, t.Item2.TurnauksenKeskivahvuus);  // oikeasti 1715,8
+            Assert.AreEqual(11, t.Item2.VastustajienLkm);
+            Assert.AreEqual(1651, t.Item2.MinSelo);
+            Assert.AreEqual(1764, t.Item2.MaxSelo);
+        }
+
+        [TestMethod]
+        public void UudenPelaajanOttelujenJalkeenLisaa()
+        {
+            var t = u.Testaa("1660", "11", "-1995 +1695 -1930 1901");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1682, t.Item2.UusiSelo);   // XXX: Virallisessa laskennassa on 1683
+            Assert.AreEqual(15, t.Item2.UusiPelimaara);
+            Assert.AreEqual(1.5 * 2, t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1880, t.Item2.TurnauksenKeskivahvuus);  // oikeasti 1715,8
+            Assert.AreEqual(4, t.Item2.VastustajienLkm);
+            Assert.AreEqual(1655, t.Item2.MinSelo);
+            Assert.AreEqual(1682, t.Item2.MaxSelo); // XXX: Virallisessa laskennassa on 1683
+        }
+
+        [TestMethod]
+        public void UudenPelaajanOttelujenJalkeenLisaa2()
+        {
+            var t = u.Testaa("1660", "", "1,5 1995 1695 1930 1901");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1683, t.Item2.UusiSelo);   // näin saadaan sama kuin virallisessa laskennassa
+            Assert.AreEqual(Vakiot.PELIMAARA_TYHJA, t.Item2.UusiPelimaara);
+            Assert.AreEqual(1.5 * 2, t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1880, t.Item2.TurnauksenKeskivahvuus);  // oikeasti 1715,8
+            Assert.AreEqual(4, t.Item2.VastustajienLkm);
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
+
+
+        // Nyt voidaan laskea uuden pelaajan vahvuusluku uuden pelaajan kaavalla ja
+        // jatkaa sitten määrätystä kohdasta normaalilla laskennalla, kunhan uuden pelaajan kaaavalla tulee
+        // vähintään 11 peliä ja alkupelimäärä on enintään 10, jotta voidaan käyttää uuden pelaajan kaavaa
+        // Virhetilanteiden testaus -> UnitTest2_TarkistaSyote.cs
+        [TestMethod]
+        public void UudenPelaajanOttelutKerralla3jatkuuNormaali()
+        {
+            var t = u.Testaa("1525", "0", "+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944 / -1995 +1695 -1930 1901");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1683, t.Item2.UusiSelo); 
+            Assert.AreEqual(15, t.Item2.UusiPelimaara);
+            Assert.AreEqual(5.5 * 2, t.Item2.TurnauksenTulos);
+            Assert.AreEqual(1760, t.Item2.TurnauksenKeskivahvuus);  // oikeasti 1759,7
+            Assert.AreEqual(15, t.Item2.VastustajienLkm);
+            Assert.AreEqual(1651, t.Item2.MinSelo);
+            Assert.AreEqual(1764, t.Item2.MaxSelo);
+        }
+
+
         // Tässä lasketaan samat ottelut kuin uudelle pelaajalle laskettiin, mutta vanhan pelaajan kaavalla (pelimäärä antamatta)
         [TestMethod]
         public void SamatOttelutKuinUudella1() // Turnauksen tulos lasketaan otteluista
@@ -181,6 +250,7 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(7,      t.Item2.VastustajienLkm);        // seitsemän vastustajaa
             Assert.AreEqual(199,    t.Item2.Odotustulos);          // odotustulos 1,99*100
         }
+
 
         // Kolme tapaa syöttää ottelun tulos
         [TestMethod]

@@ -2,11 +2,11 @@
 
 Selolaskuri - Shakin vahvuusluvun laskenta - Calculation of Finnish chess ratings - My hobby project (I'm also chess player)
 
-Visual Studio Community 2017 (also 2015), C# and .NET, Windows 7 and Windows 10
+Visual Studio Community 2019/2017/2015, C# and .NET, Windows 7 and Windows 10
 
 Now all Selolaskuri's versions are under same Visual Studio's solution:
 - **Selolaskuri** which is WinForms version and desktop application, can be installed into Windows computer.
-- **Selolaskuri.WPF**, user interface created with WPF/XAML (WPF is newer than WinForms) and is also a desktop application, can be installed into Windows computer. More in folder Selolaskuri.WPF.
+- **Selolaskuri.WPF**, user interface created with WPF/XAML (WPF is newer than WinForms) and is also a desktop application, can be installed into Windows computer. Resizable window. More in folder Selolaskuri.WPF.
 - **Selolaskuri.XBAP**, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable which can be run with IE.
 
 If you've downloaded all source codes, you can choose, which of the application to run in Visual Studio: in Solution Explorer right click Project's name, choose Set as StartUp Project and then click Start.
@@ -22,7 +22,7 @@ Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki
 - PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on enintään 10 minuuttia. Eri miettimisajoille on omat laskentakaavansa.
 
 Laskettu tulos voi poiketa virallisesta laskennasta hieman, ehkä pisteellä pyöristyksistä johtuen.
-Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
+Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html (nämä sivut eivät löydy enää?)
 
 Selolaskentaa netissä: 
 - http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html  SalSK - selolaskentaohjelma
@@ -99,6 +99,10 @@ Kahden tai useamman ottelun tulos voidaan antaa eri tavoilla
 - b) Pistemäärä ensin ja sitten vahvuusluvut, esim. 2.5 1622 1880 1633 1717
 - c) CSV-formaatissa, jossa tulokset tavalla a tai b, esim. jos oma selo on 1521, niin 1521,2.5 1622 1880 1633 1717
 
+UUSI LASKENTA:
+Laskenta voidaan aloittaa uuden pelaajan laskennalla ja jatkaa sitten normaalilla laskennalla. Erota Vastustajat-kentässä vahvuusluvut oikeassa kohdassa '/' -merkillä. Alkuperäisen pelimäärän on oltava enintään 10 ja pelimäärän pitää vaihdossa olla vähintään 11.
+Kunkin ottelun tulos on annettava vahvuusluvun yhteydessä, esim. jos alkup. pelimäärä on enintään 10, niin tässä 3 peliä lisää vaikkapa turnauksesta, ja sitten vaihtuu laskenta: "+1321 -1678 -1864 / -1995 +1695". Tai csv-formaatissa "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944 / -1995 +1695 -1930 1901", jossa lasketaan 11 ottelua uuden pelaajan kaavalla ja sitten loput neljä normaalilla kaavalla.
+
 Ohjelman asennus:
 Windows 7/10: Lataa publish-hakemisto alihakemistoineen ja suorita setup.exe ja hyväksy Selolaskuri.exe:n asennus. Tai lataa koko Visual Studio -projekti ja käännä projekti uudestaan Visual Studiossa.
 Koko projektin voi ladata komennolla: git clone https://github.com/isuihko/selolaskuri
@@ -106,6 +110,7 @@ Koko projektin voi ladata komennolla: git clone https://github.com/isuihko/selol
 ------
 
 Version history highlights:
+- 16.-17.2.2020 Better instructions in Menu->Ohjeet. More checking and code refactoring. Now allows entering new player calculation up to certain game and then after '/' continue with normal calculations, like "+1321 -1678 -1864 / -1995 +1695". Note that this requires that players game count is not > 10 when starting and is at least 11 when changing calculation from new player formula to normal.
 - 10.-19.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
 - 4.8.2018: Added support for CSV format (comma-separated values). Also Java version is up-to-date.
 - 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.

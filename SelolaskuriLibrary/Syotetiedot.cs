@@ -12,6 +12,8 @@
 // 1.8.2018       New constructor with new parameter doTrim. If true, extra white space are removed from character strings.
 //
 
+using System;
+
 namespace SelolaskuriLibrary {
     // Luokka/tietorakenne syötetiedoille
     //
@@ -37,11 +39,6 @@ namespace SelolaskuriLibrary {
         public Ottelulista Ottelut { get; private set; }   // sis. vastustajien selot ja ottelutulokset
 
 
-        // Constructor chaining. This constructor without parameters is not used any more.
-        //public Syotetiedot() : this(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, null, null, null, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON)
-        //{          
-        //}
-
         // Konstruktorin käyttö:
         //  - Lomakkeelta (SelolaskuriForm.cs)
         //     return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
@@ -59,6 +56,14 @@ namespace SelolaskuriLibrary {
         // poiston jättäminen tänne on osa testausta.
         public Syotetiedot(Vakiot.Miettimisaika_enum aika, string selo, string pelimaara, string vastustajat, Vakiot.OttelunTulos_enum tulos,  bool doTrim)
         {
+            // XXX: Could check arguments everywhere: arg == null or sometimes string.IsNullOrEmpty(arg)
+            if (selo == null)
+                throw new ArgumentNullException(nameof(selo));
+            if (pelimaara == null)
+                throw new ArgumentNullException(nameof(pelimaara));
+            if (string.IsNullOrEmpty(vastustajat))
+                throw new ArgumentNullException(nameof(vastustajat));
+
             Miettimisaika = aika;
             // if doTrim -> remove leading and trailing white spaces
             AlkuperainenSelo_str = doTrim ? selo.Trim() : selo;
@@ -84,7 +89,7 @@ namespace SelolaskuriLibrary {
         //
         // Tarkistetaan alkuperäisestä pelimäärästä, sillä turnauksen laskenta tehdään
         // uuden pelaajan kaavalla vaikka pelimäärä turnauksen laskennan aikana ylittäisikin rajan.
-        public bool UudenPelaajanLaskenta_alkup()
+        public bool UudenPelaajanLaskentaAlkupPelimaara()
         {
             return (AlkuperainenPelimaara >= Vakiot.MIN_PELIMAARA &&
                     AlkuperainenPelimaara <= Vakiot.MAX_PELIMAARA_UUSI_PELAAJA);

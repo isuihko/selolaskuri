@@ -60,6 +60,13 @@ namespace SelolaskuriLibrary {
         public int TurnauksenKeskivahvuus { get; private set; } // average opponent strength
         public int TurnauksenKeskivahvuusDesim { get; private set; } // average opponent strength
 
+        //public int VastustajaMin { get; private set; }
+        //public int VastustajaMax { get; private set; }
+
+        public int Suoritusluku { get; private set; }
+        public int SuorituslukuFIDE { get; private set; }
+        public int SuorituslukuLineaarinen { get; private set; }
+
         // Tuloksien näyttämisessä tarvitaan alkuperäistä seloa -> muutos, sekä ero keskivahvuuteen
         public int AlkuperainenSelo {                       // original chess rating
             get {
@@ -73,7 +80,7 @@ namespace SelolaskuriLibrary {
                 // Jos oli uuden pelaajan laskenta ja oli annettu uuden vastustajien selot tuloksineen / normaali laskennan tulokset
                 if (UudenPelaajanPelitLKM > 0 && UusiPelimaara - alkuperaisetSyotteet.AlkuperainenPelimaara > UudenPelaajanPelitLKM)
                     return false;
-                return alkuperaisetSyotteet.UudenPelaajanLaskenta_alkup();
+                return alkuperaisetSyotteet.UudenPelaajanLaskentaAlkupPelimaara();
             }
         }
 
@@ -165,6 +172,88 @@ namespace SelolaskuriLibrary {
             UudenPelaajanPelitLKM  = syotteet.UudenPelaajanPelitEnsinLKM;
             TurnauksenKeskivahvuus = syotteet.Ottelut.Keskivahvuus;
             TurnauksenKeskivahvuusDesim = syotteet.Ottelut.KeskivahvuusDesim;
+
+            //VastustajaMin = syotteet.Ottelut.MinVahvuus;
+            //VastustajaMax = syotteet.Ottelut.MaxVahvuus;
+        }
+
+
+        // SUORITUSLUVUN LASKENTA ON ALUN PERIN SEURAAVASTA LASKURISTA
+        //
+        // Selo- ja suorituslukulaskuri:
+        //            http://shakki.kivij.info/performance_calculator.shtml
+        // Tietoa suoritusluvuista:
+        //            http://shakki.kivij.info/performance_formulas.shtml
+
+        private const double Epsilon = 0.000001;
+        private const int MinRating = 0, MaxRating = 10000;
+
+        private double Erf(double x)
+        {
+            // Horner's method, gives a reasonably good approximation
+            var a = 1.0 / (1.0 + 0.5 * Math.Abs(x));
+            var res = 1 - a * Math.Exp(-x * x - 1.26551223 +
+                                             a * (1.00002368 +
+                                             a * (0.37409196 +
+                                             a * (0.09678418 +
+                                             a * (-0.18628806 +
+                                             a * (0.27886807 +
+                                             a * (-1.13520398 +
+                                             a * (1.48851587 +
+                                             a * (-0.82215223 +
+                                             a * (0.17087277))))))))));
+            if (x >= 0) return res;
+            else return -res;
+        }
+
+        private int LaskeSuoritusluku(Ottelulista ottelut)
+        {
+            if (ottelut == null)
+                throw new ArgumentNullException(nameof(ottelut));
+
+            double low = MinRating;
+            double high = MaxRating;
+
+            double guess, we;
+            int i;
+            int elo;
+
+            int scorex100 = (int)Math.Round(100F * (TurnauksenTulos / 2F));
+
+            if (scorex100 < 50) return -9999; 
+            if (100 * VastustajienLkm - scorex100 < 1) return 9999;
+
+            while (high - low > Epsilon)
+            {
+                we = 0.0; guess = (low + high) / 2.0;
+                for (i = 0; i < VastustajienLkm; i++)
+                {
+                    elo = (i == 0) ? ottelut.HaeEnsimmainen().Item1 : ottelut.HaeSeuraava().Item1;
+                    we += 0.5 * (1 + Erf((guess - elo) / 400F));
+                }
+                    if (100 * we < scorex100) low = guess;
+                    else high = guess;
+            }
+            return (int)Math.Round(high + 0.000001);
+        }
+
+        private int LaskeSuorituslukuFIDE()
+        {
+            int[] dp = {0, 7, 14, 21, 29, 36, 43, 50, 57, 65, 72, 80, 87, 95, 102,
+            110, 117, 125, 133, 141, 149, 158, 166, 175, 184, 193, 202,
+            211, 220, 230, 240, 251, 262, 273, 284, 296, 309, 322, 336,
+            351, 366, 383, 401, 422, 444, 470, 501, 538, 589, 677, 800 };
+            int percentage = (int)Math.Round(100 * (TurnauksenTulos / 2F) / VastustajienLkm);
+
+            if (percentage >= 50)
+                return TurnauksenKeskivahvuus + dp[percentage - 50];
+            else
+                return TurnauksenKeskivahvuus - dp[50 - percentage];
+        }
+
+        private int LaskeSuorituslukuLineaarinen()
+        {
+            return (int)Math.Round(TurnauksenKeskivahvuus + 8 * 100*(TurnauksenTulos/2F) / VastustajienLkm - 400F + 0.000001);
         }
 
 
@@ -181,6 +270,9 @@ namespace SelolaskuriLibrary {
         //
         public void PelaaKaikkiOttelut(Syotetiedot syotteet)
         {
+            if (syotteet == null)
+                throw new ArgumentNullException(nameof(syotteet));
+
             Ottelulista ottelulista = syotteet.Ottelut;
 
             // asettaa omat tiedot (selo ja pelimäärä) seloPelaaja-luokkaan, nollaa tilastotiedot ym.
@@ -193,20 +285,21 @@ namespace SelolaskuriLibrary {
             // jossa tulokset on ilmoitettu formaatissa "1.5 1622 1880 1683"
             //
 
-            if (OnkoAnnettuTurnauksenTulos && UudenPelaajanLaskenta) {
+            if (OnkoAnnettuTurnauksenTulos && UudenPelaajanLaskenta)
+            {
                 //  selo += pistemäärä - ottelut/2 * 200
                 // 1 ottelu:
                 //    1525 + 0.5 1525 -> tulos 1525    
                 // 2 ottelua:
                 //  2    1525 1441   summa: 2966  keskim. 1483   tulos on keskim+200
                 // keskitulos/matsi = 1
-                
+
                 // apumuuttujia (lausekkeiden selkiyttämiseksi ja lyhentämiseksi)
                 float keskimTulos = (annettuTurnauksenTulos / 2F) / VastustajienLkm;   // 0.0 - 1.0
                 float muutos = 400 * (keskimTulos - 0.5F) + 0.5F;   // tuloksella tasapeli pysytään samassa kuin keskimTulos
 
                 // vanhan selon painoarvo ja uuden lasketun selon painoarvo riippuvat pelimääristä
-                UusiSelo       = ((UusiSelo * UusiPelimaara) + (int)(TurnauksenKeskivahvuus + muutos) * VastustajienLkm) / (UusiPelimaara + VastustajienLkm);
+                UusiSelo = ((UusiSelo * UusiPelimaara) + (int)(TurnauksenKeskivahvuus + muutos) * VastustajienLkm) / (UusiPelimaara + VastustajienLkm);
                 UusiPelimaara += VastustajienLkm;
 
                 // turnauksen tulos annettu, joten ei laskettavaa
@@ -215,82 +308,94 @@ namespace SelolaskuriLibrary {
                 // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
                 MinSelo = UusiSelo;
                 MaxSelo = UusiSelo;
-
-                return;
+                //return;
             }
-
-
-            // Varsinainen laskenta: Käydään läpi kaikki listan ottelut, jotka olivat formaatissa
-            // "+1525 =1600 -1611 +1558". Tällöin myös MinSelo ja MaxSelo voidaan selvittää.
-            //
-            var ottelu = ottelulista.HaeEnsimmainen(); // vastustajanSelo, ottelunTulos
-            int pelattuLKM = 0;
-
-            // Kun lista on tyhjä, saadaan ottelun tulos TULOS_MAARITTELEMATON
-            while (ottelu.Item2 != Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON) {
-                
-                // päivitä seloa ja tilastoja jokaisen ottelun laskennassa, myös laske Odotustulos
-                UusiSelo = PelaaOttelu(ottelu.Item1, ottelu.Item2,
-                    (syotteet.UudenPelaajanPelitEnsinLKM > 0 && pelattuLKM >= syotteet.UudenPelaajanPelitEnsinLKM));
-
-                // päivitä pelimäärää vain jos oli annettu
-                if (UusiPelimaara != Vakiot.PELIMAARA_TYHJA) {
-                    UusiPelimaara++;
-                    pelattuLKM++;
-                }
-                ottelu = ottelulista.HaeSeuraava();
-            }
-
-
-            // Entä jos vanhan pelaajan ottelut olivatkin formaatissa "1.5 1622 1880 1683"?
-            // Jos näin oli, niin unohdetaan vanha laskenta, josta käytetään vain Odotustulos sekä UusiPelimaara.
-            //
-            // HUOM! Seuraava ei toimisi uudella pelaajalla, mutta se erikoistapaus onkin käsitelty aiemmin
-            //
-            if (OnkoAnnettuTurnauksenTulos) {
+            else
+            {
+                // Varsinainen laskenta: Käydään läpi kaikki listan ottelut, jotka olivat formaatissa
+                // "+1525 =1600 -1611 +1558". Tällöin myös MinSelo ja MaxSelo voidaan selvittää.
                 //
-                // Aiemmasta laskennasta tarvitaan Odotustulos
-                // apumuuttuja selo, koska sitä tarvitaan kaavassa usein
-                //
-                int vanha = alkuperaisetSyotteet.AlkuperainenSelo; // aloitetaan alusta, oma apumuuttuja
-                TurnauksenTulos = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
+                var ottelu = ottelulista.HaeEnsimmainen(); // vastustajanSelo, ottelunTulos
+                int pelattuLKM = 0;
 
-                if (alkuperaisetSyotteet.Miettimisaika <= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN) {
-                    //
-                    // PELO: pikashakilla on oma laskentakaavansa
-                    //
-                    // http://skore.users.paivola.fi/selo.html  (onko sivua enää?) kertoo:
-                    // Pikashakin laskennassa Odotustulos lasketaan samoin, mutta ilman 0,85 - sääntöä.
-                    // Itse laskentakaava onkin sitten hieman vaikeampi:
-                    // pelo = vanha pelo + 200 - 200 * e(Odotustulos - tulos) / 10 , kun saavutettu tulos on odotustulosta suurempi
-                    // pelo = vanha pelo - 200 + 200 * e(tulos - Odotustulos) / 10 , kun saavutettu tulos on odotustulosta pienempi
-                    //            Loppuosan pitää olla e((tulos - Odotustulos) / 10)  eli sulut lisää, jakolasku ensin.
-                    //
-                    // turnauksen tulos on kokonaislukuna, pitää jakaa 2:lla
-                    // Odotustulos on kokonaisluku ja pitää jakaa 100:lla
-                    //
-                    // Laskentakaavaan lisätty pyöristys Math.Round, jonka jälkeen kaikista Joukkuepikashakin laskennoista saadaan samat tulokset
-                    if ((annettuTurnauksenTulos / 2.0) > (Odotustulos / 100.0)) {
-                        UusiSelo =
-                            (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos / 2.0) / 10.0) + 0.0001);
-                    } else {
-                        UusiSelo =
-                            (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0) / 10.0) + 0.0001);
+                // Kun lista on tyhjä, saadaan ottelun tulos TULOS_MAARITTELEMATON
+                while (ottelu.Item2 != Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON)
+                {
+
+                    // päivitä seloa ja tilastoja jokaisen ottelun laskennassa, myös laske Odotustulos
+                    UusiSelo = PelaaOttelu(ottelu.Item1, ottelu.Item2,
+                        (syotteet.UudenPelaajanPelitEnsinLKM > 0 && pelattuLKM >= syotteet.UudenPelaajanPelitEnsinLKM));
+
+                    // päivitä pelimäärää vain jos oli annettu
+                    if (UusiPelimaara != Vakiot.PELIMAARA_TYHJA)
+                    {
+                        UusiPelimaara++;
+                        pelattuLKM++;
                     }
-                } else {
-                    //
-                    // SELO: pidemmän miettimisajan pelit eli > 10 min
-                    //
-                    float lisakerroin = MaaritaLisakerroin(vanha, alkuperaisetSyotteet.Miettimisaika);
-                    // Lisätään vielä pelattujen pelien lkm * 0.1
-                    UusiSelo =
-                        (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.0001);
+                    ottelu = ottelulista.HaeSeuraava();
                 }
 
-                // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
-                MinSelo = UusiSelo;
-                MaxSelo = UusiSelo;
+
+                // Entä jos vanhan pelaajan ottelut olivatkin formaatissa "1.5 1622 1880 1683"?
+                // Jos näin oli, niin unohdetaan vanha laskenta, josta käytetään vain Odotustulos sekä UusiPelimaara.
+                //
+                // HUOM! Seuraava ei toimisi uudella pelaajalla, mutta se erikoistapaus onkin käsitelty aiemmin
+                //
+                if (OnkoAnnettuTurnauksenTulos)
+                {
+                    //
+                    // Aiemmasta laskennasta tarvitaan Odotustulos
+                    // apumuuttuja selo, koska sitä tarvitaan kaavassa usein
+                    //
+                    int vanha = alkuperaisetSyotteet.AlkuperainenSelo; // aloitetaan alusta, oma apumuuttuja
+                    TurnauksenTulos = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
+
+                    if (alkuperaisetSyotteet.Miettimisaika <= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                    {
+                        //
+                        // PELO: pikashakilla on oma laskentakaavansa
+                        //
+                        // http://skore.users.paivola.fi/selo.html kertoo:
+                        // Pikashakin laskennassa Odotustulos lasketaan samoin, mutta ilman 0,85 - sääntöä.
+                        // Itse laskentakaava onkin sitten hieman vaikeampi:
+                        // pelo = vanha pelo + 200 - 200 * e(Odotustulos - tulos) / 10 , kun saavutettu tulos on odotustulosta suurempi
+                        // pelo = vanha pelo - 200 + 200 * e(tulos - Odotustulos) / 10 , kun saavutettu tulos on odotustulosta pienempi
+                        //            Loppuosan pitää olla e((tulos - Odotustulos) / 10)  eli sulut lisää, jakolasku ensin.
+                        //
+                        // turnauksen tulos on kokonaislukuna, pitää jakaa 2:lla
+                        // Odotustulos on kokonaisluku ja pitää jakaa 100:lla
+                        //
+                        // Laskentakaavaan lisätty pyöristys Math.Round, jonka jälkeen kaikista Joukkuepikashakin laskennoista saadaan samat tulokset
+                        if ((annettuTurnauksenTulos / 2.0) > (Odotustulos / 100.0))
+                        {
+                            UusiSelo =
+                                (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos / 2.0) / 10.0) + 0.0001);
+                        }
+                        else
+                        {
+                            UusiSelo =
+                                (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0) / 10.0) + 0.0001);
+                        }
+                    }
+                    else
+                    {
+                        //
+                        // SELO: pidemmän miettimisajan pelit eli > 10 min
+                        //
+                        float lisakerroin = MaaritaLisakerroin(vanha, alkuperaisetSyotteet.Miettimisaika);
+                        // Lisätään vielä pelattujen pelien lkm * 0.1
+                        UusiSelo =
+                            (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.0001);
+                    }
+
+                    // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
+                    MinSelo = UusiSelo;
+                    MaxSelo = UusiSelo;
+                }
             }
+            Suoritusluku = LaskeSuoritusluku(syotteet.Ottelut);
+            SuorituslukuFIDE = LaskeSuorituslukuFIDE();
+            SuorituslukuLineaarinen = LaskeSuorituslukuLineaarinen();
         }
 
 
@@ -323,7 +428,7 @@ namespace SelolaskuriLibrary {
             Odotustulos     += odotustulos1;  // monta ottelua, niin summa kunkin ottelun odotustuloksista
             TurnauksenTulos += (int)tulos;
 
-            if (!vaihdaVanhaksiPelaajaksi && alkuperaisetSyotteet.UudenPelaajanLaskenta_alkup()) {
+            if (!vaihdaVanhaksiPelaajaksi && alkuperaisetSyotteet.UudenPelaajanLaskentaAlkupPelimaara()) {
                 //
                 // Uuden pelaajan laskennassa käytetään vastustajan seloa tuloksen mukaan -200 / +0 / +200
 
@@ -366,7 +471,7 @@ namespace SelolaskuriLibrary {
         //    < 50, jos tappio odotetumpi, esim. 49, jos 4-10 pistettä alempi
         //
         // Odotustulos voi olla enintään 92. Paitsi pikashakissa voi olla jopa 100.
-        // ks. ohje http://skore.users.paivola.fi/selo.html  (onko sivua enää?)
+        // ks. ohje http://skore.users.paivola.fi/selo.html
         // odotustulokset lasketaan aina alkuperäisellä selolla
         private int MaaritaOdotustulos(int alkuperainenSelo, int vastustajanSelo)
         {
@@ -406,7 +511,7 @@ namespace SelolaskuriLibrary {
         }
 
         // Kerroin määritetään alkuperäisen selon mukaan.
-        // ks. kerrointaulukko http://skore.users.paivola.fi/selo.html (onko sivua enää?)
+        // ks. kerrointaulukko http://skore.users.paivola.fi/selo.html
         private int MaaritaKerroin(int selo)
         {
             if (selo >= 2050)

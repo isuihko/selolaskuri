@@ -116,35 +116,49 @@ namespace SelolaskuriLibrary {
             "  Jos ei ole vielä ollut laskentaa, saadaan tällä uuden pelaajan oletusarvot SELO 1525 ja pelimäärä 0.",
             "",
             "Laskenta voidaan aloittaa uuden pelaajan laskennalla ja jatkaa normaalilla laskennalla.",
-            "Erota Vastustajat-kentässä vahvuusluvut oikeassa kohdassa '/' -merkillä.", 
-            "Alkuperäisen pelimäärän on oltava enintään 10 ja pelimäärän pitää vaihdossa olla vähintään 11.",            
+            "Erota Vastustajat-kentässä vahvuusluvut oikeassa kohdassa '/' -merkillä.",
+            "Alkuperäisen pelimäärän on oltava enintään 10 ja pelimäärän pitää laskennan vaihdossa olla vähintään 11.",
             "Kunkin ottelun tulos on annettava vahvuusluvun yhteydessä,",
             "Esim. jos alkup. pelimäärä on enintään 10, niin tässä 3 peliä lisää turnauksesta, ja sitten vaihtuu laskentakaava",
             "     1512 +1505 1600 / -1611 +1558",
+            "",
+            "Suoritusluvun laskenta",
+            "Lasketaan kolme suorituslukua: vahvuusluku, jolla odotustulos vastaa saatua pistemäärää, FIDE ja lineaarinen.",
+            "FIDE:n suorituslukulaskennasta saadaan uuden pelaajan ELO, kun pelejä on vähintään 5, joista on saatu vähintään 1/2 pistettä",
             "",
             "Vastustajat-kentän extrat: komento test lisää valintalistaan laskentaa. Komento clear nollaa valintalistan.",
 
         };
 
-        private static readonly string[] laskentakaavat = {
-            // TÄTÄ EI OLE ENÄÄ?
-            "Shakin vahvuusluvun laskentakaavat (ei löydy enää?)",
-            "            http://skore.users.paivola.fi/selo.html",           
+        private static readonly string[] laskentakaavat = {           
+            "Shakin vahvuusluvun laskentakaavat",
+            "            http://skore.users.paivola.fi/selo.html", // XXX: TARKISTA
             
             "Lisätietoa: http://www.shakkiliitto.fi/",
             "            http://www.shakki.net/cgi-bin/selo",
             "            http://www.shakki.net/pelaaminen/vahvuus",
-            "ELO-luku (lisätään vielä tähän ohjelmaan)",
+            "Selo- ja suorituslukulaskuri:",
+            "            http://shakki.kivij.info/performance_calculator.shtml",
+            "Tietoa suoritusluvuista:",
+            "            http://shakki.kivij.info/performance_formulas.shtml",
+            "Vahvuusluvun laskenta (ei uusi pelaaja):",
+            "            http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html",
+            "ELO-luku",
             "            https://fi.wikipedia.org/wiki/Elo-luku"
         };
 
         private static readonly string[] tietoaOhjelmasta = {
             "Shakin vahvuusluvun laskenta",
             "",
-            "C#/.NET-lähdekoodit ja asennusohjelma https://github.com/isuihko/selolaskuri",
+            "C#/.NET-lähdekoodit ja asennusohjelma",
+            "            https://github.com/isuihko/selolaskuri",
             "Sisältää WinForms-, WPF/XAML- että XBAP/web-versioiden lähdekoodit.",
-            "IE-selaimella toimiva XBAP/web-versio: https://isuihko.github.io/index.html",
-            "Lisäksi on Java-versio https://github.com/isuihko/jSelolaskuri"
+            "",
+            "IE-selaimella Windows 7/8/10:ssä toimiva XBAP/web-versio:",
+            "            https://isuihko.github.io/index.html",
+            "",
+            "Lisäksi on Java-versio",
+            "            https://github.com/isuihko/jSelolaskuri"
         };
 
         public void NaytaOhjeita()

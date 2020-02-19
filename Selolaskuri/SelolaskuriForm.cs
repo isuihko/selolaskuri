@@ -430,7 +430,7 @@ namespace Selolaskuri
                 if (tulokset.UudenPelaajanPelitLKM > 0)
                     UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta " + tulokset.UudenPelaajanPelitLKM + " peliä";
                 else
-                    UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta";
+                    UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta          ";
                 UudenPelaajanLaskenta_txt.Visible = true;
             } else {
                 odotustulos_out.Text = (tulokset.Odotustulos / 100F).ToString("0.00");
@@ -458,6 +458,13 @@ namespace Selolaskuri
                 VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_PELOKSI);
             else
                 VaihdaSeloPeloTekstit(Vakiot.VaihdaMiettimisaika_enum.VAIHDA_SELOKSI);
+
+            // Suoritusluku
+            // Näytä kolmella eri tavalla lasketut tulokset
+            // Laskenta alun perin http://shakki.kivij.info/performance_calculator.shtml 
+            suoritusluku_out.Text = tulokset.Suoritusluku.ToString();
+            suorituslukuFIDE_out.Text = tulokset.SuorituslukuFIDE.ToString();
+            suorituslukuLineaarinen_out.Text = tulokset.SuorituslukuLineaarinen.ToString();
         }
 
         // --------------------------------------------------------------------------------

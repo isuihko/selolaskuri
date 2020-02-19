@@ -101,6 +101,17 @@ namespace SelolaskuriLibrary {
             }
         }
 
+        //public int MaxVahvuus {
+        //    get {
+        //        return tallennetutOttelut.Max(t => t.VastustajanSelo);
+        //    }
+        //}
+
+        //public int MinVahvuus {
+        //    get {
+        //        return tallennetutOttelut.Min(t => t.VastustajanSelo);
+        //    }
+        //}
 
         public int KeskivahvuusDesim {
             get {

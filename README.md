@@ -22,7 +22,7 @@ Lasketaan shakinpelaajalle uusi vahvuusluku SELO tai PELO, ks. http://www.shakki
 - PELO on vastaavasti pikashakin vahvuusluku, jota käytetään kun miettimisaika on enintään 10 minuuttia. Eri miettimisajoille on omat laskentakaavansa.
 
 Laskettu tulos voi poiketa virallisesta laskennasta hieman, ehkä pisteellä pyöristyksistä johtuen.
-Laskentaohjeet sivulta: http://skore.users.paivola.fi/selo.html
+Vahvuusluvun laskentakaavat ovat peräisin sivulta http://skore.users.paivola.fi/selo.html ja suoritusluvun laskenta on sivulta http://shakki.kivij.info/performance_calculator.shtml 
 
 Selolaskentaa netissä: 
 - http://www.shakki.net/kerhot/salsk/ohjelmat/selo.html  SalSK - selolaskentaohjelma

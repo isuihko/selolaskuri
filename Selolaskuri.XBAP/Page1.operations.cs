@@ -262,10 +262,17 @@ namespace Selolaskuri.XBAP {
 
             // Odotustulosta tai sen summaa ei näytetä uudelle pelaajalle, koska vahvuusluku on vielä provisional
             // Uuden pelaajan laskennasta annetaan ilmoitusteksti
-            if (tulokset.UudenPelaajanLaskenta) {
+            // Jos vaihdettiin laskentaa (syötteessä '/'), niin myös uuden pelaajan laskennassa olleiden pelien lkm
+            if (tulokset.UudenPelaajanLaskenta || tulokset.UudenPelaajanPelitLKM > 0)
+            {
                 odotustulos_out.Text = "";
+                if (tulokset.UudenPelaajanPelitLKM > 0)
+                    UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta " + tulokset.UudenPelaajanPelitLKM + " peliä";
+                else
+                    UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta";
                 UudenPelaajanLaskenta_txt.Visibility = Visibility.Visible;  // WinForms: .Visible = true;
-            } else {
+            }
+            else {
                 odotustulos_out.Text = (tulokset.Odotustulos / 100F).ToString("0.00");
                 UudenPelaajanLaskenta_txt.Visibility = Visibility.Hidden; // WInForms: .Visible = false;
             }

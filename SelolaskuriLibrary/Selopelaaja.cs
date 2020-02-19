@@ -162,7 +162,7 @@ namespace SelolaskuriLibrary {
             //   - vastustajien eli otteluiden lkm
             //   - turnauksen eli vastustajien keskivahvuus
             VastustajienLkm        = syotteet.Ottelut.Lukumaara;
-            UudenPelaajanPelitLKM  = 0;
+            UudenPelaajanPelitLKM  = syotteet.UudenPelaajanPelitEnsinLKM;
             TurnauksenKeskivahvuus = syotteet.Ottelut.Keskivahvuus;
             TurnauksenKeskivahvuusDesim = syotteet.Ottelut.KeskivahvuusDesim;
         }
@@ -259,7 +259,7 @@ namespace SelolaskuriLibrary {
                     //
                     // PELO: pikashakilla on oma laskentakaavansa
                     //
-                    // http://skore.users.paivola.fi/selo.html kertoo:
+                    // http://skore.users.paivola.fi/selo.html  (onko sivua enää?) kertoo:
                     // Pikashakin laskennassa Odotustulos lasketaan samoin, mutta ilman 0,85 - sääntöä.
                     // Itse laskentakaava onkin sitten hieman vaikeampi:
                     // pelo = vanha pelo + 200 - 200 * e(Odotustulos - tulos) / 10 , kun saavutettu tulos on odotustulosta suurempi
@@ -366,7 +366,7 @@ namespace SelolaskuriLibrary {
         //    < 50, jos tappio odotetumpi, esim. 49, jos 4-10 pistettä alempi
         //
         // Odotustulos voi olla enintään 92. Paitsi pikashakissa voi olla jopa 100.
-        // ks. ohje http://skore.users.paivola.fi/selo.html
+        // ks. ohje http://skore.users.paivola.fi/selo.html  (onko sivua enää?)
         // odotustulokset lasketaan aina alkuperäisellä selolla
         private int MaaritaOdotustulos(int alkuperainenSelo, int vastustajanSelo)
         {
@@ -406,7 +406,7 @@ namespace SelolaskuriLibrary {
         }
 
         // Kerroin määritetään alkuperäisen selon mukaan.
-        // ks. kerrointaulukko http://skore.users.paivola.fi/selo.html
+        // ks. kerrointaulukko http://skore.users.paivola.fi/selo.html (onko sivua enää?)
         private int MaaritaKerroin(int selo)
         {
             if (selo >= 2050)

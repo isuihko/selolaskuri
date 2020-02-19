@@ -102,7 +102,7 @@
 
         <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,5" Text="Uusi pelimäärä" />
         <TextBox Name="uusiPelimaara_out" Grid.Row="8" Grid.Column="2" IsReadOnly="True" IsTabStop="False" MinWidth="50" MaxWidth="50" HorizontalAlignment="Left" Margin="5,5,0,5" Width="50" />
-        <TextBox Name="UudenPelaajanLaskenta_txt" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="2" Visibility="Visible" Margin="5,5,120,5" Text="Uuden pelaajan laskenta" />
+        <TextBox Name="UudenPelaajanLaskenta_txt" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="2" Visibility="Visible" Margin="5,5,82,5" Text="Uuden pelaajan laskenta" />
 
         <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,5" Text="Ottelun/turnauksen tulos" />
         <TextBox Name="turnauksenTulos_out" Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="1" IsReadOnly="True" IsTabStop="False" MinWidth="70" MaxWidth="70" HorizontalAlignment="Left" Margin="5,5,0,5" Width="65" />

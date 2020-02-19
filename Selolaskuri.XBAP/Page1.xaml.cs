@@ -26,7 +26,7 @@ namespace Selolaskuri.XBAP {
             vastustajanSelo_comboBox.Width = 725;
 
             // Version text to be shown in window bottom right corner
-            Versio.Text = "C#/.NET/WPF/XBAP 17.2.2020 https://isuihko.github.io/";
+            Versio.Text = "C#/.NET/WPF/XBAP 19.2.2020 https://isuihko.github.io/";
         }
 
         // Publish version needs to be checked in main program class. Shown in Menu->Tietoa ohjelmasta

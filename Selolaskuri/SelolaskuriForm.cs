@@ -163,7 +163,7 @@ namespace Selolaskuri
         }
 
         // --------------------------------------------------------------------------------
-        // LOMAKKEEN KENTTIEN ARVOJEN HAKEMINEN
+        // LOMAKKEEN KENTTIEN ARVOJEN HAKEMINEN LASKENTAA ALOITETTAESSA
         // --------------------------------------------------------------------------------
         // Tietoja ei tarkisteta tässä
         // Miettimisaika on aina kelvollinen, mutta merkkijonot eivät välttämättä

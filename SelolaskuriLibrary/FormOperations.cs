@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SelolaskuriLibrary {
     public class FormOperations {
-        private Vakiot.Selolaskuri_enum selolaskurisovellus;
+        private readonly Vakiot.Selolaskuri_enum selolaskurisovellus; // käytetty tietoikkunassa NaytaTietoaOhjelmasta()
 
         public FormOperations(Vakiot.Selolaskuri_enum sovellus)
         {
@@ -117,11 +117,13 @@ namespace SelolaskuriLibrary {
             "",
             "Laskenta voidaan aloittaa uuden pelaajan laskennalla ja jatkaa normaalilla laskennalla.",
             "Erota Vastustajat-kentässä vahvuusluvut oikeassa kohdassa '/' -merkillä.", 
-            "Alkuperäisen pelimäärän on oltava enintään 10 ja pelimäärän pitää vaihdossa olla vähintään 11.",
-            "Vastustajat-kentän extrat: komento test lisää valintalistaan laskentaa. Komento clear nollaa valintalistan.",
+            "Alkuperäisen pelimäärän on oltava enintään 10 ja pelimäärän pitää vaihdossa olla vähintään 11.",            
             "Kunkin ottelun tulos on annettava vahvuusluvun yhteydessä,",
-            "Esim. jos alkup. pelimäärä on enintään 10, niin tässä 3 peliä lisää esim. turnauksesta, ja sitten vaihtuu laskenta",
-            "     1512 +1505 1600 / -1611 +1558"
+            "Esim. jos alkup. pelimäärä on enintään 10, niin tässä 3 peliä lisää turnauksesta, ja sitten vaihtuu laskentakaava",
+            "     1512 +1505 1600 / -1611 +1558",
+            "",
+            "Vastustajat-kentän extrat: komento test lisää valintalistaan laskentaa. Komento clear nollaa valintalistan.",
+
         };
 
         private static readonly string[] laskentakaavat = {
@@ -153,7 +155,7 @@ namespace SelolaskuriLibrary {
             MessageBox.Show(tekstit, "Ohjeita");
         }
 
-        public void NaytaLaskentakaavat()
+       public void NaytaLaskentakaavat()
         {
             string tekstit = "";
             for (int i = 0; i < laskentakaavat.Length; i++)

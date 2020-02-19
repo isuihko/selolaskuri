@@ -111,7 +111,7 @@ namespace SelolaskuriLibrary {
                 //    JOS MONTA OTTELUA ja VÄLISSÄ '/'-merkki, NIIN SYÖTETTY ENSIN UUDEN PELAAJAN LASKENTA JA SITTEN NORMAALI LASKENTA
                 //    Tällöin syotteet,.AlkuperainenPelimaara oltava enintään 10
 
-                selopelaaja.UudenPelaajanPelitLKM = 0; // XXX: oletus, ei kahta eri laskentaa
+                selopelaaja.UudenPelaajanPelitLKM = 0; // XXX: oletus ettei vaihdeta laskentaa ja voidaan tarkistaa, ettei ole '/' kahdesti
 
                 if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
@@ -180,10 +180,10 @@ namespace SelolaskuriLibrary {
         private int TarkistaOmaSelo(string syote)
         {
             bool status = true;
-            //int tulos;
+            int tulos; // define here instead of "out int tulos" for Visual Studio 2015 compatibility
 
             // onko numero ja jos on, niin onko sallittu numero
-            if (int.TryParse(syote, out int tulos) == false)
+            if (int.TryParse(syote, out /*int*/ tulos) == false)
                 status = false;
             else if (tulos < Vakiot.MIN_SELO || tulos > Vakiot.MAX_SELO)
                 status = false;
@@ -250,7 +250,6 @@ namespace SelolaskuriLibrary {
         // ja sen jälkeen normaalilla laskentakaavalla
         private int TarkistaVastustajanSelo(Ottelulista ottelut, string syote)
         {
-            bool status = true;
             int vastustajanSelo = 0;   // palautettava vastustajan selo tai nolla tai virhestatus
             int virhekoodi = 0; 
 
@@ -263,17 +262,14 @@ namespace SelolaskuriLibrary {
             // Ensin helpot tarkistukset:
             // 1) Kenttä ei saa olla tyhjä
             if (string.IsNullOrWhiteSpace(syote)) {
-                status = false;
                 virhekoodi = Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO;
             } else if (syote.Length == Vakiot.SELO_PITUUS) {
                 if (int.TryParse(syote, out vastustajanSelo) == false) {
                     // 2) Jos on annettu neljä merkkiä (esim. 1728), niin sen on oltava numero
-                    status = false;
                     virhekoodi = Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO;
                 } else if (vastustajanSelo < Vakiot.MIN_SELO || vastustajanSelo > Vakiot.MAX_SELO) {
                     // 3) Numeron on oltava sallitulla lukualueella
                     //    Mutta jos oli OK, niin vastustajanSelo sisältää nyt sallitun vahvuusluvun eikä tulla tähän
-                    status = false;
                     virhekoodi = Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO;
                 }
                 // Jos OK, yhden ottelun tulosta ei kuitenkaan vielä tallenneta listaan
@@ -286,6 +282,7 @@ namespace SelolaskuriLibrary {
                 // 6) vahvuusluvut tuloksineen ja välissä '/'-merkki +1624 -1700 / =1685 +1400
 
                 // Apumuuttujat
+                bool status = true;
                 int selo1; // = Vakiot.MIN_SELO;
                 bool ensimmainen = true;  // ensimmäinen syötekentän numero tai merkkijono
 
@@ -521,8 +518,8 @@ namespace SelolaskuriLibrary {
         public Vakiot.Miettimisaika_enum SelvitaMiettimisaikaCSV(string s)
         {
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
-            // define here to be compatible with Visual Studio 2015
-            if (int.TryParse(s, out int temp) == true)
+            int temp; // define here instead of "out int temp" for Visual Studio 2015 compatibility
+            if (int.TryParse(s, out /*int*/ temp) == true)
             {
                 if (temp < 1)
                 {

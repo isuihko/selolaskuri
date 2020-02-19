@@ -31,7 +31,7 @@ namespace SelolaskuriLibrary {
         // Tarkastuksessa merkkijonot muutettu numeroiksi
         public int AlkuperainenSelo { get; set; }
         public int AlkuperainenPelimaara { get; set; }
-        public int UudenPelaajanPelitEnsinLKM { get; set; }
+        public int UudenPelaajanPelitEnsinLKM { get; set; }  // tähän selvitetään syötteestä kohta '/', jonka jälkeen vaihtuu laskentakaava
         public int YksiVastustajaTulosnapit { get; set; }
 
         public Ottelulista Ottelut { get; private set; }   // sis. vastustajien selot ja ottelutulokset

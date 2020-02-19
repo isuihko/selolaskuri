@@ -112,19 +112,18 @@ Koko projektin voi ladata komennolla: git clone https://github.com/isuihko/selol
 ------
 
 Version history highlights:
-- 19.2.2020  Rating performance calculations
-- 16.-17.2.2020 Better instructions in Menu->Ohjeet. More checking and code refactoring. Now allows entering new player calculation up to certain game and then after '/' continue with normal calculations, like "+1321 -1678 -1864 / -1995 +1695". Note that this requires that players game count is not > 10 when starting and is at least 11 when changing calculation from new player formula to normal.
-- 10.-19.6.2018 A lot of code refactoring to make automatic unit testing possible. Separated checking of input and calculations (i.e. business logic) from the form. Unit tests are now in Selolaskuri.Tests and it makes testing of the  input checking and calculations easy. Checked the calculations and usage of temporary variables and cleaned and documented the code a lot.
+- 10.-19.6.2018 Code refactoring to make automatic unit testing possible (Selolaskuri.Tests). Separated checking of input and calculations (i.e. business logic) from the form.
 - 4.8.2018: Added support for CSV format (comma-separated values). Also Java version is up-to-date.
 - 11.8.2018: Uses clipboard. Edit-menu with cut, copy and paste for handing opponents list. Handy with CSV format.
 - 20.8.2018: Adds usage of half character "1/2" in chess results. Added new unit tests for that.
-- 26.8.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution.
-- 4.9.2018: Moved common information/instruction windows into SelolaskuriLibrary FormOperations.cs
+- 26.8. & 4.9.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution. Moved common information/instruction windows into SelolaskuriLibrary FormOperations.cs
+- 16.-17.2.2020 Better instructions in Menu->Ohjeet. More checking and code refactoring. Now allows entering new player calculation up to certain game and then after '/' continue with normal calculations, like "+1321 -1678 -1864 / -1995 +1695". Note that this requires that players game count is not > 10 when starting and is at least 11 when changing calculation from new player formula to normal.
+- 19.2.2020  Rating performance calculations and new output fields for them.
 
 All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 86 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
 
 TODO
-- refactoring, more refactoring
+- refactoring, more Object-Oriented Programming (OOP)
 - create a real web version with ASP.NET Core (current xbap version has limitations, requires IE)
 - use database as an exercise e.g. to store calculations
 - check what else could be moved into SelolaskuriLibrary

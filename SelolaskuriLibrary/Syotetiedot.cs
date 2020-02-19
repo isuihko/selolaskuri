@@ -61,7 +61,7 @@ namespace SelolaskuriLibrary {
                 throw new ArgumentNullException(nameof(selo));
             if (pelimaara == null)
                 throw new ArgumentNullException(nameof(pelimaara));
-            if (string.IsNullOrEmpty(vastustajat))
+            if (vastustajat == null)
                 throw new ArgumentNullException(nameof(vastustajat));
 
             Miettimisaika = aika;

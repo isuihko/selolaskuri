@@ -45,7 +45,7 @@ namespace SelolaskuriLibrary {
         public int MaxSelo { get; private set; }        // maximum rating during calculation
 
         // laskennan aputiedot
-        public int Odotustulos { get; private set; }    // expected score
+        public int Odotustulos { get; private set; }    // expected score 100x
         public int Kerroin { get; private set; }        // factor used in calculations
 
         // Turnauksen tulos
@@ -53,12 +53,14 @@ namespace SelolaskuriLibrary {
         // Syötteistä laskettu tulos
         // Selvitetään tulos, jos ottelut formaatissa "+1525 =1600 -1611 +1558", josta esim. saadaan
         // tulokseksi 2,5 (2 voittoa ja 1 tasapeli). Tallennetaan kokonaislukuna tuplana (int)(2*2,5) eli 5.
-        public int TurnauksenTulos { get; private set; }    // result from all the matches/tournament
+        public int TurnauksenTulos2x { get; private set; }    // result from all the matches/tournament
 
         public int VastustajienLkm { get; private set; }    // number of the opponents/matches
         public int UudenPelaajanPelitLKM {get ; set; }  // number of games to calculate as a new player
+
+        // pitäisikö keskivahvuuden olla täydellä tarkkuudella vai kokonaislukuna laskennassa?
         public int TurnauksenKeskivahvuus { get; private set; } // average opponent strength
-        public int TurnauksenKeskivahvuusDesim { get; private set; } // average opponent strength
+        public int TurnauksenKeskivahvuus10x { get; private set; } // average opponent strength
 
         //public int VastustajaMin { get; private set; }
         //public int VastustajaMax { get; private set; }
@@ -154,7 +156,7 @@ namespace SelolaskuriLibrary {
             UusiSelo         = syotteet.AlkuperainenSelo;
             UusiPelimaara    = syotteet.AlkuperainenPelimaara;
 
-            TurnauksenTulos = 0;  // lasketaan otteluista kokonaislukuna
+            TurnauksenTulos2x = 0;  // lasketaan otteluista kokonaislukuna
             Odotustulos     = 0;  // summa yksittäisten otteluiden odotustuloksista
 
             // palautettava kerroin alkuperäisen selon mukaan
@@ -171,7 +173,7 @@ namespace SelolaskuriLibrary {
             VastustajienLkm        = syotteet.Ottelut.Lukumaara;
             UudenPelaajanPelitLKM  = syotteet.UudenPelaajanPelitEnsinLKM;
             TurnauksenKeskivahvuus = syotteet.Ottelut.Keskivahvuus;
-            TurnauksenKeskivahvuusDesim = syotteet.Ottelut.KeskivahvuusDesim;
+            TurnauksenKeskivahvuus10x = syotteet.Ottelut.Keskivahvuus10x;
 
             //VastustajaMin = syotteet.Ottelut.MinVahvuus;
             //VastustajaMax = syotteet.Ottelut.MaxVahvuus;
@@ -218,7 +220,7 @@ namespace SelolaskuriLibrary {
             int i;
             int elo;
 
-            int scorex100 = (int)Math.Round(100F * (TurnauksenTulos / 2F));
+            int scorex100 = (int)Math.Round(100F * (TurnauksenTulos2x / 2F));
 
             if (scorex100 < 50) return -9999; 
             if (100 * VastustajienLkm - scorex100 < 1) return 9999;
@@ -243,17 +245,17 @@ namespace SelolaskuriLibrary {
             110, 117, 125, 133, 141, 149, 158, 166, 175, 184, 193, 202,
             211, 220, 230, 240, 251, 262, 273, 284, 296, 309, 322, 336,
             351, 366, 383, 401, 422, 444, 470, 501, 538, 589, 677, 800 };
-            int percentage = (int)Math.Round(100 * (TurnauksenTulos / 2F) / VastustajienLkm);
+            int percentage = (int)Math.Round(100 * (TurnauksenTulos2x / 2F) / VastustajienLkm);
 
             if (percentage >= 50)
-                return TurnauksenKeskivahvuus + dp[percentage - 50];
+                return (int)TurnauksenKeskivahvuus + dp[percentage - 50];
             else
-                return TurnauksenKeskivahvuus - dp[50 - percentage];
+                return (int)TurnauksenKeskivahvuus - dp[50 - percentage];
         }
 
         private int LaskeSuorituslukuLineaarinen()
         {
-            return (int)Math.Round(TurnauksenKeskivahvuus + 8 * 100*(TurnauksenTulos/2F) / VastustajienLkm - 400F + 0.000001);
+            return (int)Math.Round(TurnauksenKeskivahvuus + 8 * 100*(TurnauksenTulos2x/2F) / VastustajienLkm - 400F + 0.000001);
         }
 
 
@@ -303,7 +305,7 @@ namespace SelolaskuriLibrary {
                 UusiPelimaara += VastustajienLkm;
 
                 // turnauksen tulos annettu, joten ei laskettavaa
-                TurnauksenTulos = annettuTurnauksenTulos;
+                TurnauksenTulos2x = annettuTurnauksenTulos;
 
                 // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
                 MinSelo = UusiSelo;
@@ -348,7 +350,7 @@ namespace SelolaskuriLibrary {
                     // apumuuttuja selo, koska sitä tarvitaan kaavassa usein
                     //
                     int vanha = alkuperaisetSyotteet.AlkuperainenSelo; // aloitetaan alusta, oma apumuuttuja
-                    TurnauksenTulos = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
+                    TurnauksenTulos2x = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
 
                     if (alkuperaisetSyotteet.Miettimisaika <= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                     {
@@ -426,7 +428,7 @@ namespace SelolaskuriLibrary {
                 odotustulos1    = MaaritaOdotustulos(alkuperaisetSyotteet.AlkuperainenSelo, vastustajanSelo);
 
             Odotustulos     += odotustulos1;  // monta ottelua, niin summa kunkin ottelun odotustuloksista
-            TurnauksenTulos += (int)tulos;
+            TurnauksenTulos2x += (int)tulos;
 
             if (!vaihdaVanhaksiPelaajaksi && alkuperaisetSyotteet.UudenPelaajanLaskentaAlkupPelimaara()) {
                 //
@@ -512,7 +514,7 @@ namespace SelolaskuriLibrary {
 
         // Kerroin määritetään alkuperäisen selon mukaan.
         // ks. kerrointaulukko http://skore.users.paivola.fi/selo.html
-        private int MaaritaKerroin(int selo)
+        private static int MaaritaKerroin(int selo)
         {
             if (selo >= 2050)
                 return 20;
@@ -522,7 +524,7 @@ namespace SelolaskuriLibrary {
         }
 
         // Eri miettimisajoilla voi olla omia kertoimia
-        private float MaaritaLisakerroin(int selo, Vakiot.Miettimisaika_enum aika)
+        private static float MaaritaLisakerroin(int selo, Vakiot.Miettimisaika_enum aika)
         {
             float f = 1.0F;
 

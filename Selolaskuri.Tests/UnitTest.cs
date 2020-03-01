@@ -65,6 +65,9 @@
 //              program checkes if it is allowed opponent's SELO.
 //              Check if the calculation result gets below or above allowed SELO ranges (1000-2999).
 //
+//  1.3.2020    CSV format. Csv checking code is now in class Syotetiedot and 
+//              couple of return statuses were changed in UnitTest4_TarkistaCSV.
+//
 
 using SelolaskuriLibrary;
 using System;
@@ -137,26 +140,7 @@ namespace Selolaskuri.Tests
         // Use old Tuple, because Visual Studio Community 2015 has older C#
         public Tuple<int, Selopelaaja> Testaa(string csv)
         {
-            Syotetiedot syotetiedot;
-            int status;
-            Selopelaaja tulokset = null;
-
-            // This will store input in text format or numbers into class Syotetiedot. Does not check numbers.
-            // Note! In unit test the default thinking time is 90 minutes because it can't be taken from the form
-            syotetiedot = so.SelvitaCSV(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, csv);
-
-            if (syotetiedot == null) {
-                // Possible errors:
-                //   too many commas, e.g. 
-                //   one comma which tells the tournamet result or single match result, so it can't be CSV format
-                status = Vakiot.SYOTE_VIRHE_CSV_FORMAT;
-            } else if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK) {
-
-                // If the input was OK, continue and calculate
-                // If wasn't, then tulokset is left null and error status will be returned
-                tulokset = so.SuoritaLaskenta(syotetiedot);
-            }
-            return Tuple.Create(status, tulokset);
+            return Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN, "", "", csv, Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
         }
     }
 }

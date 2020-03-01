@@ -21,14 +21,14 @@ namespace Selolaskuri.Tests
         public void CSV_LiianMontaArvoa1()
         {
             var t = u.Testaa("90,1525,0,1525,1,123");
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_OMA_SELO/*Vakiot.SYOTE_VIRHE_CSV_FORMAT*/, t.Item1);
         }
 
         [TestMethod]
         public void CSV_LiianMontaArvoa2()
         {
             var t = u.Testaa(",,,,,,");
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_OMA_SELO /*Vakiot.SYOTE_VIRHE_CSV_FORMAT*/, t.Item1);
         }
 
         [TestMethod]
@@ -67,11 +67,12 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(Vakiot.SYOTE_VIRHE_OMA_SELO, t.Item1);
         }
 
+        // Can't be csv format with an empty
         [TestMethod]
         public void CSV_ArvotPuuttuvatKaikki5()
         {
             var t = u.Testaa("");
-            Assert.AreEqual(Vakiot.SYOTE_VIRHE_CSV_FORMAT, t.Item1);
+            Assert.AreEqual(Vakiot.SYOTE_VIRHE_OMA_SELO, t.Item1);
         }
 
         // Jos on neljä pilkkua, niin pitää olla myös miettimisaika

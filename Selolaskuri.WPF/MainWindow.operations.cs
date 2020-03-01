@@ -30,41 +30,11 @@ namespace Selolaskuri.WPF {
             // NOTE! In Java version this comboBox could return also null, so there have to check for null value
             vastustajanSelo_comboBox.Text = vastustajanSelo_comboBox.Text.Trim();
 
-            // process opponents field and check if CSV format was used
-            //
+            // trim opponents field -> updated on display
             if (string.IsNullOrWhiteSpace(vastustajanSelo_comboBox.Text) == false) {
                 // poista ylimääräiset välilyönnit, korvaa yhdellä
                 // poista myös välilyönnit pilkun molemmilta puolilta, jos on CSV-formaatti
                 vastustajanSelo_comboBox.Text = so.SiistiVastustajatKentta(vastustajanSelo_comboBox.Text); // .Trim jo tehty
-
-                // Tarkista, onko csv ja jos on, niin unohda muut syötteet
-                // Paitsi jos on väärässä formaatissa, palautetaan null ja kutsuvalla tasolla virheilmoitus
-                //
-                // CSV 
-                // 90,1525,0,1725,1
-                // Jos 5 merkkijonoa:  minuutit,selo,pelimäärä,vastustajat,jos_yksi_selo_niin_tulos
-                // Jos 4: ottelun tulosta ei anneta, käytetään TULOS_MAARITTELEMATON
-                // Jos 3: miettimisaikaa ei anneta, käytetään lomakkeelta valittua miettimisaikaa
-                // Jos 2: pelimäärää ei anneta, käytetään oletuksena tyhjää ""
-                //
-                //
-                // Note that string in the following format is not CSV (comma can be used in tournament result)
-                //    "tournamentResult selo1 selo2 ..." e.g. "2,5 1505 1600 1611 1558" or "100,5 1505 1600 1611 1558 ... "
-                //
-                // But that checking should not affect CSV format "thinking time,selo,..." e.g. "5,1525,0,1505 1600 ..."
-                //      or "own selo,opponent selo with result" e.g. "1525,+1505"
-                //      or "own selo,opponent selo,single match result" e.g. "1525,1505,0.5" <- Here must use decimal point!!!
-                //
-                // So check that if there is just one comma, so two values, the length of the first value must be at least 4 (length of selo)
-
-                if (vastustajanSelo_comboBox.Text.Contains(',')) {
-                    List<string> tmp = vastustajanSelo_comboBox.Text.Split(',').ToList();
-
-                    if (tmp.Count != 2 || (tmp.Count == 2 && tmp[0].Trim().Length >= 4)) {
-                        // The thinking time might be needed from the form if there are 2 or 3 values in CSV format
-                        return so.SelvitaCSV(HaeMiettimisaika(), vastustajanSelo_comboBox.Text);
-                    }
-                }
             }
 
             return new Syotetiedot(HaeMiettimisaika(), selo_in.Text, pelimaara_in.Text, vastustajanSelo_comboBox.Text, HaeOttelunTulos());
@@ -246,11 +216,11 @@ namespace Selolaskuri.WPF {
 
             // Vastustajien vahvuuslukujen keskiarvo
             //keskivahvuus_out.Text = tulokset.TurnauksenKeskivahvuus.ToString();
-            keskivahvuus_out.Text = (tulokset.TurnauksenKeskivahvuusDesim / 10F).ToString("0.0");
+            keskivahvuus_out.Text = (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0");
 
             // Turnauksen loppupisteet yhdellä desimaalilla / ottelujen lkm, esim.  2.5 / 6 tai 2.0 / 6
             turnauksenTulos_out.Text =
-                (tulokset.TurnauksenTulos / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
+                (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
 
             // Vahvuusluku on voinut vaihdella laskennan edetessä, jos vastustajat ovat olleet formaatissa "+1622 -1880 =1633"
             // Vaihteluväliä ei ole, jos laskenta on tehty yhdellä lausekkeella tai on ollut vain yksi vastustaja

@@ -34,7 +34,7 @@ namespace SelolaskuriLibrary {
     //
     // Ottelujen tietojen tallennus listaan, vastustajan vahvuusluku ja ottelun tulos
     //
-    public class Ottelulista : IEnumerable
+    public class Ottelulista : IEnumerable // Should end in 'Collection'
     {
         private struct Ottelu
         {
@@ -113,7 +113,7 @@ namespace SelolaskuriLibrary {
         //    }
         //}
 
-        public int KeskivahvuusDesim {
+        public int Keskivahvuus10x {
             get {
                 return (int)Math.Round(tallennetutOttelut.Average(x => 10 * x.VastustajanSelo) + 0.01); // Linq
             }

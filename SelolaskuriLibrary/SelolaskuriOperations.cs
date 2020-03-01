@@ -22,6 +22,7 @@
 //  15.8.2018     CSV-formaatin tarkistamista
 //                Laskennan ja tallennuksen muutokset yksikkötestauksen helpottamiseksi (=1234 on eri tapaus kuin 1234).
 //  16.-17.2.2020 Calculation for new player so that after certain defined point can continue with normal old player calculations
+//  1.3.2020      Moved csv checking routines into class Syotetiedot
 //
 
 using System.Collections.Generic;
@@ -483,74 +484,6 @@ namespace SelolaskuriLibrary {
             replacement = ",";       // tilalle pilkku ilman välilyöntejä eli ","
             rx = new Regex(pattern);
             return rx.Replace(uusi, replacement);
-        }
-
-        //
-        // Used from the form. If there are only 2 or 3 values in CSV format, also thinking time from the form is needed.
-        //
-        // Used from the unit tests for CSV. If there are only 2 or 3 values in CSV format, default thinking time in parameter aika is set to 90 minutes.
-        //
-        public Syotetiedot SelvitaCSV(Vakiot.Miettimisaika_enum aika, string csv)
-        {
-            // poista ylimääräiset välilyönnit, korvaa yhdellä
-            // poista myös mahdolliset välilyönnit pilkkujen molemmilta puolilta
-            csv = SiistiVastustajatKentta(csv.Trim());
-            List<string> data = csv.Split(',').ToList();
-
-            if (data.Count == 5) {
-                return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], this.SelvitaTulosCSV(data[4]));
-            } else if (data.Count == 4) {
-                // viimeinen osa voi sisältää vastustajat tuloksineen tai jos alkuperäinen pelimäärä on enintään 10, 
-                // niin ensin lasketaan uuden pelaajan kaavalla ja loput "/"-merkin jälkeen menevät normaalilaskentaan
-                //  "90,1525,0,+1525 +1441 -1973 +1718 -1784 -1660 -1966 +1321 -1678 -1864 -1944 / -1995 +1695 -1930 1901",
-                return new Syotetiedot(this.SelvitaMiettimisaikaCSV(data[0]), data[1], data[2], data[3], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            } else if (data.Count == 3) {
-                return new Syotetiedot(aika, data[0], data[1], data[2], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            } else if (data.Count == 2) {
-                return new Syotetiedot(aika, data[0], "", data[1], Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON);
-            } else {
-                return null; // CSV FORMAT ERROR, ILLEGAL DATA
-            }
-        }
-
-        // Miettimisaika, vain minuutit, esim. "5" tai "90"
-        // Oltava kokonaisluku ja vähintään 1 minuutti
-        public Vakiot.Miettimisaika_enum SelvitaMiettimisaikaCSV(string s)
-        {
-            Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
-            int temp; // define here instead of "out int temp" for Visual Studio 2015 compatibility
-            if (int.TryParse(s, out /*int*/ temp) == true)
-            {
-                if (temp < 1)
-                {
-                    // ei voida pelata ilman miettimisaikaa
-                    // jo asetettu aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON;
-                }
-                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
-                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
-                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
-                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;
-                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
-                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
-                else
-                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
-            }
-            return aika;
-        }
-
-        // Yksittäisen ottelun tulos joko "0", "0.0", "0,0", "0.5", "0,5", "1/2", "½" (alt-171), "1", "1.0" tai "1,0"
-        // Toistaiseksi CSV-formaatin tuloksissa voi käyttää vain desimaalipistettä, joten ei voida syöttää 
-        // tuloksia pilkun kanssa kuten "0,0", "0,5" ja "1,0". Tarkistetaan ne kuitenkin varalta.
-        public Vakiot.OttelunTulos_enum SelvitaTulosCSV(string s)
-        {
-            Vakiot.OttelunTulos_enum tulos = Vakiot.OttelunTulos_enum.TULOS_MAARITTELEMATON;
-            if (s.Equals("0") || s.Equals("0.0") || s.Equals("0,0"))
-                tulos = Vakiot.OttelunTulos_enum.TULOS_TAPPIO;
-            else if (s.Equals("0.5") || s.Equals("0,5") || s.Equals("1/2") || s.Equals("½"))
-                tulos = Vakiot.OttelunTulos_enum.TULOS_TASAPELI;
-            else if (s.Equals("1") || s.Equals("1.0") || s.Equals("1,0"))
-                tulos = Vakiot.OttelunTulos_enum.TULOS_VOITTO;
-            return tulos;
         }
 
         // Tarkista valitun ottelun tulos -painikkeen kelvollisuus

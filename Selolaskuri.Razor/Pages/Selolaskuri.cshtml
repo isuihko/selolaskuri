@@ -19,31 +19,46 @@ Created 29.2.2020
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.selo_in" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.selo_in" class="form-control" autofocus="autofocus" />
-                <span asp-validation-for="SelolaskuriRazorModel.selo_in" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.pelimaara_in" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.pelimaara_in" class="form-control" />
-                <span asp-validation-for="SelolaskuriRazorModel.pelimaara_in" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.miettimisaika_in" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.miettimisaika_in" class="form-control" />
-                <span asp-validation-for="SelolaskuriRazorModel.miettimisaika_in" class="text-danger"></span>
-            </div>
+
+            @*ORGANIZE INPUT DATA WITH TABLES*@
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.selo_in" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.selo_in" class="form-control" autofocus="autofocus" />
+                            <span asp-validation-for="SelolaskuriRazorModel.selo_in" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.pelimaara_in" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.pelimaara_in" class="form-control" />
+                            <span asp-validation-for="SelolaskuriRazorModel.pelimaara_in" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.miettimisaika_in" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.miettimisaika_in" class="form-control" />
+                            <span asp-validation-for="SelolaskuriRazorModel.miettimisaika_in" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
             <div class="form-group">
                 <label asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="control-label"></label>
                 <input asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="form-control" />
                 <span asp-validation-for="SelolaskuriRazorModel.vastustajanSelo_in" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
-                <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+            <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
+            <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
+            <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
+        </div>*@
 
             <div class="form-group">
                 <input type="submit" value="Laske vahvuusluku" class="btn btn-default" />
@@ -52,41 +67,47 @@ Created 29.2.2020
             <h2>Results</h2>
             <hr />
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.uusiSelo_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.uusiSelo_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.uusiSelo_out" class="text-danger"></span>
-            </div>
+            @*ORGANIZE OUTPUT DATA WITH TABLES*@
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.uusiPelimaara_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.uusiPelimaara_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.uusiPelimaara_out" class="text-danger"></span>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.uusiSelo_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.uusiSelo_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.uusiSelo_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.selomuutos_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.selomuutos_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.selomuutos_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.vaihteluvali_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.vaihteluvali_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.vaihteluvali_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.pisteEro_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.pisteEro_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.pisteEro_out" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.keskivahvuus_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.keskivahvuus_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.keskivahvuus_out" class="text-danger"></span>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.uusiPelimaara_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.uusiPelimaara_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.uusiPelimaara_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.turnauksenTulos_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.turnauksenTulos_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.turnauksenTulos_out" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.vaihteluvali_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.vaihteluvali_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.vaihteluvali_out" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
                 <label asp-for="SelolaskuriRazorModel.UudenPelaajanLaskenta_out" class="control-label"></label>
@@ -94,29 +115,74 @@ Created 29.2.2020
                 <span asp-validation-for="SelolaskuriRazorModel.UudenPelaajanLaskenta_out" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.odotustulos_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.odotustulos_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.odotustulos_out" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.suoritusluku_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.suoritusluku_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.suoritusluku_out" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="text-danger"></span>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.turnauksenTulos_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.turnauksenTulos_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.turnauksenTulos_out" class="text-danger"></span>
+                        </div>
+                    </td>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="text-danger"></span>
-            </div>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.odotustulos_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.odotustulos_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.odotustulos_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.keskivahvuus_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.keskivahvuus_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.keskivahvuus_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.pisteEro_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.pisteEro_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.pisteEro_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.suoritusluku_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.suoritusluku_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.suoritusluku_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="control-label"></label>
+                            <input asp-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
             <br />
 

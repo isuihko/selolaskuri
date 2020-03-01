@@ -56,6 +56,27 @@ namespace Selolaskuri.Razor
             // HAE SYÖTTEET LOMAKKEELTA
             //
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
+
+         
+            int temp; // define here instead of "out int temp" for Visual Studio 2015 compatibility
+            if (int.TryParse(SelolaskuriRazorModel.miettimisaika_in, out /*int*/ temp) == true)
+            {
+                if (temp < 1)
+                {
+                    // ei voida pelata ilman miettimisaikaa
+                    // käytetään oletusta = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
+                    ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.miettimisaika_in)}").Value.RawValue = "90";
+                }
+                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
+                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;
+                else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
+                else
+                    aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
+            }
+
             string selo = SelolaskuriRazorModel.selo_in;
             string pelimaara = SelolaskuriRazorModel.pelimaara_in;
             string vastustajat = SelolaskuriRazorModel.vastustajanSelo_in;
@@ -104,17 +125,22 @@ namespace Selolaskuri.Razor
                 // 
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.uusiSelo_out)}").Value.RawValue = tulokset.UusiSelo;
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.uusiPelimaara_out)}").Value.RawValue = tulokset.UusiPelimaara;
+                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.selomuutos_out)}").Value.RawValue =
+                    (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0"); ;
 
-                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.pisteEro_out)}").Value.RawValue = Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
+                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.pisteEro_out)}").Value.RawValue =
+                    Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
 
-                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.keskivahvuus_out)}").Value.RawValue = (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0");
+                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.keskivahvuus_out)}").Value.RawValue =
+                    (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0");
 
-                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.turnauksenTulos_out)}").Value.RawValue = (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
+                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.turnauksenTulos_out)}").Value.RawValue =
+                    (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
 
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.vaihteluvali_out)}").Value.RawValue =
                         (tulokset.MinSelo < tulokset.MaxSelo) ? tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "";
 
-                
+
                 if (tulokset.UudenPelaajanLaskenta || tulokset.UudenPelaajanPelitLKM > 0)
                 {
                     ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.odotustulos_out)}").Value.RawValue = "";

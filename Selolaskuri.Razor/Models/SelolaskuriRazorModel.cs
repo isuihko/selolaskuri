@@ -7,25 +7,24 @@ namespace Selolaskuri.Razor.Models
 {
     public class SelolaskuriRazorModel
     {
-        
+
         // Syötetiedot
         //   selo
-        //   pelimäärä
-        //   miettimisaika
-        //   vastustajat
-        //   ottelun tulos
+        //   pelimäärä, otetaan huomioon jos enintään 10 = uuden pelaajan laskenta
+        //   miettimisaika (min)
+        //   vastustajat, esim. +1600 -1822 =1785 tai 1.5 1600 1822 1785
+        //   ottelun tulos (ei tätä kenttää, anna tulos vastustajan selon yhteydessä)
 
         [Required]
         [Display(Name = "SELO")]
         [MaxLength(5)]
         public string selo_in { get; set; }
-        //public string selo_in { get => _selo_in; set => selo_in = value?.ToUpperInvariant(); }
 
-        [Display(Name = "Pelimäärä")]
+        [Display(Name = "Pelimäärä(jos≤10) ")]
         [MaxLength(5)]
         public string pelimaara_in { get; set; }
 
-        [Display(Name = "Miettimisaika")]
+        [Display(Name = "Miettimisaika(min)")]
         [MaxLength(5)]
         public string miettimisaika_in {
             get; set;
@@ -33,7 +32,7 @@ namespace Selolaskuri.Razor.Models
 
         [Required]
         [Display(Name = "Vastustajat/SELO/SELOt tuloksineen")]
-        [MaxLength(150)]
+        [MaxLength(200)]
         public string vastustajanSelo_in { get; set; }
 
         // XXX: yksittäisen ottelun tulosta ei nyt käytetä
@@ -88,6 +87,5 @@ namespace Selolaskuri.Razor.Models
 
         [Display(Name = "lineaarinen")]
         public string suorituslukuLineraarinen_out { get; set; }
-
     }
 }

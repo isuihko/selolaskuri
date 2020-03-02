@@ -65,7 +65,6 @@ namespace Selolaskuri.Razor
                 {
                     // ei voida pelata ilman miettimisaikaa
                     // käytetään oletusta = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
-                    ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.miettimisaika_in)}").Value.RawValue = "90";
                 }
                 else if (temp <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
@@ -75,6 +74,9 @@ namespace Selolaskuri.Razor
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
                 else
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
+            } else
+            {
+                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.miettimisaika_in)}").Value.RawValue = "90";
             }
 
             string selo = SelolaskuriRazorModel.selo_in;
@@ -124,7 +126,8 @@ namespace Selolaskuri.Razor
                 // NÄYTÄ TULOKSET
                 // 
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.uusiSelo_out)}").Value.RawValue = tulokset.UusiSelo;
-                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.uusiPelimaara_out)}").Value.RawValue = tulokset.UusiPelimaara;
+                if (tulokset.UusiPelimaara > 0)
+                    ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.uusiPelimaara_out)}").Value.RawValue = tulokset.UusiPelimaara;
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.selomuutos_out)}").Value.RawValue =
                     (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0"); ;
 

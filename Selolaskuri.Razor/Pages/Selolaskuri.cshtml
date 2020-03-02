@@ -49,22 +49,29 @@ Created 29.2.2020
             </table>
 
 
+
             <div class="form-group">
                 <label asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="control-label"></label>
                 <input asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="form-control" />
                 <span asp-validation-for="SelolaskuriRazorModel.vastustajanSelo_in" class="text-danger"></span>
             </div>
+
+            Esim. +1600 -1822 =1785 tai 1.5 1600 1822 1785 tai csv "oma selo,tulokset" 1820,+1600 -1822 =1785
+
+            <p></p>
+
             @*<div class="form-group">
-            <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
-            <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
-            <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
-        </div>*@
+                <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
+                <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
+                <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
+            </div>*@
+
 
             <div class="form-group">
-                <input type="submit" value="Laske vahvuusluku" class="btn btn-default" />
+                <input type="submit" value="< Laske vahvuusluku >" class="btn btn-default" />
             </div>
 
-            <h2>Results</h2>
+            <h2>Tulokset</h2>
             <hr />
 
             @*ORGANIZE OUTPUT DATA WITH TABLES*@
@@ -185,10 +192,11 @@ Created 29.2.2020
             </table>
 
             <br />
-
         </form>
     </div>
 </div>
+
+<font size="-5">C#/ASP.NET Razor pages (under development) 2020-03-02 Ismo Suihko</font>
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

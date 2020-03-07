@@ -56,20 +56,34 @@ Created 29.2.2020
                 <span asp-validation-for="SelolaskuriRazorModel.vastustajanSelo_in" class="text-danger"></span>
             </div>
 
-            Esim. +1600 -1822 =1785 tai 1.5 1600 1822 1785 tai csv "oma selo,tulokset" 1820,+1600 -1822 =1785
+            <font size="1">
+                Esim. Selo-kenttään selo 1805 ja tähän +1600 =1785 -1882 tai 1.5 1600 1822 1882 <br />
+                tai csv "oma selo,tulokset" 1805,+1600 1785 -1882 tai 1820,1.5 1600 1822 1882
+            </font>
 
             <p></p>
 
             @*<div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
-                <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
-            </div>*@
+            <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
+            <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
+            <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
+        </div>*@
 
 
+
+            @*1ST SUBMIT BUTTON*@
             <div class="form-group">
-                <input type="submit" value="< Laske vahvuusluku >" class="btn btn-default" />
+                <input type="submit" value="< Laske vahvuusluku >" asp-page-handler="LaskeVahvuusluku" class="btn btn-default" />
             </div>
+
+            <font size="1">
+                <div class="form-group">
+                    <label asp-for="SelolaskuriRazorModel.virhe" class="control-label"></label>
+                    <input asp-for="SelolaskuriRazorModel.virhe" class="form-control" readonly="readonly" />
+                    <span asp-validation-for="SelolaskuriRazorModel.virhe" class="text-danger"></span>
+                </div>
+            </font>
+
 
             <h2>Tulokset</h2>
             <hr />
@@ -191,12 +205,17 @@ Created 29.2.2020
                 </tr>
             </table>
 
+            @*2ND SUBMIT BUTTON*@
+            <div class="form-group">
+                <input type="submit" value="< Käytä tulosta jatkolaskennassa >" asp-page-handler="KaytaTulostaJatkolaskennassa" class="btn btn-default" border="2" />
+            </div>
+
             <br />
         </form>
     </div>
 </div>
 
-<font size="-5">C#/ASP.NET Razor pages (under development) 2020-03-02 Ismo Suihko</font>
+<font size="2">C#/ASP.NET (Razor pages version, under development) 2020-03-07 Ismo Suihko</font>
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

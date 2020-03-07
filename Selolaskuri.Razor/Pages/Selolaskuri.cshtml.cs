@@ -36,7 +36,7 @@ namespace Selolaskuri.Razor
 
         public SelolaskuriModel()
         {
-            
+
         }
 
         public IActionResult OnGet()
@@ -45,7 +45,8 @@ namespace Selolaskuri.Razor
             return Page();
         }
 
-        public IActionResult OnPost()
+
+        public IActionResult OnPostLaskeVahvuusluku()
         {
             if (!ModelState.IsValid)
             {
@@ -57,7 +58,7 @@ namespace Selolaskuri.Razor
             //
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
 
-         
+
             int temp; // define here instead of "out int temp" for Visual Studio 2015 compatibility
             if (int.TryParse(SelolaskuriRazorModel.miettimisaika_in, out /*int*/ temp) == true)
             {
@@ -74,7 +75,8 @@ namespace Selolaskuri.Razor
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
                 else
                     aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
-            } else
+            }
+            else
             {
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.miettimisaika_in)}").Value.RawValue = "90";
             }
@@ -106,7 +108,7 @@ namespace Selolaskuri.Razor
                 // poista myös välilyönnit pilkun molemmilta puolilta, jos on CSV-formaatti
                 vastustajat = so.SiistiVastustajatKentta(vastustajat); // .Trim jo tehty
 
-                 // näytölle siistitty versio
+                // näytölle siistitty versio
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.vastustajanSelo_in)}").Value.RawValue = vastustajat;
             }
 
@@ -117,6 +119,8 @@ namespace Selolaskuri.Razor
 
             if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK)
             {
+                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.virhe)}").Value.RawValue = "";
+
                 //
                 // SUORITA LASKENTA
                 //
@@ -164,9 +168,39 @@ namespace Selolaskuri.Razor
                 ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.suorituslukuLineraarinen_out)}").Value.RawValue = tulokset.SuorituslukuLineaarinen;
 
             }
+            else
+            {
+                string virhe = "";
+                if (status <= Vakiot.SYOTE_STATUS_OK && status >= Vakiot.SYOTE_VIRHE_MAX) {
+                    virhe = Vakiot.SYOTE_VIRHEET_text[Math.Abs(status)];
+                    ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.virhe)}").Value.RawValue = virhe;
+                }
+            }
 
             return Page();
-       }
+        }
+
+
+        public IActionResult OnPostKaytaTulostaJatkolaskennassa()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            string Selo = "1525";
+            string Pelimaara = "0";
+
+            if (!string.IsNullOrEmpty(SelolaskuriRazorModel.uusiSelo_out))
+            {
+                Selo = SelolaskuriRazorModel.uusiSelo_out;
+                Pelimaara = SelolaskuriRazorModel.uusiPelimaara_out;
+            }
+            ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.selo_in)}").Value.RawValue = Selo;
+            ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.pelimaara_in)}").Value.RawValue = Pelimaara;
+
+            return Page();
+        }
     }
 }
         

@@ -15,7 +15,7 @@ namespace Selolaskuri.Razor.Models
         //   vastustajat, esim. +1600 -1822 =1785 tai 1.5 1600 1822 1785
         //   ottelun tulos (ei tätä kenttää, anna tulos vastustajan selon yhteydessä)
 
-        [Required]
+        //[Required]
         [Display(Name = "SELO")]
         [MaxLength(5)]
         public string selo_in { get; set; }
@@ -30,10 +30,14 @@ namespace Selolaskuri.Razor.Models
             get; set;
         }
 
-        [Required]
+        //[Required]
         [Display(Name = "Vastustajat/SELO/SELOt tuloksineen")]
         [MaxLength(200)]
         public string vastustajanSelo_in { get; set; }
+
+        // VIRHEILMOITUS
+        [Display(Name = "")]
+        public string virhe { get; set; }
 
         // XXX: yksittäisen ottelun tulosta ei nyt käytetä
         //[Display(Name = "Yksittäisen ottelun tulos")]
@@ -53,13 +57,13 @@ namespace Selolaskuri.Razor.Models
         //   suoritusluku FIDE
         //   suoritusluku lineaarinen
 
-        [Display(Name = "Uusi SELO")]
+        [Display(Name = "uusi SELO")]
         public string uusiSelo_out { get; set; }
         
         [Display(Name = "muutos")]
         public string selomuutos_out { get; set; }
 
-        [Display(Name = "Uusi pelimäärä")]
+        [Display(Name = "uusi pelimäärä")]
         public string uusiPelimaara_out { get; set; }
 
         [Display(Name = "piste-ero")]

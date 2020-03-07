@@ -5,12 +5,10 @@
 }
 
 
-
 @*
 *********************   UNDER DEVELOPMENT   *********************
 Created 29.2.2020
 *@
-
 
 
 <h1>Selolaskuri</h1>
@@ -38,17 +36,24 @@ Created 29.2.2020
                             <span asp-validation-for="SelolaskuriRazorModel.pelimaara_in" class="text-danger"></span>
                         </div>
                     </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.miettimisaika_in" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.miettimisaika_in" class="form-control" />
-                            <span asp-validation-for="SelolaskuriRazorModel.miettimisaika_in" class="text-danger"></span>
-                        </div>
-                    </td>
                 </tr>
             </table>
 
-
+            Miettimisaika<br />
+            <fieldset>
+                <label>
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 90) ≥ 90 min
+                </label>
+                <label>
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 89) 60-89 min
+                </label>
+                <label>
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 59) 11-59 min
+                </label>
+                <label>
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 10) ≤ 10 min
+                </label>
+            </fieldset>
 
             <div class="form-group">
                 <label asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="control-label"></label>
@@ -57,160 +62,44 @@ Created 29.2.2020
             </div>
 
             <font size="1">
-                Esim. Selo-kenttään selo 1805 ja tähän +1600 =1785 -1882 tai 1.5 1600 1822 1882 <br />
+                Esim. Oma vahvuusluku-kenttään 1805 ja vastustajiin +1600 =1785 -1882 tai 1.5 1600 1822 1882 <br />
                 tai csv "oma selo,tulokset" 1805,+1600 1785 -1882 tai 1820,1.5 1600 1822 1882
             </font>
 
             <p></p>
-
-            @*<div class="form-group">
-            <label asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="control-label"></label>
-            <input asp-for="SelolaskuriRazorModel.ottelunTulos_in" class="form-control" />
-            <span asp-validation-for="SelolaskuriRazorModel.ottelunTulos_in" class="text-danger"></span>
-        </div>*@
-
-
 
             @*1ST SUBMIT BUTTON*@
             <div class="form-group">
                 <input type="submit" value="< Laske vahvuusluku >" asp-page-handler="LaskeVahvuusluku" class="btn btn-default" />
             </div>
 
-            <font size="1">
-                <div class="form-group">
-                    <label asp-for="SelolaskuriRazorModel.virhe" class="control-label"></label>
-                    <input asp-for="SelolaskuriRazorModel.virhe" class="form-control" readonly="readonly" />
-                    <span asp-validation-for="SelolaskuriRazorModel.virhe" class="text-danger"></span>
-                </div>
+            <font size="2">
+                @ViewData["virhe"]
             </font>
 
+            @*ORGANIZE OUTPUT DATA BETTER(?)*@
+            <h2>
+                @ViewData["TULOKSET"]
+            </h2>
 
-            <h2>Tulokset</h2>
-            <hr />
-
-            @*ORGANIZE OUTPUT DATA WITH TABLES*@
-
-            <table>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.uusiSelo_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.uusiSelo_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.uusiSelo_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.selomuutos_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.selomuutos_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.selomuutos_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.vaihteluvali_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.vaihteluvali_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.vaihteluvali_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-
-            <table>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.uusiPelimaara_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.uusiPelimaara_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.uusiPelimaara_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.UudenPelaajanLaskenta_out" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.UudenPelaajanLaskenta_out" class="form-control" readonly="readonly" />
-                <span asp-validation-for="SelolaskuriRazorModel.UudenPelaajanLaskenta_out" class="text-danger"></span>
-            </div>
-
-
-
-            <table>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.turnauksenTulos_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.turnauksenTulos_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.turnauksenTulos_out" class="text-danger"></span>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.odotustulos_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.odotustulos_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.odotustulos_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-
-            <table>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.keskivahvuus_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.keskivahvuus_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.keskivahvuus_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.pisteEro_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.pisteEro_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.pisteEro_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-
-            <table>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.suoritusluku_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.suoritusluku_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.suoritusluku_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.suorituslukuFIDE_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="SelolaskuriRazorModel.suorituslukuLineraarinen_out" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            @ViewData["uusi_selo"]  
+            <br />
+            @ViewData["selomuutos"]
+        <p />
+            @ViewData["uusi_pelimaara"]  @ViewData["uudenpelaajanlaskenta"]
+        <p />
+            @ViewData["turnauksentulos"]  
+            <br />
+            @ViewData["odotustulos"]
+        <p />
+            @ViewData["keskivahvuus"]
+        <p />
+            @ViewData["suoritusluku"]
 
             @*2ND SUBMIT BUTTON*@
             <div class="form-group">
-                <input type="submit" value="< Käytä tulosta jatkolaskennassa >" asp-page-handler="KaytaTulostaJatkolaskennassa" class="btn btn-default" border="2" />
+                <input type="submit" value="< Kopioi vahvuusluku uuteen laskentaan >" asp-page-handler="KaytaTulostaJatkolaskennassa" class="btn btn-default" border="2" />
             </div>
-
-            <br />
         </form>
     </div>
 </div>

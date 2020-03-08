@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Selolaskuri.Razor.Models
 {
+
+    // XXX:  SelolaskuriRazorModel EI KÄYTÖSSÄ TÄLLÄ HETKELLÄ
+
     public class SelolaskuriRazorModel
     {
 
@@ -15,20 +18,19 @@ namespace Selolaskuri.Razor.Models
         //   vastustajat, esim. +1600 -1822 =1785 tai 1.5 1600 1822 1785
         //   ottelun tulos (ei tätä kenttää, anna tulos vastustajan selon yhteydessä)
 
-        //[Required]
-        [Display(Name = "vahvuusluku")]
-        [MaxLength(5)]
-        public string selo_in { get; set; }
+        ////[Required]
+        //[Display(Name = "vahvuusluku")]
+        //[MaxLength(5)]
+        //public string selo_in { get; set; }
 
-        [Display(Name = "pelimäärä (jos ≤ 10) ")]
-        [MaxLength(5)]
-        public string pelimaara_in { get; set; }
+        //[Display(Name = "pelimäärä (jos ≤ 10) ")]
+        //[MaxLength(5)]
+        //public string pelimaara_in { get; set; }
 
-
-        //[Required]
-        [Display(Name = "vastustajat/SELO/SELOt tuloksineen")]
-        [MaxLength(200)]
-        public string vastustajanSelo_in { get; set; }
+        ////[Required]
+        //[Display(Name = "vastustajat/SELO/SELOt tuloksineen")]
+        //[MaxLength(200)]
+        //public string vastustajanSelo_in { get; set; }
 
         //// VIRHEILMOITUS
         //[Display(Name = "")]

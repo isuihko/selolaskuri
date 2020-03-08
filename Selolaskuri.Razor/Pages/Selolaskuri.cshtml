@@ -43,12 +43,12 @@
 
 
             Vastustaja/vastustajat tuloksineen <br />
-            Tulokset + voitto, - tappio, = tai tyhjä tasapeli
+            + voitto, - tappio, = tai tyhjä tasapeli
             <br />
-            @Html.TextBoxFor(e => e.vastustajat_in, new { size = "120" })
+            @Html.TextBoxFor(e => e.vastustajat_in, new { size = "75" })
             <br />
 
-            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 110, @readonly="readonly" })
+            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 72, @readonly = "readonly" })
 
             <p></p>
 
@@ -63,9 +63,9 @@
 
             @*XXX: ORGANIZE OUTPUT*@
 
-            <h2>
+            <h3>
                 @ViewData["TULOKSET"]
-            </h2>
+            </h3>
 
             @ViewData["uusi_selo"]
             <br />
@@ -80,6 +80,10 @@
             @ViewData["keskivahvuus"]
             <p />
             @ViewData["suoritusluku"]
+            <br />
+            @ViewData["suorituslukuFIDE"]
+            <br />
+            @ViewData["suorituslukuLineaarinen"]
 
             @*2ND SUBMIT BUTTON*@
             <div class="form-group">
@@ -89,7 +93,7 @@
     </div>
 </div>
 
-Selolaskuri (C#/ASP.NET Razor pages) 2020-03-08 Ismo Suihko
+Selolaskuri (C#/ASP.NET Razor pages) 8.3.2020 Ismo Suihko
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

@@ -15,6 +15,8 @@ using System; // Exception
 // Razor code was originally based on https://www.twilio.com/blog/validating-phone-numbers-in-razor-pages
 // but then started to use BindProperty, ViewData["fieldname"], TextBoxFor() etc.
 //
+// Still some work to do.
+//
 
 
 namespace Selolaskuri.Razor
@@ -44,21 +46,26 @@ namespace Selolaskuri.Razor
 
         public SelolaskuriModel()
         {
-            Vastustajat_ohjeteksti = "OHJEITA: Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Environment.NewLine
+            Vastustajat_ohjeteksti = "Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Environment.NewLine
                 + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882" + Environment.NewLine
-                + "Tai koko turnauksen tuloksesi ja vastustajat: 1.5 1600 1822 1882" + Environment.NewLine
-                + "Tai csv-formaatissa 'oma selo,tulokset' 1805,+1600 1785 -1882 tai 1820,1.5 1600 1822 1882" + Environment.NewLine
-                + "tai 'miettimisaika,oma selo,pelimaara(tai tyhjä),tulokset' esim. 5,1680,,1.5 1600 1822 1882" + Environment.NewLine
-                + "csv-formaatissa annetut miettimisaika, vahvuusluku, pelimäärä ohittavat lomakkeen kentissä annetut arvot." + Environment.NewLine
+                + "Tai koko turnauksen tuloksesi ja vastustajat: 1.5 1600 1785 1882" + Environment.NewLine
                  + Environment.NewLine
-                + "Voidaan aloittaa uuden pelaajan laskennalla ja jatkaa loput ottelut vanhan pelaajan laskennalla silloin kun "
-                + "pelimäärä on aluksi enintään 10 ja tulee täyteen vähintään 11 peliä ennen kun vaihdetaan vanhan pelaajan laskentakaavaan." + Environment.NewLine
-                + "Esim. selo 1700, pelimäärä 8, vastustajat 1612 +1505 1850 -2102 / -1611 +1558" + Environment.NewLine
+                + "Ottelu tai koko turnaus voidaan antaa myös csv-formaatissa, jossa annetut tiedot korvaavat "
+                + "lomakkeen kentissä olevat tiedot: miettimisaika, oma vahvuusluku ja pelimäärä." + Environment.NewLine
+                + "Esim. 'oma selo,tulokset' 1805,+1600 1785 1882 " + Environment.NewLine
+                + "tai 1820,1.5 1600 1785 1882" + Environment.NewLine
+                + "tai 'miettimisaika,oma selo,pelimaara(tai tyhjä),tulokset'" + Environment.NewLine
+                + "esim. 5,1680,,1.5 1600 1822 1882" + Environment.NewLine
+                + Environment.NewLine
+                + "Normaalisti lasketaan joko uuden tai vanhan pelaajan laskentakaavalla." + Environment.NewLine
+                + "Mutta voidaan myös aloittaa uuden pelaajan laskennalla ja jatkaa loput ottelut vanhan pelaajan laskentakaavalla. "
+                + "Tällöin pelimäärän on oltava aluksi enintään 10 ja on tultava täyteen vähintään 11 peliä ennen laskentakaavan vaihtamista." + Environment.NewLine
+                + "Esim. selo 1700, pelimäärä 8, vastustajat " + Environment.NewLine
+                + " 1612 +1505 1850 -2102 / -1611 +1558" + Environment.NewLine
                 + "tai csv: 1700,8,1612 +1505 1850 -2102 / -1611 +1558";
         }
 
         [BindProperty]
-
         public string Vastustajat_ohjeteksti { get; set; }
 
         public IActionResult OnGet()
@@ -112,10 +119,7 @@ namespace Selolaskuri.Razor
                 vastustajat = "";
 
             //
-            // TARKISTA SYÖTE
-            //
-
-            // process opponents field and check if CSV format was used
+            // KÄSITTELE JA TARKISTA SYÖTE
             //
             vastustajat = vastustajat.Trim();
             if (string.IsNullOrWhiteSpace(vastustajat) == false)
@@ -124,21 +128,20 @@ namespace Selolaskuri.Razor
                 // poista myös välilyönnit pilkun molemmilta puolilta, jos on CSV-formaatti
                 vastustajat = so.SiistiVastustajatKentta(vastustajat); // .Trim jo tehty
 
-                // näytölle siistitty versio
+                // näytölle siistitty versio (tämä ei toimikaan näin helposti)
                 vastustajat_in = vastustajat;
             }
 
             Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, Vakiot.OttelunTulos_enum.TULOS_EI_ANNETTU);
 
             int status;
-            Selopelaaja tulokset = null;
 
             if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK)
             {
                 //
                 // LASKE
                 //
-                tulokset = so.SuoritaLaskenta(syotetiedot);
+                Selopelaaja tulokset = so.SuoritaLaskenta(syotetiedot);
 
                 laskettu_uusi_selo = tulokset.UusiSelo;
                 uusi_pelimaara = tulokset.UusiPelimaara;
@@ -148,9 +151,9 @@ namespace Selolaskuri.Razor
                 //
                 // XXX: järjestä tulokset näytölle paremmin!
                 // 
-                ViewData["TULOKSET"] = "TULOKSET";
+                ViewData["TULOKSET"] = "Tulokset";
 
-                ViewData["uusi_selo"] = "Uusi vahvuusluku: " + tulokset.UusiSelo;
+                ViewData["uusi_selo"] = "Uusi vahvuusluku ("+ (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN ? "PELO" : "SELO") +") : " + tulokset.UusiSelo;
                 ViewData["selomuutos"] = "    Muutos : " + (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0")
                                        + ((tulokset.MinSelo < tulokset.MaxSelo) ? "    Vaihteluväli " + tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "");
 
@@ -160,17 +163,20 @@ namespace Selolaskuri.Razor
                 if (tulokset.UudenPelaajanLaskenta || tulokset.UudenPelaajanPelitLKM > 0)
                 {
                     ViewData["odotustulos"] = "";
-                    ViewData["uudenpelaajanlaskenta"] = (tulokset.UudenPelaajanPelitLKM > 0) ? " (uuden pelaajan laskentaan " + tulokset.UudenPelaajanPelitLKM + " peliä)" : " (uuden pelaajan laskenta) ";
+                    ViewData["uudenpelaajanlaskenta"] = (tulokset.UudenPelaajanPelitLKM > 0) ? " (uuden pelaajan laskentaan lisää " + tulokset.UudenPelaajanPelitLKM + " peliä)" : " (uuden pelaajan laskenta) ";
                 }
                 else
                 {
                     ViewData["odotustulos"] = "Odotustulos: " + (tulokset.Odotustulos / 100F).ToString("0.00");
-                    ViewData["uudenpelaajanlaskenta"] = "                                 ";
+                    ViewData["uudenpelaajanlaskenta"] = "";
                 }
 
                 ViewData["turnauksentulos"] = "Turnauksen tulos: " + (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
-                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") +   "  Piste-ero: " + Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();            
-                ViewData["suoritusluku"] = "Suoritusluku: " + tulokset.Suoritusluku + "   FIDE: " + tulokset.SuorituslukuFIDE + "   Lineaarinen: " + tulokset.SuorituslukuLineaarinen;
+                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") +   "  Piste-ero: " + Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
+
+                ViewData["suoritusluku"] = "Suoritusluku: " + tulokset.Suoritusluku;
+                ViewData["suorituslukuFIDE"] = " Suoritusluku FIDE: " + tulokset.SuorituslukuFIDE;
+                ViewData["suorituslukuLineaarinen"] = "Suoritusluku lineaarinen: " + tulokset.SuorituslukuLineaarinen;
             }
             else
             {              

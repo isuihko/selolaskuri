@@ -44,8 +44,8 @@ namespace Selolaskuri.Razor
 
         public SelolaskuriModel()
         {
-            Vastustajat_ohjeteksti = "OHJEITA: Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)." + Environment.NewLine
-                + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882." + Environment.NewLine
+            Vastustajat_ohjeteksti = "OHJEITA: Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Environment.NewLine
+                + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882" + Environment.NewLine
                 + "Tai koko turnauksen tuloksesi ja vastustajat: 1.5 1600 1822 1882" + Environment.NewLine
                 + "Tai csv-formaatissa 'oma selo,tulokset' 1805,+1600 1785 -1882 tai 1820,1.5 1600 1822 1882" + Environment.NewLine
                 + "tai 'miettimisaika,oma selo,pelimaara(tai tyhjä),tulokset' esim. 5,1680,,1.5 1600 1822 1882" + Environment.NewLine
@@ -150,7 +150,7 @@ namespace Selolaskuri.Razor
                 // 
                 ViewData["TULOKSET"] = "TULOKSET";
 
-                ViewData["uusi_selo"] = "Uusi vahvuusluku " + tulokset.UusiSelo;
+                ViewData["uusi_selo"] = "Uusi vahvuusluku: " + tulokset.UusiSelo;
                 ViewData["selomuutos"] = "    Muutos : " + (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0")
                                        + ((tulokset.MinSelo < tulokset.MaxSelo) ? "    Vaihteluväli " + tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "");
 
@@ -195,8 +195,7 @@ namespace Selolaskuri.Razor
 
             kayta_tulosta = true;
 
-            return RedirectToPage("Selolaskuri"); // ja OnGet() päivittää uudet vahvuusluvun ja pelimäärän näytölle
-            //return Page();
+            return RedirectToPage("Selolaskuri"); // OnGet() laittaa uuden vahvuusluvun ja pelimäärän näytölle
         }
     }
 }

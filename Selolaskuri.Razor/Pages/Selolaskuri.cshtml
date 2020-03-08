@@ -6,8 +6,8 @@
 
 
 @*
-*********************   UNDER DEVELOPMENT   *********************
-Created 29.2.2020
+    Created 29.2.2020
+    Modified 8.3.2020
 *@
 
 
@@ -18,53 +18,36 @@ Created 29.2.2020
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @*ORGANIZE INPUT DATA WITH TABLES*@
-
-            <table>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.selo_in" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.selo_in" class="form-control" autofocus="autofocus" />
-                            <span asp-validation-for="SelolaskuriRazorModel.selo_in" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <label asp-for="SelolaskuriRazorModel.pelimaara_in" class="control-label"></label>
-                            <input asp-for="SelolaskuriRazorModel.pelimaara_in" class="form-control" />
-                            <span asp-validation-for="SelolaskuriRazorModel.pelimaara_in" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            Oma vahvuusluku:
+            @Html.TextBoxFor(e => e.selo_in, new { size = "4" })
+            <p></p>
+            Oma pelimäärä (jos ≤ 10):
+            @Html.TextBoxFor(e => e.pelimaara_in, new { size = "4" })
+            <p></p>
 
             Miettimisaika<br />
             <fieldset>
                 <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 90) ≥ 90 min
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 90) ≥ 90 min
                 </label>
                 <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 89) 60-89 min
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 89) 60-89 min
                 </label>
                 <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 59) 11-59 min
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 59) 11-59 min
                 </label>
                 <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton, 10) ≤ 10 min
+                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 10) ≤ 10 min
                 </label>
             </fieldset>
 
-            <div class="form-group">
-                <label asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="control-label"></label>
-                <input asp-for="SelolaskuriRazorModel.vastustajanSelo_in" class="form-control" />
-                <span asp-validation-for="SelolaskuriRazorModel.vastustajanSelo_in" class="text-danger"></span>
-            </div>
 
-            <font size="1">
-                Esim. Oma vahvuusluku-kenttään 1805 ja vastustajiin +1600 =1785 -1882 tai 1.5 1600 1822 1882 <br />
-                tai csv "oma selo,tulokset" 1805,+1600 1785 -1882 tai 1820,1.5 1600 1822 1882
-            </font>
+            Vastustaja/vastustajat tuloksineen (+ on voitto, - on tappio, = tai tyhjä on tasapeli)
+            <br />
+            @Html.TextBoxFor(e => e.vastustajat_in, new { size = "120" })
+            <br />
+
+            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 110 })
 
             <p></p>
 
@@ -74,37 +57,38 @@ Created 29.2.2020
             </div>
 
             <font size="2">
-                @ViewData["virhe"]
+                @ViewData["virheteksti"]
             </font>
 
-            @*ORGANIZE OUTPUT DATA BETTER(?)*@
+            @*XXX: ORGANIZE OUTPUT*@
+
             <h2>
                 @ViewData["TULOKSET"]
             </h2>
 
-            @ViewData["uusi_selo"]  
+            @ViewData["uusi_selo"]
             <br />
             @ViewData["selomuutos"]
-        <p />
+            <p />
             @ViewData["uusi_pelimaara"]  @ViewData["uudenpelaajanlaskenta"]
-        <p />
-            @ViewData["turnauksentulos"]  
+            <p />
+            @ViewData["turnauksentulos"]
             <br />
             @ViewData["odotustulos"]
-        <p />
+            <p />
             @ViewData["keskivahvuus"]
-        <p />
+            <p />
             @ViewData["suoritusluku"]
 
             @*2ND SUBMIT BUTTON*@
             <div class="form-group">
-                <input type="submit" value="< Kopioi vahvuusluku uuteen laskentaan >" asp-page-handler="KaytaTulostaJatkolaskennassa" class="btn btn-default" border="2" />
+                <input type="submit" value="< Kopioi uusi vahvuusluku jatkolaskentaan >" asp-page-handler="KaytaTulostaJatkolaskennassa" class="btn btn-default" border="2" />
             </div>
         </form>
     </div>
 </div>
 
-<font size="2">C#/ASP.NET (Razor pages version, under development) 2020-03-07 Ismo Suihko</font>
+Selolaskuri (C#/ASP.NET Razor pages version) 2020-03-08 Ismo Suihko
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

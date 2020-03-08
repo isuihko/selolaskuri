@@ -1,12 +1,8 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using SelolaskuriLibrary; // SelolaskuriOperations
-using Selolaskuri.Razor.Models;
+// using Selolaskuri.Razor.Models;
 using System; // Exception
-using System.Collections.Generic;
 
 
 //
@@ -14,45 +10,73 @@ using System.Collections.Generic;
 // *********************   UNDER DEVELOPMENT   *********************
 //
 // Created 29.2.2020
+// Modified 8.3.2020
+//
 // Razor code was originally based on https://www.twilio.com/blog/validating-phone-numbers-in-razor-pages
+// but then started to use BindProperty, ViewData["fieldname"], TextBoxFor() etc.
 //
 
 
 namespace Selolaskuri.Razor
 {
-
-
-    // *********************   UNDER DEVELOPMENT   *********************
-
-
     public class SelolaskuriModel : PageModel
     {
+        private readonly SelolaskuriOperations so = new SelolaskuriOperations(); //  Check the input data, calculate the results
 
-        private readonly SelolaskuriOperations so = new SelolaskuriOperations();                //  Check the input data, calculate the results
-        private readonly FormOperations fo = new FormOperations(Vakiot.Selolaskuri_enum.RAZOR); // information and instruction windows etc.
+        // SYÖTEKENTÄT xxx_in
 
         [BindProperty]
-        public int miettimisaika_radiobutton { get; set; }
+        public string selo_in { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public SelolaskuriRazorModel SelolaskuriRazorModel { get; set; }
+        [BindProperty]
+        public string pelimaara_in { get; set; }
 
+        [BindProperty]
+        public int miettimisaika_radiobutton_in { get; set; }
+
+        [BindProperty]
+        public string vastustajat_in { get; set; }
+
+        // APUKENTÄT
         static private int laskettu_uusi_selo = 1525;
         static private int uusi_pelimaara = 0;
+        static private bool kayta_tulosta = false;
 
         public SelolaskuriModel()
         {
+            Vastustajat_ohjeteksti = "OHJEITA: Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)." + Environment.NewLine
+                + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882." + Environment.NewLine
+                + "Tai koko turnauksen tuloksesi ja vastustajat: 1.5 1600 1822 1882" + Environment.NewLine
+                + "Tai csv-formaatissa 'oma selo,tulokset' 1805,+1600 1785 -1882 tai 1820,1.5 1600 1822 1882" + Environment.NewLine
+                + "tai 'miettimisaika,oma selo,pelimaara(tai tyhjä),tulokset' esim. 5,1680,,1.5 1600 1822 1882" + Environment.NewLine
+                + "csv-formaatissa annetut miettimisaika, vahvuusluku, pelimäärä ohittavat lomakkeen kentissä annetut arvot." + Environment.NewLine
+                 + Environment.NewLine
+                + "Voidaan aloittaa uuden pelaajan laskennalla ja jatkaa loput ottelut vanhan pelaajan laskennalla silloin kun "
+                + "pelimäärä on aluksi enintään 10 ja tulee täyteen vähintään 11 peliä ennen kun vaihdetaan vanhan pelaajan laskentakaavaan." + Environment.NewLine
+                + "Esim. selo 1700, pelimäärä 8, vastustajat 1612 +1505 1850 -2102 / -1611 +1558" + Environment.NewLine
+                + "tai csv: 1700,8,1612 +1505 1850 -2102 / -1611 +1558";
         }
+
+        [BindProperty]
+
+        public string Vastustajat_ohjeteksti { get; set; }
 
         public IActionResult OnGet()
         {
             // Aseta oletusarvo (ks. Vakiot.Miettimisaika_enum)
-            if (miettimisaika_radiobutton < 10 || miettimisaika_radiobutton > 90)
-                miettimisaika_radiobutton = 90;
+            if (miettimisaika_radiobutton_in < 10 || miettimisaika_radiobutton_in > 90)
+                miettimisaika_radiobutton_in = 90;
+
+            if (kayta_tulosta)
+            {
+                kayta_tulosta = false;
+                selo_in = laskettu_uusi_selo.ToString();
+                if (uusi_pelimaara >= 0)
+                    pelimaara_in = uusi_pelimaara.ToString();
+            }
 
             return Page();
         }
-
 
         public IActionResult OnPostLaskeVahvuusluku()
         {
@@ -66,18 +90,18 @@ namespace Selolaskuri.Razor
             //
             Vakiot.Miettimisaika_enum aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
 
-            if (miettimisaika_radiobutton <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+            if (miettimisaika_radiobutton_in <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                 aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN;
-            else if (miettimisaika_radiobutton <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
+            else if (miettimisaika_radiobutton_in <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN)
                 aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_11_59MIN;
-            else if (miettimisaika_radiobutton <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
+            else if (miettimisaika_radiobutton_in <= (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN)
                 aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_60_89MIN;
             else
                 aika = Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
 
-            string selo = SelolaskuriRazorModel.selo_in;
-            string pelimaara = SelolaskuriRazorModel.pelimaara_in;
-            string vastustajat = SelolaskuriRazorModel.vastustajanSelo_in;
+            string selo = selo_in;
+            string pelimaara = pelimaara_in;
+            string vastustajat = vastustajat_in;
 
             // Virhetilanne, jos vastustajat on tyhjä (jatketaan silti vielä)
             if (selo == null)
@@ -101,8 +125,7 @@ namespace Selolaskuri.Razor
                 vastustajat = so.SiistiVastustajatKentta(vastustajat); // .Trim jo tehty
 
                 // näytölle siistitty versio
-                // XXX: ehkä voi muuttaa kentän arvoa muutenkin?
-                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.vastustajanSelo_in)}").Value.RawValue = vastustajat;
+                vastustajat_in = vastustajat;
             }
 
             Syotetiedot syotetiedot = new Syotetiedot(aika, selo, pelimaara, vastustajat, Vakiot.OttelunTulos_enum.TULOS_EI_ANNETTU);
@@ -112,10 +135,8 @@ namespace Selolaskuri.Razor
 
             if ((status = so.TarkistaSyote(syotetiedot)) == Vakiot.SYOTE_STATUS_OK)
             {
-                //ViewData["virhe"] = "                                                                ";
-
                 //
-                // SUORITA LASKENTA
+                // LASKE
                 //
                 tulokset = so.SuoritaLaskenta(syotetiedot);
 
@@ -131,7 +152,7 @@ namespace Selolaskuri.Razor
 
                 ViewData["uusi_selo"] = "Uusi vahvuusluku " + tulokset.UusiSelo;
                 ViewData["selomuutos"] = "    Muutos : " + (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0")
-                                       + "    Vaihteluväli " + ((tulokset.MinSelo < tulokset.MaxSelo) ? tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "");
+                                       + ((tulokset.MinSelo < tulokset.MaxSelo) ? "    Vaihteluväli " + tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "");
 
                 if (tulokset.UusiPelimaara > 0)
                     ViewData["uusi_pelimaara"] = "    Uusi pelimäärä: " + tulokset.UusiPelimaara;
@@ -139,7 +160,7 @@ namespace Selolaskuri.Razor
                 if (tulokset.UudenPelaajanLaskenta || tulokset.UudenPelaajanPelitLKM > 0)
                 {
                     ViewData["odotustulos"] = "";
-                    ViewData["uudenpelaajanlaskenta"] = (tulokset.UudenPelaajanPelitLKM > 0) ? " uuden pelaajan laskentaa " + tulokset.UudenPelaajanPelitLKM + " peliä" : " (uuden pelaajan laskenta)          ";
+                    ViewData["uudenpelaajanlaskenta"] = (tulokset.UudenPelaajanPelitLKM > 0) ? " (uuden pelaajan laskentaan " + tulokset.UudenPelaajanPelitLKM + " peliä)" : " (uuden pelaajan laskenta) ";
                 }
                 else
                 {
@@ -153,8 +174,9 @@ namespace Selolaskuri.Razor
             }
             else
             {              
-                if (status <= Vakiot.SYOTE_STATUS_OK && status >= Vakiot.SYOTE_VIRHE_MAX) {
-                    ViewData["virhe"] = Vakiot.SYOTE_VIRHEET_text[Math.Abs(status)]; 
+                // virhestatus on negatiivinen luku, virheteksti haetaan taulukosta
+                if (Vakiot.SYOTE_STATUS_OK >= status && status >= Vakiot.SYOTE_VIRHE_MAX) {
+                    ViewData["virheteksti"] = Vakiot.SYOTE_VIRHEET_text[Math.Abs(status)]; 
                 }
             }
 
@@ -171,14 +193,10 @@ namespace Selolaskuri.Razor
                 return Page();
             }
 
-            // XXX: Muuta syötekenttiä! Ehkä voi tehdä muutenkin??
-            // ei toimi SelolaskuriRazorModel.selo_in = "1234";
+            kayta_tulosta = true;
 
-            ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.selo_in)}").Value.RawValue = laskettu_uusi_selo.ToString();
-            if (uusi_pelimaara >= 0)
-                ModelState.FirstOrDefault(x => x.Key == $"{nameof(SelolaskuriRazorModel)}.{nameof(SelolaskuriRazorModel.pelimaara_in)}").Value.RawValue = uusi_pelimaara.ToString();
-
-            return Page();
+            return RedirectToPage("Selolaskuri"); // ja OnGet() päivittää uudet vahvuusluvun ja pelimäärän näytölle
+            //return Page();
         }
     }
 }

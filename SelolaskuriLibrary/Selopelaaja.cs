@@ -76,6 +76,13 @@ namespace SelolaskuriLibrary {
             }
         }
 
+        // Tuloksissa voidaan näyttää (tai voisi sen laskea: uusi pelimäärä - ottelut)
+        public int AlkuperainenPelimaara {
+            get {
+                return alkuperaisetSyotteet.AlkuperainenPelimaara;
+            }
+        }
+
         // Tuloksien näyttämisessä tarvitaan tieto, koska odotustulosta ei näytetä uudelle pelaajalle
         public bool UudenPelaajanLaskenta {                 // use the new player's calculation?           
             get {

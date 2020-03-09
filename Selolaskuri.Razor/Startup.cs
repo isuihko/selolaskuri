@@ -23,6 +23,11 @@ namespace Selolaskuri.Razor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Session-muuttujat muistetaan tietty aika
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
             services.AddRazorPages();
         }
 
@@ -42,6 +47,9 @@ namespace Selolaskuri.Razor
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Session-muuttujat
+            app.UseSession();
 
             app.UseRouting();
 

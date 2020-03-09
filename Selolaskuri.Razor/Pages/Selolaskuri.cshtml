@@ -7,7 +7,7 @@
 
 @*
     Created 29.2.2020
-    Modified 8.3.2020
+    Modified 9.3.2020
 *@
 
 
@@ -67,7 +67,9 @@
                 @ViewData["TULOKSET"]
             </h3>
 
-            @ViewData["uusi_selo"]
+            <font size="3">
+                @ViewData["uusi_selo"]
+            </font>
             <br />
             @ViewData["selomuutos"]
             <p />
@@ -87,13 +89,13 @@
 
             @*2ND SUBMIT BUTTON*@
             <div class="form-group">
-                <input type="submit" value="Kopioi uusi vahvuusluku jatkolaskentaan" asp-page-handler="KaytaTulostaJatkolaskennassa" />
+                <input type="submit" value="Aloita uusi laskenta tuloksia käyttäen" asp-page-handler="KaytaTulostaJatkolaskennassa" />
             </div>
         </form>
     </div>
 </div>
 
-Selolaskuri (C#/ASP.NET Razor pages) 8.3.2020 Ismo Suihko
+Selolaskuri (C#/ASP.NET Razor pages) 9.3.2020 Ismo Suihko
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

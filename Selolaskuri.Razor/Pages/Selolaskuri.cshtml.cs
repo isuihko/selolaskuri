@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http; // HttpContext.Session
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SelolaskuriLibrary; // SelolaskuriOperations
 // using Selolaskuri.Razor.Models;
@@ -10,12 +11,12 @@ using System; // Exception
 // *********************   UNDER DEVELOPMENT   *********************
 //
 // Created 29.2.2020
-// Modified 8.3.2020
+// Modified 9.3.2020
 //
 // Razor code was originally based on https://www.twilio.com/blog/validating-phone-numbers-in-razor-pages
 // but then started to use BindProperty, ViewData["fieldname"], TextBoxFor() etc.
 //
-// Still some work to do.
+// Still some work to do at least with user interface. Create mobile version etc. Use Ajax?
 //
 
 
@@ -40,26 +41,26 @@ namespace Selolaskuri.Razor
         public string vastustajat_in { get; set; }
 
         // APUKENTÄT
-        static private int laskettu_uusi_selo = 1525;
-        static private int uusi_pelimaara = 0;
+        // XXX: monen käyttäjän ympäristössä (Azure) static-muuttujat yhteisiä...
         static private bool kayta_tulosta = false;
+
 
         public SelolaskuriModel()
         {
             Vastustajat_ohjeteksti = "Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Environment.NewLine
                 + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882" + Environment.NewLine
-                + "Tai koko turnauksen tuloksesi ja vastustajat: 1.5 1600 1785 1882" + Environment.NewLine
+                + "Tai koko turnauksen tulos ja vastustajat: 1.5 1600 1785 1882" + Environment.NewLine
                  + Environment.NewLine
                 + "Ottelu tai koko turnaus voidaan antaa myös csv-formaatissa, jossa annetut tiedot korvaavat "
-                + "lomakkeen kentissä olevat tiedot: miettimisaika, oma vahvuusluku ja pelimäärä." + Environment.NewLine
+                + "lomakkeen kentissä mahdollisesti olevat tiedot: miettimisaika, oma vahvuusluku ja pelimäärä." + Environment.NewLine
                 + "Esim. 'oma selo,tulokset' 1805,+1600 1785 1882 " + Environment.NewLine
                 + "tai 1820,1.5 1600 1785 1882" + Environment.NewLine
                 + "tai 'miettimisaika,oma selo,pelimaara(tai tyhjä),tulokset'" + Environment.NewLine
                 + "esim. 5,1680,,1.5 1600 1822 1882" + Environment.NewLine
                 + Environment.NewLine
                 + "Normaalisti lasketaan joko uuden tai vanhan pelaajan laskentakaavalla." + Environment.NewLine
-                + "Mutta voidaan myös aloittaa uuden pelaajan laskennalla ja jatkaa loput ottelut vanhan pelaajan laskentakaavalla. "
-                + "Tällöin pelimäärän on oltava aluksi enintään 10 ja on tultava täyteen vähintään 11 peliä ennen laskentakaavan vaihtamista." + Environment.NewLine
+                + "Mutta voidaan myös käyttää molempia aloittaen uuden pelaajan laskennalla. Laskennan vaihtokohtaan laitetaan '/'. "
+                + "Tällöin uuden pelaajan pelimäärän on oltava aluksi enintään 10 ja on tultava täyteen vähintään 11 peliä ennen vaihtoa." + Environment.NewLine
                 + "Esim. selo 1700, pelimäärä 8, vastustajat " + Environment.NewLine
                 + " 1612 +1505 1850 -2102 / -1611 +1558" + Environment.NewLine
                 + "tai csv: 1700,8,1612 +1505 1850 -2102 / -1611 +1558";
@@ -71,15 +72,27 @@ namespace Selolaskuri.Razor
         public IActionResult OnGet()
         {
             // Aseta oletusarvo (ks. Vakiot.Miettimisaika_enum)
+            // Lomaketta päivitettäessä tämä palautuu 90:een
             if (miettimisaika_radiobutton_in < 10 || miettimisaika_radiobutton_in > 90)
                 miettimisaika_radiobutton_in = 90;
 
-            if (kayta_tulosta)
+            // XXX: Voiko käyttää Session["variable"]?
+            if (HttpContext.Session.GetInt32("kayta tulosta") > 0)
             {
-                kayta_tulosta = false;
-                selo_in = laskettu_uusi_selo.ToString();
-                if (uusi_pelimaara >= 0)
-                    pelimaara_in = uusi_pelimaara.ToString();
+                HttpContext.Session.SetInt32("kayta tulosta", 0);
+
+                selo_in = HttpContext.Session.GetInt32("laskettu selo").ToString();
+                // jos ei vielä ollut laskentaa, laitetaan uuden pelaajan arvot
+                if (string.IsNullOrEmpty(selo_in))  
+                {
+                    selo_in = "1525";
+                    pelimaara_in = "0";
+                }
+                else if (HttpContext.Session.GetInt32("laskettu uusi pelimaara") > 0)
+                    pelimaara_in = HttpContext.Session.GetInt32("laskettu uusi pelimaara").ToString();
+
+                if (HttpContext.Session.GetInt32("miettimisaika") > 0)
+                    miettimisaika_radiobutton_in = (int)HttpContext.Session.GetInt32("miettimisaika");
             }
 
             return Page();
@@ -128,7 +141,7 @@ namespace Selolaskuri.Razor
                 // poista myös välilyönnit pilkun molemmilta puolilta, jos on CSV-formaatti
                 vastustajat = so.SiistiVastustajatKentta(vastustajat); // .Trim jo tehty
 
-                // näytölle siistitty versio (tämä ei toimikaan näin helposti)
+                // näytölle siistitty versio (tämä ei toimikaan näin helposti, Ajax?)
                 vastustajat_in = vastustajat;
             }
 
@@ -143,8 +156,11 @@ namespace Selolaskuri.Razor
                 //
                 Selopelaaja tulokset = so.SuoritaLaskenta(syotetiedot);
 
-                laskettu_uusi_selo = tulokset.UusiSelo;
-                uusi_pelimaara = tulokset.UusiPelimaara;
+                // Viimeksi lasketut tulokset talteen
+                HttpContext.Session.SetInt32("laskettu selo", tulokset.UusiSelo);
+                HttpContext.Session.SetInt32("laskettu uusi pelimaara", tulokset.UusiPelimaara);
+                HttpContext.Session.SetInt32("miettimisaika", miettimisaika_radiobutton_in);
+
 
                 //
                 // NÄYTÄ TULOKSET
@@ -153,9 +169,9 @@ namespace Selolaskuri.Razor
                 // 
                 ViewData["TULOKSET"] = "Tulokset";
 
-                ViewData["uusi_selo"] = "Uusi vahvuusluku ("+ (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN ? "PELO" : "SELO") +") : " + tulokset.UusiSelo;
-                ViewData["selomuutos"] = "    Muutos : " + (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0")
-                                       + ((tulokset.MinSelo < tulokset.MaxSelo) ? "    Vaihteluväli " + tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "");
+                ViewData["uusi_selo"] = "Uusi vahvuusluku ("+ (tulokset.Miettimisaika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN ? "PELO" : "SELO") +"): " + tulokset.UusiSelo;
+                ViewData["selomuutos"] = "    Muutos: " + (tulokset.UusiSelo - tulokset.AlkuperainenSelo).ToString("+#;-#;0")
+                                       + ((tulokset.MinSelo < tulokset.MaxSelo) ? "    Vaihteluväli: " + tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString() : "");
 
                 if (tulokset.UusiPelimaara > 0)
                     ViewData["uusi_pelimaara"] = "    Uusi pelimäärä: " + tulokset.UusiPelimaara;
@@ -163,7 +179,7 @@ namespace Selolaskuri.Razor
                 if (tulokset.UudenPelaajanLaskenta || tulokset.UudenPelaajanPelitLKM > 0)
                 {
                     ViewData["odotustulos"] = "";
-                    ViewData["uudenpelaajanlaskenta"] = (tulokset.UudenPelaajanPelitLKM > 0) ? " (uuden pelaajan laskentaan lisää " + tulokset.UudenPelaajanPelitLKM + " peliä)" : " (uuden pelaajan laskenta) ";
+                    ViewData["uudenpelaajanlaskenta"] = (tulokset.UudenPelaajanPelitLKM > 0) ? " (uuden pelaajan laskentaa " + tulokset.AlkuperainenPelimaara + "+" + tulokset.UudenPelaajanPelitLKM + " peliä)" : " (uuden pelaajan laskenta) ";
                 }
                 else
                 {
@@ -190,7 +206,7 @@ namespace Selolaskuri.Razor
         }
 
 
-        // kopioi edellisen laskennan tulos ja pelimäärä
+        // kopioi lomakkeelle edellisen laskennan tulos ja pelimäärä
         // jos ei vielä ollut laskentaa, kopioi 1525 ja 0
         public IActionResult OnPostKaytaTulostaJatkolaskennassa()
         {
@@ -199,9 +215,9 @@ namespace Selolaskuri.Razor
                 return Page();
             }
 
-            kayta_tulosta = true;
+            HttpContext.Session.SetInt32("kayta tulosta", 1); // tulokset Session-muuttujista
 
-            return RedirectToPage("Selolaskuri"); // OnGet() laittaa uuden vahvuusluvun ja pelimäärän näytölle
+            return RedirectToPage("Selolaskuri"); // --> OnGet() tyhjentää kentät sekä laittaa uuden vahvuusluvun ja pelimäärän näytölle
         }
     }
 }

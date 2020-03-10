@@ -17,6 +17,7 @@
 //   19.-20.7.2018  Luokan Ottelulista sisältö piilotettu, joten käytetään mm. Lukumaara, HaeEnsimmainen() ym.
 //   15.8.2018      Laskennassa erikoiskäsittely TULOS_EI_ANNETTU, joka tarkoittaa sitä että vastustajat-kentässä ei selon
 //                  yhteydessä ollut merkkiä +,- tai =. Tuo käsitellään tasapelinä laskennassa.
+//   10.3.2020      VastustajaMin, VastustajaMax
 //
 
 using System;
@@ -62,8 +63,8 @@ namespace SelolaskuriLibrary {
         public int TurnauksenKeskivahvuus { get; private set; } // average opponent strength
         public int TurnauksenKeskivahvuus10x { get; private set; } // average opponent strength
 
-        //public int VastustajaMin { get; private set; }
-        //public int VastustajaMax { get; private set; }
+        public int VastustajaMin { get; private set; }
+        public int VastustajaMax { get; private set; }
 
         public int Suoritusluku { get; private set; }
         public int SuorituslukuFIDE { get; private set; }
@@ -286,6 +287,9 @@ namespace SelolaskuriLibrary {
 
             // asettaa omat tiedot (selo ja pelimäärä) seloPelaaja-luokkaan, nollaa tilastotiedot ym.
             AlustaLaskenta(syotteet);
+
+            VastustajaMin = ottelulista.VastustajaMin;
+            VastustajaMax = ottelulista.VastustajaMax;
 
             // XXX: Kun ensimmäinen ottelu, niin UusiSelo ja UusiPelimaara ovat käyttäjän antamat alkuarvot omaSelo ja pelimaara
             // XXX: Laskennan edetessä niitä päivitetään

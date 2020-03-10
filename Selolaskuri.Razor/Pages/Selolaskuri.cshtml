@@ -45,10 +45,10 @@
             Vastustaja/vastustajat tuloksineen <br />
             + voitto, - tappio, = tai tyhjä tasapeli
             <br />
-            @Html.TextBoxFor(e => e.vastustajat_in, new { size = "75" })
+            @Html.TextBoxFor(e => e.vastustajat_in, new { size = "72" })
             <br />
 
-            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 72, @readonly = "readonly" })
+            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 70, @readonly = "readonly" })
 
             <p></p>
 
@@ -80,6 +80,8 @@
             @ViewData["odotustulos"]
             <p />
             @ViewData["keskivahvuus"]
+            <br />
+            @ViewData["vastustajat_alue"]
             <p />
             @ViewData["suoritusluku"]
             <br />
@@ -95,7 +97,7 @@
     </div>
 </div>
 
-Selolaskuri (C#/ASP.NET Razor pages) 9.3.2020 Ismo Suihko
+Selolaskuri (C#/ASP.NET Razor pages) 10.3.2020 Ismo Suihko
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

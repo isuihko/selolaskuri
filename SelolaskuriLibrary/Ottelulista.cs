@@ -20,9 +20,11 @@
 //  HaeSeuraava()       - return the next match
 //  Lukumaara           - number of matches
 //  Keskivahvuus        - average strength of the opponents
+//  VastustajaMax, VastustajaMin
 // 
 // Modifications:
 //   19.7.2018  Data is hidden, added routines Lukumaara, Keskivahvuus, HaeEnsimmainen ja HaeSeuraava
+//   10.3.2020  VastustajaMin, VastustajaMax
 //
 
 using System;  // needed for Tuple
@@ -101,17 +103,17 @@ namespace SelolaskuriLibrary {
             }
         }
 
-        //public int MaxVahvuus {
-        //    get {
-        //        return tallennetutOttelut.Max(t => t.VastustajanSelo);
-        //    }
-        //}
+        public int VastustajaMax {
+            get {
+                return tallennetutOttelut.Max(t => t.VastustajanSelo);
+            }
+        }
 
-        //public int MinVahvuus {
-        //    get {
-        //        return tallennetutOttelut.Min(t => t.VastustajanSelo);
-        //    }
-        //}
+        public int VastustajaMin {
+            get {
+                return tallennetutOttelut.Min(t => t.VastustajanSelo);
+            }
+        }
 
         public int Keskivahvuus10x {
             get {

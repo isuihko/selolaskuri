@@ -12,12 +12,14 @@
 //   4.9.2018       enum Selolaskuri Winforms, WPF_XAML and XBAP. Needed in FormOperations.
 //   16.-17.2.2020  added new error status for new + old player calculation in one go format,
 //                  error messages defined as constants -> same for each version
+//   10.3.2020      modified error texts, does not mention menu any more
 //    
 
 namespace SelolaskuriLibrary {
 
     public static class Vakiot {
 
+        // Ohjelman versiot
         public enum Selolaskuri_enum {
             WINFORMS,
             WPF_XAML,
@@ -59,17 +61,17 @@ namespace SelolaskuriLibrary {
         public static string[] SYOTE_VIRHEET_text = new string[] 
         {
             "OK", // ensin indeksi 0
-            "VIRHE: CSV-formaatissa annettu virheellinen miettimisaika. Annettava minuutit. Ks. Menu->Ohjeita",
+            "VIRHE: CSV-formaatissa annettu virheellinen miettimisaika. Annettava minuutit",
             $"VIRHE: Nykyisen SELOn oltava numero {Vakiot.MIN_SELO}-{Vakiot.MAX_SELO}.",
             $"VIRHE: Vastustajan vahvuusluvun on oltava numero {Vakiot.MIN_SELO}-{Vakiot.MAX_SELO}.",
             $"VIRHE: pelimäärän voi olla numero väliltä {Vakiot.MIN_PELIMAARA}-{Vakiot.MAX_PELIMAARA} tai tyhjä.",
             "Ottelun tulosta ei valittu!",
             "VIRHE: Yksittäisen ottelun tulos voidaan antaa merkeillä +(voitto), =(tasapeli) tai -(tappio), esim. +1720. Tasapeli voidaan antaa muodossa =1720 ja 1720.",
-            "VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä.",
-            "VIRHE: CSV-formaattivirhe, ks. Menu->Ohjeita",
-            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärä voi olla enintään 10, ks. Menu->Ohjeita",
-            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi uuden pelaajan pelejä, ks. Menu->Ohjeita",
-            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, voi olla vain yksi '/', ks. Menu->Ohjeita"
+            "VIRHE: Turnauksen pistemäärä voi olla enintään sama kuin vastustajien lukumäärä",
+            "VIRHE: CSV-formaatti, esim. 'oma selo,tulokset' tai 'miettimisaika(min),oma selo,pelimaara(tai tyhjä),tulokset'",
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärä voi olla enintään 10",
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi uuden pelaajan pelejä",
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, voi olla vain yksi '/'"
         };
         public static int SYOTE_VIRHE_MAX = -1 * SYOTE_VIRHEET_text.Length; // ei voinut olla const
 

@@ -40,11 +40,6 @@ namespace Selolaskuri.Razor
         [BindProperty]
         public string vastustajat_in { get; set; }
 
-        // APUKENTÄT
-        // XXX: monen käyttäjän ympäristössä (Azure) static-muuttujat yhteisiä...
-        static private bool kayta_tulosta = false;
-
-
         public SelolaskuriModel()
         {
             Vastustajat_ohjeteksti = "Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Environment.NewLine
@@ -156,6 +151,13 @@ namespace Selolaskuri.Razor
                 //
                 Selopelaaja tulokset = so.SuoritaLaskenta(syotetiedot);
 
+                //// jos on CSV, voidaan ottaa sieltä oikeasti käytetty miettimisaika
+                //// tosin se ei päivity näytölle näin
+                //if (aika != tulokset.Miettimisaika)
+                //{
+                //    miettimisaika_radiobutton_in = (int)tulokset.Miettimisaika;
+                //}
+
                 // Viimeksi lasketut tulokset talteen
                 HttpContext.Session.SetInt32("laskettu selo", tulokset.UusiSelo);
                 HttpContext.Session.SetInt32("laskettu uusi pelimaara", tulokset.UusiPelimaara);
@@ -188,7 +190,8 @@ namespace Selolaskuri.Razor
                 }
 
                 ViewData["turnauksentulos"] = "Turnauksen tulos: " + (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
-                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") +   "  Piste-ero: " + Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
+                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") + " Piste-ero: " + Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
+                ViewData["vastustajat_alue"] = "Vastustajat(min-max): " + tulokset.VastustajaMin + "-" + tulokset.VastustajaMax;
 
                 ViewData["suoritusluku"] = "Suoritusluku: " + tulokset.Suoritusluku;
                 ViewData["suorituslukuFIDE"] = " Suoritusluku FIDE: " + tulokset.SuorituslukuFIDE;

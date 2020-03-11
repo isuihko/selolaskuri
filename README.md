@@ -7,12 +7,10 @@ Visual Studio Community 2019/2017/2015, C#/.NET, Windows 7, Windows 8 and Window
 Now all Selolaskuri's versions are under same Visual Studio's solution:
 - **Selolaskuri** which is WinForms version and desktop application, can be installed into Windows computer.
 - **Selolaskuri.WPF**, user interface created with WPF/XAML (WPF is newer than WinForms) and is also a desktop application, can be installed into Windows computer. Resizable window. More in folder Selolaskuri.WPF.
-- **Selolaskuri.Razor**, ASP.NET Razor Pages version, user interface under development **NEW!!** You can try the program https://selolaskurirazor20200308095542.azurewebsites.net/Selolaskuri (at this moment, may not be there permanently) Works with any browser and mobile phones.
+- **Selolaskuri.Razor**, ASP.NET Razor Pages version (, user interface under development **NEW!!** You can try the program in Azure https://selolaskurirazor20200308095542.azurewebsites.net/Selolaskuri (at this moment, may not be there permanently) Works with any browser and mobile phones.
 - **Selolaskuri.XBAP**, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable for Internet Explorer.
 
-If you've downloaded all source codes, you can choose, which of the application to run in Visual Studio: in Solution Explorer right click Project's name, choose Set as StartUp Project and then click Start.
-
-You can try the Razor pages version of the program from Azure 
+If you've downloaded all source codes, you can choose, which of the application to run in Visual Studio: in Solution Explorer right click Project's name, choose Set as StartUp Project and then click Start. To compile Razor pages sources Visual Studio 2019 is required.
 
 ------
 
@@ -122,12 +120,14 @@ Version history highlights:
 - 26.8. & 4.9.2018: Moved common checking and calculation into SelolaskuriLibrary. Added Selolaskuri's WFP/XAML version as Selolaskuri.WFP and XBAP version as Selolaskuri.XBAP under this same Visual Studio's solution. Moved common information/instruction windows into SelolaskuriLibrary FormOperations.cs
 - 16.-17.2.2020 Better instructions in Menu->Ohjeet. More checking and code refactoring. Now allows entering new player calculation up to certain game and then after '/' continue with normal calculations, like "+1321 -1678 -1864 / -1995 +1695". Note that this requires that players game count is not > 10 when starting and is at least 11 when changing calculation from new player formula to normal.
 - 19.2.2020  Rating performance calculations and new output fields for them.
+- 8.-9.3.2020 Razor pages versions, published in Azure and anyone can use
 
-All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. Also all of them have same unit tests from project Selolaskuri.Tests (now 86 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
+All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. The parameter checking and calculations are tested in project Selolaskuri.Tests (now 86 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
 
 TODO
+- user interface in Razor pages versions, separate mobile user interface
 - refactoring, more Object-Oriented Programming (OOP)
-- create a real web version with ASP.NET Core (current xbap version has limitations, requires IE)
 - use database as an exercise e.g. to store calculations
 - check what else could be moved into SelolaskuriLibrary
-- update also Java version
+- update also Java version (suorituslukulaskenta is missing)
+

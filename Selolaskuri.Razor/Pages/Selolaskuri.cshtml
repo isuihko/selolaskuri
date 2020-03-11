@@ -7,7 +7,7 @@
 
 @*
     Created 29.2.2020
-    Modified 9.3.2020
+    Modified 11.3.2020
 *@
 
 
@@ -48,7 +48,7 @@
             @Html.TextBoxFor(e => e.vastustajat_in, new { size = "72" })
             <br />
 
-            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 70, @readonly = "readonly" })
+            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 69, @readonly = "readonly" })
 
             <p></p>
 
@@ -56,10 +56,6 @@
             <div class="form-group">
                 <input type="submit" value="Laske vahvuusluku" asp-page-handler="LaskeVahvuusluku" />
             </div>
-
-            <font size="2">
-                @ViewData["virheteksti"]
-            </font>
 
             @*XXX: ORGANIZE OUTPUT*@
 
@@ -91,13 +87,13 @@
 
             @*2ND SUBMIT BUTTON*@
             <div class="form-group">
-                <input type="submit" value="Aloita uusi laskenta tuloksia käyttäen" asp-page-handler="KaytaTulostaJatkolaskennassa" />
+                <input type="submit" value="Aloita uusi laskenta tulosta käyttäen" asp-page-handler="KaytaTulostaJatkolaskennassa" />
             </div>
         </form>
     </div>
 </div>
 
-Selolaskuri (C#/ASP.NET Razor pages) 10.3.2020 Ismo Suihko
+Selolaskuri (C#/ASP.NET Razor pages) 11.3.2020 Ismo Suihko
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

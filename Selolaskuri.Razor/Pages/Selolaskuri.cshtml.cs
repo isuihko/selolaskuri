@@ -11,7 +11,7 @@ using System; // Exception
 // *********************   UNDER DEVELOPMENT   *********************
 //
 // Created 29.2.2020
-// Modified 9.3.2020
+// Modified 11.3.2020
 //
 // Razor code was originally based on https://www.twilio.com/blog/validating-phone-numbers-in-razor-pages
 // but then started to use BindProperty, ViewData["fieldname"], TextBoxFor() etc.
@@ -66,10 +66,10 @@ namespace Selolaskuri.Razor
 
         public IActionResult OnGet()
         {
-            // Aseta oletusarvo (ks. Vakiot.Miettimisaika_enum)
+            // Aseta oletusarvo
             // Lomaketta päivitettäessä tämä palautuu 90:een
-            if (miettimisaika_radiobutton_in < 10 || miettimisaika_radiobutton_in > 90)
-                miettimisaika_radiobutton_in = 90;
+            if (miettimisaika_radiobutton_in < (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN || miettimisaika_radiobutton_in > (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN)
+                miettimisaika_radiobutton_in = (int)Vakiot.Miettimisaika_enum.MIETTIMISAIKA_VAH_90MIN;
 
             // XXX: Voiko käyttää Session["variable"]?
             if (HttpContext.Session.GetInt32("kayta tulosta") > 0)
@@ -190,8 +190,9 @@ namespace Selolaskuri.Razor
                 }
 
                 ViewData["turnauksentulos"] = "Turnauksen tulos: " + (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
-                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") + " Piste-ero: " + Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
-                ViewData["vastustajat_alue"] = "Vastustajat(min-max): " + tulokset.VastustajaMin + "-" + tulokset.VastustajaMax;
+                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") + " Piste-ero: " + (Math.Abs(10*tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus10x)/10F).ToString("0.0");
+                if (tulokset.VastustajienLkm > 1)
+                    ViewData["vastustajat_alue"] = "Vastustajat (min-max): " + tulokset.VastustajaMin + " - " + tulokset.VastustajaMax;
 
                 ViewData["suoritusluku"] = "Suoritusluku: " + tulokset.Suoritusluku;
                 ViewData["suorituslukuFIDE"] = " Suoritusluku FIDE: " + tulokset.SuorituslukuFIDE;
@@ -199,9 +200,10 @@ namespace Selolaskuri.Razor
             }
             else
             {              
-                // virhestatus on negatiivinen luku, virheteksti haetaan taulukosta
+                // virhestatus on negatiivinen luku, hae virheteksti
                 if (Vakiot.SYOTE_STATUS_OK >= status && status >= Vakiot.SYOTE_VIRHE_MAX) {
-                    ViewData["virheteksti"] = Vakiot.SYOTE_VIRHEET_text[Math.Abs(status)]; 
+                    // requires <div asp-validation-summary... >
+                    ModelState.AddModelError(string.Empty, Vakiot.SYOTE_VIRHEET_text[Math.Abs(status)]);
                 }
             }
 

@@ -14,12 +14,18 @@
 <h1>Selolaskuri</h1>
 
 <div class="row">
-    <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             Oma vahvuusluku:
             @Html.TextBoxFor(e => e.selo_in, new { size = "4" })
+
+            <div hidden>
+                @*Viimeksi lasketut arvot talteen. Tuli kokeiltua 2-painikkeen otsikossa.*@
+                @ViewData["viimeksi_laskettu_selo"]
+                @ViewData["viimeksi_laskettu_pelimaara"]
+            </div>
+
             <p></p>
             Oma pelimäärä (jos ≤ 10):
             @Html.TextBoxFor(e => e.pelimaara_in, new { size = "4" })
@@ -42,8 +48,8 @@
             </fieldset>
 
 
-            Vastustaja/vastustajat tuloksineen <br />
-            + voitto, - tappio, = tai tyhjä tasapeli
+            Vastustaja/vastustajat tuloksineen + voitto, - tappio, = tai tyhjä tasapeli <br />
+            tai pistemäärä vastustajat tai csv-formaatissa esim. oma selo,tulokset
             <br />
             @Html.TextBoxFor(e => e.vastustajat_in, new { size = "72" })
             <br />
@@ -59,38 +65,45 @@
 
             @*XXX: ORGANIZE OUTPUT*@
 
-            <h3>
-                @ViewData["TULOKSET"]
-            </h3>
+            @*Hide result rows if there are no results*@
+            <div @(ViewData["uusi_selo"] != null ? "" : "hidden")>
+                <h3>
+                    @ViewData["TULOKSET"]
+                </h3>
 
-            <font size="3">
-                @ViewData["uusi_selo"]
-            </font>
-            <br />
-            @ViewData["selomuutos"]
-            <p />
-            @ViewData["uusi_pelimaara"]  @ViewData["uudenpelaajanlaskenta"]
-            <p />
-            @ViewData["turnauksentulos"]
-            <br />
-            @ViewData["odotustulos"]
-            <p />
-            @ViewData["keskivahvuus"]
-            <br />
-            @ViewData["vastustajat_alue"]
-            <p />
-            @ViewData["suoritusluku"]
-            <br />
-            @ViewData["suorituslukuFIDE"]
-            <br />
-            @ViewData["suorituslukuLineaarinen"]
+                <font size="3">
+                    @ViewData["uusi_selo_nimi"] @ViewData["uusi_selo"]
+                </font>
+                <br />
+                @ViewData["selomuutos"]
+                <p />
+                @ViewData["uusi_pelimaara_nimi"] @ViewData["uusi_pelimaara"] @ViewData["uudenpelaajanlaskenta"]
+                <p />
+                @ViewData["turnauksentulos"]
+                <br />
+                @ViewData["odotustulos"]
+                <p />
+                @ViewData["keskivahvuus"]
+                <br />
+                @ViewData["vastustajat_alue"]
+                <p />
+                @ViewData["suoritusluku"]
+                <br />
+                @ViewData["suorituslukuFIDE"]
+                <br />
+                @ViewData["suorituslukuLineaarinen"]
+            </div>
 
             @*2ND SUBMIT BUTTON*@
             <div class="form-group">
-                <input type="submit" value="Aloita uusi laskenta tulosta käyttäen" asp-page-handler="KaytaTulostaJatkolaskennassa" />
+            <input type="submit"
+                   value="Aloita uusi laskenta viimeksi laskettua tulosta käyttäen"
+                   asp-page-handler="KaytaTulostaJatkolaskennassa" />
+                   @*value="@(ViewData["viimeksi_laskettu_selo"] != null ?
+                          "Aloita uusi laskenta käyttäen viimeksi laskettua vahvuuslukua ja pelimäärää " + ViewData["viimeksi_laskettu_selo"] + "/" + ViewData["viimeksi_laskettu_pelimaara"] :
+                          "Aseta uuden pelaajan alkuarvot selo=1525 pelimäärä=0")"*@
             </div>
         </form>
-    </div>
 </div>
 
 Selolaskuri (C#/ASP.NET Razor pages) 11.3.2020 Ismo Suihko

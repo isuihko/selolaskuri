@@ -348,6 +348,13 @@ namespace SelolaskuriLibrary {
                     ottelu = ottelulista.HaeSeuraava();
                 }
 
+                // Onko pikashakin pelit annettu "väärässä formaatissa", kun pitäisi olla esim. "1.5 1622 1880 1683"
+                if (!OnkoAnnettuTurnauksenTulos && alkuperaisetSyotteet.Miettimisaika <= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
+                {
+                    // asetetaan turnauksen tulokseksi otteluista "laskettu" tulos
+                    // ja sitten voidaan käyttää oikeaa pikashakin vahvuusluvun laskentakaavaa
+                    SetAnnettuTurnauksenTulos(TurnauksenTulos2x / 2.0F);
+                }
 
                 // Entä jos vanhan pelaajan ottelut olivatkin formaatissa "1.5 1622 1880 1683"?
                 // Jos näin oli, niin unohdetaan vanha laskenta, josta käytetään vain Odotustulos sekä UusiPelimaara.

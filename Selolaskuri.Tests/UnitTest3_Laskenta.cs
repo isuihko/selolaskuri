@@ -429,6 +429,20 @@ namespace Selolaskuri.Tests
             Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
         }
 
+        // Nyt laskee myös "väärällä" tavalla annetun pikashakin vahvuusluvun oikein. Oikeasti pitäisi antaa tulos vastustajien_pelot
+        public void PikashakinVahvuuslukuSMTurnauksesta3b()
+        {
+            var t = u.Testaa(Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN, "1262", "1623 +1591 1318 1560 1493 1417 1343 1493 1524 1227 1716 1490 1454 1479 1329 1429 1444 1289 1576 1445 1280");
+            Assert.AreEqual(Vakiot.SYOTE_STATUS_OK, t.Item1);
+            Assert.AreEqual(1345, t.Item2.UusiSelo);
+            Assert.AreEqual(Vakiot.PELIMAARA_TYHJA, t.Item2.UusiPelimaara);  // pelimäärä
+            Assert.AreEqual((int)(11F * 2), t.Item2.TurnauksenTulos2x);
+            Assert.AreEqual(1453, t.Item2.TurnauksenKeskivahvuus);  // Summa 30520 / 21 = 1453.333
+            Assert.AreEqual(21, t.Item2.VastustajienLkm);           // 21 vastustajaa eli ottelua
+            Assert.AreEqual(564, t.Item2.Odotustulos);              // odotustulos 5,64*100
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MinSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+            Assert.AreEqual(t.Item2.UusiSelo, t.Item2.MaxSelo);     // selo laskettu kerralla, sama kuin UusiSelo
+        }
 
 
         // Testataan eri pelimäärillä, ettei tulos riipu pelimäärästä silloin kun ei ole uuden pelaajan laskenta

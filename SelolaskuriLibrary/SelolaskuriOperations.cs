@@ -178,7 +178,7 @@ namespace SelolaskuriLibrary {
         //
         // Tarkista Oma SELO -kenttä, oltava numero ja rajojen sisällä
         // Paluuarvo joko kelvollinen SELO (MIN_SELO .. MAX_SELO) tai negatiivinen virhestatus
-        private int TarkistaOmaSelo(string syote)
+        private static int TarkistaOmaSelo(string syote)
         {
             bool status = true;
             int tulos; // define here instead of "out int tulos" for Visual Studio 2015 compatibility
@@ -201,7 +201,7 @@ namespace SelolaskuriLibrary {
         // Saa olla tyhjä, mutta jos annettu, oltava numero, joka on 0-9999.
         // Jos pelimäärä on 0-10, tullaan käyttämään uuden pelaajan laskentakaavaa.
         // Paluuarvo joko kelvollinen pelimäärä, PELIMAARA_TYHJA tai VIRHE_PELIMAARA.
-        private int TarkistaPelimaara(string syote)
+        private static int TarkistaPelimaara(string syote)
         {
             bool status = true;
             int tulos;
@@ -497,7 +497,7 @@ namespace SelolaskuriLibrary {
         // Tulos TULOS_EI_ANNETTU ei ole virhe, koska se koskee merkkijonossa annettua tulosta,
         // joka tarkoituksella on jätetty antamatta. TULOS_EI_ANNETTU lasketaan tasapelinä.
         //
-        private int TarkistaOttelunTulos(Vakiot.OttelunTulos_enum ottelunTulos)
+        private static int TarkistaOttelunTulos(Vakiot.OttelunTulos_enum ottelunTulos)
         {
             int tulos = Vakiot.SYOTE_STATUS_OK;
 

@@ -7,106 +7,110 @@
 
 @*
     Created 29.2.2020
-    Modified 11.3.2020
+    Modified 12.3.2020
 *@
 
 
 <h1>Selolaskuri</h1>
 
-<div class="row">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            Oma vahvuusluku:
-            @Html.TextBoxFor(e => e.selo_in, new { size = "4" })
+        Oma vahvuusluku:
+        @Html.TextBoxFor(e => e.selo_in, new { size = "4" })
 
-            <div hidden>
-                @*Viimeksi lasketut arvot talteen. Tuli kokeiltua 2-painikkeen otsikossa.*@
-                @ViewData["viimeksi_laskettu_selo"]
-                @ViewData["viimeksi_laskettu_pelimaara"]
-            </div>
+        <div hidden>
+            @*Viimeksi lasketut arvot talteen. Tuli kokeiltua 2-painikkeen otsikossa.*@
+            @ViewData["viimeksi_laskettu_selo"]
+            @ViewData["viimeksi_laskettu_pelimaara"]
+        </div>
 
-            <p></p>
-            Oma pelimäärä (jos ≤ 10):
-            @Html.TextBoxFor(e => e.pelimaara_in, new { size = "4" })
-            <p></p>
+        <p></p>
+        Oma pelimäärä (jos ≤ 10):
+        @Html.TextBoxFor(e => e.pelimaara_in, new { size = "4" })
+        <p></p>
 
-            Miettimisaika<br />
-            <fieldset>
-                <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 90) ≥ 90 min
-                </label>
-                <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 89) 60-89 min
-                </label>
-                <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 59) 11-59 min
-                </label>
-                <label>
-                    @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 10) ≤ 10 min
-                </label>
-            </fieldset>
+        Miettimisaika<br />
+        <fieldset>
+            <label>
+                @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 90) ≥ 90 min
+            </label>
+            <label>
+                @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 89) 60-89 min
+            </label>
+            <label>
+                @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 59) 11-59 min
+            </label>
+            <label>
+                @Html.RadioButtonFor(e => e.miettimisaika_radiobutton_in, 10) ≤ 10 min
+            </label>
+        </fieldset>
 
-
+        <div style="font-size:13px">
             Vastustaja/vastustajat tuloksineen + voitto, - tappio, = tai tyhjä tasapeli <br />
             tai pistemäärä vastustajat tai csv-formaatissa esim. oma selo,tulokset
+        </div="font-size:15px">
+        <br />
+        @Html.TextBoxFor(e => e.vastustajat_in, new { size = "72" })
+        <br />
+        <div style="font-size:13px">
+            @*NOTE! Although this has @rows = 3, there are 4 rows on display, maybe because of font-size*@
+            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 3, @cols = 67, @readonly = "readonly" })
+        </div>
+
+        <p></p>
+
+        @*1ST SUBMIT BUTTON*@
+        <div class="form-group">
+            <input type="submit" value="Laske vahvuusluku" asp-page-handler="LaskeVahvuusluku" />
+        </div>
+
+
+        @*Hide result rows if there are no results*@
+        <div @(ViewData["uusi_selo"] != null ? "" : "hidden")>
+            <h3>
+                @ViewData["TULOKSET"]
+            </h3>
+
+            <div style="font-size:18px">
+                @ViewData["uusi_selo_nimi"] @ViewData["uusi_selo"]
+            </div>
             <br />
-            @Html.TextBoxFor(e => e.vastustajat_in, new { size = "72" })
+            @ViewData["selomuutos"]
+            <p />
+            @ViewData["uusi_pelimaara_nimi"] @ViewData["uusi_pelimaara"] @ViewData["uudenpelaajanlaskenta"]
+            <p />
+            @ViewData["turnauksentulos"]
             <br />
+            @ViewData["odotustulos"]
+            <p />
+            @ViewData["keskivahvuus"]
+            <br />
+            @ViewData["vastustajat_alue"]
+            <p />
+            @ViewData["suoritusluku"]
+            <br />
+            @ViewData["suorituslukuFIDE"]
+            <br />
+            @ViewData["suorituslukuLineaarinen"]
+        </div>
 
-            @Html.TextAreaFor(e => e.Vastustajat_ohjeteksti, new { @class = "required", @rows = 5, @cols = 69, @readonly = "readonly" })
-
-            <p></p>
-
-            @*1ST SUBMIT BUTTON*@
-            <div class="form-group">
-                <input type="submit" value="Laske vahvuusluku" asp-page-handler="LaskeVahvuusluku" />
-            </div>
-
-            @*XXX: ORGANIZE OUTPUT*@
-
-            @*Hide result rows if there are no results*@
-            <div @(ViewData["uusi_selo"] != null ? "" : "hidden")>
-                <h3>
-                    @ViewData["TULOKSET"]
-                </h3>
-
-                <font size="3">
-                    @ViewData["uusi_selo_nimi"] @ViewData["uusi_selo"]
-                </font>
-                <br />
-                @ViewData["selomuutos"]
-                <p />
-                @ViewData["uusi_pelimaara_nimi"] @ViewData["uusi_pelimaara"] @ViewData["uudenpelaajanlaskenta"]
-                <p />
-                @ViewData["turnauksentulos"]
-                <br />
-                @ViewData["odotustulos"]
-                <p />
-                @ViewData["keskivahvuus"]
-                <br />
-                @ViewData["vastustajat_alue"]
-                <p />
-                @ViewData["suoritusluku"]
-                <br />
-                @ViewData["suorituslukuFIDE"]
-                <br />
-                @ViewData["suorituslukuLineaarinen"]
-            </div>
-
-            @*2ND SUBMIT BUTTON*@
-            <div class="form-group">
-            <input type="submit"
-                   value="Aloita uusi laskenta viimeksi laskettua tulosta käyttäen"
-                   asp-page-handler="KaytaTulostaJatkolaskennassa" />
-                   @*value="@(ViewData["viimeksi_laskettu_selo"] != null ?
-                          "Aloita uusi laskenta käyttäen viimeksi laskettua vahvuuslukua ja pelimäärää " + ViewData["viimeksi_laskettu_selo"] + "/" + ViewData["viimeksi_laskettu_pelimaara"] :
-                          "Aseta uuden pelaajan alkuarvot selo=1525 pelimäärä=0")"*@
-            </div>
-        </form>
+        @*2ND SUBMIT BUTTON*@
+        <div class="form-group">
+        <input type="submit"
+                value="Aloita uusi laskenta viimeksi laskettua tulosta käyttäen"
+                asp-page-handler="KaytaTulostaJatkolaskennassa" />
+                @*value="@(ViewData["viimeksi_laskettu_selo"] != null ?
+                        "Aloita uusi laskenta käyttäen viimeksi laskettua vahvuuslukua ja pelimäärää " + ViewData["viimeksi_laskettu_selo"] + "/" + ViewData["viimeksi_laskettu_pelimaara"] :
+                        "Aseta uuden pelaajan alkuarvot selo=1525 pelimäärä=0")"*@
+        </div>
+    </form>
 </div>
 
-Selolaskuri (C#/ASP.NET Razor pages) 11.3.2020 Ismo Suihko
+<div style="font-size:12px">
+Selolaskuri (C#/ASP.NET Razor Pages) 12.3.2020 Ismo Suihko
+</div>
 
 <div>
     <a asp-controller="Home" asp-action="Index">Back to Home</a>

@@ -46,17 +46,18 @@ namespace Selolaskuri.Razor
         {
             Vastustajat_ohjeteksti = "Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Newline
                 + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882" + Newline
-                + "Tai koko turnauksen tulos ja vastustajat: 1.5 1600 1785 1882" + Newline
+                + "Tai koko turnauksen tulos ja vastustajat: 1.5 1600 1785 1882 "
+                + "jolla tavalla tulokset on annettava pikashakin laskentaa varten." + Newline
                 + Newline
                 + "Ottelu tai koko turnaus voidaan antaa myös csv-formaatissa, jossa annetut tiedot korvaavat "
                 + "lomakkeen kentissä mahdollisesti olevat tiedot: miettimisaika, oma vahvuusluku ja pelimäärä." + Newline
                 + "Esim. 'oma selo,tulokset' 1805,+1600 1785 1882 " + Newline
                 + "tai 1820,1.5 1600 1785 1882" + Newline
-                + "tai 'miettimisaika,oma selo,pelimäärä(tai tyhjä),tulokset'" + Newline
-                + "esim. 5,1680,,1.5 1600 1822 1882" + Newline
+                + "tai 'miettimisaika(minuutit),oma selo,pelimäärä(tai tyhjä),tulokset'" + Newline
+                + "esim. pikashakin laskenta 5,1680,,1.5 1600 1822 1882" + Newline
                 + Newline
-                + "Normaalisti lasketaan joko uuden tai vanhan pelaajan laskentakaavalla." + Newline
-                + "Mutta voidaan myös käyttää molempia aloittaen uuden pelaajan laskennalla. Laskennan vaihtokohtaan laitetaan '/'. "
+                + "Normaalisti SELO lasketaan joko uuden tai vanhan pelaajan laskentakaavalla." + Newline
+                + "Mutta voidaan myös käyttää molempia aloittaen uuden pelaajan laskennalla, kun laskennan vaihtokohtaan laitetaan '/'. "
                 + "Tällöin uuden pelaajan pelimäärän on oltava aluksi enintään 10 ja on tultava täyteen vähintään 11 peliä ennen vaihtoa." + Newline
                 + "Esim. selo 1700, pelimäärä 8, vastustajat " + Newline
                 + " 1612 +1505 1850 -2102 / -1611 +1558" + Newline

@@ -13,6 +13,7 @@
 //   16.-17.2.2020  added new error status for new + old player calculation in one go format,
 //                  error messages defined as constants -> same for each version
 //   10.3.2020      modified error texts, does not mention menu any more
+//   16.3.2020      new error status for error with average opponent selo/pelo
 //    
 
 namespace SelolaskuriLibrary {
@@ -55,6 +56,7 @@ namespace SelolaskuriLibrary {
         public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_ENINT_10 = -9;
         public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_VAHINT_11 = -10;
         public const int SYOTE_VIRHE_UUDEN_PELAAJAN_OTTELUT_KAKSI_KAUTTAMERKKIA = -11;
+        public const int SYOTE_VIRHE_KESKIVAHVUUS = -12;
 
         // Edellä oleville negatiivisille virhestatuksille virheilmoitustekstit
         // HUOM! Oltava samassa numerojärjestyksessä kuin yllä
@@ -71,7 +73,8 @@ namespace SelolaskuriLibrary {
             "VIRHE: CSV-formaatti, esim. 'oma selo,tulokset' tai 'miettimisaika(min),oma selo,pelimaara(tai tyhjä),tulokset'",
             "VIRHE: Uuden pelaajan laskenta / normaali laskenta, alkup. pelimäärä voi olla enintään 10",
             "VIRHE: Uuden pelaajan laskenta / normaali laskenta, ei riittävästi uuden pelaajan pelejä",
-            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, voi olla vain yksi '/'"
+            "VIRHE: Uuden pelaajan laskenta / normaali laskenta, voi olla vain yksi '/'",
+            "VIRHE: Turnauksen keskivahvuus ei ole kelvollinen numero, 1000.0-2999.9"
         };
         public static int SYOTE_VIRHE_MAX = -1 * SYOTE_VIRHEET_text.Length; // ei voinut olla const
 

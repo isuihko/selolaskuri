@@ -11,7 +11,7 @@ using System; // Exception
 // *********************   UNDER DEVELOPMENT   *********************
 //
 // Created 29.2.2020
-// Modified 11.3.2020
+// Modified 16.3.2020
 //
 // Razor code was originally based on https://www.twilio.com/blog/validating-phone-numbers-in-razor-pages
 // but then started to use BindProperty, ViewData["fieldname"], TextBoxFor() etc.
@@ -40,14 +40,14 @@ namespace Selolaskuri.Razor
         [BindProperty]
         public string vastustajat_in { get; set; }
 
-        readonly string Newline = "\n"; // Environment.NewLine would create two line breaks in Microsoft Edge
+        private readonly string Newline = "\n"; // Environment.NewLine would create two line breaks in Microsoft Edge
 
         public SelolaskuriModel()
         {
             Vastustajat_ohjeteksti = "Täytä oma vahvuusluku-kenttä ja pelimäärä (jos enintään 10)" + Newline
                 + "Anna vastustaja tai vastustajat tuloksineen, esim. +1600 1785 -1882" + Newline
                 + "Tai koko turnauksen tulos ja vastustajat: 1.5 1600 1785 1882 "
-                + "jolla tavalla tulokset on annettava pikashakin laskentaa varten." + Newline
+                + "jolla tavalla tulokset yleensä annetaan pikashakin laskentaa varten. Nyt pikashakin laskenta toimii molemmilla em. tavoilla syötettynä." + Newline
                 + Newline
                 + "Ottelu tai koko turnaus voidaan antaa myös csv-formaatissa, jossa annetut tiedot korvaavat "
                 + "lomakkeen kentissä mahdollisesti olevat tiedot: miettimisaika, oma vahvuusluku ja pelimäärä." + Newline
@@ -86,9 +86,17 @@ namespace Selolaskuri.Razor
             {
                 HttpContext.Session.SetInt32("kayta tulosta", 0);
 
+                // XXX: this is used in desktop applications
+                // XXX: Check this, why it does not work (values stored in a library?)
+                //int selo1 = so.HaeViimeksiLaskettuSelo();
+                //int pelimaara1 = so.HaeViimeksiLaskettuPelimaara();
+                //selo_in = selo1.ToString();
+                //if (pelimaara1 != (int)Vakiot.PELIMAARA_TYHJA)
+                //    pelimaara_in = pelimaara1.ToString();
+
                 selo_in = HttpContext.Session.GetInt32("laskettu selo").ToString();
                 // jos ei vielä ollut laskentaa, laitetaan uuden pelaajan arvot
-                if (string.IsNullOrEmpty(selo_in))  
+                if (string.IsNullOrEmpty(selo_in))
                 {
                     selo_in = "1525";
                     pelimaara_in = "0";
@@ -220,7 +228,14 @@ namespace Selolaskuri.Razor
                 }
 
                 ViewData["turnauksentulos"] = "Turnauksen tulos: " + (tulokset.TurnauksenTulos2x / 2F).ToString("0.0") + " / " + tulokset.VastustajienLkm;
-                ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") + " Piste-ero: " + (Math.Abs(10*tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus10x)/10F).ToString("0.0");
+
+                // Keskivahvuus ja piste-ero
+                // Vastustajien vahvuuslukujen keskiarvo. Kumpi, ei desimaaleja vai yksi desimaali?
+                // oman vahvuusluvun piste-ero turnauksen keskivahvuuteen nähden
+                // näytetään etumerkki miinus, jos turnaus on heikompi
+                //ViewData["keskivahvuus"] = "Keskivahvuus: " + (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0") + " Piste-ero: " + (Math.Abs(10*tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus10x)/10F).ToString("0.0");
+                ViewData["keskivahvuus"] = "Keskivahvuus: " + tulokset.TurnauksenKeskivahvuus.ToString() + " Piste-ero: " + /*Math.Abs*/(tulokset.TurnauksenKeskivahvuus - tulokset.AlkuperainenSelo).ToString("+#;-#;0");
+
                 if (tulokset.VastustajienLkm > 1)
                     ViewData["vastustajat_alue"] = "Vastustajat (min-max): " + tulokset.VastustajaMin + " - " + tulokset.VastustajaMax;
 

@@ -25,6 +25,7 @@
 //  1.3.2020      Moved csv checking routines into class Syotetiedot
 //
 
+using System; // ArgumentNullException
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions; // Regex rx, rx.Replace (remove extra white spaces)
@@ -84,6 +85,9 @@ namespace SelolaskuriLibrary {
         //
         public int TarkistaSyote(Syotetiedot syotteet)
         {
+            if (syotteet == null)
+                throw new ArgumentNullException(nameof(syotteet));
+
             int tulos; // = Vakiot.SYOTE_STATUS_OK;
 
             // tyhjennä ottelulista, johon tallennetaan vastustajat tuloksineen
@@ -114,6 +118,14 @@ namespace SelolaskuriLibrary {
 
                 selopelaaja.UudenPelaajanPelitLKM = 0; // XXX: oletus ettei vaihdeta laskentaa ja voidaan tarkistaa, ettei ole '/' kahdesti
 
+
+                // 1) Usea ottelu: syotteet.Ottelut sisältää listan otteluista tuloksineen
+                //
+                // 2) yksi ottelu: syotteet.Ottelut yksi ottelu
+                //
+                // TULOSSA:
+                // 3) "tulos ottelumäärä keskiselo" esim. 5.5 8 1888.6
+                //          Selopelaaja.AnnettuTurnauksenTulos2x, TurnauksenKeskivahvuus, TurnauksenKeskivahvuus10x, VastustajienLkm
                 if ((tulos = TarkistaVastustajanSelo(syotteet.Ottelut, syotteet.VastustajienSelot_str)) < Vakiot.SYOTE_STATUS_OK)
                     break;
 
@@ -166,7 +178,7 @@ namespace SelolaskuriLibrary {
         //
         // Nämä miettimisajan valintapainikkeet ovat omana ryhmänään paneelissa
         // Aina on joku valittuna, joten ei voi olla virhetilannetta.
-        private int TarkistaMiettimisaika(Vakiot.Miettimisaika_enum aika)
+        private static int TarkistaMiettimisaika(Vakiot.Miettimisaika_enum aika)
         {
             int tulos = Vakiot.SYOTE_STATUS_OK;
             if (aika == Vakiot.Miettimisaika_enum.MIETTIMISAIKA_MAARITTELEMATON)
@@ -222,6 +234,9 @@ namespace SelolaskuriLibrary {
             return tulos;
         }
 
+
+
+        // XXX: REFACTOR TarkistaVastustajanSelo()
 
         // ************ TARKISTA VASTUSTAJAN SELO-KENTTÄ ************
         //
@@ -281,14 +296,20 @@ namespace SelolaskuriLibrary {
                 // 4) turnauksen tulos+vahvuusluvut, esim. 2,5 1624 1700 1685 1400
                 // 5) vahvuusluvut, joissa kussakin tulos  +1624 -1700 =1685 +1400
                 // 6) vahvuusluvut tuloksineen ja välissä '/'-merkki +1624 -1700 / =1685 +1400
+                //
+                // TULOSSA:
+                // 7) turnauksen_tulos turnauksen_ottelumäärä vastustajien_selokeskiarvo, esim. 12.5 18 1885.2
 
                 // Apumuuttujat
                 bool status = true;
                 int selo1; // = Vakiot.MIN_SELO;
                 bool ensimmainen = true;  // ensimmäinen syötekentän numero tai merkkijono
+                bool toinen = false;      // toinen syötekenttä
+
+                List<string> SyotteenOsat = syote.Split(' ').ToList();
 
                 // Tutki vastustajanSelo_comboBox-kenttä välilyönnein erotettu merkkijono kerrallaan
-                foreach (string vastustaja in syote.Split(' ').ToList()) {
+                foreach (string vastustaja in SyotteenOsat) {
 
                     if (ensimmainen) {
                         // need to use temporary variable because can't modify foreach iteration variable
@@ -296,6 +317,7 @@ namespace SelolaskuriLibrary {
                         
                         // 4) Onko annettu kokonaispistemäärä? (eli useamman ottelun yhteistulos)
                         ensimmainen = false;
+                        toinen = true;
 
                         // Laita molemmat 1.5 ja 1,5 toimimaan, InvariantCulture
                         // Huom! Pilkkua ei voidakaan käyttää, jos halutaan
@@ -327,7 +349,57 @@ namespace SelolaskuriLibrary {
                             // Jos ei saatu kelvollista lukua, joka käy tuloksena, niin jatketaan
                             // ja katsotaan, saadaanko vahvuusluku sen sijaan (jossa voi olla +/=/-)
                         }
+
+
+
+                    // XXX: EI MUKANA VIELÄ
+                    //}
+                    //else if (toinen && onko_turnauksen_tulos && (vastustaja.Length == 1 || vastustaja.Length == 2) && !vastustaja.Equals("/") && SyotteenOsat.Count == 3)
+                    //{
+                    //    // Format 7) This must be number of matches N or NN, and then 3rd item should be average SELO of the opponents
+                    //    string pelimaara_str = SyotteenOsat[1];
+                    //    string keskiselo_str = SyotteenOsat[2];
+                    //    int pelimaara;
+                    //    float keskiselo;
+                    //    toinen = false;
+                    //    if (int.TryParse(pelimaara_str, out pelimaara) == true)
+                    //    {
+                    //        // pelimaara >= GetAnnettu
+                    //        if (pelimaara * 2 < selopelaaja.GetAnnettuTurnauksenTulos2x())
+                    //        {
+                    //            virhekoodi = Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS;
+                    //            status = false;
+                    //            break;
+                    //        }
+
+                    //        selopelaaja.VastustajienLkm = pelimaara;
+
+                    //        // keskiselo yhdellä desimaalilla, piste tai pilkku
+                    //        if (float.TryParse(keskiselo_str, System.Globalization.NumberStyles.AllowDecimalPoint,
+                    //        System.Globalization.CultureInfo.InvariantCulture, out keskiselo))
+                    //        {
+                    //            if (keskiselo < Vakiot.MIN_SELO || keskiselo > Vakiot.MAX_SELO)
+                    //            {
+                    //                virhekoodi = Vakiot.SYOTE_VIRHE_KESKIVAHVUUS;
+                    //                status = false;
+                    //                break;
+                    //            }
+                    //            selopelaaja.TurnauksenKeskivahvuus = (int)(keskiselo + 0.5 + 0.001);
+                    //            selopelaaja.TurnauksenKeskivahvuus10x = (int)(10 * keskiselo + 0.001);
+                    //            vastustajanSelo = selopelaaja.TurnauksenKeskivahvuus;
+                    //            // status edelleen true
+                    //            break;
+
+                    //        }
+                    //        virhekoodi = Vakiot.SYOTE_VIRHE_KESKIVAHVUUS;
+                    //        status = false;
+                    //        break;
+                    //    }
+
+
+
                     } else if (vastustaja.Equals("/")) {
+                        toinen = false;
                         if (selopelaaja.UudenPelaajanPelitLKM > 0)
                         {
                             // joko oli kauttamerkki? Ei saa olla kahta!
@@ -349,6 +421,8 @@ namespace SelolaskuriLibrary {
                         selopelaaja.UudenPelaajanPelitLKM = ottelut.Lukumaara;
                         continue;
                     }
+
+                    toinen = false;
 
                     // Tarkista yksittäiset vastustajien vahvuusluvut
 
@@ -454,8 +528,15 @@ namespace SelolaskuriLibrary {
                 // 6) Annettu turnauksen tulos ei saa olla suurempi kuin pelaajien lukumäärä
                 //    Jos tulos on sama kuin pelaajien lkm, on voitettu kaikki ottelut.
                 if (status && onko_turnauksen_tulos) {
+                    if (ottelut.Lukumaara == 0)
+                    {
+                        // jos ei otteluita, mutta oli saatu turnauksen tulos N tai NN,
+                        // niin annetaan virheilmoitus vastustajan selo virheellinen
+                        virhekoodi = Vakiot.SYOTE_VIRHE_VASTUSTAJAN_SELO;
+                    }
                     // Vertailu kokonaislukuina, esim. syötetty tulos 3.5 ja pelaajia 4, vertailu 7 > 8.
-                    if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.Lukumaara) {
+                    else if ((int)(2 * syotetty_tulos + 0.01F) > 2 * ottelut.Lukumaara)
+                    {
                         virhekoodi = Vakiot.SYOTE_VIRHE_TURNAUKSEN_TULOS;  // tästä oma virheilmoitus
                         //status = false; // no need to clear status any more
                     }
@@ -471,6 +552,8 @@ namespace SelolaskuriLibrary {
         // Jo tehty .Trim() eli poistettu alusta ja lopusta välilyönnit
         // Poista ylimääräiset välilyönnit, korvaa yhdellä  "     " -> " "
         // Poista myös mahdolliset välilyönnit pilkkujen molemmilta puolilta: " , " ja ", " -> ","
+        //
+        // XXX: Tämä ei voinut olla static, vaikka kääntäjä ehdottaa
         public string SiistiVastustajatKentta(string syote)
         {
             string pattern = "\\s+";    // \s = any whitespace, + one or more repetitions

@@ -83,6 +83,8 @@
             this.suorituslukuFIDE_out = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.suorituslukuLineaarinen_out = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.vastustajatMinMax_out = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -162,7 +164,7 @@
             // uusiSelo_out
             // 
             this.uusiSelo_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uusiSelo_out.Location = new System.Drawing.Point(164, 362);
+            this.uusiSelo_out.Location = new System.Drawing.Point(164, 360);
             this.uusiSelo_out.Name = "uusiSelo_out";
             this.uusiSelo_out.ReadOnly = true;
             this.uusiSelo_out.Size = new System.Drawing.Size(56, 29);
@@ -197,7 +199,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 19.2.2020 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 16.3.2020 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -210,7 +212,7 @@
             // 
             // odotustulos_out
             // 
-            this.odotustulos_out.Location = new System.Drawing.Point(302, 423);
+            this.odotustulos_out.Location = new System.Drawing.Point(302, 421);
             this.odotustulos_out.Name = "odotustulos_out";
             this.odotustulos_out.ReadOnly = true;
             this.odotustulos_out.Size = new System.Drawing.Size(46, 20);
@@ -228,7 +230,7 @@
             // 
             // uusiPelimaara_out
             // 
-            this.uusiPelimaara_out.Location = new System.Drawing.Point(164, 397);
+            this.uusiPelimaara_out.Location = new System.Drawing.Point(164, 395);
             this.uusiPelimaara_out.Name = "uusiPelimaara_out";
             this.uusiPelimaara_out.ReadOnly = true;
             this.uusiPelimaara_out.Size = new System.Drawing.Size(56, 20);
@@ -238,7 +240,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(233, 443);
+            this.label10.Location = new System.Drawing.Point(318, 448);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 13);
             this.label10.TabIndex = 57;
@@ -246,7 +248,7 @@
             // 
             // pisteEro_out
             // 
-            this.pisteEro_out.Location = new System.Drawing.Point(302, 443);
+            this.pisteEro_out.Location = new System.Drawing.Point(380, 446);
             this.pisteEro_out.Name = "pisteEro_out";
             this.pisteEro_out.ReadOnly = true;
             this.pisteEro_out.Size = new System.Drawing.Size(46, 20);
@@ -256,11 +258,11 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 443);
+            this.label11.Location = new System.Drawing.Point(12, 448);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(133, 13);
+            this.label11.Size = new System.Drawing.Size(59, 13);
             this.label11.TabIndex = 62;
-            this.label11.Text = "Vastustajien keskivahvuus";
+            this.label11.Text = "Vastustajat";
             // 
             // label12
             // 
@@ -273,7 +275,7 @@
             // 
             // keskivahvuus_out
             // 
-            this.keskivahvuus_out.Location = new System.Drawing.Point(164, 443);
+            this.keskivahvuus_out.Location = new System.Drawing.Point(240, 446);
             this.keskivahvuus_out.Name = "keskivahvuus_out";
             this.keskivahvuus_out.ReadOnly = true;
             this.keskivahvuus_out.Size = new System.Drawing.Size(56, 20);
@@ -282,7 +284,7 @@
             // 
             // turnauksenTulos_out
             // 
-            this.turnauksenTulos_out.Location = new System.Drawing.Point(164, 423);
+            this.turnauksenTulos_out.Location = new System.Drawing.Point(164, 421);
             this.turnauksenTulos_out.Name = "turnauksenTulos_out";
             this.turnauksenTulos_out.ReadOnly = true;
             this.turnauksenTulos_out.Size = new System.Drawing.Size(56, 20);
@@ -301,7 +303,7 @@
             // 
             // selomuutos_out
             // 
-            this.selomuutos_out.Location = new System.Drawing.Point(226, 367);
+            this.selomuutos_out.Location = new System.Drawing.Point(226, 365);
             this.selomuutos_out.Name = "selomuutos_out";
             this.selomuutos_out.ReadOnly = true;
             this.selomuutos_out.Size = new System.Drawing.Size(37, 20);
@@ -415,7 +417,7 @@
             // 
             // vaihteluvali_out
             // 
-            this.vaihteluvali_out.Location = new System.Drawing.Point(279, 367);
+            this.vaihteluvali_out.Location = new System.Drawing.Point(279, 365);
             this.vaihteluvali_out.Name = "vaihteluvali_out";
             this.vaihteluvali_out.ReadOnly = true;
             this.vaihteluvali_out.Size = new System.Drawing.Size(73, 20);
@@ -560,7 +562,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 473);
+            this.label4.Location = new System.Drawing.Point(13, 475);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 13);
             this.label4.TabIndex = 71;
@@ -568,7 +570,7 @@
             // 
             // suoritusluku_out
             // 
-            this.suoritusluku_out.Location = new System.Drawing.Point(84, 470);
+            this.suoritusluku_out.Location = new System.Drawing.Point(84, 473);
             this.suoritusluku_out.Name = "suoritusluku_out";
             this.suoritusluku_out.ReadOnly = true;
             this.suoritusluku_out.Size = new System.Drawing.Size(52, 20);
@@ -577,7 +579,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(145, 473);
+            this.label8.Location = new System.Drawing.Point(145, 475);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(31, 13);
             this.label8.TabIndex = 73;
@@ -585,7 +587,7 @@
             // 
             // suorituslukuFIDE_out
             // 
-            this.suorituslukuFIDE_out.Location = new System.Drawing.Point(182, 470);
+            this.suorituslukuFIDE_out.Location = new System.Drawing.Point(182, 473);
             this.suorituslukuFIDE_out.Name = "suorituslukuFIDE_out";
             this.suorituslukuFIDE_out.ReadOnly = true;
             this.suorituslukuFIDE_out.Size = new System.Drawing.Size(52, 20);
@@ -594,7 +596,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(254, 473);
+            this.label15.Location = new System.Drawing.Point(254, 475);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(62, 13);
             this.label15.TabIndex = 75;
@@ -602,17 +604,36 @@
             // 
             // suorituslukuLineaarinen_out
             // 
-            this.suorituslukuLineaarinen_out.Location = new System.Drawing.Point(318, 470);
+            this.suorituslukuLineaarinen_out.Location = new System.Drawing.Point(318, 473);
             this.suorituslukuLineaarinen_out.Name = "suorituslukuLineaarinen_out";
             this.suorituslukuLineaarinen_out.ReadOnly = true;
             this.suorituslukuLineaarinen_out.Size = new System.Drawing.Size(52, 20);
             this.suorituslukuLineaarinen_out.TabIndex = 76;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(161, 448);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(74, 13);
+            this.label16.TabIndex = 77;
+            this.label16.Text = "Keskivahvuus";
+            // 
+            // vastustajatMinMax_out
+            // 
+            this.vastustajatMinMax_out.Location = new System.Drawing.Point(84, 446);
+            this.vastustajatMinMax_out.Name = "vastustajatMinMax_out";
+            this.vastustajatMinMax_out.ReadOnly = true;
+            this.vastustajatMinMax_out.Size = new System.Drawing.Size(71, 20);
+            this.vastustajatMinMax_out.TabIndex = 78;
             // 
             // SelolaskuriForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(494, 541);
+            this.Controls.Add(this.vastustajatMinMax_out);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.suorituslukuLineaarinen_out);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.suorituslukuFIDE_out);
@@ -728,6 +749,8 @@
         private System.Windows.Forms.TextBox suorituslukuFIDE_out;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox suorituslukuLineaarinen_out;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox vastustajatMinMax_out;
     }
 }
 

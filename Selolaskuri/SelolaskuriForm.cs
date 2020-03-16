@@ -373,12 +373,17 @@ namespace Selolaskuri
             else
                 uusiPelimaara_out.Text = "";
 
-            // piste-ero turnauksen keskivahvuuteen nähden
-            pisteEro_out.Text = Math.Abs(tulokset.AlkuperainenSelo - tulokset.TurnauksenKeskivahvuus).ToString();
+            // Vastustajien vahvuuslukujen vaihtelualue (paitsi jos yksi vastustaja, niin ei vaihtele)
+            //if (tulokset.VastustajaMin != tulokset.VastustajaMax)
+            vastustajatMinMax_out.Text = tulokset.VastustajaMin + " - " + tulokset.VastustajaMax;
 
-            // Vastustajien vahvuuslukujen keskiarvo
-            //keskivahvuus_out.Text = tulokset.TurnauksenKeskivahvuus.ToString();
-            keskivahvuus_out.Text = (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0");
+            // Vastustajien vahvuuslukujen keskiarvo. Kumpi, ei desimaaleja vai yksi desimaali?
+            keskivahvuus_out.Text = tulokset.TurnauksenKeskivahvuus.ToString();
+            //keskivahvuus_out.Text = (tulokset.TurnauksenKeskivahvuus10x / 10F).ToString("0.0");
+
+            // oman vahvuusluvun piste-ero turnauksen keskivahvuuteen nähden
+            // näytetään etumerkki miinus, jos turnaus on heikompi
+            pisteEro_out.Text = /*Math.Abs*/(tulokset.TurnauksenKeskivahvuus - tulokset.AlkuperainenSelo).ToString("+#;-#;0");
 
             // Turnauksen loppupisteet yhdellä desimaalilla / ottelujen lkm, esim.  2.5 / 6 tai 2.0 / 6
             turnauksenTulos_out.Text =
@@ -386,7 +391,7 @@ namespace Selolaskuri
 
             // Vahvuusluku on voinut vaihdella laskennan edetessä, jos vastustajat ovat olleet formaatissa "+1622 -1880 =1633"
             // Vaihteluväliä ei ole, jos laskenta on tehty yhdellä lausekkeella tai on ollut vain yksi vastustaja
-            if (tulokset.MinSelo < tulokset.MaxSelo)
+            if (tulokset.MinSelo != tulokset.MaxSelo)
                 vaihteluvali_out.Text = tulokset.MinSelo.ToString() + " - " + tulokset.MaxSelo.ToString();
             else
                 vaihteluvali_out.Text = "";
@@ -397,10 +402,7 @@ namespace Selolaskuri
             if (tulokset.UudenPelaajanLaskenta || tulokset.UudenPelaajanPelitLKM > 0)
             {
                 odotustulos_out.Text = "";
-                if (tulokset.UudenPelaajanPelitLKM > 0)
-                    UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta " + tulokset.UudenPelaajanPelitLKM + " peliä";
-                else
-                    UudenPelaajanLaskenta_txt.Text = "Uuden pelaajan laskenta          ";
+                UudenPelaajanLaskenta_txt.Text = (tulokset.UudenPelaajanPelitLKM > 0) ? "uuden pelaajan laskentaa " + tulokset.AlkuperainenPelimaara + "+" + tulokset.UudenPelaajanPelitLKM + " peliä" : "uuden pelaajan laskenta";
                 UudenPelaajanLaskenta_txt.Visible = true;
             } else {
                 odotustulos_out.Text = (tulokset.Odotustulos / 100F).ToString("0.00");

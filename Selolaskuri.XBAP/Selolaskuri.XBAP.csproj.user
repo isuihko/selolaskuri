@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartURL>C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.XBAP\bin\Debug\Selolaskuri.xbap</StartURL>
+    <StartURL>D:\Users\ismos\source\repos\Selolaskuri.github\Selolaskuri.XBAP\bin\Debug\Selolaskuri.xbap</StartURL>
     <StartArguments>-debug  "C:\Users\Ismo\source\repos\Selolaskuri\Selolaskuri.XBAP\bin\Debug\Selolaskuri.xbap"</StartArguments>
   </PropertyGroup>
   <PropertyGroup>

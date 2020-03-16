@@ -56,12 +56,12 @@ namespace SelolaskuriLibrary {
         // tulokseksi 2,5 (2 voittoa ja 1 tasapeli). Tallennetaan kokonaislukuna tuplana (int)(2*2,5) eli 5.
         public int TurnauksenTulos2x { get; private set; }    // result from all the matches/tournament
 
-        public int VastustajienLkm { get; private set; }    // number of the opponents/matches
+        public int VastustajienLkm { get; /*private*/ set; }    // number of the opponents/matches
         public int UudenPelaajanPelitLKM {get ; set; }  // number of games to calculate as a new player
 
         // pitäisikö keskivahvuuden olla täydellä tarkkuudella vai kokonaislukuna laskennassa?
-        public int TurnauksenKeskivahvuus { get; private set; } // average opponent strength
-        public int TurnauksenKeskivahvuus10x { get; private set; } // average opponent strength
+        public int TurnauksenKeskivahvuus { get; /*private*/ set; } // average opponent strength
+        public int TurnauksenKeskivahvuus10x { get; /*private*/ set; } // average opponent strength
 
         public int VastustajaMin { get; private set; }
         public int VastustajaMax { get; private set; }
@@ -119,19 +119,24 @@ namespace SelolaskuriLibrary {
         // Huom! Jos tulos on annettu virheellisesti esim. 0,9 tai 2,4, niin pyöristys alas
         // em. syötteistä saadaan 0,5 tai 2,0 (tallennus 1 tai 4)
         // Jos ei annettu, arvo on TURNAUKSEN_TULOS_ANTAMATTA (eli negatiivinen luku)
-        private int annettuTurnauksenTulos;                 // possible given tournament result (-1 if not given)
+        private int annettuTurnauksenTulos2x;                 // possible given tournament result (-1 if not given)
 
         // Tarvitaan oma erillinen setter, koska tehdään muunnos float -> kokonaisluku
         public void SetAnnettuTurnauksenTulos(float f)      // set the tournament result
         {
-            annettuTurnauksenTulos = (int)Math.Round(2.0F * f + 0.01);
+            annettuTurnauksenTulos2x = (int)Math.Round(2.0F * f + 0.01);
+        }
+
+        public float GetAnnettuTurnauksenTulos2x()
+        {
+            return annettuTurnauksenTulos2x;
         }
 
         private bool OnkoAnnettuTurnauksenTulos {
             get { 
                 // riittää tarkistaa, että on suurempi kuin asetettu vakio
                 // Tuohan oli vieläpä tallennettu 2.0:lla kerrottuna eli oli -2
-                return annettuTurnauksenTulos > Vakiot.TURNAUKSEN_TULOS_ANTAMATTA;
+                return annettuTurnauksenTulos2x > Vakiot.TURNAUKSEN_TULOS_ANTAMATTA;
             }
         }
 
@@ -198,7 +203,7 @@ namespace SelolaskuriLibrary {
         private const double Epsilon = 0.000001;
         private const int MinRating = 0, MaxRating = 10000;
 
-        private double Erf(double x)
+        private static double Erf(double x)
         {
             // Horner's method, gives a reasonably good approximation
             var a = 1.0 / (1.0 + 0.5 * Math.Abs(x));
@@ -283,6 +288,9 @@ namespace SelolaskuriLibrary {
             if (syotteet == null)
                 throw new ArgumentNullException(nameof(syotteet));
 
+            // XXX: KÄSITTELE ERIKOISTAPAUS, JOSSA ON VAIN annettuTurnauksenTulos2x, VastustajienLkm ja Turnauksenkeskivahvuus
+            // XXX: silloin ei ole ottelulistaa
+
             Ottelulista ottelulista = syotteet.Ottelut;
 
             // asettaa omat tiedot (selo ja pelimäärä) seloPelaaja-luokkaan, nollaa tilastotiedot ym.
@@ -308,7 +316,7 @@ namespace SelolaskuriLibrary {
                 // keskitulos/matsi = 1
 
                 // apumuuttujia (lausekkeiden selkiyttämiseksi ja lyhentämiseksi)
-                float keskimTulos = (annettuTurnauksenTulos / 2F) / VastustajienLkm;   // 0.0 - 1.0
+                float keskimTulos = (annettuTurnauksenTulos2x / 2F) / VastustajienLkm;   // 0.0 - 1.0
                 float muutos = 400 * (keskimTulos - 0.5F) + 0.5F;   // tuloksella tasapeli pysytään samassa kuin keskimTulos
 
                 // vanhan selon painoarvo ja uuden lasketun selon painoarvo riippuvat pelimääristä
@@ -316,7 +324,7 @@ namespace SelolaskuriLibrary {
                 UusiPelimaara += VastustajienLkm;
 
                 // turnauksen tulos annettu, joten ei laskettavaa
-                TurnauksenTulos2x = annettuTurnauksenTulos;
+                TurnauksenTulos2x = annettuTurnauksenTulos2x;
 
                 // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa
                 MinSelo = UusiSelo;
@@ -368,7 +376,7 @@ namespace SelolaskuriLibrary {
                     // apumuuttuja selo, koska sitä tarvitaan kaavassa usein
                     //
                     int vanha = alkuperaisetSyotteet.AlkuperainenSelo; // aloitetaan alusta, oma apumuuttuja
-                    TurnauksenTulos2x = annettuTurnauksenTulos; // turnauksen tulos annettu, joten ei laskettavaa
+                    TurnauksenTulos2x = annettuTurnauksenTulos2x; // turnauksen tulos annettu, joten ei laskettavaa
 
                     if (alkuperaisetSyotteet.Miettimisaika <= Vakiot.Miettimisaika_enum.MIETTIMISAIKA_ENINT_10MIN)
                     {
@@ -386,15 +394,15 @@ namespace SelolaskuriLibrary {
                         // Odotustulos on kokonaisluku ja pitää jakaa 100:lla
                         //
                         // Laskentakaavaan lisätty pyöristys Math.Round, jonka jälkeen kaikista Joukkuepikashakin laskennoista saadaan samat tulokset
-                        if ((annettuTurnauksenTulos / 2.0) > (Odotustulos / 100.0))
+                        if ((annettuTurnauksenTulos2x / 2.0) > (Odotustulos / 100.0))
                         {
                             UusiSelo =
-                                (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos / 2.0) / 10.0) + 0.0001);
+                                (int)Math.Round(vanha + 200.0 - 200.0 * Math.Pow(Math.E, (Odotustulos / 100.0 - annettuTurnauksenTulos2x / 2.0) / 10.0) + 0.0001);
                         }
                         else
                         {
                             UusiSelo =
-                                (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0) / 10.0) + 0.0001);
+                                (int)Math.Round(vanha - 200.0 + 200.0 * Math.Pow(Math.E, (annettuTurnauksenTulos2x / 2.0 - Odotustulos / 100.0) / 10.0) + 0.0001);
                         }
                     }
                     else
@@ -405,7 +413,7 @@ namespace SelolaskuriLibrary {
                         float lisakerroin = MaaritaLisakerroin(vanha, alkuperaisetSyotteet.Miettimisaika);
                         // Lisätään vielä pelattujen pelien lkm * 0.1
                         UusiSelo =
-                            (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.0001);
+                            (int)Math.Round((vanha + MaaritaKerroin(vanha) * lisakerroin * (annettuTurnauksenTulos2x / 2.0 - Odotustulos / 100.0)) + ottelulista.Lukumaara * 0.1 + 0.0001);
                     }
 
                     // koska laskenta tehtiin kerralla, ei saatu minSeloa ja maxSeloa

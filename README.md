@@ -7,7 +7,7 @@ Visual Studio Community 2019/2017/2015, C#/.NET, Windows 7, Windows 8 and Window
 Now all Selolaskuri's versions are under same Visual Studio's solution:
 - **Selolaskuri** which is WinForms version and desktop application, can be installed into Windows computer.
 - **Selolaskuri.WPF**, user interface created with WPF/XAML (WPF is newer than WinForms) and is also a desktop application, can be installed into Windows computer. Resizable window. More in folder Selolaskuri.WPF.
-- **Selolaskuri.Razor**, ASP.NET Razor Pages version (, user interface under development **NEW!!** You can try the program in Azure https://selolaskurirazor20200308095542.azurewebsites.net/Selolaskuri (at this moment, may not be there permanently) Works with any browser and mobile phones.
+- **Selolaskuri.Razor**, ASP.NET Razor Pages version (, user interface under development **NEW!!** You can try the program in Azure https://selolaskuri.azurewebsites.net/Selolaskuri (at this moment, may not be there permanently) Works with any browser and mobile phones.
 - **Selolaskuri.XBAP**, user interface created with WPF/XAML and is a web application with the limit that it runs only in IE browser. More in https://github.com/isuihko/isuihko.github.io including executable for Internet Explorer.
 
 If you've downloaded all source codes, you can choose, which of the application to run in Visual Studio: in Solution Explorer right click Project's name, choose Set as StartUp Project and then click Start. To compile Razor pages sources Visual Studio 2019 is required.

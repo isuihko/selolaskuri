@@ -199,7 +199,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(211, 12);
             this.label6.TabIndex = 64;
-            this.label6.Text = "C#/.NET 16.3.2020 github.com/isuihko/selolaskuri";
+            this.label6.Text = "C#/.NET 17.3.2020 github.com/isuihko/selolaskuri";
             // 
             // label7
             // 
@@ -575,6 +575,7 @@
             this.suoritusluku_out.ReadOnly = true;
             this.suoritusluku_out.Size = new System.Drawing.Size(52, 20);
             this.suoritusluku_out.TabIndex = 72;
+            this.suoritusluku_out.TabStop = false;
             // 
             // label8
             // 
@@ -592,6 +593,7 @@
             this.suorituslukuFIDE_out.ReadOnly = true;
             this.suorituslukuFIDE_out.Size = new System.Drawing.Size(52, 20);
             this.suorituslukuFIDE_out.TabIndex = 74;
+            this.suorituslukuFIDE_out.TabStop = false;
             // 
             // label15
             // 
@@ -609,6 +611,7 @@
             this.suorituslukuLineaarinen_out.ReadOnly = true;
             this.suorituslukuLineaarinen_out.Size = new System.Drawing.Size(52, 20);
             this.suorituslukuLineaarinen_out.TabIndex = 76;
+            this.suorituslukuLineaarinen_out.TabStop = false;
             // 
             // label16
             // 
@@ -626,6 +629,7 @@
             this.vastustajatMinMax_out.ReadOnly = true;
             this.vastustajatMinMax_out.Size = new System.Drawing.Size(71, 20);
             this.vastustajatMinMax_out.TabIndex = 78;
+            this.vastustajatMinMax_out.TabStop = false;
             // 
             // SelolaskuriForm
             // 

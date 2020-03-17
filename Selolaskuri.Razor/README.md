@@ -8,4 +8,4 @@ Version history:
  - 9.3.2020 User interface etc. Everything seems to work now! :-)
  
  You can try the program from Azure (at this moment, may not be there permanently)
-   https://selolaskurirazor20200308095542.azurewebsites.net/Selolaskuri
+   https://selolaskuri.azurewebsites.net/Selolaskuri

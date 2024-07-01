@@ -124,10 +124,11 @@ Version history highlights:
 
 All Selolaskuri versions use the same SelolaskuriLibrary for input checking and calculation. The parameter checking and calculations are tested in project Selolaskuri.Tests (now 86 tests) which tests SelolaskuriLibrary routines. User interfaces are similar but created differently.
 
-TODO
+**TODO**
+- **REFACTORING**, more Object-Oriented Programming (OOP)
+- **UNIT TESTING**, test also other than the calculations, test also the user interface
+Also todo
 - user interface in Razor pages versions, separate mobile user interface
-- refactoring, more Object-Oriented Programming (OOP)
 - use database as an exercise e.g. to store calculations
 - check what else could be moved into SelolaskuriLibrary
 - update also Java version (suorituslukulaskenta is missing)
-
